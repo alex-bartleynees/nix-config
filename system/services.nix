@@ -8,7 +8,6 @@
   services.blueman.enable = true;
   services.upower.enable = true;
   services.acpid.enable = true;
-  virtualisation.docker.enable = true;
   services.xserver.xkb = {
     layout = "nz";
     variant = "";

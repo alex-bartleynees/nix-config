@@ -9,6 +9,7 @@
     ./services.nix
     ./users.nix
     ./wayland.nix
+    ./virtualisation.nix
   ];
 }
 
