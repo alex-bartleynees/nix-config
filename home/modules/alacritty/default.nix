@@ -7,43 +7,28 @@ let
     rev = "95a7d695605863ede5b7430eb80d9e80f5f504bc";
     sha256 = "sha256-D37MQtNS20ESny5UhW1u6ELo9czP4l+q0S8neH7Wdbc=";
   };
-in
-{
+in {
   programs.alacritty = {
     enable = true;
-    
-    settings = {
-      env = {
-        TERM = "xterm-256color";
-      };
 
-      window = {
-        opacity = 0.95;
-      };
+    settings = {
+      env = { TERM = "xterm-256color"; };
+
+      window = { opacity = 0.95; };
 
       font = {
         normal = {
           family = "JetBrainsMonoNL Nerd Font Mono";
           style = "Regular";
         };
-        bold = {
-          style = "Bold";
-        };
-        italic = {
-          style = "Italic";
-        };
-        bold_italic = {
-          style = "Bold Italic";
-        };
+        bold = { style = "Bold"; };
+        italic = { style = "Italic"; };
+        bold_italic = { style = "Bold Italic"; };
       };
 
-      selection = {
-        save_to_clipboard = true;
-      };
+      selection = { save_to_clipboard = true; };
 
-      general.import = [
-        "${alacritty-theme}/themes/tokyo-night.toml"
-      ];
+      general.import = [ "${alacritty-theme}/themes/tokyo-night.toml" ];
     };
   };
 }

@@ -1,7 +1,7 @@
 # Bootloader
 
-{ config, pkgs, ...}: {
-	boot.loader.systemd-boot.enable = true;
-	boot.loader.efi.canTouchEfiVariables = true;
+{ config, pkgs, ... }: {
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 }
-	
+

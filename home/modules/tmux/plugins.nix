@@ -4,7 +4,7 @@
   tokyo-night = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-tokyo-night";
     version = "1.10.0";
-    rtpFilePath="tmux-tokyo-night.tmux";
+    rtpFilePath = "tmux-tokyo-night.tmux";
     src = pkgs.fetchFromGitHub {
       owner = "fabioluciano";
       repo = "tmux-tokyo-night";

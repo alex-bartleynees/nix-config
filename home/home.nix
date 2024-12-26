@@ -1,147 +1,130 @@
-{config, pkgs, ...}: {
+{ config, pkgs, ... }: {
 
-        imports = [
-          ./modules/alacritty
-	  ./modules/tmux
-	  ./modules/vscode
-        ];
-	home.username = "alexbn";
-	home.homeDirectory = "/home/alexbn";
-        home.stateVersion = "24.11";
-        home.pointerCursor = {
-           name = "Adwaita";  
-           package = pkgs.adwaita-icon-theme;
-           size = 24;
-        };
+  imports = [ ./modules/alacritty ./modules/tmux ./modules/vscode ];
+  home.username = "alexbn";
+  home.homeDirectory = "/home/alexbn";
+  home.stateVersion = "24.11";
+  home.pointerCursor = {
+    name = "Adwaita";
+    package = pkgs.adwaita-icon-theme;
+    size = 24;
+  };
 
-	programs.home-manager.enable = true;
+  programs.home-manager.enable = true;
 
-	programs.git = {
-		enable = true;
-		userName = "Alex Bartley Nees";
-		userEmail = "alexbartleynees@gmail.com";
-                    extraConfig = {
-                init.defaultBranch = "main";
-      
-                core = {
-                                editor = "nvim";
-                                whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
-                                pager = "delta";
-                };
-      
-                diff = {
-                        tool = "vimdiff";
-                };
-      
-                difftool = {
-                        prompt = false;
-                };
-      
-                pull = {
-                        rebase = true;
-                };
-    }           ;
-              };
+  programs.git = {
+    enable = true;
+    userName = "Alex Bartley Nees";
+    userEmail = "alexbartleynees@gmail.com";
+    extraConfig = {
+      init.defaultBranch = "main";
 
-          programs.direnv = {
-               enable = true;
-               enableZshIntegration = true;  # If you're using zsh
-               nix-direnv.enable = true;     # Better caching
-            };
+      core = {
+        editor = "nvim";
+        whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+        pager = "delta";
+      };
 
-        programs.zsh = {
-		enable = true;
-                initExtra = "source ~/.p10k.zsh";
-                oh-my-zsh = {
-                  enable = true;
-                  plugins = [
-                    "git"
-                    "tmux"
-                  ];
-                };
-		plugins = [{
-			name = "powerlevel10k";
-			src = pkgs.zsh-powerlevel10k;
-			file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-                      }
-                      {
-                         name = "zsh-syntax-highlighting";
-                         src = pkgs.zsh-syntax-highlighting;
-                         file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-                      }
-                      {
-                      name = "zsh-autosuggestions";
-                      src = pkgs.zsh-autosuggestions;
-                      file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-                    }
-                    {
-                      name = "fzf-tab";
-                      src = pkgs.zsh-fzf-tab;
-                      file = "share/fzf-tab/fzf-tab.plugin.zsh";
-                    }
-                    ];
-              };
+      diff = { tool = "vimdiff"; };
 
-        programs.neovim = {
-                enable = true;
-                defaultEditor = true;
-              };
+      difftool = { prompt = false; };
 
-	programs.brave = {
-		enable= true;
- 	 package = (pkgs.brave.override {
-    	commandLineArgs = ["--disable-gpu"];
-  		});
-	};
+      pull = { rebase = true; };
+    };
+  };
 
-	home.packages = with pkgs; [
-		firefox
-		ripgrep
-		fd
-		grim
-		slurp
-		wl-clipboard
-		fastfetch
-                tmux
-                fzf
-                btop
-                bat
-                bottom
-                lazygit
-                lazydocker
-                k9s
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true; # If you're using zsh
+    nix-direnv.enable = true; # Better caching
+  };
 
-		networkmanagerapplet
-		blueman
-		udiskie
+  programs.zsh = {
+    enable = true;
+    initExtra = "source ~/.p10k.zsh";
+    oh-my-zsh = {
+      enable = true;
+      plugins = [ "git" "tmux" ];
+    };
+    plugins = [
+      {
+        name = "powerlevel10k";
+        src = pkgs.zsh-powerlevel10k;
+        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      }
+      {
+        name = "zsh-syntax-highlighting";
+        src = pkgs.zsh-syntax-highlighting;
+        file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
+      }
+      {
+        name = "zsh-autosuggestions";
+        src = pkgs.zsh-autosuggestions;
+        file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
+      }
+      {
+        name = "fzf-tab";
+        src = pkgs.zsh-fzf-tab;
+        file = "share/fzf-tab/fzf-tab.plugin.zsh";
+      }
+    ];
+  };
 
-		alacritty
-		waybar
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
 
-		pulseaudio
+  programs.brave = {
+    enable = true;
+    package = (pkgs.brave.override { commandLineArgs = [ "--disable-gpu" ]; });
+  };
 
-		swaybg
-		rofi-wayland
-		dunst
-		swayidle
-                swaylock
-                sway-audio-idle-inhibit
-		
-		font-awesome
-		(nerdfonts.override { fonts = [
-			"JetBrainsMono"
-			"FiraCode"
-		];})
-              ];
+  home.packages = with pkgs; [
+    firefox
+    ripgrep
+    fd
+    grim
+    slurp
+    wl-clipboard
+    fastfetch
+    tmux
+    fzf
+    btop
+    bat
+    bottom
+    lazygit
+    lazydocker
+    k9s
 
-        home.sessionVariables = {
-          EDITOR = "nvim";
-          BACKGROUND= "${config.home.homeDirectory}/dotfiles/backgrounds/catppuccintotoro.png";
-          NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
-          SHELL = "${pkgs.zsh}/bin/zsh";
-        };
+    networkmanagerapplet
+    blueman
+    udiskie
 
-	fonts.fontconfig.enable = true;
+    alacritty
+    waybar
+
+    pulseaudio
+
+    swaybg
+    rofi-wayland
+    dunst
+    swayidle
+    swaylock
+    sway-audio-idle-inhibit
+
+    font-awesome
+    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
+  ];
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    BACKGROUND =
+      "${config.home.homeDirectory}/dotfiles/backgrounds/catppuccintotoro.png";
+    NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
+    SHELL = "${pkgs.zsh}/bin/zsh";
+  };
+
+  fonts.fontconfig.enable = true;
 }
-
 

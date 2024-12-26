@@ -1,10 +1,8 @@
 { pkgs, ... }:
 
-let
-  customPlugins = import ./plugins.nix { inherit pkgs; };
-in
-{
- programs.tmux = {
+let customPlugins = import ./plugins.nix { inherit pkgs; };
+in {
+  programs.tmux = {
     enable = true;
     prefix = "C-a";
     baseIndex = 1;
@@ -17,8 +15,7 @@ in
       pkgs.tmuxPlugins.sensible
       {
         plugin = customPlugins.tokyo-night;
-        extraConfig = ''
-         set -g @plugin "fabioluciano/tmux-tokyo-night"'';
+        extraConfig = ''set -g @plugin "fabioluciano/tmux-tokyo-night"'';
       }
     ];
     extraConfig = ''
