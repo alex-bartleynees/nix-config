@@ -20,6 +20,27 @@
 		enable = true;
 		userName = "Alex Bartley Nees";
 		userEmail = "alexbartleynees@gmail.com";
+                    extraConfig = {
+                init.defaultBranch = "main";
+      
+                core = {
+                                editor = "nvim";
+                                whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+                                pager = "delta";
+                };
+      
+                diff = {
+                        tool = "vimdiff";
+                };
+      
+                difftool = {
+                        prompt = false;
+                };
+      
+                pull = {
+                        rebase = true;
+                };
+    }           ;
               };
 
           programs.direnv = {
