@@ -26,7 +26,10 @@
     gtk_engines
     gsettings-desktop-schemas
     adwaita-icon-theme
-    direnv
+    udiskie
+    networkmanagerapplet
+    blueman
+    pulseaudio
   ];
 
   programs.sway = {

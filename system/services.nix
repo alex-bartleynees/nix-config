@@ -12,6 +12,7 @@
     layout = "nz";
     variant = "";
   };
+  services.udisks2.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
 

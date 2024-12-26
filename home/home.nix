@@ -86,7 +86,6 @@
     fd
     grim
     slurp
-    wl-clipboard
     fastfetch
     tmux
     fzf
@@ -95,17 +94,8 @@
     bottom
     lazygit
     lazydocker
-    k9s
-
-    networkmanagerapplet
-    blueman
-    udiskie
-
     alacritty
     waybar
-
-    pulseaudio
-
     swaybg
     rofi-wayland
     dunst
