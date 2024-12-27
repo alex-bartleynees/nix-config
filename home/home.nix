@@ -110,8 +110,8 @@
   ];
 
   home.file = {
-  ".config/ghostty/config".source = ./modules/ghostty/ghostty.linux;
-};
+    ".config/ghostty/config".source = ./modules/ghostty/ghostty.linux;
+  };
 
   home.sessionVariables = {
     EDITOR = "nvim";

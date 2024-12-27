@@ -10,5 +10,5 @@
   boot.kernelModules = [ "vboxdrv" "vboxnetadp" "vboxnetflt" ];
 
   # Add your user to vboxusers group
-   users.extraGroups.vboxusers.members = [ "alexbn" ];
+  users.extraGroups.vboxusers.members = [ "alexbn" ];
 }

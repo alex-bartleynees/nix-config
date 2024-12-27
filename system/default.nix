@@ -10,6 +10,7 @@
     ./users.nix
     ./wayland.nix
     ./virtualisation.nix
+    ./greeter.nix
   ];
 }
 

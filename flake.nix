@@ -9,7 +9,8 @@
     };
 
     ghostty = {
-      url = "github:ghostty-org/ghostty/4b4d4062dfed7b37424c7210d1230242c709e990";
+      url =
+        "github:ghostty-org/ghostty/4b4d4062dfed7b37424c7210d1230242c709e990";
     };
   };
 
@@ -23,12 +24,10 @@
 
           home-manager.nixosModules.home-manager
           {
-          home-manager.extraSpecialArgs = {
-                inherit inputs;
-              };
+            home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.alexbn = import ./home; 
+            home-manager.users.alexbn = import ./home;
             home-manager.backupFileExtension = "backup";
           }
         ];
