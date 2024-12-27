@@ -23,4 +23,6 @@
     # Enable wake from specific USB ports (XHCI controller)
     SUBSYSTEM=="pci", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x8c31", ATTR{power/wakeup}="enabled"
   '';
+
+  services.tailscale.enable = true;
 }
