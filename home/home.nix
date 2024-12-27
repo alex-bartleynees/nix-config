@@ -104,6 +104,7 @@
     sway-audio-idle-inhibit
     jetbrains.rider
     inputs.ghostty.packages."${pkgs.system}".default
+    qbittorrent-enhanced
 
     font-awesome
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
@@ -120,6 +121,10 @@
     NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
     SHELL = "${pkgs.zsh}/bin/zsh";
   };
+
+  home.sessionPath = [
+    "$HOME/.config/rofi/scripts"
+  ];
 
   fonts.fontconfig.enable = true;
 }
