@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, inputs, ... }: {
 
   imports = [ ./modules/alacritty ./modules/tmux ./modules/vscode ];
   home.username = "alexbn";
@@ -102,10 +102,16 @@
     swayidle
     swaylock
     sway-audio-idle-inhibit
+    jetbrains.rider
+    inputs.ghostty.packages."${pkgs.system}".default
 
     font-awesome
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
   ];
+
+  home.file = {
+  ".config/ghostty/config".source = ./modules/ghostty/ghostty.linux;
+};
 
   home.sessionVariables = {
     EDITOR = "nvim";
