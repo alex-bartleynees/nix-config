@@ -74,7 +74,7 @@ in {
   };
 
   environment.etc = {
-    "greetd/background.png".source = ../backgrounds/catppuccintotoro.png;
+    "greetd/background.png".source = ../../../../backgrounds/catppuccintotoro.png;
     "greetd/environments".text = ''
       ${sway-run}/bin/sway-run
     '';
