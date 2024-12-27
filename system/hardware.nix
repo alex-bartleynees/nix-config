@@ -15,4 +15,6 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  hardware.xpadneo.enable = true;
 }
