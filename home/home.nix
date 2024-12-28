@@ -122,9 +122,7 @@
     SHELL = "${pkgs.zsh}/bin/zsh";
   };
 
-  home.sessionPath = [
-    "$HOME/.config/rofi/scripts"
-  ];
+  home.sessionPath = [ "$HOME/.config/rofi/scripts" ];
 
   fonts.fontconfig.enable = true;
 }

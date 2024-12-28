@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "dotfiles": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1735295835,
+        "narHash": "sha256-9sKqiTK+tGR7bGmnGCmCIVCS4e+nZKj7hBLKQ0FfrBU=",
+        "owner": "alex-bartleynees",
+        "repo": "dotfiles",
+        "rev": "a40abfce12198a9d5fbd811eb5440d9afbcbf72f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alex-bartleynees",
+        "repo": "dotfiles",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -110,6 +126,7 @@
     },
     "root": {
       "inputs": {
+        "dotfiles": "dotfiles",
         "ghostty": "ghostty",
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs"

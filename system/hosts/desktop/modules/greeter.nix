@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, background, ... }:
 
 let
   gtkgreetStyle = pkgs.writeText "gtkgreet.css" ''
@@ -74,7 +74,7 @@ in {
   };
 
   environment.etc = {
-    "greetd/background.png".source = ../../../../backgrounds/catppuccintotoro.png;
+    "greetd/background.png".source = background.wallpaper;
     "greetd/environments".text = ''
       ${sway-run}/bin/sway-run
     '';
