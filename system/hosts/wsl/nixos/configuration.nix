@@ -4,6 +4,13 @@
   nixpkgs.config.allowUnfree = true;
   services.openssh.enable = true;
 
+  services.dbud = {
+    enable = true;
+    implementation = "broker";
+  };
+
+  security.pam.services.login.enableWsl = true;
+
   environment.systemPackages = with pkgs; [
     (vim_configurable.customize {
       name = "vim";
@@ -53,6 +60,7 @@
     wslConf.network.generateHosts = false;
     defaultUser = "alexbn";
     startMenuLaunchers = true;
+    nativeSystemd = true;
 
     # Enable integration with Docker Desktop (needs to be installed)
     docker-desktop.enable = false;
