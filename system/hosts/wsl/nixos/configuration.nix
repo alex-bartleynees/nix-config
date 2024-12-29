@@ -56,7 +56,7 @@
     wslConf.automount.root = "/mnt";
     wslConf.interop.appendWindowsPath = false;
     wslConf.network.generateHosts = false;
-    defaultUser = username;
+    defaultUser = "alexbn";
     startMenuLaunchers = true;
 
     # Enable integration with Docker Desktop (needs to be installed)
