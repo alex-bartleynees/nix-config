@@ -8,6 +8,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     ghostty = {
       url =
         "github:ghostty-org/ghostty/4b4d4062dfed7b37424c7210d1230242c709e990";
