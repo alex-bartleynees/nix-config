@@ -46,6 +46,30 @@
           })
         ];
       };
+
+      wsl = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./system/hosts/wsl/nixos/configuration.nix
+          ./system/hosts/desktop/modules/locale.nix
+          ./system/hosts/desktop/modules/users.nix
+
+          home-manager.nixosModules.home-manager
+          ({ config, ... }: {
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              inherit (config.networking) hostName;
+              background = import ./shared/background.nix { inherit inputs; };
+            };
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.alexbn = { config, pkgs, ... }: {
+              imports = [ ./home ];
+            };
+            home-manager.backupFileExtension = "backup";
+          })
+        ];
+      };
     };
   };
 }
