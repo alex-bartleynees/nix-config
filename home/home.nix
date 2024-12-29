@@ -119,6 +119,16 @@
       source = "${inputs.dotfiles}/configs/rofi";
       recursive = true;
     };
+
+    ".config/nvim" = {
+      source = "${inputs.dotfiles}/configs/nvim";
+      recursive = true;
+    };
+
+    ".config/waybar" = {
+      source = "${inputs.dotfiles}/configs/waybar";
+      recursive = true;
+    };
   };
 
   home.sessionVariables = {
