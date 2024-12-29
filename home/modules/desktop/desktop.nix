@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, background, ... }: {
   imports = [ ../vscode ];
   home.packages = with pkgs; [
     waybar
@@ -23,6 +23,10 @@
       source = "${inputs.dotfiles}/configs/waybar";
       recursive = true;
     };
+
+    ".config/sway/background".text = ''
+      set $background ${background.wallpaper}
+    '';
   };
 
   home.sessionPath = [ "$HOME/.config/rofi/scripts" ];
