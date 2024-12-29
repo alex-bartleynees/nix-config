@@ -38,23 +38,23 @@ let
     executable = true;
     text = ''
       #!${pkgs.zsh}/bin/zsh
-      # Session
-      export XDG_SESSION_TYPE=wayland
-      export XDG_SESSION_DESKTOP=sway
-      export XDG_CURRENT_DESKTOP=sway
+      # # Session
+      # export XDG_SESSION_TYPE=wayland
+      # export XDG_SESSION_DESKTOP=sway
+      # export XDG_CURRENT_DESKTOP=sway
       # Wayland specific
-      export MOZ_ENABLE_WAYLAND=1
-      export QT_QPA_PLATFORM=wayland
-      export SDL_VIDEODRIVER=wayland
-      export _JAVA_AWT_WM_NONREPARENTING=1
-      export GTK_USE_PORTAL=0
+      # export MOZ_ENABLE_WAYLAND=1
+      # export QT_QPA_PLATFORM=wayland
+      # export SDL_VIDEODRIVER=wayland
+      # export _JAVA_AWT_WM_NONREPARENTING=1
+      # export GTK_USE_PORTAL=0
 
       # NVIDIA specific optimizations
-      export WLR_NO_HARDWARE_CURSORS=1
-      export NIXOS_OZONE_WL=1
-      export WLR_RENDERER=vulkan
-      export __GLX_VENDOR_LIBRARY_NAME=nvidia
-      export GBM_BACKEND=nvidia-drm
+      # export WLR_NO_HARDWARE_CURSORS=1
+      # export NIXOS_OZONE_WL=1
+      # export WLR_RENDERER=vulkan
+      # export __GLX_VENDOR_LIBRARY_NAME=nvidia
+      # export GBM_BACKEND=nvidia-drm
 
       # Source zsh specific files
       [ -f "$HOME/.zshenv" ] && . "$HOME/.zshenv"
