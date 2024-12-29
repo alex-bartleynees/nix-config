@@ -1,3 +1,1 @@
-{ inputs, ... }: {
-  wallpaper = "${inputs.dotfiles}/backgrounds/catppuccintotoro.png";
-}
+{ inputs, ... }: { wallpaper = "${inputs.dotfiles}/backgrounds/flowers.png"; }
