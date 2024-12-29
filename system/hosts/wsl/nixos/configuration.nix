@@ -1,4 +1,4 @@
-{ config, lib, pkgs, username, ... }: {
+{ config, lib, pkgs, ... }: {
   networking.hostName = "nixos";
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
