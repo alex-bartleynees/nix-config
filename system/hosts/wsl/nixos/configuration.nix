@@ -4,7 +4,7 @@
   nixpkgs.config.allowUnfree = true;
   services.openssh.enable = true;
 
-  services.dbud = {
+  services.dbus = {
     enable = true;
     implementation = "broker";
   };
