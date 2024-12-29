@@ -31,9 +31,10 @@
           ./system/hosts/desktop/modules
 
           home-manager.nixosModules.home-manager
-          {
+          ({ config, ... }: {
             home-manager.extraSpecialArgs = {
               inherit inputs;
+              inherit (config.networking) hostName;
               background = import ./shared/background.nix { inherit inputs; };
             };
             home-manager.useGlobalPkgs = true;
@@ -42,7 +43,7 @@
               imports = [ ./home ./home/modules/desktop ];
             };
             home-manager.backupFileExtension = "backup";
-          }
+          })
         ];
       };
     };
