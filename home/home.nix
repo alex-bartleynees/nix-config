@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }: {
+{ config, pkgs, inputs, background, ... }: {
 
   imports = [ ./modules/alacritty ./modules/tmux ];
   home.username = "alexbn";
@@ -112,8 +112,7 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
-    BACKGROUND =
-      "${config.home.homeDirectory}/dotfiles/backgrounds/catppuccintotoro.png";
+    BACKGROUND = background.wallpaper;
     NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
     SHELL = "${pkgs.zsh}/bin/zsh";
   };
