@@ -96,8 +96,11 @@
     lazygit
     lazydocker
     alacritty
-    jetbrains.rider
     inputs.ghostty.packages."${pkgs.system}".default
+    (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider [
+      "github-copilot"
+      "ideavim"
+    ])
     font-awesome
     icomoon-feather
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })

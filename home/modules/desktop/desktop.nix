@@ -24,7 +24,8 @@
       recursive = true;
     };
 
-    ".config/sway/colorscheme".source = "${inputs.dotfiles}/configs/sway/colorscheme";
+    ".config/sway/colorscheme".source =
+      "${inputs.dotfiles}/configs/sway/colorscheme";
     ".config/sway/config".source = "${inputs.dotfiles}/configs/sway/config";
     ".config/sway/lock.sh".source = "${inputs.dotfiles}/configs/sway/lock.sh";
 
