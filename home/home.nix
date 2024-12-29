@@ -1,6 +1,11 @@
 { config, pkgs, inputs, ... }: {
 
-  imports = [ ./modules/alacritty ./modules/tmux ./modules/vscode ];
+  imports = [
+    ./modules/alacritty
+    ./modules/tmux
+    ./modules/vscode
+    ./modules/sway/sway.nix
+  ];
   home.username = "alexbn";
   home.homeDirectory = "/home/alexbn";
   home.stateVersion = "24.11";
@@ -95,17 +100,8 @@
     lazygit
     lazydocker
     alacritty
-    waybar
-    swaybg
-    rofi-wayland
-    dunst
-    swayidle
-    swaylock
-    sway-audio-idle-inhibit
     jetbrains.rider
     inputs.ghostty.packages."${pkgs.system}".default
-    qbittorrent-enhanced
-
     font-awesome
     icomoon-feather
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
@@ -113,20 +109,8 @@
 
   home.file = {
     ".config/ghostty/config".source = ./modules/ghostty/ghostty.linux;
-    ".config/dunst/dunstrc".source = "${inputs.dotfiles}/configs/dunst/dunstrc";
-
-    ".config/rofi" = {
-      source = "${inputs.dotfiles}/configs/rofi";
-      recursive = true;
-    };
-
     ".config/nvim" = {
       source = "${inputs.dotfiles}/configs/nvim";
-      recursive = true;
-    };
-
-    ".config/waybar" = {
-      source = "${inputs.dotfiles}/configs/waybar";
       recursive = true;
     };
   };
@@ -138,8 +122,6 @@
     NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
     SHELL = "${pkgs.zsh}/bin/zsh";
   };
-
-  home.sessionPath = [ "$HOME/.config/rofi/scripts" ];
 
   fonts.fontconfig.enable = true;
 }

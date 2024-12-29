@@ -38,7 +38,9 @@
             };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.alexbn = import ./home;
+            home-manager.users.alexbn = { config, pkgs, ... }: {
+              imports = [ ./home ];
+            };
             home-manager.backupFileExtension = "backup";
           }
         ];
