@@ -28,7 +28,6 @@ in {
       github.github-vscode-theme
       golang.go
       hashicorp.terraform
-      lucperkins.vrl-vscode
       matthewpi.caddyfile-support
       prisma.prisma
       phoenixframework.phoenix
@@ -36,6 +35,27 @@ in {
       tamasfe.even-better-toml
       thenuprojectcontributors.vscode-nushell-lang
       unifiedjs.vscode-mdx
+      formulahendry.auto-rename-tag
+      catppuccin.catppuccin-vsc
+      zhuangtongfa.material-theme
+      ms-vscode-remote.remote-ssh
+      ms-vscode-remote.remote-ssh-edit
+      ms-vscode-remote.vscode-remote-extensionpack
+      ms-vscode-remote.remote-wsl
+      ms-dotnettools.vscode-dotnet-runtime
+      ms-dotnettools.csharp
+      ms-dotnettools.csdevkit
+      ms-azuretools.vscode-docker
+      dbaeumer.vscode-eslint
+      eamodio.gitlens
+      ms-vsliveshare.vsliveshare
+      angular.ng-template
+      csharpier.csharpier-vscode
+      github.copilot
+      github.copilot-chat
+      ms-dotnettools.vscodeintellicode-csharp
+      christian-kohler.npm-intellisense
+      ms-kubernetes-tools.vscode-kubernetes-tools
     ]) ++ [
       # Extensions not in Nixpkgs
       (ext "andrejunges" "Handlebars" "0.4.1"
@@ -68,21 +88,36 @@ in {
         "sha256-UVuYggzeWyQTmQxXdM4sT78FUOtYGKD4SzREntotU5g=")
       (ext "nefrob" "vscode-just-syntax" "0.3.0"
         "sha256-WBoqH9TNco9lyjOJfP54DynjmYZmPUY+YrZ1rQlC518=")
-      (ext "Ph0enixKM" "amber-language" "1.2.6"
-        "sha256-Uxw6v8tc12haqgBFaTogEHEkzCYg+mzoIhCCZ6cyeX0=")
       (ext "PKief" "material-icon-theme" "4.32.0"
         "sha256-6I9/nWv449PgO1tHJbLy/wxzG6BQF6X550l3Qx0IWpw=")
-      (ext "teabyii" "ayu" "1.0.5"
-        "sha256-+IFqgWliKr+qjBLmQlzF44XNbN7Br5a119v9WAnZOu4=")
-      (ext "vue" "volar" "2.0.11"
-        "sha256-EyULg2yS/aqf0ipUQKFjW1WJIHECr26/JIQ+UuTPSLk=")
-      (ext "whizkydee" "material-palenight-theme" "2.0.3"
-        "sha256-qz2pz9JlnO2OV3eJnRqzbcic1lzpl0ViygwhNjZOWpI=")
+      (ext "adrianwilczynski" "user-secrets" "2.0.1"
+        "sha256-wMdQCmoMbh0K2S46A8ZFFqYVsWxnTg+UPZLjneZFWHc=")
+      (ext "formulahendry" "dotnet" "0.0.4"
+        "sha256-RSkhCfpl81BtGnrSZ0luHFYvoNH4qGg7pd4xU53sXLA=")
+      (ext "ms-vscode" "vscode-node-azure-pack" "1.2.0"
+        "sha256-FC4DuteWflPwlYFxgDHubNC3zPsA2X2zus6PMGmyOQs=")
+      (ext "kreativ-software" "csharpextensions" "1.7.3"
+        "sha256-qv2BbcT07cogjlLVFOKj0masRRU28krbQ5LWcFrcgQw=")
+      (ext "wallabyjs" "console-ninja" "1.0.376"
+        "sha256-Gg7PHaP1smey6KyQu7rAzFa+rW6LBSqdqnqYVDsUE/c=")
+      (ext "ms-playwright" "playwright" "1.1.12"
+        "sha256-B6RYsDp1UKZmBRT/GdTPqxGOyCz2wJYKAqYqSLsez+w=")
+      (ext "monokai" "theme-monokai-pro-vscode" "2.0.5"
+          "sha256-H79KlUwhgAHBnGucKq8TJ1olDl0dRrq+ullGgRV27pc=")
     ];
 
     globalSnippets = { };
 
-    keybindings = [ ];
+    keybindings = [
+      {
+        "key" = "ctrl+e";
+        "command" = "workbench.action.toggleSidebarVisibility";
+      }
+      {
+        "key" = "ctrl+shift+f";
+        "command" = "workbench.action.quickTextSearch";
+      }
+    ];
 
     mutableExtensionsDir = false;
 
@@ -112,9 +147,18 @@ in {
       "rust-analyzer.server.path" = "rust-analyzer";
       "editor.defaultFormatter" = "esbenp.prettier-vscode";
       "terminal.integrated.fontFamily" = terminalFont;
-      "window.autoDetectColorScheme" = true;
-      "workbench.preferredLightColorTheme" = "GitHub Dark Mode";
-      "workbench.preferredDarkColorTheme" = "GitHub Dark Mode";
+      "window.autoDetectColorScheme" = false;
+      "workbench.colorTheme" = "Monokai Pro (Filter Spectrum)";
+      "workbench.iconTheme" = iconTheme;
+      "files.autoSave" = "onFocusChange";
+      "editor.formatOnPaste" = true;
+      "editor.formatOnSave" = true;
+      "files.associations" = { "*.cs" = "csharp"; };
+      "dotnet.enableTelemetry" = false;
+      "workbench.editor.showTabs" = "single";
+      "csharpextensions.useFileScopedNamespace" = true;
+      "terminal.integrated.env.linux" = {};
+      "editor.linkedEditing" = true;
     };
   };
 }
