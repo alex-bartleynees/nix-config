@@ -25,58 +25,67 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, ghostty, nixos-wsl, ... }: {
-    nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {
-          background = import ./shared/background.nix { inherit inputs; };
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, ghostty, nixos-wsl
+    , ... }: {
+      nixosConfigurations = {
+        nixos = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            background = import ./shared/background.nix { inherit inputs; };
+          };
+          modules = [
+            ./system/hosts/desktop/nixos/configuration.nix
+            ./system/hosts/desktop/modules
+
+            home-manager.nixosModules.home-manager
+            ({ config, ... }: {
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                inherit (config.networking) hostName;
+                background = import ./shared/background.nix { inherit inputs; };
+              };
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.alexbn = { config, pkgs, ... }: {
+                imports = [ ./home ./home/modules/desktop ];
+              };
+              home-manager.backupFileExtension = "backup";
+            })
+          ];
         };
-        modules = [
-          ./system/hosts/desktop/nixos/configuration.nix
-          ./system/hosts/desktop/modules
 
-          home-manager.nixosModules.home-manager
-          ({ config, ... }: {
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit (config.networking) hostName;
-              background = import ./shared/background.nix { inherit inputs; };
-            };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.alexbn = { config, pkgs, ... }: {
-              imports = [ ./home ./home/modules/desktop ];
-            };
-            home-manager.backupFileExtension = "backup";
-          })
-        ];
-      };
+        wsl = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nixos-wsl.nixosModules.wsl
+            ./system/hosts/wsl/nixos/configuration.nix
+            ./system/hosts/desktop/modules/locale.nix
+            ./system/hosts/desktop/modules/users.nix
 
-      wsl = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          nixos-wsl.nixosModules.wsl
-          ./system/hosts/wsl/nixos/configuration.nix
-          ./system/hosts/desktop/modules/locale.nix
-          ./system/hosts/desktop/modules/users.nix
-
-          home-manager.nixosModules.home-manager
-          ({ config, ... }: {
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              inherit (config.networking) hostName;
-              background = import ./shared/background.nix { inherit inputs; };
-            };
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.alexbn = { config, pkgs, ... }: {
-              imports = [ ./home ];
-            };
-            home-manager.backupFileExtension = "backup";
-          })
-        ];
+            home-manager.nixosModules.home-manager
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  unstable =
+                    inputs.nixpkgs-unstable.legacyPackages.${prev.system};
+                })
+              ];
+            })
+            ({ config, ... }: {
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                inherit (config.networking) hostName;
+                background = import ./shared/background.nix { inherit inputs; };
+              };
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.alexbn = { config, pkgs, ... }: {
+                imports = [ ./home ];
+              };
+              home-manager.backupFileExtension = "backup";
+            })
+          ];
+        };
       };
     };
-  };
 }
