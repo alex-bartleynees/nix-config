@@ -107,11 +107,18 @@
     qbittorrent-enhanced
 
     font-awesome
+    icomoon-feather
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
   ];
 
   home.file = {
     ".config/ghostty/config".source = ./modules/ghostty/ghostty.linux;
+    ".config/dunst/dunstrc".source = "${inputs.dotfiles}/configs/dunst/dunstrc";
+
+    ".config/rofi" = {
+      source = "${inputs.dotfiles}/configs/rofi";
+      recursive = true;
+    };
   };
 
   home.sessionVariables = {
