@@ -1,4 +1,5 @@
 { pkgs, inputs, ... }: {
+  imports = [ ../vscode ];
   home.packages = with pkgs; [
     waybar
     swaybg

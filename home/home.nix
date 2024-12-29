@@ -1,11 +1,6 @@
 { config, pkgs, inputs, ... }: {
 
-  imports = [
-    ./modules/alacritty
-    ./modules/tmux
-    ./modules/vscode
-    ./modules/sway/sway.nix
-  ];
+  imports = [ ./modules/alacritty ./modules/tmux ];
   home.username = "alexbn";
   home.homeDirectory = "/home/alexbn";
   home.stateVersion = "24.11";

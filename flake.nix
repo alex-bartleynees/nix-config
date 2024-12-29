@@ -39,7 +39,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.alexbn = { config, pkgs, ... }: {
-              imports = [ ./home ];
+              imports = [ ./home ./home/modules/desktop ];
             };
             home-manager.backupFileExtension = "backup";
           }
