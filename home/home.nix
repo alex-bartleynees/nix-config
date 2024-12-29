@@ -91,6 +91,7 @@
     fzf
     btop
     bat
+    feh
     bottom
     lazygit
     lazydocker
