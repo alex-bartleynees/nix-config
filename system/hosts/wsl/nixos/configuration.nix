@@ -9,8 +9,6 @@
     implementation = "broker";
   };
 
-  security.pam.services.login.enableWsl = true;
-
   environment.systemPackages = with pkgs; [
     (vim_configurable.customize {
       name = "vim";
