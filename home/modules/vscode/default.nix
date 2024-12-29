@@ -103,7 +103,7 @@ in {
       (ext "ms-playwright" "playwright" "1.1.12"
         "sha256-B6RYsDp1UKZmBRT/GdTPqxGOyCz2wJYKAqYqSLsez+w=")
       (ext "monokai" "theme-monokai-pro-vscode" "2.0.5"
-          "sha256-H79KlUwhgAHBnGucKq8TJ1olDl0dRrq+ullGgRV27pc=")
+        "sha256-H79KlUwhgAHBnGucKq8TJ1olDl0dRrq+ullGgRV27pc=")
     ];
 
     globalSnippets = { };
@@ -157,7 +157,7 @@ in {
       "dotnet.enableTelemetry" = false;
       "workbench.editor.showTabs" = "single";
       "csharpextensions.useFileScopedNamespace" = true;
-      "terminal.integrated.env.linux" = {};
+      "terminal.integrated.env.linux" = { };
       "editor.linkedEditing" = true;
     };
   };
