@@ -103,6 +103,7 @@
     ])
     font-awesome
     icomoon-feather
+    iosevka
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
   ];
 
