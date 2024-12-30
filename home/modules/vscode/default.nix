@@ -56,6 +56,9 @@ in {
       ms-dotnettools.vscodeintellicode-csharp
       christian-kohler.npm-intellisense
       ms-kubernetes-tools.vscode-kubernetes-tools
+      ms-python.python
+      ms-python.pylint
+      ms-python.debugpy
     ]) ++ [
       # Extensions not in Nixpkgs
       (ext "andrejunges" "Handlebars" "0.4.1"
@@ -104,6 +107,8 @@ in {
         "sha256-B6RYsDp1UKZmBRT/GdTPqxGOyCz2wJYKAqYqSLsez+w=")
       (ext "monokai" "theme-monokai-pro-vscode" "2.0.5"
         "sha256-H79KlUwhgAHBnGucKq8TJ1olDl0dRrq+ullGgRV27pc=")
+      (ext "donjayamanne" "python-extension-pack" "1.7.0"
+        "sha256-ewOw6nMVzNSYddLcCBGKVNvllztFwhEtncE2RFeFcOc=")
     ];
 
     globalSnippets = { };
