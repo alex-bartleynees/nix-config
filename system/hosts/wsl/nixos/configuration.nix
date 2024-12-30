@@ -29,7 +29,15 @@
     gtk_engines
     gsettings-desktop-schemas
     adwaita-icon-theme
+    openssl
+    zlib
+    stdenv.cc.cc.lib
   ];
+
+  programs.nix-ld = {
+    enable = true;
+    package = pkgs.nix-ld-rs; # only for NixOS 24.05
+};
 
   qt = {
     enable = true;
