@@ -35,7 +35,9 @@
           };
           modules = [
             ./system/hosts/desktop/nixos/configuration.nix
-            ./system/hosts/desktop/modules
+            ./system/hosts/desktop/modules            
+            ./shared/locale.nix
+            ./users/alexbn.nix
 
             home-manager.nixosModules.home-manager
             ({ config, ... }: {
@@ -59,8 +61,8 @@
           modules = [
             nixos-wsl.nixosModules.wsl
             ./system/hosts/wsl/nixos/configuration.nix
-            ./system/hosts/desktop/modules/locale.nix
-            ./system/hosts/desktop/modules/users.nix
+            ./shared/locale.nix
+            ./users/alexbn.nix
 
             home-manager.nixosModules.home-manager
             ({ config, pkgs, ... }: {
