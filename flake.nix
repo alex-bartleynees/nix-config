@@ -21,9 +21,7 @@
 
     # this is a quick util a good GitHub samaritan wrote to solve for
     # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1791545015
-    mac-app-util = {
-      url = "github:hraban/mac-app-util";
-    };
+    mac-app-util = { url = "github:hraban/mac-app-util"; };
 
     ghostty = {
       url =
@@ -36,8 +34,8 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ghostty, nixos-wsl
-    , nix-darwin, mac-app-util, ... }: {
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ghostty
+    , nixos-wsl, nix-darwin, mac-app-util, ... }: {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -46,7 +44,7 @@
           };
           modules = [
             ./system/hosts/desktop/nixos/configuration.nix
-            ./system/hosts/desktop/modules            
+            ./system/hosts/desktop/modules
             ./shared/locale.nix
             ./users/alexbn.nix
 
@@ -102,27 +100,27 @@
       };
 
       darwinConfigurations = {
-       macbook = nix-darwin.lib.darwinSystem {
+        macbook = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
-            mac-app-util.darwinModules.default 
-            ./system/hosts/macbook/configuration.nix
-            ./users/alexbn.nix
+            mac-app-util.darwinModules.default
+            {
+              imports =
+                [ ./system/hosts/macbook/configuration.nix ./users/alexbn.nix ];
+              _module.args.self = self;
+            }
           ];
-          _module.args.self = self;
-        }
-        home-manager.darwinModules.home-manager
-        {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              users.users.alexbn = {
-                ignoreShellProgramCheck = true;
-                home = "/Users/alexbn";
-            };
-              home-manager.users.alexbn = { config, pkgs, ... }: {
-              imports = [ ./home ];
-              };
+        } home-manager.darwinModules.home-manager {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          users.users.alexbn = {
+            ignoreShellProgramCheck = true;
+            home = "/Users/alexbn";
           };
+          home-manager.users.alexbn = { config, pkgs, ... }: {
+            imports = [ ./home ];
+          };
+        };
       };
 
     };
