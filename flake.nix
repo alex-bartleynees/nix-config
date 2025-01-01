@@ -111,6 +111,11 @@
             }
             home-manager.darwinModules.home-manager
             {
+              home-manager.extraSpecialArgs = {
+                inherit inputs;
+                inherit (config.networking) hostName;
+                background = import ./shared/background.nix { inherit inputs; };
+              };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               users.users.alexbn = {

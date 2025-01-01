@@ -1,4 +1,4 @@
-{ self, nix-darwin, nixpkgs, ... }: {
+{ self, config, lib, nix-darwin, pkgs, ... }: {
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
   services.openssh.enable = true;
