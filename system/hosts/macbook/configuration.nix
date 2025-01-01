@@ -7,7 +7,7 @@
 
   system.configurationRevision = self.rev or self.dirtyRev or null;
 
-  system.stateVersion = "5";
+  system.stateVersion = 5;
 
   users.users.alexbartleynees = {
     # workaround for https://github.com/nix-community/home-manager/issues/4026
