@@ -3,7 +3,8 @@
   nixpkgs.config.allowUnfree = true;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  environment.systemPackages = with pkgs; [ vim wget git openssl ];
+  environment.systemPackages = with pkgs; [ vim git ];
+  environment.shells = [pkgs.zsh];
 
   system.configurationRevision = self.rev or self.dirtyRev or null;
 

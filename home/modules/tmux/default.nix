@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 
 let customPlugins = import ./plugins.nix { inherit pkgs; };
 in {
@@ -19,6 +19,10 @@ in {
       }
     ];
     extraConfig = ''
+      # Set shell
+      set -g default-command "/etc/profiles/per-user/${username}/bin/zsh -l"
+      set -g default-shell "/etc/profiles/per-user/${username}/bin/zsh"
+
       # Terminal overrides for 256 colors
       set -ga terminal-overrides ",xterm-256color:Tc"
 

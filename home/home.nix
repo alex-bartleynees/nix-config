@@ -1,14 +1,9 @@
-{ config, pkgs, inputs, background, ... }: {
+{ config, pkgs, inputs, background, username, homeDirectory, ... }: {
 
   imports = [ ./modules/alacritty ./modules/tmux ];
-  home.username = "alexbn";
-  home.homeDirectory = "/home/alexbn";
+  home.username = username;
+  home.homeDirectory = homeDirectory;
   home.stateVersion = "24.11";
-  home.pointerCursor = {
-    name = "Adwaita";
-    package = pkgs.adwaita-icon-theme;
-    size = 24;
-  };
 
   programs.home-manager.enable = true;
 
@@ -75,32 +70,22 @@
     defaultEditor = true;
   };
 
-  programs.brave = {
+ programs.brave = {
     enable = true;
-    package = (pkgs.brave.override { commandLineArgs = [ "--disable-gpu" ]; });
   };
 
   home.packages = with pkgs; [
-    firefox
     ripgrep
     fd
-    grim
-    slurp
     fastfetch
     tmux
     fzf
     btop
     bat
-    feh
     bottom
     lazygit
     lazydocker
     alacritty
-    inputs.ghostty.packages."${pkgs.system}".default
-    (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider [
-      "github-copilot"
-      "ideavim"
-    ])
     font-awesome
     icomoon-feather
     iosevka
@@ -122,6 +107,5 @@
     SHELL = "${pkgs.zsh}/bin/zsh";
   };
 
-  fonts.fontconfig.enable = true;
 }
 

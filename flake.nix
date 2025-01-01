@@ -16,7 +16,7 @@
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # this is a quick util a good GitHub samaritan wrote to solve for
@@ -54,11 +54,14 @@
                 inherit inputs;
                 inherit (config.networking) hostName;
                 background = import ./shared/background.nix { inherit inputs; };
+                username = "alexbn";
+                homeDirectory = "/home/alexbn";
               };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.alexbn = { config, pkgs, ... }: {
-                imports = [ ./home ./home/modules/desktop ];
+                imports =
+                  [ ./home ./home/modules/desktop ./home/modules/linux ];
               };
               home-manager.backupFileExtension = "backup";
             })
@@ -87,11 +90,13 @@
                 inherit inputs;
                 inherit (config.networking) hostName;
                 background = import ./shared/background.nix { inherit inputs; };
+                username = "alexbn";
+                homeDirectory = "/home/alexbn";
               };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.alexbn = { config, pkgs, ... }: {
-                imports = [ ./home ];
+                imports = [ ./home ./home/modules/linux ];
               };
               home-manager.backupFileExtension = "backup";
             })
@@ -105,24 +110,34 @@
           modules = [
             mac-app-util.darwinModules.default
             {
-              imports =
-                [ ./system/hosts/macbook/configuration.nix ];
+              imports = [ ./system/hosts/macbook/configuration.nix ];
               _module.args.self = self;
             }
             home-manager.darwinModules.home-manager
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  unstable =
+                    inputs.nixpkgs-unstable.legacyPackages.${prev.system};
+                })
+              ];
+            })
             ({ config, pkgs, ... }: {
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 inherit (config.networking) hostName;
                 background = import ./shared/background.nix { inherit inputs; };
+                username = "alexbartleynees";
+                homeDirectory = "/Users/alexbartleynees";
               };
+              home-manager.sharedModules =
+                [ mac-app-util.homeManagerModules.default ];
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              users.users.alexbn = {
-                ignoreShellProgramCheck = true;
+              users.users.alexbartleynees = {
                 home = "/Users/alexbartleynees";
               };
-              home-manager.users.alexbn = { config, pkgs, ... }: {
+              home-manager.users.alexbartleynees = { config, pkgs, ... }: {
                 imports = [ ./home ];
               };
             })
