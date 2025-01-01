@@ -14,6 +14,17 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    # this is a quick util a good GitHub samaritan wrote to solve for
+    # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1791545015
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
+    };
+
     ghostty = {
       url =
         "github:ghostty-org/ghostty/4b4d4062dfed7b37424c7210d1230242c709e990";
@@ -25,8 +36,8 @@
     };
   };
 
-  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, ghostty, nixos-wsl
-    , ... }: {
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ghostty, nixos-wsl
+    , nix-darwin, mac-app-util, ... }: {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -89,5 +100,30 @@
           ];
         };
       };
+
+      darwinConfigurations = {
+       macbook = nix-darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            mac-app-util.darwinModules.default 
+            ./system/hosts/macbook/configuration.nix
+            ./users/alexbn.nix
+          ];
+          _module.args.self = self;
+        }
+        home-manager.darwinModules.home-manager
+        {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              users.users.alexbn = {
+                ignoreShellProgramCheck = true;
+                home = "/Users/alexbn";
+            };
+              home-manager.users.alexbn = { config, pkgs, ... }: {
+              imports = [ ./home ];
+              };
+          };
+      };
+
     };
 }
