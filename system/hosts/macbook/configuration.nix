@@ -9,5 +9,11 @@
 
   system.stateVersion = "5";
 
+  users.users.alexbartleynees = {
+    # workaround for https://github.com/nix-community/home-manager/issues/4026
+    home = "/Users/alexbartleynees";
+    shell = pkgs.zsh;
+  };
+
   nixpkgs.hostPlatform = "aarch64-darwin";
 }
