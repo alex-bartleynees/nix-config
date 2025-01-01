@@ -138,7 +138,7 @@
                 home = "/Users/alexbartleynees";
               };
               home-manager.users.alexbartleynees = { config, pkgs, ... }: {
-                imports = [ ./home ];
+                imports = [ ./home ./home/modules/vscode ];
               };
             })
           ];

@@ -23,5 +23,9 @@
     size = 24;
   };
 
+  home.file = {
+    ".config/ghostty/config".source = ./modules/ghostty/ghostty.linux;
+  };
+
   fonts.fontconfig.enable = true;
 }

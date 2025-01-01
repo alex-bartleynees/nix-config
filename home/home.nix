@@ -93,7 +93,6 @@
   ];
 
   home.file = {
-    ".config/ghostty/config".source = ./modules/ghostty/ghostty.linux;
     ".config/nvim" = {
       source = "${inputs.dotfiles}/configs/nvim";
       recursive = true;
