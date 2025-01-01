@@ -110,7 +110,7 @@
               _module.args.self = self;
             }
             home-manager.darwinModules.home-manager
-            {
+            ({ config, pkgs, ... }: {
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 inherit (config.networking) hostName;
@@ -125,7 +125,7 @@
               home-manager.users.alexbn = { config, pkgs, ... }: {
                 imports = [ ./home ];
               };
-            }
+            })
           ];
         };
       };
