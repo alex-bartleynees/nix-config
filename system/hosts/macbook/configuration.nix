@@ -5,12 +5,6 @@
 
   environment.systemPackages = with pkgs; [ vim wget git openssl ];
 
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;
-    autoPrune.enable = true;
-  };
-
   system.configurationRevision = self.rev or self.dirtyRev or null;
 
   system.stateVersion = "5";
