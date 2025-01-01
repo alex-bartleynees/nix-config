@@ -109,19 +109,20 @@
                 [ ./system/hosts/macbook/configuration.nix ./users/alexbn.nix ];
               _module.args.self = self;
             }
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              users.users.alexbn = {
+                ignoreShellProgramCheck = true;
+                home = "/Users/alexbn";
+              };
+              home-manager.users.alexbn = { config, pkgs, ... }: {
+                imports = [ ./home ];
+              };
+            }
           ];
-        } home-manager.darwinModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          users.users.alexbn = {
-            ignoreShellProgramCheck = true;
-            home = "/Users/alexbn";
-          };
-          home-manager.users.alexbn = { config, pkgs, ... }: {
-            imports = [ ./home ];
-          };
         };
       };
-
     };
 }
