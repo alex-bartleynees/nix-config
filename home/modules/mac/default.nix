@@ -3,6 +3,7 @@
 
   home.packages = with pkgs; [
     unstable.aerospace
+    unstable.tailscale
   ]; 
 
   home.file = {

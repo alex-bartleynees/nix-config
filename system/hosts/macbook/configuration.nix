@@ -16,5 +16,7 @@
     shell = pkgs.zsh;
   };
 
+  services.tailscale.enable = true;
+
   nixpkgs.hostPlatform = "aarch64-darwin";
 }
