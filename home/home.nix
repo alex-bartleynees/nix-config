@@ -89,7 +89,7 @@
     font-awesome
     icomoon-feather
     iosevka
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
+    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
   ];
 
   home.file = {
