@@ -23,19 +23,14 @@
     # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1791545015
     mac-app-util = { url = "github:hraban/mac-app-util"; };
 
-    ghostty = {
-      url =
-        "github:ghostty-org/ghostty/4b4d4062dfed7b37424c7210d1230242c709e990";
-    };
-
     dotfiles = {
       url = "github:alex-bartleynees/dotfiles";
       flake = false;
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ghostty
-    , nixos-wsl, nix-darwin, mac-app-util, ... }: {
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nixos-wsl
+    , nix-darwin, mac-app-util, ... }: {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -49,6 +44,14 @@
             ./users/alexbn.nix
 
             home-manager.nixosModules.home-manager
+            ({ config, pkgs, ... }: {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  unstable =
+                    inputs.nixpkgs-unstable.legacyPackages.${prev.system};
+                })
+              ];
+            })
             ({ config, ... }: {
               home-manager.extraSpecialArgs = {
                 inherit inputs;

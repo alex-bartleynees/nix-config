@@ -10,7 +10,7 @@
     grim
     slurp
     feh    
-    inputs.ghostty.packages."${pkgs.system}".default
+    unstable.ghostty 
     (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider [
       "github-copilot"
       "ideavim"
