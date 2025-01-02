@@ -24,7 +24,7 @@
   };
 
   home.file = {
-    ".config/ghostty/config".source = ./modules/ghostty/ghostty.linux;
+    ".config/ghostty/config".source = ../ghostty/ghostty.linux;
   };
 
   fonts.fontconfig.enable = true;
