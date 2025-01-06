@@ -1,10 +1,6 @@
-
 { pkgs, inputs, ... }: {
 
-  home.packages = with pkgs; [
-    unstable.aerospace
-    unstable.tailscale
-  ]; 
+  home.packages = with pkgs; [ unstable.aerospace unstable.tailscale ];
 
   home.file = {
     ".config/ghostty/config".source = ../ghostty/ghostty-mac.linux;

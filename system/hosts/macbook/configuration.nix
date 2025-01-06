@@ -4,7 +4,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   environment.systemPackages = with pkgs; [ vim git ];
-  environment.shells = [pkgs.zsh];
+  environment.shells = [ pkgs.zsh ];
 
   system.configurationRevision = self.rev or self.dirtyRev or null;
 

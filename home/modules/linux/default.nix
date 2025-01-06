@@ -1,6 +1,5 @@
-
 { pkgs, inputs, ... }: {
- programs.brave = {
+  programs.brave = {
     enable = true;
     package = (pkgs.brave.override { commandLineArgs = [ "--disable-gpu" ]; });
   };
@@ -9,8 +8,8 @@
     firefox
     grim
     slurp
-    feh    
-    unstable.ghostty 
+    feh
+    unstable.ghostty
     (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider [
       "github-copilot"
       "ideavim"
@@ -23,9 +22,7 @@
     size = 24;
   };
 
-  home.file = {
-    ".config/ghostty/config".source = ../ghostty/ghostty.linux;
-  };
+  home.file = { ".config/ghostty/config".source = ../ghostty/ghostty.linux; };
 
   fonts.fontconfig.enable = true;
 }

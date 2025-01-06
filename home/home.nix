@@ -36,6 +36,7 @@
 
   programs.zsh = {
     enable = true;
+    shellAliases = { lv = "lazyvim"; };
     initExtra = "source ~/.p10k.zsh";
     oh-my-zsh = {
       enable = true;
@@ -70,9 +71,7 @@
     defaultEditor = true;
   };
 
- programs.brave = {
-    enable = true;
-  };
+  programs.brave = { enable = true; };
 
   home.packages = with pkgs; [
     ripgrep
@@ -90,11 +89,17 @@
     icomoon-feather
     iosevka
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
+    inputs.lazyvim.packages.${system}.default
   ];
 
   home.file = {
     ".config/nvim" = {
       source = "${inputs.dotfiles}/configs/nvim";
+      recursive = true;
+    };
+
+    ".config/lazyvim" = {
+      source = "${inputs.dotfiles}/configs/lazyvim";
       recursive = true;
     };
   };

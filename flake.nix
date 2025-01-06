@@ -27,10 +27,12 @@
       url = "github:alex-bartleynees/dotfiles";
       flake = false;
     };
+
+    lazyvim = { url = "github:alex-bartleynees/nix-devenv?dir=lazyvim"; };
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nixos-wsl
-    , nix-darwin, mac-app-util, ... }: {
+    , nix-darwin, mac-app-util, lazyvim, ... }: {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";

@@ -17,4 +17,5 @@
   };
 
   hardware.xpadneo.enable = true;
+  services.hardware.openrgb.enable = true;
 }

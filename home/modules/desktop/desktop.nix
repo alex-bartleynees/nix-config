@@ -9,6 +9,7 @@
     swaylock
     sway-audio-idle-inhibit
     qbittorrent-enhanced
+    unstable.gamescope
   ];
 
   home.file = {
@@ -46,6 +47,16 @@
       workspace 2 output $secondaryMonitor
 
       exec sway-audio-idle-inhibit
+
+      # Prevent idle during Steam Remote Play
+      for_window [class="steam_app_streaming_client"] inhibit_idle focus
+      for_window [class="steamwebhelper"] inhibit_idle focus
+      for_window [class="steam"] inhibit_idle focus
+      for_window [title="^Steam Big Picture Mode$"] inhibit_idle focus
+      for_window [class="^steam$"] inhibit_idle focus
+      for_window [class="^steam_app.*"] inhibit_idle focus
+      for_window [class="^Steam$"] inhibit_idle focus
+
 
       # Idle configuration
       exec swayidle \
