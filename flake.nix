@@ -61,6 +61,7 @@
                 background = import ./shared/background.nix { inherit inputs; };
                 username = "alexbn";
                 homeDirectory = "/home/alexbn";
+                theme = "catppuccin-mocha";
               };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
