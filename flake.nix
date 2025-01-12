@@ -40,8 +40,8 @@
             background = import ./shared/background.nix { inherit inputs; };
           };
           modules = [
-            ./system/hosts/desktop/nixos/configuration.nix
-            ./system/hosts/desktop/modules
+            ./hosts/desktop/nixos/configuration.nix
+            ./hosts/desktop/modules
             ./shared/locale.nix
             ./users/alexbn.nix
 
@@ -78,7 +78,7 @@
           system = "x86_64-linux";
           modules = [
             nixos-wsl.nixosModules.wsl
-            ./system/hosts/wsl/nixos/configuration.nix
+            ./hosts/wsl/nixos/configuration.nix
             ./shared/locale.nix
             ./users/alexbn.nix
 
@@ -116,7 +116,7 @@
           modules = [
             mac-app-util.darwinModules.default
             {
-              imports = [ ./system/hosts/macbook/configuration.nix ];
+              imports = [ ./hosts/macbook/configuration.nix ];
               _module.args.self = self;
             }
             home-manager.darwinModules.home-manager
