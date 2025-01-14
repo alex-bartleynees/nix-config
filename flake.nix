@@ -29,10 +29,12 @@
     };
 
     lazyvim = { url = "github:alex-bartleynees/nix-devenv?dir=lazyvim"; };
+
+    neovim = { url = "github:alex-bartleynees/nix-devenv?dir=neovim"; };
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nixos-wsl
-    , nix-darwin, mac-app-util, lazyvim, ... }: {
+    , nix-darwin, mac-app-util, lazyvim, neovim, ... }: {
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";

@@ -90,6 +90,7 @@
     iosevka
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
     inputs.lazyvim.packages.${system}.default
+    inputs.neovim.packages.${system}.default
   ];
 
   home.file = {
