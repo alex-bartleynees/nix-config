@@ -8,7 +8,7 @@
 
   home.file = {
     ".config/sway/colorscheme".source =
-      "${inputs.dotfiles}/configs/themes/${theme}/sway/colorscheme";
+      "${inputs.dotfiles}/themes/${theme}/sway/colorscheme";
     ".config/sway/config".source = "${inputs.dotfiles}/configs/sway/config";
     ".config/sway/lock.sh".source = "${inputs.dotfiles}/configs/sway/lock.sh";
 
