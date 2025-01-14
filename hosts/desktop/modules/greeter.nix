@@ -16,8 +16,8 @@ let
 
   swayConfig = pkgs.writeText "greetd-sway-config" ''
     xwayland disable
-    output DP-4 enable
-    output DP-6 disable
+    output DP-6 enable
+    output DP-4 disable
 
     # Disable unnecessary IPC features
     exec_always "systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP"
