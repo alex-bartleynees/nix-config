@@ -87,4 +87,6 @@
     capSysNice = true; # Fixes the CAP_SYS_NICE warning
   };
 
+  programs.xwayland.enable = true;
+
 }

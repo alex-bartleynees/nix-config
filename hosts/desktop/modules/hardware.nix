@@ -7,6 +7,10 @@
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
+  hardware.opengl = {
+    enable = true;
+  };
+
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
