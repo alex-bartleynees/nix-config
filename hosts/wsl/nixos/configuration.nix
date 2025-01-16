@@ -64,6 +64,7 @@
     enable = true;
     wslConf.automount.root = "/mnt";
     wslConf.interop.appendWindowsPath = true;
+    wslConf.interop.enabled = true;
     wslConf.network.generateHosts = false;
     defaultUser = "alexbn";
     startMenuLaunchers = true;
