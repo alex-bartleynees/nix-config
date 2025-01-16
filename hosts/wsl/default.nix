@@ -1,5 +1,5 @@
 { inputs, ... }:
-let inherit (inputs) nixpkgs;
+let inherit (inputs) nixpkgs nixos-wsl;
 in nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
   modules = [
@@ -11,6 +11,6 @@ in nixpkgs.lib.nixosSystem {
     inherit inputs;
     username = "alexbn";
     homeDirectory = "/home/alexbn";
-    extraModules = [ ./home ./home/modules/linux ];
+    extraModules = [ ../../home ../../home/modules/linux ];
   });
 }
