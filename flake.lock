@@ -148,11 +148,11 @@
       },
       "locked": {
         "dir": "lazyvim",
-        "lastModified": 1737049578,
-        "narHash": "sha256-YyF5REVkybfpBw6bey9YDyW/1jp/TLZqzDsv9FwNcbw=",
+        "lastModified": 1737068132,
+        "narHash": "sha256-6zG9O+EybkePwaw/WJAJUJJYANapoWRyRvcjdLcnzpY=",
         "owner": "alex-bartleynees",
         "repo": "nix-devenv",
-        "rev": "b758cd7ac4e502f4f7f70d50c2e251156847b2e7",
+        "rev": "8706c79fa376cb7d1471e8833c7325bfa31aa924",
         "type": "github"
       },
       "original": {
@@ -191,11 +191,11 @@
       },
       "locked": {
         "dir": "neovim",
-        "lastModified": 1737049578,
-        "narHash": "sha256-YyF5REVkybfpBw6bey9YDyW/1jp/TLZqzDsv9FwNcbw=",
+        "lastModified": 1737068132,
+        "narHash": "sha256-6zG9O+EybkePwaw/WJAJUJJYANapoWRyRvcjdLcnzpY=",
         "owner": "alex-bartleynees",
         "repo": "nix-devenv",
-        "rev": "b758cd7ac4e502f4f7f70d50c2e251156847b2e7",
+        "rev": "8706c79fa376cb7d1471e8833c7325bfa31aa924",
         "type": "github"
       },
       "original": {
@@ -212,15 +212,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1736819234,
-        "narHash": "sha256-deQVtIH4UJueELJqluAICUtX7OosD9paTP+5FgbiSwI=",
+        "lastModified": 1736820923,
+        "narHash": "sha256-SDuKLOWAh8VJRXlNWQn9QE99bjeEUAAbYXqrKGbsiyk=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "bd921223ba7cdac346477d7ea5204d6f4736fcc6",
+        "rev": "944c2b181792ae7ae6b20c0df3f44879c11706c9",
         "type": "github"
       },
       "original": {
         "owner": "LnL7",
+        "ref": "nix-darwin-24.11",
         "repo": "nix-darwin",
         "type": "github"
       }
