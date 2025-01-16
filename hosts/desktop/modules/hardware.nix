@@ -7,10 +7,6 @@
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
-  hardware.opengl = {
-    enable = true;
-  };
-
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
@@ -22,4 +18,5 @@
 
   hardware.xpadneo.enable = true;
   services.hardware.openrgb.enable = true;
+  services.hardware.openrgb.motherboard = "amd";
 }
