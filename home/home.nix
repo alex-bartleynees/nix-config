@@ -91,7 +91,12 @@
     (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
     inputs.lazyvim.packages.${system}.default
     inputs.neovim.packages.${system}.default
+    zoxide
   ];
+
+  programs.zoxide.options = [ "--cmd cd" ];
+  programs.zoxide.enable = true;
+  programs.zoxide.enableZshIntegration = true;
 
   home.file = {
     ".config/nvim" = {
