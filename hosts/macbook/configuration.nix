@@ -19,4 +19,6 @@
   services.tailscale.enable = true;
 
   nixpkgs.hostPlatform = "aarch64-darwin";
+
+  networking.hostName = "macbook";
 }

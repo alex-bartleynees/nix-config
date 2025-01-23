@@ -1,6 +1,11 @@
-{ config, pkgs, inputs, background, username, homeDirectory, ... }: {
+{ config, pkgs, inputs, background, username, homeDirectory, hostName, ... }: {
 
-  imports = [ ./modules/alacritty ./modules/tmux ];
+  imports = [ ./modules/alacritty ./modules/tmux ]
+    ++ (if builtins.pathExists ./modules/${hostName} then
+      [ ./modules/${hostName} ]
+    else
+      [ ]);
+
   home.username = username;
   home.homeDirectory = homeDirectory;
   home.stateVersion = "24.11";

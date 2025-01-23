@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }: {
-  networking.hostName = "nixos";
+  networking.hostName = "nixos-wsl";
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
   services.openssh.enable = true;
