@@ -1,5 +1,5 @@
 { pkgs, inputs, ... }: {
-  imports = [ ../vscode ];
+  imports = [ ../vscode ../brave ];
 
   home.packages = with pkgs; [ unstable.aerospace unstable.tailscale ];
 

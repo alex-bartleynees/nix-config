@@ -76,7 +76,6 @@
     defaultEditor = true;
   };
 
-  programs.brave = { enable = true; };
 
   home.packages = with pkgs; [
     ripgrep
