@@ -38,6 +38,15 @@
   programs.sway = {
     enable = true;
     wrapperFeatures.gtk = true;
+    extraSessionCommands = ''
+      export ZDOTDIR=''${HOME}
+      export SHELL=${pkgs.zsh}/bin/zsh
+      source "''${HOME}/.zshenv"
+      ZSH_DISABLE_COMPFIX=true
+      DISABLE_AUTO_UPDATE=true
+    '';
+
+    extraOptions = [ "--unsupported-gpu" ];
   };
 
   programs.nm-applet = { enable = true; };

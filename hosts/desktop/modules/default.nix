@@ -8,7 +8,7 @@
     ./services.nix
     ./wayland.nix
     ./virtualisation.nix
-    ./greeter.nix
+    ./regreet.nix
     ./stylix.nix
   ];
 }
