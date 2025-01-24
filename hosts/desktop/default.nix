@@ -1,7 +1,6 @@
 { inputs, ... }:
 let inherit (inputs) nixpkgs;
 in nixpkgs.lib.nixosSystem {
-  system = "x86_64-linux";
   specialArgs = {
     background = import ../../shared/background.nix { inherit inputs; };
   };

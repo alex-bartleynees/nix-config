@@ -1,3 +1,1 @@
-{ pkgs, inputs, ... }: {
-  programs.brave = { enable = true; };
-}
+{ pkgs, inputs, ... }: { programs.brave = { enable = true; }; }

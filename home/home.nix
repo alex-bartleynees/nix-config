@@ -76,7 +76,6 @@
     defaultEditor = true;
   };
 
-
   home.packages = with pkgs; [
     ripgrep
     fd
