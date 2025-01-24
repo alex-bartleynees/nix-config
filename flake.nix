@@ -21,6 +21,12 @@
 
     mac-app-util = { url = "github:hraban/mac-app-util"; };
 
+    stylix = {
+      url = "github:danth/stylix/release-24.11";
+      inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     dotfiles = {
       url = "github:alex-bartleynees/dotfiles";
       flake = false;
@@ -32,7 +38,7 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nixos-wsl
-    , nix-darwin, mac-app-util, lazyvim, neovim, ... }: {
+    , nix-darwin, mac-app-util, stylix, lazyvim, neovim, ... }: {
       nixosConfigurations = {
         nixos = import ./hosts/desktop { inherit inputs; };
         wsl = import ./hosts/wsl { inherit inputs; };

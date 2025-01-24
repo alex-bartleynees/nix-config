@@ -18,7 +18,7 @@ in {
 
       font = {
         normal = {
-          family = "JetBrainsMonoNL Nerd Font Mono";
+          family = lib.mkDefault "JetBrainsMonoNL Nerd Font Mono";
           style = "Regular";
         };
         bold = { style = "Bold"; };

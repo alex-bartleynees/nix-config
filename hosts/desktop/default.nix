@@ -9,6 +9,7 @@ in nixpkgs.lib.nixosSystem {
     ./modules
     ../../shared/locale.nix
     ../../users/alexbn.nix
+    inputs.stylix.nixosModules.stylix
   ] ++ (import ../../shared/home-manager.nix {
     inherit inputs;
     username = "alexbn";

@@ -9,6 +9,7 @@
     ./wayland.nix
     ./virtualisation.nix
     ./greeter.nix
+    ./stylix.nix
   ];
 }
 

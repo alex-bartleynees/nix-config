@@ -1,4 +1,4 @@
-{ pkgs, inputs, background, hostName, theme, ... }: {
+{ pkgs, inputs, background, hostName, theme, lib, ... }: {
   imports = [ ../vscode ../waybar ../sway ../rofi ../dunst ../rider ];
   home.packages = with pkgs; [
     qbittorrent-enhanced
@@ -24,9 +24,10 @@
   };
 
   home.pointerCursor = {
-    name = "Adwaita";
-    package = pkgs.adwaita-icon-theme;
-    size = 24;
+    name = lib.mkDefault "Adwaita";
+    package = lib.mkDefault pkgs.adwaita-icon-theme;
+    size = lib.mkDefault 24;
+    x11.enable = true;
   };
 
   home.file = { ".config/ghostty/config".source = ../ghostty/ghostty.linux; };
