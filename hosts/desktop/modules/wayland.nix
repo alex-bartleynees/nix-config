@@ -6,7 +6,7 @@
     WLR_RENDERER = "vulkan";
     XDG_SESSION_TYPE = "wayland";
     GBM_BACKEND = "nvidia-drm";
-    GTK_THEME = "Adwaita:dark";
+    #GTK_THEME = "Adwaita:dark";
     QT_STYLE_OVERRIDE = "adwaita-dark";
     MOZ_USE_XINPUT2 = "1";
     # Force dark mode for websites

@@ -1,1 +1,1 @@
-{ pkgs, inputs, ... }: { imports = [ ../rider ]; }
+{ pkgs, inputs, ... }: { imports = [ ../rider ../obsidian ]; }
