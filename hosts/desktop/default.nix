@@ -1,7 +1,14 @@
 { inputs, ... }:
-let inherit (inputs) nixpkgs;
+let
+  inherit (inputs) nixpkgs;
+  system = builtins.currentSystem;
+  nixpkgs-unstable = import inputs.nixpkgs-unstable {
+    system = "x86_64-linux";
+    config.allowUnfree = true;
+  };
 in nixpkgs.lib.nixosSystem {
   specialArgs = {
+    nixpkgs-unstable = nixpkgs-unstable;
     background = import ../../shared/background.nix { inherit inputs; };
   };
   modules = [

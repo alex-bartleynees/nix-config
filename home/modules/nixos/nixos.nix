@@ -1,5 +1,6 @@
 { pkgs, inputs, background, hostName, theme, lib, ... }: {
-  imports = [ ../vscode ../waybar ../sway ../rofi ../dunst ../rider ../obsidian ];
+  imports =
+    [ ../vscode ../waybar ../sway ../rofi ../dunst ../rider ../obsidian ];
   home.packages = with pkgs; [
     qbittorrent-enhanced
     firefox

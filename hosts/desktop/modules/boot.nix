@@ -8,7 +8,9 @@
     kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "nvidia_drm.fbdev=1"
     ];
+    kernelModules = [ "nvidia_uvm" ];
     blacklistedKernelModules = [ "nouveau" ];
   };
 }
