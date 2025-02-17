@@ -41,7 +41,7 @@
 
   programs.zsh = {
     enable = true;
-    shellAliases = { lv = "lazyvim"; };
+    shellAliases = { lv = "lazyvim"; tx = "tmuxinator"; };
     initExtra = "source ~/.p10k.zsh";
     oh-my-zsh = {
       enable = true;
