@@ -54,7 +54,7 @@
       for i in ~/.vscode-server/bin/*; do
         if [ -e $i/node ]; then
           echo "Fixing vscode-server in $i..."
-          ln -sf ${pkgs.nodejs_18}/bin/node $i/node
+          ln -sf ${pkgs.nodejs_22}/bin/node $i/node
         fi
       done
     '';
@@ -68,7 +68,7 @@
     wslConf.network.generateHosts = false;
     defaultUser = "alexbn";
     startMenuLaunchers = true;
-    nativeSystemd = true;
+    wslConf.boot.systemd = true;
 
     # Enable integration with Docker Desktop (needs to be installed)
     docker-desktop.enable = false;

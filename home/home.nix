@@ -95,6 +95,7 @@
     inputs.lazyvim.packages.${system}.default
     inputs.neovim.packages.${system}.default
     zoxide
+    tmuxinator
   ];
 
   programs.zoxide.options = [ "--cmd cd" ];
