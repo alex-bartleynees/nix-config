@@ -24,6 +24,7 @@
       exec swaymsg output $mainMonitor pos 0 0 res 2560x1440
       exec swaymsg output $secondaryMonitor pos 2560 0 res 2560x1440 transform 90
       exec swaymsg focus output $mainMonitor
+      exec swaymsg output $mainMonitor adaptive_sync on
 
       workspace 1 output $mainMonitor
       workspace 2 output $secondaryMonitor
