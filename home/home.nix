@@ -112,6 +112,8 @@
       source = "${inputs.dotfiles}/configs/lazyvim";
       recursive = true;
     };
+
+    ".ssh/id_ed25519.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFKxSGAbg6Dw8DqxiPGikz9ZoXDBI6YvV80L5B1NsQ72 alexbartleynees@gmail.com";
   };
 
   home.sessionVariables = {
