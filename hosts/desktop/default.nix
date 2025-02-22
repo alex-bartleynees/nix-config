@@ -17,6 +17,13 @@ in nixpkgs.lib.nixosSystem {
     ../../shared/locale.nix
     ../../users/alexbn.nix
     inputs.stylix.nixosModules.stylix
+    {
+      specialisation.gnome = {
+        inheritParentConfig = false;
+        configuration = { config, pkgs, ... }@args:
+          import ./specialisations/gnome.nix (args // { inherit inputs; });
+      };
+    }
   ] ++ (import ../../shared/home-manager.nix {
     inherit inputs;
     username = "alexbn";
