@@ -41,7 +41,10 @@
 
   programs.zsh = {
     enable = true;
-    shellAliases = { lv = "lazyvim"; tx = "tmuxinator"; };
+    shellAliases = {
+      lv = "lazyvim";
+      tx = "tmuxinator";
+    };
     initExtra = "source ~/.p10k.zsh";
     oh-my-zsh = {
       enable = true;
@@ -113,7 +116,8 @@
       recursive = true;
     };
 
-    ".ssh/id_ed25519.pub".text = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFKxSGAbg6Dw8DqxiPGikz9ZoXDBI6YvV80L5B1NsQ72 alexbartleynees@gmail.com";
+    ".ssh/id_ed25519.pub".text =
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFKxSGAbg6Dw8DqxiPGikz9ZoXDBI6YvV80L5B1NsQ72 alexbartleynees@gmail.com";
   };
 
   home.sessionVariables = {

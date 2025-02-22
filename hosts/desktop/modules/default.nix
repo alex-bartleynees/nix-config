@@ -10,6 +10,7 @@
     ./virtualisation.nix
     ./regreet.nix
     ./stylix.nix
+    ./sway.nix
   ];
 }
 
