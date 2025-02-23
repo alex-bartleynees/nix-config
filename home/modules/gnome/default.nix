@@ -16,10 +16,7 @@
     })
   ];
 
-  programs.brave = {
-    enable = true;
-    package = (pkgs.brave.override { commandLineArgs = [ "--disable-gpu" ]; });
-  };
+  programs.brave = { enable = true; };
 
   home.file = {
     ".config/ghostty/config".source = ../ghostty/ghostty-mac.linux;

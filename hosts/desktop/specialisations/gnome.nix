@@ -1,23 +1,7 @@
-{ config, pkgs, inputs, ... }: {
-  imports = [
-    ../../../shared/locale.nix
-    ../../../users/alexbn.nix
-    ../modules/boot.nix
-    ../modules/hardware.nix
-    ../modules/packages.nix
-    ../modules/services.nix
-    ../modules/virtualisation.nix
-    ../modules/wayland.nix
-    ../nixos/configuration.nix
-    inputs.stylix.nixosModules.stylix
-    ../modules/stylix.nix
-  ] ++ (import ../../../shared/home-manager.nix {
-    inherit inputs;
-    username = "alexbn";
-    homeDirectory = "/home/alexbn";
-    extraModules = [ ../../../home ];
-    theme = "catppuccin-mocha";
-  });
+{ config, pkgs, inputs, ... }:
+let shared = import ../../../shared/nixos-default.nix { inherit inputs; };
+in {
+  imports = shared.getImports { additionalImports = [ ]; };
 
   networking.hostName = "gnome";
 
@@ -44,7 +28,12 @@
   services.upower.enable = true;
   services.accounts-daemon.enable = true;
 
-  environment.sessionVariables = { NIXOS_OZONE_WL = "1"; };
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
 
   system.nixos.tags = [ "gnome" ];
 

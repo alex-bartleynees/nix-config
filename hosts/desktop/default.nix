@@ -6,29 +6,15 @@ let
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
+  shared = import ../../shared/nixos-default.nix { inherit inputs; };
 in nixpkgs.lib.nixosSystem {
   specialArgs = {
+    inherit inputs;
     nixpkgs-unstable = nixpkgs-unstable;
     background = import ../../shared/background.nix { inherit inputs; };
   };
-  modules = [
-    ./nixos/configuration.nix
-    ./modules
-    ../../shared/locale.nix
-    ../../users/alexbn.nix
-    inputs.stylix.nixosModules.stylix
-    {
-      specialisation.gnome = {
-        inheritParentConfig = false;
-        configuration = { config, pkgs, ... }@args:
-          import ./specialisations/gnome.nix (args // { inherit inputs; });
-      };
-    }
-  ] ++ (import ../../shared/home-manager.nix {
-    inherit inputs;
-    username = "alexbn";
-    homeDirectory = "/home/alexbn";
-    extraModules = [ ../../home ];
-    theme = "catppuccin-mocha";
-  });
+  modules = shared.getImports {
+    additionalImports =
+      [ ./modules/regreet.nix ./modules/sway.nix ./specialisations ];
+  };
 }
