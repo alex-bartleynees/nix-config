@@ -2,8 +2,7 @@
   stylix.enable = true;
   stylix.image = background.wallpaper;
   stylix.polarity = "dark";
-  stylix.base16Scheme =
-    "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/everforest.yaml";
   stylix.opacity.terminal = 0.95;
   stylix.cursor = {
     package = pkgs.adwaita-icon-theme;

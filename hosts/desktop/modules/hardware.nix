@@ -10,9 +10,15 @@
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
-    powerManagement.finegrained = false;
+    powerManagement.finegrained = true;
     open = true;
     nvidiaSettings = true;
+    prime = {
+      offload.enable = true;
+      amdgpuBusId = "PCI:17:0:0";
+      nvidiaBusId = "PCI:1:0:0";
+    };
+    #package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.mkDriver {

@@ -19,6 +19,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
+    cosmic-nixpkgs.follows = "nixos-cosmic/nixpkgs";
+
     mac-app-util = { url = "github:hraban/mac-app-util"; };
 
     stylix = {
@@ -38,7 +41,8 @@
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nixos-wsl
-    , nix-darwin, mac-app-util, stylix, lazyvim, neovim, ... }: {
+    , nix-darwin, mac-app-util, stylix, lazyvim, neovim, nixos-cosmic
+    , cosmic-nixpkgs, ... }: {
       nixosConfigurations = {
         nixos = import ./hosts/desktop { inherit inputs; };
         wsl = import ./hosts/wsl { inherit inputs; };

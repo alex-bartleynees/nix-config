@@ -10,4 +10,10 @@
     configuration = { config, pkgs, ... }@args:
       import ./kde.nix (args // { inherit inputs; });
   };
+
+  specialisation.cosmic = {
+    inheritParentConfig = false;
+    configuration = { config, pkgs, ... }@args:
+      import ./cosmic.nix (args // { inherit inputs; });
+  };
 }
