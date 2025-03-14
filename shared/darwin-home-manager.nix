@@ -23,5 +23,6 @@ in [
     home-manager.useUserPackages = true;
     users.users.${username} = { home = homeDirectory; };
     home-manager.users.${username} = { imports = extraModules; };
+    home-manager.backupFileExtension = "backup";  
   })
 ]
