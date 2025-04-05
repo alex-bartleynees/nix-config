@@ -59,6 +59,8 @@ in {
       ms-python.python
       ms-python.pylint
       ms-python.debugpy
+      svelte.svelte-vscode	
+      vscodevim.vim
     ]) ++ [
       # Extensions not in Nixpkgs
       (ext "andrejunges" "Handlebars" "0.4.1"
@@ -139,6 +141,12 @@ in {
         "editor.defaultFormatter" = "tamasfe.even-better-toml";
         "editor.formatOnSave" = true;
       };
+      "[svelte]" = {
+        "editor.defaultFormatter" = "svelte.svelte-vscode";
+      };  
+      "[astro]" = {
+        "editor.defaultFormatter" = "astro-build.astro-vscode";
+      };
       "editor.wordWrap" = "wordWrapColumn";
       "editor.wordWrapColumn" = 120;
       "search.exclude" = {
@@ -166,6 +174,7 @@ in {
       "editor.linkedEditing" = true;
       "nixpkgs-fmt.path" =
         "/nix/store/gad8bd4kdl5ib13091yfjyb8s9nbpxzf-nixfmt-0.6.0-bin/bin/nixfmt";
+      "svelte.enable-ts-plugin" = true;
     };
   };
 }

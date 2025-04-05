@@ -4,7 +4,7 @@ let customPlugins = import ./plugins.nix { inherit pkgs; };
 in {
   programs.tmux = {
     enable = true;
-    prefix = "C-a";
+    prefix = "C-b";
     baseIndex = 1;
     escapeTime = 1;
     keyMode = "vi";
