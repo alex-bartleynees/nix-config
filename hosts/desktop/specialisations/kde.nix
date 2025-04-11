@@ -2,7 +2,6 @@
 let shared = import ../../../shared/nixos-default.nix { inherit inputs; };
 in {
   imports = shared.getImports { additionalImports = [ ]; };
-  networking.hostName = "kde";
 
   services.xserver = {
     enable = true;

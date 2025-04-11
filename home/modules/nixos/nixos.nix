@@ -8,6 +8,7 @@
     slurp
     feh
     unstable.ghostty
+    zed-editor
     (symlinkJoin {
       name = "code-cursor";
       paths = [ code-cursor ];

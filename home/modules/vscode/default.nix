@@ -59,7 +59,7 @@ in {
       ms-python.python
       ms-python.pylint
       ms-python.debugpy
-      svelte.svelte-vscode	
+      svelte.svelte-vscode
       vscodevim.vim
     ]) ++ [
       # Extensions not in Nixpkgs
@@ -111,6 +111,8 @@ in {
         "sha256-H79KlUwhgAHBnGucKq8TJ1olDl0dRrq+ullGgRV27pc=")
       (ext "donjayamanne" "python-extension-pack" "1.7.0"
         "sha256-ewOw6nMVzNSYddLcCBGKVNvllztFwhEtncE2RFeFcOc=")
+      (ext "saoudrizwan" "claude-dev" "3.11.1"
+        "sha256-W9XuAp2l+PQG3URQTMoqwBMIGKwI6VumppjuTrPSmuk=")
     ];
 
     globalSnippets = { };
@@ -141,12 +143,8 @@ in {
         "editor.defaultFormatter" = "tamasfe.even-better-toml";
         "editor.formatOnSave" = true;
       };
-      "[svelte]" = {
-        "editor.defaultFormatter" = "svelte.svelte-vscode";
-      };  
-      "[astro]" = {
-        "editor.defaultFormatter" = "astro-build.astro-vscode";
-      };
+      "[svelte]" = { "editor.defaultFormatter" = "svelte.svelte-vscode"; };
+      "[astro]" = { "editor.defaultFormatter" = "astro-build.astro-vscode"; };
       "editor.wordWrap" = "wordWrapColumn";
       "editor.wordWrapColumn" = 120;
       "search.exclude" = {

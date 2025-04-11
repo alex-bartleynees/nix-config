@@ -50,6 +50,12 @@
 
       # Wake command
       bindsym $mod+Shift+w exec swaymsg "output $mainMonitor dpms on; output $secondaryMonitor dpms on"
+
+      input * {
+        xkb_layout "us,us"
+        xkb_variant ",colemak"
+        xkb_options "grp:win_space_toggle"
+      }
     '';
   };
 }

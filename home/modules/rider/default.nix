@@ -1,9 +1,7 @@
 { pkgs, inputs, ... }: {
   home.packages = with pkgs;
     [
-      (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider [
-        "github-copilot"
-        "ideavim"
-      ])
+      (pkgs.unstable.jetbrains.plugins.addPlugins
+        pkgs.unstable.jetbrains.rider [ "github-copilot" "ideavim" ])
     ];
 }
