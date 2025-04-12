@@ -3,7 +3,16 @@
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
   services.openssh.enable = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    auto-optimise-store = true;
+  };
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
 
   services.dbus = {
     enable = true;

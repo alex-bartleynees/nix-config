@@ -1,7 +1,17 @@
 { self, config, lib, nix-darwin, pkgs, ... }: {
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+  };
 
   environment.systemPackages = with pkgs; [ vim git ];
   environment.shells = [ pkgs.zsh ];
