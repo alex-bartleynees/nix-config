@@ -4,11 +4,15 @@
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true;
     };
+    optimise.automatic = true;
     gc = {
       automatic = true;
-      dates = "weekly";
+      interval = {
+        Weekday = 0;
+        Hour = 3;
+        Minute = 15;
+      };
       options = "--delete-older-than 30d";
     };
   };
