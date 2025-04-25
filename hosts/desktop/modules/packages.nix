@@ -17,6 +17,7 @@
     git
     fontconfig
     openrgb-with-all-plugins
+    keymapp
   ];
 
   programs.nm-applet = { enable = true; };
