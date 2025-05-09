@@ -9,7 +9,8 @@
     feh
     unstable.ghostty
     zed-editor
-    (symlinkJoin {
+    vlc 
+  (symlinkJoin {
       name = "code-cursor";
       paths = [ code-cursor ];
       buildInputs = [ makeWrapper ];
