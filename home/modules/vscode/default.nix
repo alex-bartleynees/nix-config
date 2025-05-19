@@ -16,9 +16,9 @@ in {
     enable = true;
     package = vscodeWithArgs;
 
-    enableExtensionUpdateCheck = true;
+    profiles.default.enableExtensionUpdateCheck = true;
 
-    extensions = (with pkgs.vscode-extensions; [
+    profiles.default.extensions = (with pkgs.vscode-extensions; [
       bbenoist.nix
       bradlc.vscode-tailwindcss
       denoland.vscode-deno
@@ -115,9 +115,7 @@ in {
         "sha256-W9XuAp2l+PQG3URQTMoqwBMIGKwI6VumppjuTrPSmuk=")
     ];
 
-    globalSnippets = { };
-
-    keybindings = [
+    profiles.default.keybindings = [
       {
         "key" = "ctrl+e";
         "command" = "workbench.action.toggleSidebarVisibility";
@@ -130,7 +128,7 @@ in {
 
     mutableExtensionsDir = false;
 
-    userSettings = {
+    profiles.default.userSettings = {
       "[nix]" = {
         "editor.defaultFormatter" = "B4dM4n.nixpkgs-fmt";
         "editor.formatOnSave" = true;

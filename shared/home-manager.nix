@@ -1,16 +1,6 @@
 { inputs, username, homeDirectory, extraModules ? [ ], theme ? null }: [
   inputs.home-manager.nixosModules.home-manager
-
   ({ lib, config, pkgs, ... }: {
-    nixpkgs.overlays = [
-      (final: prev: {
-        unstable = import inputs.nixpkgs-unstable {
-          system = prev.system;
-          config = { allowUnfree = true; };
-        };
-      })
-    ];
-
     home-manager = {
       extraSpecialArgs = {
         inherit inputs username homeDirectory theme;

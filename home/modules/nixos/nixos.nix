@@ -7,10 +7,10 @@
     grim
     slurp
     feh
-    unstable.ghostty
+    ghostty
     zed-editor
-    vlc 
-  (symlinkJoin {
+    vlc
+    (symlinkJoin {
       name = "code-cursor";
       paths = [ code-cursor ];
       buildInputs = [ makeWrapper ];

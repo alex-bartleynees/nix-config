@@ -1,4 +1,4 @@
-{ config, pkgs, nixpkgs-unstable, ... }: {
+{ config, pkgs, ... }: {
   services.xserver.videoDrivers = [ "nvidia" ];
   services.dbus.enable = true;
   services.dbus.packages = with pkgs; [
@@ -54,21 +54,21 @@
   services.tailscale.enable = true;
   services.tailscale.useRoutingFeatures = "client";
 
-  # Game-streaming
-  # services.sunshine = {
-  #   enable = true;
-  #   # Enable nvenc support
-  #   package = with nixpkgs-unstable;
-  #     (sunshine.override {
-  #       cudaSupport = true;
-  #       cudaPackages = cudaPackages;
-  #     }).overrideAttrs (old: {
-  #       nativeBuildInputs = old.nativeBuildInputs
-  #         ++ [ cudaPackages.cuda_nvcc (lib.getDev cudaPackages.cuda_cudart) ];
-  #       cmakeFlags = old.cmakeFlags
-  #         ++ [ "-DCMAKE_CUDA_COMPILER=${(lib.getExe cudaPackages.cuda_nvcc)}" ];
-  #     });
-  #   openFirewall = true;
-  #   capSysAdmin = true;
-  # };
+  #Game-streaming
+  services.sunshine = {
+    enable = true;
+    # Enable nvenc support
+    package = with pkgs;
+      (sunshine.override {
+        cudaSupport = true;
+        cudaPackages = cudaPackages;
+      }).overrideAttrs (old: {
+        nativeBuildInputs = old.nativeBuildInputs
+          ++ [ cudaPackages.cuda_nvcc (lib.getDev cudaPackages.cuda_cudart) ];
+        cmakeFlags = old.cmakeFlags
+          ++ [ "-DCMAKE_CUDA_COMPILER=${(lib.getExe cudaPackages.cuda_nvcc)}" ];
+      });
+    openFirewall = true;
+    capSysAdmin = true;
+  };
 }

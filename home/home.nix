@@ -37,7 +37,7 @@
     enable = true;
     enableZshIntegration = true; # If you're using zsh
     nix-direnv.enable = true; # Better caching
-  };
+  }; 
 
   programs.zsh = {
     enable = true;
@@ -45,7 +45,7 @@
       lv = "lazyvim";
       tx = "tmuxinator";
     };
-    initExtra = "source ~/.p10k.zsh";
+    initContent = "source ~/.p10k.zsh";
     oh-my-zsh = {
       enable = true;
       plugins = [ "git" "tmux" ];
@@ -94,7 +94,9 @@
     font-awesome
     icomoon-feather
     iosevka
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" "Hack" ]; })
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.fira-code
+    nerd-fonts.hack
     inputs.lazyvim.packages.${system}.default
     inputs.neovim.packages.${system}.default
     zoxide

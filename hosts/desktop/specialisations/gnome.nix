@@ -11,16 +11,16 @@ in {
   };
 
   services.gnome = {
-    core-utilities.enable = true;
+    core-apps.enable = true;
     gnome-keyring.enable = true;
   };
 
   programs.dconf.enable = true;
 
   environment.systemPackages = with pkgs; [
-    gnome.gnome-tweaks
-    gnome.dconf-editor
-    gnome.gnome-shell-extensions
+    gnome-tweaks
+    dconf-editor
+    gnome-shell-extensions
   ];
 
   services.upower.enable = true;

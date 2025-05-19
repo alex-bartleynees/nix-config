@@ -1,5 +1,6 @@
 { lib, config, pkgs, background, ... }: {
   stylix.enable = true;
+  stylix.enableReleaseChecks = false;
   stylix.image = background.wallpaper;
   stylix.polarity = "dark";
   stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/everforest.yaml";
@@ -19,7 +20,7 @@
 
   stylix.fonts = {
     monospace = {
-      package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
+      package = pkgs.nerd-fonts.jetbrains-mono;
       name = "JetBrainsMono Nerd Font Mono";
     };
     sansSerif = {

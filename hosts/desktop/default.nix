@@ -2,10 +2,6 @@
 let
   inherit (inputs) nixpkgs;
   system = builtins.currentSystem;
-  nixpkgs-unstable = import inputs.nixpkgs-unstable {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
-  };
   pkgs-cosmic = import inputs.cosmic-nixpkgs {
     system = "x86_64-linux";
     config.allowUnfree = true;
@@ -14,7 +10,6 @@ let
 in nixpkgs.lib.nixosSystem {
   specialArgs = {
     inherit inputs;
-    nixpkgs-unstable = nixpkgs-unstable;
     pkgs-cosmic = pkgs-cosmic;
     background = import ../../shared/background.nix { inherit inputs; };
   };
