@@ -113,6 +113,8 @@ in {
         "sha256-ewOw6nMVzNSYddLcCBGKVNvllztFwhEtncE2RFeFcOc=")
       (ext "saoudrizwan" "claude-dev" "3.11.1"
         "sha256-W9XuAp2l+PQG3URQTMoqwBMIGKwI6VumppjuTrPSmuk=")
+      (ext "Sourcegraph" "amp" "0.0.1748016644"
+         "sha256-avI4SiNHSgHZMqGrZjC7vaBhocO2kU4Dqoejpwt1cRk=")
     ];
 
     profiles.default.keybindings = [
