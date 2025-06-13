@@ -101,11 +101,22 @@
     inputs.neovim.packages.${system}.default
     zoxide
     tmuxinator
+    claude-code
   ];
 
   programs.zoxide.options = [ "--cmd cd" ];
   programs.zoxide.enable = true;
   programs.zoxide.enableZshIntegration = true;
+
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = {
+      auto_sync = true;
+      sync_frequency = "5m";
+      search_mode = "prefix";
+    };
+  };
 
   home.file = {
     ".config/nvim" = {
