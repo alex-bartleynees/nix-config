@@ -50,7 +50,7 @@
 
   qt = {
     enable = true;
-    platformTheme = "adwaita";
+    platformTheme = "gnome";
     style = "adwaita-dark";
   };
 
@@ -88,6 +88,15 @@
     enableOnBoot = true;
     autoPrune.enable = true;
   };
+
+  nixpkgs.config.allowAdhocRoot = true;
+  security.pki.certificates = [
+    (builtins.readFile "/home/alexbn/.local/share/mkcert/rootCA.pem")
+    (builtins.readFile "/mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem")
+  ];
+
+  services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
 
   system.stateVersion = "24.05";
 }
