@@ -7,6 +7,9 @@ in nixpkgs.lib.nixosSystem {
     ./nixos/configuration.nix
     ../../shared/locale.nix
     ../../users/alexbn.nix
+    {
+      nixpkgs.config.allowUnfree = true;
+    }
   ] ++ (import ../../shared/home-manager.nix {
     inherit inputs;
     username = "alexbn";

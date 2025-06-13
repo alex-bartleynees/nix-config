@@ -1,22 +1,41 @@
 { config, lib, pkgs, ... }: {
+  # System identification
   networking.hostName = "nixos-wsl";
-  programs.zsh.enable = true;
-  nixpkgs.config.allowUnfree = true;
-  services.openssh.enable = true;
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    auto-optimise-store = true;
+  system.stateVersion = "24.05";
+
+  # Nix configuration
+  nix = {
+    settings = {
+      experimental-features = [ "nix-command" "flakes" ];
+      auto-optimise-store = true;
+    };
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+  # Programs
+  programs = {
+    zsh.enable = true;
+    nix-ld = {
+      enable = true;
+      package = pkgs.nix-ld-rs;
+    };
   };
 
-  services.dbus = {
-    enable = true;
-    implementation = "broker";
+  # Services
+  services = {
+    openssh.enable = true;
+    dbus = {
+      enable = true;
+      implementation = "broker";
+    };
+    tailscale = {
+      enable = true;
+      useRoutingFeatures = "client";
+    };
   };
 
   environment.systemPackages = with pkgs; [
@@ -43,10 +62,6 @@
     stdenv.cc.cc.lib
   ];
 
-  programs.nix-ld = {
-    enable = true;
-    package = pkgs.nix-ld-rs; # only for NixOS 24.05
-  };
 
   qt = {
     enable = true;
@@ -83,20 +98,16 @@
     docker-desktop.enable = false;
   };
 
+  # Security - SSL certificates loaded at runtime
+  systemd.tmpfiles.rules = [
+    "L+ /etc/ssl/certs/mkcert-rootCA.pem - - - - /home/alexbn/.local/share/mkcert/rootCA.pem"
+    "L+ /etc/ssl/certs/aspnet-fullchain.pem - - - - /mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem"
+  ];
+
+  # Virtualisation
   virtualisation.docker = {
     enable = true;
     enableOnBoot = true;
     autoPrune.enable = true;
   };
-
-  nixpkgs.config.allowAdhocRoot = true;
-  security.pki.certificates = [
-    (builtins.readFile "/home/alexbn/.local/share/mkcert/rootCA.pem")
-    (builtins.readFile "/mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem")
-  ];
-
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "client";
-
-  system.stateVersion = "24.05";
 }

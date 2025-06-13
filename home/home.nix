@@ -15,7 +15,7 @@
   programs.git = {
     enable = true;
     userName = "Alex Bartley Nees";
-    userEmail = "alexbartleynees@gmail.com";
+    userEmail = "alexander.nees@valocityglobal.com";
     extraConfig = {
       init.defaultBranch = "main";
 
@@ -138,6 +138,8 @@
     BACKGROUND = background.wallpaper;
     NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
     SHELL = "${pkgs.zsh}/bin/zsh";
+    ASPNETCORE_Kestrel__Certificates__Default__Path = "/mnt/c/Users/AlexanderNees/.aspnet/https/gateway+6.p12";
+    ASPNETCORE_Kestrel__Certificates__Default__Password = "changeit";
   };
 
 }
