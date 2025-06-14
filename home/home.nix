@@ -102,6 +102,7 @@
     zoxide
     tmuxinator
     claude-code
+    delta
   ];
 
   programs.zoxide.options = [ "--cmd cd" ];
