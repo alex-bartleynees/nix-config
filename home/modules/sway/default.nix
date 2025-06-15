@@ -53,8 +53,6 @@
 
       input * {
         xkb_layout "us,us"
-        xkb_variant ",colemak"
-        xkb_options "grp:win_space_toggle"
       }
     '';
   };
