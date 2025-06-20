@@ -37,7 +37,7 @@
     enable = true;
     enableZshIntegration = true; # If you're using zsh
     nix-direnv.enable = true; # Better caching
-  }; 
+  };
 
   programs.zsh = {
     enable = true;
@@ -139,7 +139,8 @@
     BACKGROUND = background.wallpaper;
     NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
     SHELL = "${pkgs.zsh}/bin/zsh";
-    ASPNETCORE_Kestrel__Certificates__Default__Path = "/mnt/c/Users/AlexanderNees/.aspnet/https/gateway+6.p12";
+    ASPNETCORE_Kestrel__Certificates__Default__Path =
+      "/mnt/c/Users/AlexanderNees/.aspnet/https/gateway+6.p12";
     ASPNETCORE_Kestrel__Certificates__Default__Password = "changeit";
   };
 

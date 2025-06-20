@@ -3,9 +3,7 @@ let shared = import ../../../shared/nixos-default.nix { inherit inputs; };
 in {
   imports = shared.getImports { additionalImports = [ ]; };
 
-  services.desktopManager = {
-    gnome.enable = true;
-  };
+  services.desktopManager = { gnome.enable = true; };
 
   services.displayManager = {
     gdm.enable = true;

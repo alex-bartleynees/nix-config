@@ -62,7 +62,6 @@
     stdenv.cc.cc.lib
   ];
 
-
   qt = {
     enable = true;
     platformTheme = "gnome";

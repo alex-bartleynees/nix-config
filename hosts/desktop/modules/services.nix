@@ -1,4 +1,26 @@
 { config, pkgs, ... }: {
+  # Enable CIFS/SMB support
+  boot.supportedFilesystems = [ "cifs" ];
+
+  # Install CIFS utilities
+  environment.systemPackages = with pkgs; [ cifs-utils ];
+
+  # Reference external credentials file (not in git)
+  # Create /etc/samba-credentials manually with:
+  # username=your-actual-username
+  # password=your-actual-password  
+  # domain=WORKGROUP
+
+  # Auto-mount Samba share
+  fileSystems."/mnt/media" = {
+    device = "//100.98.211.116/jellyfin-pool";
+    fsType = "cifs";
+    options = let
+      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+
+    in ["${automount_opts},credentials=/etc/samba-credentials,uid=1000,gid=1000,file_mode=0664,dir_mode=0775,forceuid,forcegid"];
+  };
+
   services.xserver.videoDrivers = [ "nvidia" ];
   services.dbus.enable = true;
   services.dbus.packages = with pkgs; [

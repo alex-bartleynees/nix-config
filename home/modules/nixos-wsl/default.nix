@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: { 
+{ pkgs, inputs, ... }: {
   imports = [ ../rider ../obsidian ];
 
   programs.zsh.shellAliases = {
