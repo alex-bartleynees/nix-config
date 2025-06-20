@@ -8,6 +8,7 @@ let
     ../hosts/desktop/modules
     ../hosts/desktop/nixos/configuration.nix
     inputs.stylix.nixosModules.stylix
+    inputs.sops-nix.nixosModules.sops
   ];
 
   homeManagerImports = import ./home-manager.nix {

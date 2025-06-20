@@ -1,0 +1,7 @@
+keys:
+  - &alexbn age1xlf3s6yzu6a67ha3vqrcy75s89fg85rw9fcspfgh93sm8ptx294qlv722x
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *alexbn
