@@ -17,8 +17,8 @@
     '';
 
     ".config/sway/${hostName}/config".text = ''
-      set $mainMonitor DP-4
-      set $secondaryMonitor DP-2
+      set $mainMonitor DP-3
+      set $secondaryMonitor DP-1
       output * adaptive_sync on
       set $lock ~/.config/sway/lock.sh
 
