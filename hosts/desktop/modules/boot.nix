@@ -5,6 +5,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "nvidia-drm.modeset=1"
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"

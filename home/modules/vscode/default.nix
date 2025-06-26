@@ -44,7 +44,7 @@ in {
       ms-vscode-remote.remote-wsl
       ms-dotnettools.vscode-dotnet-runtime
       ms-dotnettools.csharp
-      ms-dotnettools.csdevkit
+      #ms-dotnettools.csdevkit
       ms-azuretools.vscode-docker
       dbaeumer.vscode-eslint
       eamodio.gitlens

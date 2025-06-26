@@ -71,4 +71,6 @@
     openFirewall = true;
     capSysAdmin = true;
   };
+
+  networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
 }
