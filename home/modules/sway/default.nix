@@ -17,8 +17,8 @@
     '';
 
     ".config/sway/${hostName}/config".text = ''
-      set $mainMonitor DP-3
-      set $secondaryMonitor DP-1
+      set $mainMonitor '"LG Electronics LG ULTRAGEAR 312NTRL3F958"'
+      set $secondaryMonitor '"LG Electronics 27GL850 006NTDVG0786"'
       output * adaptive_sync on
       set $lock ~/.config/sway/lock.sh
 
@@ -26,9 +26,6 @@
       exec swaymsg output $secondaryMonitor pos 2560 0 res 2560x1440 transform 90
       exec swaymsg focus output $mainMonitor
       exec swaymsg output $mainMonitor adaptive_sync on
-
-      workspace 1 output $mainMonitor
-      workspace 2 output $secondaryMonitor
 
       exec sway-audio-idle-inhibit
 
