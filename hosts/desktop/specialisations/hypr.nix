@@ -1,9 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
-let shared = import ../../../shared/nixos-default.nix { inherit inputs; };
-in {
-  imports =
-    shared.getImports { additionalImports = [ ../modules/regreet.nix ]; };
-
+{ config, lib, pkgs, inputs, ... }: {
   programs.hyprland = {
     enable = true;
     withUWSM = true;

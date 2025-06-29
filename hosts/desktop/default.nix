@@ -15,6 +15,6 @@ in nixpkgs.lib.nixosSystem {
   };
   modules = shared.getImports {
     additionalImports =
-      [ ./modules/regreet.nix ./modules/sway.nix ./specialisations ];
+      [ ./modules/regreet.nix ./specialisations ./specialisations/hypr.nix ];
   };
 }

@@ -1,4 +1,8 @@
-{ config, pkgs, ... }: {
+{ config, lib, pkgs, inputs, ... }:
+let shared = import ../../../shared/nixos-default.nix { inherit inputs; };
+in {
+  imports =
+    shared.getImports { additionalImports = [ ../modules/regreet.nix ]; };
 
   environment.systemPackages = with pkgs; [
     gnome-keyring
@@ -16,8 +20,6 @@
     blueman
     pulseaudio
   ];
-
-  programs.thunar.enable = true;
 
   programs.sway = {
     enable = true;
@@ -69,9 +71,8 @@
   security.pam.services.login.enableGnomeKeyring = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
 
-  networking.hostName = "nixos";
-
   # Enable networking
   networking.networkmanager.enable = true;
-}
 
+  system.nixos.tags = [ "sway" ];
+}

@@ -92,6 +92,7 @@
 
     style = ''
         * {
+          font-family: "JetBrainsMono Nerd Font", sans-serif;
           border: none;
           border-radius: 0;
           min-height: 0;
@@ -120,7 +121,7 @@
           padding: 6px 18px;
           margin: 6px 3px;
           border-radius: 4px;
-          background-color: #1e1e2e;
+          background-color: transparent;
           color: #cdd6f4;
         }
 
@@ -149,42 +150,39 @@
         #network,
         #clock,
         #tray {
-          font-size: 12px;
+          font-size: 13px;
           border-radius: 4px;
           margin: 6px 3px;
-          padding: 6px 12px;
-          background-color: #1e1e2e;
-          color: #181825;
+          padding: 6px 18px;
+          background-color: transparent;
         }
 
         #memory {
-          background-color: #fab387;
+          color: #fab387;
         }
 
         #cpu {
-          background-color: #f9e2af;
+          color: #f9e2af;
         }
 
         #disk {
-          background-color: #89dceb;
+          color: #89dceb;
         }
 
         #battery {
-          background-color: #f38ba8;
+          color: #f38ba8;
         }
 
         @keyframes blink {
           to {
-            background-color: #f38ba8;
-            color: #181825;
+            color: #f38ba8;
           }
         }
 
         #battery.warning,
         #battery.critical,
         #battery.urgent {
-          background-color: #ff0048;
-          color: #181825;
+          color: #ff0048;
           animation-name: blink;
           animation-duration: 0.5s;
           animation-timing-function: linear;
@@ -193,33 +191,32 @@
         }
 
         #battery.charging {
-          background-color: #a6e3a1;
+          color: #a6e3a1;
         }
 
         #backlight {
-          background-color: #fab387;
+          color: #fab387;
         }
 
         #pulseaudio {
-          background-color: #f9e2af;
+          color: #f9e2af;
         }
 
         #network {
-          background-color: #94e2d5;
+          color: #94e2d5;
           padding-right: 17px;
         }
 
         #clock {
-          font-family: JetBrainsMono Nerd Font;
-          background-color: #cba6f7;
+          color: #cba6f7;
         }
 
         #custom-power {
-          background-color: #f2cdcd;
+        color: #f2cdcd;
         }
 
         #tray {
-          background-color: #181825;
+          background-color: transparent;
         }
 
         tooltip {

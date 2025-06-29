@@ -18,7 +18,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixpkgs.follows = "nixos-cosmic/nixpkgs";
     nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
     cosmic-nixpkgs.follows = "nixos-cosmic/nixpkgs";
 

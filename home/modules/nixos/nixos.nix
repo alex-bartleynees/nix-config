@@ -18,15 +18,16 @@
     ghostty
     zed-editor
     vlc
-    (symlinkJoin {
-      name = "code-cursor";
-      paths = [ code-cursor ];
-      buildInputs = [ makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/cursor \
-          --add-flags "--disable-gpu"
-      '';
-    })
+    nautilus
+    # (symlinkJoin {
+    #   name = "code-cursor";
+    #   paths = [ code-cursor ];
+    #   buildInputs = [ makeWrapper ];
+    #   postBuild = ''
+    #     wrapProgram $out/bin/cursor \
+    #       --add-flags "--disable-gpu"
+    #   '';
+    # })
   ];
 
   programs.brave = {
