@@ -10,4 +10,10 @@
     configuration = { config, pkgs, ... }@args:
       import ./cosmic.nix (args // { inherit inputs; });
   };
+
+  specialisation.hyprland = {
+    inheritParentConfig = false;
+    configuration = { config, pkgs, ... }@args:
+      import ./hypr.nix (args // { inherit inputs; });
+  };
 }

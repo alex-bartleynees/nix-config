@@ -18,6 +18,7 @@
     fontconfig
     openrgb-with-all-plugins
     keymapp
+    killall
   ];
 
   programs.nm-applet = { enable = true; };
