@@ -3,8 +3,7 @@
   stylix.enableReleaseChecks = false;
   stylix.image = background.wallpaper;
   stylix.polarity = "dark";
-  stylix.base16Scheme =
-    "${pkgs.base16-schemes}/share/themes/gruvbox-dark-hard.yaml";
+  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
   stylix.opacity.terminal = 0.95;
   stylix.cursor = {
     package = pkgs.adwaita-icon-theme;

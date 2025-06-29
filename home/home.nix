@@ -1,4 +1,5 @@
-{ config, pkgs, inputs, background, username, homeDirectory, hostName, ... }: {
+{ config, pkgs, inputs, background, username, homeDirectory, hostName, theme
+, ... }: {
 
   imports = [ ./modules/alacritty ./modules/tmux ]
     ++ (if builtins.pathExists ./modules/${hostName} then
@@ -123,6 +124,10 @@
     ".config/nvim" = {
       source = "${inputs.dotfiles}/configs/nvim";
       recursive = true;
+    };
+
+    ".config/nvim/lua/alex/plugins/colorscheme.lua" = {
+      source = "${inputs.dotfiles}/themes/${theme}/nvim/colorscheme.lua";
     };
 
     ".config/lazyvim" = {

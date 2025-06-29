@@ -12,6 +12,7 @@ in nixpkgs.lib.nixosSystem {
     inherit inputs;
     username = "alexbn";
     homeDirectory = "/home/alexbn";
+    theme = "tokyo-night";
     extraModules = [ ../../home ];
   });
 }

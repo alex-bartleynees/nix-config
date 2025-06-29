@@ -6,7 +6,10 @@ let
     system = "x86_64-linux";
     config.allowUnfree = true;
   };
-  shared = import ../../shared/nixos-default.nix { inherit inputs; };
+  shared = import ../../shared/nixos-default.nix {
+    inherit inputs;
+    theme = "tokyo-night";
+  };
 in nixpkgs.lib.nixosSystem {
   specialArgs = {
     inherit inputs;
