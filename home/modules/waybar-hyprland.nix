@@ -7,7 +7,8 @@
       mainBar = {
         layer = "bottom";
         position = "top";
-        modules-left = [ "hyprland/workspaces" ];
+        margin-bottom = 0;
+        modules-left = [ "hyprland/workspaces" "hyprland/window" ];
         modules-right = [
           "pulseaudio"
           "memory"
@@ -18,6 +19,7 @@
           "network"
           "clock"
           "tray"
+          "custom/power"
         ];
 
         "hyprland/workspaces" = {
@@ -34,14 +36,33 @@
             "9" = "9";
             "10" = "10";
           };
+          persistent_workspaces = {
+            "1" = [];
+            "2" = [];
+            "3" = [];
+            "4" = [];
+            "5" = [];
+          };
+          on-click = "activate";
+          on-scroll-up = "hyprctl dispatch workspace e+1";
+          on-scroll-down = "hyprctl dispatch workspace e-1";
         };
 
-        "hyprland/window" = { max-length = 50; };
+        "hyprland/window" = { 
+          max-length = 50;
+          separate-outputs = true;
+          rewrite = {
+            "(.*) — Mozilla Firefox" = "🌎 $1";
+            "(.*) - Visual Studio Code" = "󰨞 $1";
+            "(.*) - vim" = " $1";
+            "(.*) - nvim" = " $1";
+          };
+        };
 
         pulseaudio = {
-          format = "{icon} {volume:2}%";
+          format = "{icon} {volume}%";
           format-bluetooth = "{icon}  {volume}%";
-          format-muted = "MUTE";
+          format-muted = "󰝟 Muted";
           format-icons = {
             headphones = "";
             default = [ "" "" ];
@@ -51,12 +72,16 @@
 
         memory = {
           interval = 5;
-          format = "Mem {}%";
+          format = "󰍛 {percentage}%";
+          tooltip-format = "Memory: {used:0.1f}G/{total:0.1f}G ({percentage}%)\nSwap: {swapUsed:0.1f}G/{swapTotal:0.1f}G";
+          on-click = "ghostty -e btop";
         };
 
         cpu = {
-          interval = 5;
-          format = "CPU {usage:2}%";
+          interval = 2;
+          format = "󰻠 {usage}%";
+          tooltip-format = "CPU Usage: {usage}%\nLoad: {load}";
+          on-click = "ghostty -e btop";
         };
 
         disk = {
@@ -68,8 +93,9 @@
           device = "intel_backlight";
           format = "{percent}% {icon}";
           format-icons = [ "" "" ];
-          on-scroll-up = "";
-          on-scroll-down = "";
+          on-scroll-up = "brightnessctl set 5%+";
+          on-scroll-down = "brightnessctl set 5%-";
+          tooltip-format = "Brightness: {percent}%";
         };
 
         network = {
@@ -84,15 +110,61 @@
           format-icons = [ "" "" "" "" "" ];
         };
 
-        clock = { format-alt = "{:%a, %d %b  %H:%M}"; };
+        clock = {
+          format = "{:%H:%M}";
+          format-alt = "{:%A, %B %d, %Y (%R)}";
+          tooltip-format = "<tt><small>{calendar}</small></tt>";
+          calendar = {
+            mode = "year";
+            mode-mon-col = 3;
+            weeks-pos = "right";
+            on-scroll = 1;
+            on-click-right = "mode";
+            format = {
+              months = "<span color='#ffead3'><b>{}</b></span>";
+              days = "<span color='#ecc6d9'><b>{}</b></span>";
+              weeks = "<span color='#99ffdd'><b>W{}</b></span>";
+              weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+              today = "<span color='#ff6699'><b><u>{}</u></b></span>";
+            };
+          };
+          actions = {
+            on-click-right = "mode";
+            on-click-forward = "tz_up";
+            on-click-backward = "tz_down";
+            on-scroll-up = "shift_up";
+            on-scroll-down = "shift_down";
+          };
+        };
 
         tray = { spacing = 10; };
+
+        "custom/weather" = {
+          format = "{} °";
+          tooltip = true;
+          interval = 300;
+          exec = "wttr.in/Cologne?0&T&Q&format=1";
+          return-type = "json";
+          on-click = "xdg-open https://wttr.in/Cologne";
+        };
+
+        "custom/separator" = {
+          format = "|";
+          interval = "once";
+          tooltip = false;
+        };
+
+        "custom/power" = {
+          format = "⏻";
+          tooltip = false;
+          on-click = "exec $HOME/.config/rofi/scripts/powermenu_t1";
+        };
       };
     };
 
     style = ''
         * {
-          font-family: "JetBrainsMono Nerd Font", sans-serif;
+          font-family: "JetBrainsMono Nerd Font", "Font Awesome 6 Free", sans-serif;
           border: none;
           border-radius: 0;
           min-height: 0;
@@ -100,7 +172,6 @@
         }
 
         window#waybar {
-          background-color: #181825;
           transition-property: background-color;
           transition-duration: 0.5s;
           opacity: 1;
@@ -118,10 +189,10 @@
           all: initial;
           min-width: 0;
           box-shadow: inset 0 -3px transparent;
-          padding: 6px 18px;
+          padding: 6px 20px;
           margin: 6px 3px;
           border-radius: 4px;
-          background-color: transparent;
+          background-color: #1e2030;
           color: #cdd6f4;
         }
 
@@ -132,11 +203,11 @@
         #workspaces button:hover {
           box-shadow: inherit;
           text-shadow: inherit;
-          color: #e1e2e7;
-          background-color: #b4befe;
+          color: #181926;
+          background-color: #b7bdf8;
         }
 
-        #workspaces button.urgent {
+      #workspaces button.urgent {
           background-color: #f38ba8;
         }
 
@@ -154,7 +225,7 @@
           border-radius: 4px;
           margin: 6px 3px;
           padding: 6px 18px;
-          background-color: transparent;
+        	background-color: #1e2030
         }
 
         #memory {
@@ -213,10 +284,6 @@
 
         #custom-power {
         color: #f2cdcd;
-        }
-
-        #tray {
-          background-color: transparent;
         }
 
         tooltip {
