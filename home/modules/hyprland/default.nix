@@ -37,7 +37,7 @@
       general = {
         gaps_in = 10;
         gaps_out = 10;
-        border_size = 1;
+        border_size = 3;
         "col.active_border" = lib.mkForce "rgb(cba6f7)"; # Catppuccin mauve
         "col.inactive_border" = lib.mkForce "rgb(6c7086)"; # Catppuccin overlay0
         resize_on_border = false;
@@ -229,15 +229,15 @@
       # Workspace rules
       workspace = [
         "1, monitor:DP-6"
-        "2, monitor:DP-4"
+        "2, monitor:DP-6"
         "3, monitor:DP-6"
         "4, monitor:DP-6"
         "5, monitor:DP-6"
-        "6, monitor:DP-6"
-        "7, monitor:DP-6"
-        "8, monitor:DP-6"
-        "9, monitor:DP-6"
-        "10, monitor:DP-6"
+        "6, monitor:DP-4"
+        "7, monitor:DP-4"
+        "8, monitor:DP-4"
+        "9, monitor:DP-4"
+        "10, monitor:DP-4"
       ];
 
       # Window rules for Steam gaming

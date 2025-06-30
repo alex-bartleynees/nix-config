@@ -7,7 +7,7 @@
       mainBar = {
         layer = "bottom";
         position = "top";
-        modules-left = [ "hyprland/workspaces" "hyprland/mode" ];
+        modules-left = [ "hyprland/workspaces" ];
         modules-right = [
           "pulseaudio"
           "memory"
