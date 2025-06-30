@@ -14,7 +14,7 @@ in {
     settings = {
       env = { TERM = "xterm-256color"; };
 
-      window = { opacity = 0.95; };
+      window = { opacity = 0.9; };
 
       font = {
         normal = {

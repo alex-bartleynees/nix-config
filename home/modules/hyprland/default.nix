@@ -1,7 +1,6 @@
 { pkgs, config, lib, inputs, background, hostName, theme, ... }: {
-  imports = [ ../waybar-hyprland.nix ];
+  imports = [ ../waybar/hypr-waybar.nix ];
 
-  # Disable the general waybar module when using Hyprland
   programs.waybar.enable = lib.mkForce true;
   home.packages = with pkgs; [
     hyprpaper
@@ -108,6 +107,7 @@
         "udiskie --tray"
         "hypridle"
         "hyprpaper"
+        "waybar -c ~/.config/waybar-hypr/config.jsonc -s ~/.config/waybar-hypr/style.css"
       ];
 
       # Key bindings

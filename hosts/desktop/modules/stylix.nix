@@ -3,8 +3,12 @@
   stylix.enableReleaseChecks = false;
   stylix.image = background.wallpaper;
   stylix.polarity = "dark";
-  stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
-  stylix.opacity.terminal = 0.95;
+  stylix.base16Scheme =
+    "${pkgs.base16-schemes}/share/themes/tokyo-night-dark.yaml";
+  stylix.opacity = {
+    desktop = 0.5;
+    terminal = 0.9;
+  };
   stylix.cursor = {
     package = pkgs.adwaita-icon-theme;
     name = "Adwaita";
