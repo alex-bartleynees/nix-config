@@ -37,18 +37,18 @@
             "10" = "10";
           };
           persistent_workspaces = {
-            "1" = [];
-            "2" = [];
-            "3" = [];
-            "4" = [];
-            "5" = [];
+            "1" = [ ];
+            "2" = [ ];
+            "3" = [ ];
+            "4" = [ ];
+            "5" = [ ];
           };
           on-click = "activate";
           on-scroll-up = "hyprctl dispatch workspace e+1";
           on-scroll-down = "hyprctl dispatch workspace e-1";
         };
 
-        "hyprland/window" = { 
+        "hyprland/window" = {
           max-length = 50;
           separate-outputs = true;
           rewrite = {
@@ -73,14 +73,18 @@
         memory = {
           interval = 5;
           format = "󰍛 {percentage}%";
-          tooltip-format = "Memory: {used:0.1f}G/{total:0.1f}G ({percentage}%)\nSwap: {swapUsed:0.1f}G/{swapTotal:0.1f}G";
+          tooltip-format = ''
+            Memory: {used:0.1f}G/{total:0.1f}G ({percentage}%)
+            Swap: {swapUsed:0.1f}G/{swapTotal:0.1f}G'';
           on-click = "ghostty -e btop";
         };
 
         cpu = {
           interval = 2;
           format = "󰻠 {usage}%";
-          tooltip-format = "CPU Usage: {usage}%\nLoad: {load}";
+          tooltip-format = ''
+            CPU Usage: {usage}%
+            Load: {load}'';
           on-click = "ghostty -e btop";
         };
 

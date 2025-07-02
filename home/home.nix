@@ -120,6 +120,24 @@
     };
   };
 
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "github.com" = {
+        hostname = "github.com";
+        user = "git";
+        identityFile = "~/.ssh/id_ed25519";
+        extraOptions = { AddKeysToAgent = "yes"; };
+      };
+      "github-work" = {
+        hostname = "github.com";
+        user = "git";
+        identityFile = "~/.ssh/id_work";
+        extraOptions = { AddKeysToAgent = "yes"; };
+      };
+    };
+  };
+
   home.file = {
     ".config/nvim" = {
       source = "${inputs.dotfiles}/configs/nvim";

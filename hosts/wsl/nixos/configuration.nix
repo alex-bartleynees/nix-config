@@ -28,13 +28,6 @@
   # Services
   services = {
     openssh.enable = true;
-    extraConfig = ''
-      Host github.com
-        HostName github.com
-        User git
-        IdentityFile ~/.ssh/id_work
-        AddKeysToAgent yes
-    '';
     dbus = {
       enable = true;
       implementation = "broker";
