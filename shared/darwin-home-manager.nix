@@ -1,4 +1,4 @@
-{ inputs, username, homeDirectory, extraModules ? [ ] }:
+{ inputs, username, homeDirectory, theme ? "catppuccin-mocha", extraModules ? [ ] }:
 let inherit (inputs) mac-app-util;
 in [
   mac-app-util.darwinModules.default
@@ -6,7 +6,7 @@ in [
 
   ({ config, pkgs, ... }: {
     home-manager.extraSpecialArgs = {
-      inherit inputs username homeDirectory;
+      inherit inputs username homeDirectory theme;
       inherit (config.networking) hostName;
       background = import ../shared/background.nix { inherit inputs; };
     };
