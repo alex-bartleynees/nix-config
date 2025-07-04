@@ -8,7 +8,7 @@ let
   };
   shared = import ../../shared/nixos-default.nix {
     inherit inputs;
-    theme = "tokyo-night";
+    theme = "catppuccin-mocha";
   };
 in nixpkgs.lib.nixosSystem {
   specialArgs = {

@@ -1,7 +1,4 @@
 { pkgs, config, lib, inputs, background, hostName, theme, ... }: {
-  imports = [ ../waybar/hypr-waybar.nix ];
-
-  programs.waybar.enable = lib.mkForce true;
   home.packages = with pkgs; [
     hyprpaper
     hypridle
@@ -28,7 +25,7 @@
 
       # Variables
       "$mod" = "ALT";
-      "$terminal" = "ghostty";
+      "$terminal" = "alacritty";
       "$browser" = "brave";
       "$lock" = "hyprlock";
 
@@ -107,7 +104,7 @@
         "udiskie --tray"
         "hypridle"
         "hyprpaper"
-        "waybar -c ~/.config/waybar-hypr/config.jsonc -s ~/.config/waybar-hypr/style.css"
+        "waybar -c ~/.config/waybar/config-hyprland.jsonc -s ~/.config/waybar/style.css"
       ];
 
       # Key bindings

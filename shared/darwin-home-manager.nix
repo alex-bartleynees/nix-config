@@ -1,4 +1,5 @@
-{ inputs, username, homeDirectory, theme ? "catppuccin-mocha", extraModules ? [ ] }:
+{ inputs, username, homeDirectory, theme ? "catppuccin-mocha"
+, extraModules ? [ ] }:
 let inherit (inputs) mac-app-util;
 in [
   mac-app-util.darwinModules.default

@@ -30,7 +30,7 @@
       exec sway-audio-idle-inhibit
 
       # Start waybar with Sway-specific config
-      exec waybar -c ~/.config/waybar-sway/config.jsonc -s ~/.config/waybar-sway/style.css
+      exec waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css
 
       # Prevent idle during Steam Remote Play
       for_window [class="steam_app_streaming_client"] inhibit_idle focus

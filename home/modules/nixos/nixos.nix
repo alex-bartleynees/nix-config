@@ -15,7 +15,6 @@
     grim
     slurp
     feh
-    ghostty
     zed-editor
     vlc
     nautilus
