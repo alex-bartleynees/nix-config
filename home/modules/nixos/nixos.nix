@@ -18,6 +18,7 @@
     zed-editor
     vlc
     nautilus
+    ghostty
     # (symlinkJoin {
     #   name = "code-cursor";
     #   paths = [ code-cursor ];

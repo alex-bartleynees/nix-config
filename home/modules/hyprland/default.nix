@@ -25,7 +25,7 @@
 
       # Variables
       "$mod" = "ALT";
-      "$terminal" = "alacritty";
+      "$terminal" = "ghostty";
       "$browser" = "brave";
       "$lock" = "hyprlock";
 
