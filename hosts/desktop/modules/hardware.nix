@@ -1,6 +1,6 @@
 # Hardware
 
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
 
   hardware.graphics = { enable = true; };
 
@@ -32,4 +32,9 @@
   hardware.xpadneo.enable = true;
   services.hardware.openrgb.enable = true;
   services.hardware.openrgb.motherboard = "amd";
+
+  systemd.services.openrgb = {
+    serviceConfig.ExecStart = lib.mkForce
+      "${pkgs.openrgb}/bin/openrgb --server --server-port 6742 --profile blue";
+  };
 }
