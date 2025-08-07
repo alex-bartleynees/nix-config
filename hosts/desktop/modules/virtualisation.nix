@@ -1,10 +1,11 @@
-# /etc/nixos/virtualisation.nix
-{ config, pkgs, ... }:
-
-{
+{ config, pkgs, ... }: {
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.enableExtensionPack = true;
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = true;
+    autoPrune.enable = true;
+  };
 
   # Enable kernel modules and VirtualBox service
   boot.kernelModules = [ "vboxdrv" "vboxnetadp" "vboxnetflt" ];

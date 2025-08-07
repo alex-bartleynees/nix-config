@@ -7,6 +7,7 @@
     ./virtualisation.nix
     ./stylix.nix
     ./samba.nix
+    ./game-streaming.nix
   ];
 }
 
