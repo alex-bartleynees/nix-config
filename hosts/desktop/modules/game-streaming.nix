@@ -9,6 +9,7 @@
       encoder = "nvenc";
       adapter_name = "/dev/dri/card2";
       capture = "kms";
+      output_name = 1;
     };
     applications = {
       env = {
@@ -36,9 +37,8 @@
           auto-detach = "true";
         }
         {
-          name = "Steam Big Picture 4K";
+          name = "Steam Big Picture";
           prep-cmd = [{
-            # Switch your real monitor to 4K
             do =
               "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-6,2560x1440@164.96,0x0,1";
             undo =
@@ -98,9 +98,7 @@
       text = ''
         echo "$1" > "/run/user/$(id --user)/steam-run-url.fifo"
       '';
-      runtimeInputs = [
-        pkgs.coreutils 
-      ];
+      runtimeInputs = [ pkgs.coreutils ];
     })
   ];
 }

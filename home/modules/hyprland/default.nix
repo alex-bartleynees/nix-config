@@ -244,6 +244,14 @@
         "idleinhibit focus, class:^(steam_app_.*)$"
         "idleinhibit focus, title:^(Steam Big Picture Mode)$"
         "idleinhibit focus, class:^(gamescope)$"
+
+        # Steam main window
+        "float, class:^(steam)$"
+        "monitor DP-6, class:^(steam)$"
+
+        # Steam Big Picture Mode
+        "float, class:^(steam)$, title:^(Steam Big Picture Mode)$"
+        "monitor DP-6, class:^(steam)$, title:^(Steam Big Picture Mode)$"
       ];
 
       # Misc settings
