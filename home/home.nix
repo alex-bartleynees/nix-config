@@ -1,5 +1,5 @@
 { config, pkgs, inputs, background, username, homeDirectory, hostName, theme
-, ... }: {
+, myUsers, ... }: {
 
   imports = [ ./modules/alacritty ./modules/tmux ]
     ++ (if builtins.pathExists ./modules/${hostName} then
@@ -15,8 +15,8 @@
 
   programs.git = {
     enable = true;
-    userName = "Alex Bartley Nees";
-    userEmail = "alexbartleynees@gmail.com";
+    userName = myUsers.${username}.git.userName;
+    userEmail = myUsers.${username}.git.userEmail;
     extraConfig = {
       init.defaultBranch = "main";
 
@@ -45,12 +45,16 @@
     shellAliases = {
       lv = "lazyvim";
       tx = "tmuxinator";
+      git-work = "git config user.email '${myUsers.${username}.git.workEmail}'";
+      git-personal =
+        "git config user.email '${myUsers.${username}.git.userEmail}'";
+      git-whoami = "git config user.email";
     };
     initContent = "source ~/.p10k.zsh";
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" "tmux" ];
-    };
+    # oh-my-zsh = {
+    #   enable = true;
+    #   plugins = [ "git" "tmux" ];
+    # };
     plugins = [
       {
         name = "powerlevel10k";
@@ -135,11 +139,6 @@
       recursive = true;
     };
 
-    ".ssh/id_ed25519.pub".text =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFKxSGAbg6Dw8DqxiPGikz9ZoXDBI6YvV80L5B1NsQ72 alexbartleynees@gmail.com";
-
-    ".ssh/id_work.pub".text =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICiiLMs/3ZZ8CDseUprOV5OzFJovG9GcP96GBg3HlQj+ alexander.nees@valocityglobal.com";
   };
 
   home.sessionVariables = {
@@ -147,9 +146,6 @@
     BACKGROUND = background.wallpaper;
     NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
     SHELL = "${pkgs.zsh}/bin/zsh";
-    ASPNETCORE_Kestrel__Certificates__Default__Path =
-      "/mnt/c/Users/AlexanderNees/.aspnet/https/gateway+6.p12";
-    ASPNETCORE_Kestrel__Certificates__Default__Password = "changeit";
   };
 
 }

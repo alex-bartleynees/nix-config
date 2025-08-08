@@ -5,6 +5,7 @@
       extraSpecialArgs = {
         inherit inputs username homeDirectory theme;
         inherit (config.networking) hostName;
+        inherit (config) myUsers;
         background = import ../shared/background.nix { inherit inputs; };
       };
       useGlobalPkgs = true;

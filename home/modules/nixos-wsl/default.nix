@@ -1,9 +1,9 @@
 { pkgs, inputs, ... }: {
   imports = [ ../rider ../obsidian ];
 
-  programs.zsh.shellAliases = {
-    git-work = "git config user.email 'alexander.nees@valocityglobal.com'";
-    git-personal = "git config user.email 'alexbartleynees@gmail.com'";
-    git-whoami = "git config user.email";
+  home.sessionVariables = {
+    ASPNETCORE_Kestrel__Certificates__Default__Path =
+      "/mnt/c/Users/AlexanderNees/.aspnet/https/gateway+6.p12";
+    ASPNETCORE_Kestrel__Certificates__Default__Password = "changeit";
   };
 }

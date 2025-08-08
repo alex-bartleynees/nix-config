@@ -4,6 +4,7 @@
 let
   baseImports = [
     ./locale.nix
+    ./custom-options.nix
     ../users/${username}.nix
     ../hosts/desktop/modules
     ../hosts/desktop/nixos/configuration.nix

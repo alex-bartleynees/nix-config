@@ -6,6 +6,7 @@ in nixpkgs.lib.nixosSystem {
     nixos-wsl.nixosModules.wsl
     ./nixos/configuration.nix
     ../../shared/locale.nix
+    ../../shared/custom-options.nix
     ../../users/alexbn.nix
     { nixpkgs.config.allowUnfree = true; }
   ] ++ (import ../../shared/home-manager.nix {
