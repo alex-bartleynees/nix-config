@@ -5,6 +5,7 @@ This is a Nix configuration repository for managing system configurations across
 ## Project Structure
 
 - `flake.nix` - Main Nix flake configuration
+- `core/` - Core system modules (gaming, nvidia, openrgb)
 - `home/` - Home Manager configurations
 - `hosts/` - Host-specific configurations (desktop, macbook, wsl)
 - `shared/` - Shared configurations across hosts
@@ -31,6 +32,14 @@ nix flake update
 # Check flake
 nix flake check
 ```
+
+## Recent Refactoring Changes
+
+The configuration has been refactored to improve modularity and organization:
+
+- **New `core/` directory**: Extracted common system modules (gaming, nvidia, openrgb) from host-specific configurations
+- **Simplified host configurations**: Moved shared functionality to core modules, reducing duplication
+- **Modular design**: Core modules can be imported by different hosts as needed
 
 ## Development
 
