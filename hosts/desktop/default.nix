@@ -17,7 +17,12 @@ in nixpkgs.lib.nixosSystem {
     background = import ../../shared/background.nix { inherit inputs; };
   };
   modules = shared.getImports {
-    additionalImports =
-      [ ./modules/regreet.nix ./specialisations ./specialisations/hypr.nix ];
+    additionalImports = [
+      ./modules
+      ./modules/regreet.nix
+      ./nixos/configuration.nix
+      ./specialisations
+      ./specialisations/hypr.nix
+    ];
   };
 }

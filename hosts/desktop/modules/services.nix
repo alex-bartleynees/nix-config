@@ -1,5 +1,4 @@
 { config, pkgs, ... }: {
-  services.xserver.videoDrivers = [ "nvidia" ];
   services.dbus.enable = true;
   services.dbus.packages = with pkgs; [
     pkgs.gnome-keyring
@@ -15,14 +14,6 @@
   services.udisks2.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
-
-  # services.udev.extraRules = ''
-  #   # Enable wake from USB devices
-  #   ACTION=="add", SUBSYSTEM=="usb", DRIVER=="usb", ATTR{power/wakeup}="enabled"
-  #
-  #   # Enable wake from specific USB ports (XHCI controller)
-  #   SUBSYSTEM=="pci", ATTRS{vendor}=="0x8086", ATTRS{device}=="0x8c31", ATTR{power/wakeup}="enabled"
-  # '';
 
   services.udev.extraRules = ''
     # Rules for Oryx web flashing and live training

@@ -9,6 +9,18 @@
     ./hardware-configuration.nix
   ];
 
+  # Bootloader
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  boot = { kernelPackages = pkgs.linuxPackages_latest; };
+
+  # Hardware
+  hardware.graphics = { enable = true; };
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  hardware.xpadneo.enable = true;
+
   # System wide settings
   nix = {
     settings = {
@@ -22,14 +34,23 @@
     };
   };
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  gaming = {
+    enable = true; # Enable gaming setup
+    streaming.enable = true; # Enable game streaming with Sunshine
+    streaming.gpu = "nvidia"; # GPU to use for game streaming
+    streaming.resolution = "2560x1440@164.96"; # Resolution for game streaming
+    streaming.monitor = 1; # Monitor to use for game streaming
+  };
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  nvidia = {
+    enable = true; # Enable NVIDIA GPU support
+  };
+
+  rgb = {
+    enable = true; # Enable OpenRGB support
+    motherboard = "amd"; # Motherboard type for OpenRGB
+    profile = "blue"; # OpenRGB profile to use on startup
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

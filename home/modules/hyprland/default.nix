@@ -37,7 +37,7 @@
         "col.active_border" = lib.mkForce "rgb(cba6f7)"; # Catppuccin mauve
         "col.inactive_border" = lib.mkForce "rgb(6c7086)"; # Catppuccin overlay0
         resize_on_border = false;
-        allow_tearing = false;
+        allow_tearing = true;
         layout = "dwindle";
       };
 
@@ -81,20 +81,7 @@
       };
 
       # Environment variables
-      env = [
-        "XCURSOR_SIZE,24"
-        "HYPRCURSOR_SIZE,24"
-        "NIXOS_OZONE_WL,1"
-        "GBM_BACKEND,nvidia-drm"
-        "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-        "LIBVA_DRIVER_NAME,nvidia"
-        "__GL_VRR_ALLOWED,1"
-        "WLR_DRM_NO_ATOMIC,1"
-        "WLR_NO_HARDWARE_CURSORS,1"
-        "XDG_CURRENT_DESKTOP,Hyprland"
-        "XDG_SESSION_DESKTOP,Hyprland"
-        "XDG_SESSION_TYPE,wayland"
-      ];
+      env = [ "XCURSOR_SIZE,24" "HYPRCURSOR_SIZE,24" ];
 
       # Autostart
       exec-once = [
@@ -246,12 +233,18 @@
         "idleinhibit focus, class:^(gamescope)$"
 
         # Steam main window
-        "float, class:^(steam)$"
-        "monitor DP-6, class:^(steam)$"
+        #"float, class:^(steam)$"
+        #"monitor DP-6, class:^(steam)$"
 
         # Steam Big Picture Mode
-        "float, class:^(steam)$, title:^(Steam Big Picture Mode)$"
-        "monitor DP-6, class:^(steam)$, title:^(Steam Big Picture Mode)$"
+        #"float, class:^(steam)$, title:^(Steam Big Picture Mode)$"
+        #"monitor DP-6, class:^(steam)$, title:^(Steam Big Picture Mode)$"
+
+        # Steam games - force proper display settings
+        # "fullscreen, class:^(steam_app_.*)$"
+        # "monitor DP-6, class:^(steam_app_.*)$"
+        # "workspace 1, class:^(steam_app_.*)$"
+        # "immediate, class:^(steam_app_.*)$"
       ];
 
       # Misc settings
@@ -264,6 +257,9 @@
 
       # Cursor settings for NVIDIA
       cursor = { no_hardware_cursors = true; };
+
+      # XWayland settings
+      xwayland = { force_zero_scaling = true; };
     };
   };
 

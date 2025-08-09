@@ -30,13 +30,10 @@
   networking.networkmanager.enable = true;
 
   environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    LIBVA_DRIVER_NAME = "nvidia";
-    __GL_VRR_ALLOWED = "1";
-    WLR_DRM_NO_ATOMIC = "1";
     WLR_NO_HARDWARE_CURSORS = "1";
+    NIXOS_OZONE_WL = "1";
+    WLR_RENDERER = "vulkan";
+    MOZ_USE_XINPUT2 = "1";
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";

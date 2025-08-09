@@ -6,8 +6,7 @@ let
     ./locale.nix
     ./custom-options.nix
     ../users/${username}.nix
-    ../hosts/desktop/modules
-    ../hosts/desktop/nixos/configuration.nix
+    ../core/modules
     inputs.stylix.nixosModules.stylix
     inputs.sops-nix.nixosModules.sops
   ];
