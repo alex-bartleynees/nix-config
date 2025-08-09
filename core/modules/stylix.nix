@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let cfg = config.stylixTheming;
 in {
@@ -7,7 +7,7 @@ in {
 
     image = lib.mkOption {
       type = lib.types.path;
-      default = "";
+      default = "${inputs.dotfiles}/backgrounds/mist_forest_nord.jpg";
       description = "Path to the wallpaper image.";
     };
 
