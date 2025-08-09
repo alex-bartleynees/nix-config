@@ -240,11 +240,11 @@
         #"float, class:^(steam)$, title:^(Steam Big Picture Mode)$"
         #"monitor DP-6, class:^(steam)$, title:^(Steam Big Picture Mode)$"
 
-        # Steam games - force proper display settings
-        # "fullscreen, class:^(steam_app_.*)$"
-        # "monitor DP-6, class:^(steam_app_.*)$"
-        # "workspace 1, class:^(steam_app_.*)$"
-        # "immediate, class:^(steam_app_.*)$"
+        #Steam games - force proper display settings
+        "fullscreen, class:^(steam_app_.*)$"
+        "monitor DP-6, class:^(steam_app_.*)$"
+        "workspace 1, class:^(steam_app_.*)$"
+        "immediate, class:^(steam_app_.*)$"
       ];
 
       # Misc settings
