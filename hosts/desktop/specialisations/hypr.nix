@@ -11,10 +11,13 @@
     hyprpaper
     hypridle
     hyprlock
-    wlogout
     dunst
-    kitty
     nautilus
+    adwaita-qt
+    gtk-engine-murrine
+    gtk_engines
+    gsettings-desktop-schemas
+    adwaita-icon-theme
   ];
 
   xdg.portal = {

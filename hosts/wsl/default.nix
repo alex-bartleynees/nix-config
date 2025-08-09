@@ -5,9 +5,11 @@ in nixpkgs.lib.nixosSystem {
   modules = [
     nixos-wsl.nixosModules.wsl
     ./nixos/configuration.nix
+    ../../core/modules
     ../../shared/locale.nix
     ../../shared/custom-options.nix
     ../../users/alexbn.nix
+    inputs.stylix.nixosModules.stylix
     { nixpkgs.config.allowUnfree = true; }
   ] ++ (import ../../shared/home-manager.nix {
     inherit inputs;

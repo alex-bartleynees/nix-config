@@ -1,20 +1,4 @@
 { config, pkgs, ... }: {
-  services.dbus.enable = true;
-  services.dbus.packages = with pkgs; [
-    pkgs.gnome-keyring
-    pkgs.xdg-desktop-portal
-  ];
-  services.blueman.enable = true;
-  services.upower.enable = true;
-  services.acpid.enable = true;
-  services.xserver.xkb = {
-    layout = "nz";
-    variant = "";
-  };
-  services.udisks2.enable = true;
-
-  services.gnome.gnome-keyring.enable = true;
-
   services.udev.extraRules = ''
     # Rules for Oryx web flashing and live training
     KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", GROUP="plugdev"
@@ -42,9 +26,6 @@
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", MODE:="0666", SYMLINK+="ignition_dfu"
   '';
 
-  services.tailscale.enable = true;
-  services.tailscale.useRoutingFeatures = "client";
+  environment.systemPackages = with pkgs; [ keymapp ];
 
-  networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
-  networking.hostName = "nixos";
 }

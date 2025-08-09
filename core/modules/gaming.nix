@@ -104,8 +104,10 @@ in {
                     "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-6,2560x1440@164.96,0x0,1";
                 }
                 {
-                  do = "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-4,disable";
-                  undo = "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-4,preferred,auto,1,transform,3";
+                  do =
+                    "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-4,disable";
+                  undo =
+                    "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-4,preferred,auto,1,transform,3";
                 }
               ];
               detached = [ "steam-run-url steam://open/bigpicture" ];

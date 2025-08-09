@@ -1,8 +1,10 @@
 { config, lib, pkgs, inputs, ... }:
 let shared = import ../../../shared/nixos-default.nix { inherit inputs; };
 in {
-  imports =
-    shared.getImports { additionalImports = [ ../modules/regreet.nix ../modules ../nixos/configuration.nix ]; };
+  imports = shared.getImports {
+    additionalImports =
+      [ ../modules/regreet.nix ../modules ../nixos/configuration.nix ];
+  };
 
   environment.systemPackages = with pkgs; [
     gnome-keyring

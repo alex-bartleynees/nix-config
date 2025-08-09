@@ -32,26 +32,13 @@
       enable = true;
       implementation = "broker";
     };
-    tailscale = {
-      enable = true;
-      useRoutingFeatures = "client";
-    };
+  };
+
+  tailscale = {
+    enable = true; # Enable Tailscale support
   };
 
   environment.systemPackages = with pkgs; [
-    (vim_configurable.customize {
-      name = "vim";
-      vimrcConfig.customRC = ''
-        	 	 source $VIMRUNTIME/defaults.vim
-           		 
-             		 set clipboard=unnamedplus
-           		 '';
-    })
-    wget
-    wl-clipboard
-    wl-clipboard-x11
-    git
-    fontconfig
     adwaita-qt
     gtk-engine-murrine
     gtk_engines
@@ -103,10 +90,5 @@
     "L+ /etc/ssl/certs/aspnet-fullchain.pem - - - - /mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem"
   ];
 
-  # Virtualisation
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = true;
-    autoPrune.enable = true;
-  };
+  docker = { enable = true; };
 }
