@@ -72,15 +72,16 @@ in {
         applications = {
           env = {
             PATH = "$(PATH):$(HOME)/.local/bin";
+            WAYLAND_DISPLAY = "wayland-1";
+            XDG_SESSION_TYPE = "wayland";
+            WLR_NO_HARDWARE_CURSORS = "1";
+          } // lib.optionalAttrs (cfg.streaming.gpu == "nvidia") {
             CUDA_VISIBLE_DEVICES = "0";
             NVIDIA_VISIBLE_DEVICES = "all";
             __NV_PRIME_RENDER_OFFLOAD = "1";
             __GLX_VENDOR_LIBRARY_NAME = "nvidia";
             DRM_DEVICE = "/dev/dri/card2";
-            WAYLAND_DISPLAY = "wayland-1";
-            XDG_SESSION_TYPE = "wayland";
             GBM_BACKEND = "nvidia-drm";
-            WLR_NO_HARDWARE_CURSORS = "1";
           };
           apps = [
             {

@@ -1,5 +1,5 @@
 { inputs, ... }:
-let 
+let
   inherit (inputs) nixpkgs nixos-wsl;
   nixosDefaults = import ../../shared/nixos-default.nix {
     inherit inputs;
