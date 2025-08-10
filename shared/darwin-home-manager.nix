@@ -9,6 +9,7 @@ in [
     home-manager.extraSpecialArgs = {
       inherit inputs username homeDirectory theme;
       inherit (config.networking) hostName;
+      inherit (config) myUsers;
       background = import ../shared/background.nix { inherit inputs; };
     };
     home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];

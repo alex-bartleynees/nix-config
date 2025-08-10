@@ -22,9 +22,9 @@
 
   system.stateVersion = 5;
 
-  users.users.alexbartleynees = {
+  users.users.alexbn = {
     # workaround for https://github.com/nix-community/home-manager/issues/4026
-    home = "/Users/alexbartleynees";
+    home = "/Users/alexbn";
     shell = pkgs.zsh;
   };
 
