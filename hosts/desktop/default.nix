@@ -22,7 +22,7 @@ in nixpkgs.lib.nixosSystem {
       ./modules/regreet.nix
       ./nixos/configuration.nix
       ./specialisations
-      ./specialisations/hypr.nix
+      ../../core/desktops/hypr.nix
     ];
   };
 }

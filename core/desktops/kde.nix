@@ -1,8 +1,4 @@
-{ config, pkgs, inputs, ... }:
-let shared = import ../../../shared/nixos-default.nix { inherit inputs; };
-in {
-  imports = shared.getImports { additionalImports = [ ]; };
-
+{ config, pkgs, inputs, ... }: {
   services.xserver = {
     enable = true;
     displayManager.sddm.enable = true;
@@ -20,11 +16,9 @@ in {
     kdePackages.kdeplasma-addons
   ];
 
-  # Environment variables for Wayland/NVIDIA
+  # Environment variables for Wayland
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    GBM_BACKEND = "nvidia-drm";
-    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
     WLR_NO_HARDWARE_CURSORS = "1";
   };
 
