@@ -19,20 +19,11 @@
     vlc
     nautilus
     ghostty
-    # (symlinkJoin {
-    #   name = "code-cursor";
-    #   paths = [ code-cursor ];
-    #   buildInputs = [ makeWrapper ];
-    #   postBuild = ''
-    #     wrapProgram $out/bin/cursor \
-    #       --add-flags "--disable-gpu"
-    #   '';
-    # })
+    pavucontrol
   ];
 
-  programs.brave = {
+programs.brave = {
     enable = true;
-    package = (pkgs.brave.override { commandLineArgs = [ "--disable-gpu" ]; });
   };
 
   home.pointerCursor = {
