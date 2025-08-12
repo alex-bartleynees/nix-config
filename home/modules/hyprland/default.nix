@@ -1,4 +1,44 @@
-{ pkgs, config, lib, inputs, background, hostName, theme, ... }: {
+{ pkgs, config, lib, inputs, background, hostName, theme, ... }:
+let
+  # Theme color definitions
+  themeColors = {
+    catppuccin-mocha = {
+      active_border = "rgb(cba6f7)"; # mauve
+      inactive_border = "rgb(6c7086)"; # overlay0
+      locked_active = "rgb(f9e2af)"; # yellow
+      locked_inactive = "rgb(585b70)"; # surface2
+      text = "rgb(cdd6f4)"; # text
+      groupbar_active = "rgb(cba6f7)"; # mauve
+      groupbar_inactive = "rgb(313244)"; # surface0
+      groupbar_locked_active = "rgb(f9e2af)"; # yellow
+      groupbar_locked_inactive = "rgb(585b70)"; # surface2
+    };
+    tokyo-night = {
+      active_border = "rgb(7aa2f7)"; # blue
+      inactive_border = "rgb(565f89)"; # comment
+      locked_active = "rgb(e0af68)"; # yellow
+      locked_inactive = "rgb(3b4261)"; # bg_highlight
+      text = "rgb(c0caf5)"; # foreground
+      groupbar_active = "rgb(7aa2f7)"; # blue
+      groupbar_inactive = "rgb(24283b)"; # bg_dark
+      groupbar_locked_active = "rgb(e0af68)"; # yellow
+      groupbar_locked_inactive = "rgb(3b4261)"; # bg_highlight
+    };
+    everforest = {
+      active_border = "rgb(a7c080)"; # green
+      inactive_border = "rgb(7a8478)"; # grey1
+      locked_active = "rgb(dbbc7f)"; # yellow
+      locked_inactive = "rgb(4f5b58)"; # bg2
+      text = "rgb(d3c6aa)"; # fg
+      groupbar_active = "rgb(a7c080)"; # green
+      groupbar_inactive = "rgb(2d353b)"; # bg0
+      groupbar_locked_active = "rgb(dbbc7f)"; # yellow
+      groupbar_locked_inactive = "rgb(4f5b58)"; # bg2
+    };
+  };
+
+  colors = themeColors.${theme} or themeColors.catppuccin-mocha;
+in {
   home.packages = with pkgs; [
     hyprpaper
     hypridle
@@ -34,8 +74,8 @@
         gaps_in = 10;
         gaps_out = 10;
         border_size = 3;
-        "col.active_border" = lib.mkForce "rgb(cba6f7)"; # Catppuccin mauve
-        "col.inactive_border" = lib.mkForce "rgb(6c7086)"; # Catppuccin overlay0
+        "col.active_border" = lib.mkForce colors.active_border;
+        "col.inactive_border" = lib.mkForce colors.inactive_border;
         resize_on_border = false;
         allow_tearing = true;
         layout = "dwindle";
@@ -68,6 +108,30 @@
       dwindle = {
         pseudotile = true;
         preserve_split = true;
+      };
+
+      # Group styling
+      group = {
+        "col.border_active" = lib.mkForce colors.active_border;
+        "col.border_inactive" = lib.mkForce colors.inactive_border;
+        "col.border_locked_active" = lib.mkForce colors.locked_active;
+        "col.border_locked_inactive" = lib.mkForce colors.locked_inactive;
+
+        groupbar = {
+          enabled = true;
+          font_family = "JetBrainsMono Nerd Font";
+          font_size = 12;
+          gradients = false;
+          height = 16;
+          priority = 3;
+          render_titles = true;
+          scrolling = true;
+          text_color = lib.mkForce colors.text;
+          "col.active" = lib.mkForce colors.groupbar_active;
+          "col.inactive" = lib.mkForce colors.groupbar_inactive;
+          "col.locked_active" = lib.mkForce colors.groupbar_locked_active;
+          "col.locked_inactive" = lib.mkForce colors.groupbar_locked_inactive;
+        };
       };
 
       # Input configuration
@@ -159,6 +223,10 @@
         "$mod, S, exec, hyprctl keyword general:layout master"
         "$mod, W, togglegroup"
         "$mod, E, exec, hyprctl keyword general:layout dwindle"
+
+        # Togglegroup navigation
+        "$mod, TAB, changegroupactive, f"
+        "$mod SHIFT, TAB, changegroupactive, b"
 
         # Configuration
         "$mod SHIFT, C, exec, hyprctl reload"
