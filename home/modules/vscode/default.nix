@@ -9,13 +9,9 @@ let
     pkgs.vscode-utils.buildVscodeMarketplaceExtension {
       mktplcRef = { inherit name publisher sha256 version; };
     };
-
-  vscodeWithArgs = pkgs.vscode.override { commandLineArgs = "--disable-gpu"; };
 in {
   programs.vscode = {
     enable = true;
-    package = vscodeWithArgs;
-
     profiles.default.enableExtensionUpdateCheck = true;
 
     profiles.default.extensions = (with pkgs.vscode-extensions; [
@@ -44,7 +40,7 @@ in {
       ms-vscode-remote.remote-wsl
       ms-dotnettools.vscode-dotnet-runtime
       ms-dotnettools.csharp
-      #ms-dotnettools.csdevkit
+      ms-dotnettools.csdevkit
       ms-azuretools.vscode-docker
       dbaeumer.vscode-eslint
       eamodio.gitlens

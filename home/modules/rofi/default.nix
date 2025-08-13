@@ -3,10 +3,15 @@
 
   home.file = {
     ".config/rofi" = {
-      source = "${inputs.dotfiles}/configs/rofi";
+      source = "${inputs.dotfiles}/configs/rofi-custom";
       recursive = true;
     };
   };
 
-  home.sessionPath = [ "$HOME/.config/rofi/scripts" ];
+  home.file.".local/bin/powermenu" = {
+    source = "${inputs.dotfiles}/configs/rofi-custom/powermenu.sh";
+    executable = true;
+  };
+  home.sessionPath = [ "$HOME/.local/bin" ];
+
 }

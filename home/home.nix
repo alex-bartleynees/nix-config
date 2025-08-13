@@ -45,16 +45,14 @@
     shellAliases = {
       lv = "lazyvim";
       tx = "tmuxinator";
+      lg = "lazygit";
+      ld = "lazydocker";
       git-work = "git config user.email '${myUsers.${username}.git.workEmail}'";
       git-personal =
         "git config user.email '${myUsers.${username}.git.userEmail}'";
       git-whoami = "git config user.email";
     };
     initContent = "source ~/.p10k.zsh";
-    # oh-my-zsh = {
-    #   enable = true;
-    #   plugins = [ "git" "tmux" ];
-    # };
     plugins = [
       {
         name = "powerlevel10k";
@@ -108,6 +106,17 @@
     tmuxinator
     claude-code
     delta
+    (vim_configurable.customize {
+      name = "vim";
+      vimrcConfig.customRC = ''
+        source $VIMRUNTIME/defaults.vim
+        set clipboard=unnamedplus
+      '';
+    })
+    wget
+    wl-clipboard
+    wl-clipboard-x11
+    git
   ];
 
   programs.zoxide.options = [ "--cmd cd" ];

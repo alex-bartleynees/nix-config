@@ -22,9 +22,7 @@
     pavucontrol
   ];
 
-programs.brave = {
-    enable = true;
-  };
+  programs.brave = { enable = true; };
 
   home.pointerCursor = {
     name = lib.mkDefault "Adwaita";
