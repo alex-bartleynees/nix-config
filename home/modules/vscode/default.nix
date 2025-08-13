@@ -169,6 +169,7 @@ in {
       "nixpkgs-fmt.path" =
         "/nix/store/gad8bd4kdl5ib13091yfjyb8s9nbpxzf-nixfmt-0.6.0-bin/bin/nixfmt";
       "svelte.enable-ts-plugin" = true;
+      "terminal.integrated.env.osx" = { };
     };
   };
 }
