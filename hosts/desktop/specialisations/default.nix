@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./sway.nix ./cosmic.nix ./gnome.nix ]; }
+{ ... }: { imports = [ ./sway.nix ./cosmic.nix  ]; }
