@@ -27,7 +27,7 @@ in {
       matthewpi.caddyfile-support
       prisma.prisma
       phoenixframework.phoenix
-      rust-lang.rust-analyzer
+      #rust-lang.rust-analyzer
       tamasfe.even-better-toml
       thenuprojectcontributors.vscode-nushell-lang
       unifiedjs.vscode-mdx
