@@ -153,8 +153,6 @@ in {
         "nm-applet"
         "blueman-applet"
         "udiskie --tray"
-        "hypridle"
-        "hyprpaper"
         "waybar -c ~/.config/waybar/config-hyprland.jsonc -s ~/.config/waybar/style.css"
       ];
 
