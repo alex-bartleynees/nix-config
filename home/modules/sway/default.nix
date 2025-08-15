@@ -52,6 +52,12 @@
       # Wake command
       bindsym $mod+Shift+w exec swaymsg "output $mainMonitor dpms on; output $secondaryMonitor dpms on"
 
+
+      # start rofi (a program launcher)
+      bindsym $mod+d exec rofi -show drun -theme $HOME/.config/rofi/${theme}.rasi
+      # start rofi powermenu
+      bindsym $mod+shift+p exec $HOME/.local/bin/powermenu powermenu-${theme}
+
       input * {
         xkb_layout "us,us"
       }
