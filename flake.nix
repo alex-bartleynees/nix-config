@@ -47,7 +47,7 @@
     , mac-app-util, stylix, lazyvim, neovim, nixos-cosmic, cosmic-nixpkgs
     , sops-nix, ... }: {
       nixosConfigurations = {
-        nixos = import ./hosts/desktop { inherit inputs; };
+        desktop = import ./hosts/desktop { inherit inputs; };
         wsl = import ./hosts/wsl { inherit inputs; };
       };
 
