@@ -12,24 +12,6 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/68a3368e-a800-48f2-9312-e2843391a06c";
-    fsType = "xfs";
-  };
-
-  boot.initrd.luks.devices."crypted".device =
-    "/dev/disk/by-uuid/98b92cd8-6640-4c24-ac5d-7e6d7af512d6";
-
-  boot.initrd.luks.devices."crypted-swap".device = "/dev/nvme1n1p2";
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/A0FE-3070";
-    fsType = "vfat";
-    options = [ "fmask=0022" "dmask=0022" ];
-  };
-
-  swapDevices = [{ device = "/dev/mapper/crypted-swap"; }];
-
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
