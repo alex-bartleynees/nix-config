@@ -20,14 +20,15 @@
   boot.initrd.luks.devices."crypted".device =
     "/dev/disk/by-uuid/98b92cd8-6640-4c24-ac5d-7e6d7af512d6";
 
+  boot.initrd.luks.devices."crypted-swap".device = "/dev/nvme1n1p2";
+
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/A0FE-3070";
     fsType = "vfat";
     options = [ "fmask=0022" "dmask=0022" ];
   };
 
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/1fa004c5-b4b6-43dc-a274-95b9fbd85bc3"; }];
+  swapDevices = [{ device = "/dev/mapper/crypted-swap"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
