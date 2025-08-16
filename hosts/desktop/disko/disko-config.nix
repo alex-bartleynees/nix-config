@@ -20,9 +20,14 @@
             swap = {
               size = "32G";
               content = {
-                type = "swap";
-                discardPolicy = "both";
-                resumeDevice = true; # resume from hiberation from this device
+                type = "luks";
+                name = "crypted-swap";
+                settings = { allowDiscards = true; };
+                content = {
+                  type = "swap";
+                  discardPolicy = "both";
+                  resumeDevice = true; # resume from hiberation from this device
+                };
               };
             };
             root = {
@@ -30,13 +35,7 @@
               content = {
                 type = "luks";
                 name = "crypted";
-                # disable settings.keyFile if you want to use interactive password entry
-                #passwordFile = "/tmp/secret.key"; # Interactive password prompt
-                settings = {
-                  allowDiscards = true;
-                  keyFile = "/tmp/secret.key";
-                  fallbackToPassword = true;
-                };
+                settings = { allowDiscards = true; };
                 content = {
                   type = "filesystem";
                   format = "xfs";
