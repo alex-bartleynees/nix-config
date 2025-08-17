@@ -1,5 +1,5 @@
 { pkgs, inputs, ... }: {
-  imports = [ ../rider ../obsidian ];
+  imports = [ ../rider ];
 
   home.sessionVariables = {
     ASPNETCORE_Kestrel__Certificates__Default__Path =

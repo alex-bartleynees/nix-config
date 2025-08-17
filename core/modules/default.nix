@@ -7,6 +7,8 @@
     ./tailscale.nix
     ./docker.nix
     ./stylix.nix
+    ./virtualisation.nix
+    ./system.nix
   ];
 }
 

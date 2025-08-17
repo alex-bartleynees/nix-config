@@ -15,11 +15,11 @@
     grim
     slurp
     feh
-    zed-editor
     vlc
     nautilus
     ghostty
     pavucontrol
+    pulsemixer
   ];
 
   programs.brave = { enable = true; };

@@ -1,0 +1,128 @@
+{ config, pkgs, background, lib, ... }:
+let cfg = config.system;
+in {
+  options.system = {
+    isWsl = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable WSL (Windows Subsystem for Linux) support";
+    };
+  };
+
+  config = lib.mkMerge [
+    # Common settings for both Linux and WSL
+    {
+      # Programs
+      programs.zsh.enable = true;
+      programs.dconf.enable = true;
+
+      # System wide settings
+      nix = {
+        settings = {
+          auto-optimise-store = true;
+          experimental-features = [ "nix-command" "flakes" ];
+        };
+        gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than 30d";
+        };
+      };
+    }
+
+    # Linux-specific settings (not WSL)
+    (lib.mkIf (!cfg.isWsl) {
+      # Bootloader
+      boot.loader.systemd-boot.enable = true;
+      boot.loader.efi.canTouchEfiVariables = true;
+
+      boot = { kernelPackages = pkgs.linuxPackages_latest; };
+
+      # Hardware
+      hardware.graphics = { enable = true; };
+      hardware.bluetooth.enable = true;
+      hardware.bluetooth.powerOnBoot = true;
+      hardware.xpadneo.enable = true;
+
+      # Programs
+      programs.nm-applet = { enable = true; };
+
+      # Services
+      services.dbus.enable = true;
+      services.dbus.packages = with pkgs; [
+        pkgs.gnome-keyring
+        pkgs.xdg-desktop-portal
+      ];
+      services.blueman.enable = true;
+      services.upower.enable = true;
+      services.acpid.enable = true;
+      services.xserver.xkb = {
+        layout = "nz";
+        variant = "";
+      };
+      services.udisks2.enable = true;
+      services.gnome.gnome-keyring.enable = true;
+
+      # Networking
+      networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
+
+      # Audio
+      services.pipewire = {
+        enable = true;
+        pulse.enable = true;
+      };
+    })
+
+    # WSL-specific settings
+    (lib.mkIf cfg.isWsl {
+      # Programs
+      programs.nix-ld = {
+        enable = true;
+        package = pkgs.nix-ld-rs;
+      };
+
+      # Services
+      services = {
+        openssh.enable = true;
+        dbus = {
+          enable = true;
+          implementation = "broker";
+        };
+      };
+
+      # WSL-specific packages
+      environment.systemPackages = with pkgs; [
+        adwaita-qt
+        gtk-engine-murrine
+        gtk_engines
+        gsettings-desktop-schemas
+        adwaita-icon-theme
+        openssl
+        zlib
+        stdenv.cc.cc.lib
+      ];
+
+      # Qt theming for WSL
+      qt = {
+        enable = true;
+        platformTheme = "gnome";
+        style = "adwaita-dark";
+      };
+
+      # VSCode remote workaround
+      systemd.user = {
+        paths.vscode-remote-workaround = {
+          wantedBy = [ "default.target" ];
+          pathConfig.PathChanged = "%h/.vscode-server/bin";
+        };
+        services.vscode-remote-workaround.script = ''
+          for i in ~/.vscode-server/bin/*; do
+            if [ -e $i/node ]; then
+              echo "Fixing vscode-server in $i..."
+              ln -sf ${pkgs.nodejs_22}/bin/node $i/node
+            fi
+          done
+        '';
+      };
+  ];
+}
