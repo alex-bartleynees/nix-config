@@ -14,6 +14,7 @@
     networkmanagerapplet
     blueman
     pulseaudio
+    uwsm
   ];
 
   programs.sway = {
@@ -29,6 +30,17 @@
 
     extraOptions = [ "--unsupported-gpu" ];
   };
+
+  # Enable uwsm for sway session management
+  programs.uwsm = {
+    enable = true;
+    waylandCompositors.sway = {
+      binPath = "/run/current-system/sw/bin/sway";
+      prettyName = "Sway";
+      comment = "Sway compositor with UWSM";
+    };
+  };
+
 
   qt = {
     enable = true;

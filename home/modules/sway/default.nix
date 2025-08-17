@@ -32,6 +32,9 @@
       # Start waybar with Sway-specific config
       exec waybar -c ~/.config/waybar/config.jsonc -s ~/.config/waybar/style.css
 
+      # Initialize uwsm for proper session management and environment variable handling
+      exec uwsm finalize SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME
+
       # Prevent idle during Steam Remote Play
       for_window [class="steam_app_streaming_client"] inhibit_idle focus
       for_window [class="steamwebhelper"] inhibit_idle focus
