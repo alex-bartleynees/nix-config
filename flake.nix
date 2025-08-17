@@ -54,6 +54,7 @@
       nixosConfigurations = {
         desktop = import ./hosts/desktop { inherit inputs; };
         wsl = import ./hosts/wsl { inherit inputs; };
+        media = import ./hosts/media { inherit inputs; };
       };
 
       darwinConfigurations = {
