@@ -4,7 +4,6 @@
   # Install mergerfs package
   environment.systemPackages = with pkgs; [ mergerfs ];
 
-
   # Configure file systems for media drives and mergerfs pool
   fileSystems = {
     # First media drive

@@ -1,5 +1,5 @@
 { inputs, username ? "alexbn", homeDirectory ? "/home/alexbn"
-, theme ? "catppuccin-mocha", disableDisko ? false }:
+, theme ? "catppuccin-mocha" }:
 
 let
   baseImports = [
