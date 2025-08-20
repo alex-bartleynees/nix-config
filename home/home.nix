@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, background, username, homeDirectory, hostName, theme
+{ config, pkgs, lib, inputs, background, username, homeDirectory, hostName, theme
 , myUsers, ... }: {
 
   imports = [ ./modules/alacritty ./modules/tmux ]
@@ -118,9 +118,10 @@
       '';
     })
     wget
+    git
+  ] ++ lib.optionals pkgs.stdenv.isLinux [
     wl-clipboard
     wl-clipboard-x11
-    git
   ];
 
   programs.zoxide.options = [ "--cmd cd" ];
