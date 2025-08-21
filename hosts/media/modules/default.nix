@@ -5,5 +5,6 @@
     ./disk-config.nix
     ./samba-host.nix
     ./storage.nix
+    ./persist.nix
   ];
 }

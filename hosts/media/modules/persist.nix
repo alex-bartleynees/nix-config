@@ -63,6 +63,8 @@
         ".local/state/lazygit"
         ".local/share/direnv"
         ".local/share/zoxide"
+        ".local/share/atuin"
+        ".local/state/nvim"
       ];
     };
   };
