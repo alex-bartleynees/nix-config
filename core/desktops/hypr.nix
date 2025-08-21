@@ -42,5 +42,10 @@
     XDG_SESSION_TYPE = "wayland";
   };
 
+  displayManager = {
+    enable = true;
+    autoLogin = { enable = true; };
+  };
+
   system.nixos.tags = [ "hyprland" ];
 }

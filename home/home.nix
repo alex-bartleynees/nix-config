@@ -53,7 +53,7 @@
       git-whoami = "git config user.email";
     };
     initContent = "source ~/.p10k.zsh";
-     oh-my-zsh = {
+    oh-my-zsh = {
       enable = true;
       plugins = [ "git" "tmux" ];
     };

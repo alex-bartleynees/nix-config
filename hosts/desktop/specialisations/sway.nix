@@ -2,8 +2,7 @@
 let
   shared = import ../../../shared/nixos-default.nix { inherit inputs; };
   sharedImports = shared.getImports {
-    additionalImports =
-      [ ../modules/regreet.nix ../modules ../nixos/configuration.nix ];
+    additionalImports = [ ../modules ../nixos/configuration.nix ];
   };
 in {
   specialisation.sway = {

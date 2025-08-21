@@ -19,7 +19,6 @@ in nixpkgs.lib.nixosSystem {
   modules = shared.getImports {
     additionalImports = [
       ./modules
-      ./modules/regreet.nix
       ./nixos/configuration.nix
       ./specialisations
       ../../core/desktops/hypr.nix

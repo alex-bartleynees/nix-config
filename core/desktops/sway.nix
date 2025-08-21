@@ -78,5 +78,7 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  displayManager = { enable = true; };
+
   system.nixos.tags = [ "sway" ];
 }

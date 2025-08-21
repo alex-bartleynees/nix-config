@@ -9,6 +9,7 @@
     ./stylix.nix
     ./virtualisation.nix
     ./system.nix
+    ./display-manager.nix
   ];
 }
 
