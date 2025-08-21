@@ -19,7 +19,7 @@ in {
 
     base16Scheme = lib.mkOption {
       type = lib.types.path;
-      default = "${pkgs.base16-schemes}/share/themes/tokyo-night-dark.yaml";
+      default = "${pkgs.base16-schemes}/share/themes/tokyo-night-storm.yaml";
       description = "Base16 color scheme file.";
     };
 
