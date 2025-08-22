@@ -1,6 +1,6 @@
 { lib, ... }: {
   # Boot configuration with impermanence
-  fileSystems."persist".neededForBoot = true;
+  fileSystems."/persist".neededForBoot = true;
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     mkdir /btrfs_tmp
     mount /dev/disk/by-label/nixos /btrfs_tmp
