@@ -17,6 +17,14 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
+            swap = {
+              size = "16G";
+              content = {
+                type = "swap";
+                discardPolicy = "both";
+                resumeDevice = true; # resume from hiberation from this device
+              };
+            };
             # Btrfs Root Partition
             root = {
               size = "100%"; # Use remaining space

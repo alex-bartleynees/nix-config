@@ -9,10 +9,11 @@ let
   mediaPath = "/mnt/jellyfin-pool";
 
 in {
-  sops.defaultSopsFile = ../../../secrets/samba.yaml;
   sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
 
-  sops.secrets.samba_password = { };
+  sops.secrets.samba_password = {
+    sopsFile = "../../../secrets/samba-password.yaml";
+  };
 
   # Create the media user
   users.users.${sambaUser} = {
@@ -30,41 +31,42 @@ in {
   services.samba = {
     enable = true;
     package = pkgs.samba;
+    securityType = "user";
 
-    # Security settings
+    # Note: Not using openFirewall = true since we handle firewall manually for Tailscale-only access
 
-    # Global Samba configuration
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = Media Server
-      security = user
-      map to guest = never
+    settings = {
+      global = {
+        "workgroup" = "WORKGROUP";
+        "server string" = "Media Server";
+        "security" = "user";
+        "map to guest" = "never";
 
-      # Security via hosts allow/deny instead of interface binding
-      # (Interface binding doesn't work properly with Tailscale TUN interfaces)
-      hosts allow = 100.64.0.0/10 127.0.0.1
-      hosts deny = ALL
+        # Security via hosts allow/deny instead of interface binding
+        # (Interface binding doesn't work properly with Tailscale TUN interfaces)
+        "hosts allow" = "100.64.0.0/10 127.0.0.1";
+        "hosts deny" = "ALL";
 
-      # Disable NetBIOS for Tailscale-only access
-      disable netbios = yes
-      smb ports = 445
+        # Disable NetBIOS for Tailscale-only access
+        "disable netbios" = "yes";
+        "smb ports" = "445";
 
-      # Performance optimizations for media
-      socket options = TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072
-      use sendfile = yes
+        # Performance optimizations for media
+        "socket options" =
+          "TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072";
+        "use sendfile" = "yes";
 
-      # Logging
-      log file = /var/log/samba/log.%m
-      max log size = 1000
-      log level = 0
-    '';
+        # Logging
+        "log file" = "/var/log/samba/log.%m";
+        "max log size" = "1000";
+        "log level" = "0";
+      };
 
-    # Define shares
-    shares = {
+      # Define the Jellyfin media share
       ${shareName} = {
-        path = mediaPath;
-        comment = "Jellyfin Media Pool";
-        browseable = "yes";
+        "path" = mediaPath;
+        "comment" = "Jellyfin Media Pool";
+        "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
         "valid users" = "${sambaUser} ${username}";
@@ -153,14 +155,3 @@ in {
     '')
   ];
 }
-
-# USAGE INSTRUCTIONS:
-# 1. Replace the variables at the top (sambaUser, sambaPassword, shareName, mediaPath)
-# 2. For production use, replace the plain text password with a proper secret:
-#    - Use agenix: https://github.com/ryantm/agenix
-#    - Use sops-nix: https://github.com/Mic92/sops-nix
-#    - Or NixOS's built-in secrets: config.age.secrets or similar
-# 3. Add this configuration to your configuration.nix or import as a module
-# 4. Run: sudo nixos-rebuild switch
-# 5. Check status with: systemctl status samba-smbd
-# 6. Get connection info with: samba-info

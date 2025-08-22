@@ -1,5 +1,6 @@
-{
+{ lib, ... }: {
   # Boot configuration with impermanence
+  fileSystems."persist".neededForBoot = true;
   boot.initrd.postDeviceCommands = lib.mkAfter ''
     mkdir /btrfs_tmp
     mount /dev/disk/by-label/nixos /btrfs_tmp
@@ -37,8 +38,15 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/etc/NetworkManager/system-connections"
+      "/etc/nixos"
     ];
-    files = [ "/etc/machine-id" ];
+    files = [
+      "/etc/machine-id"
+      "/etc/shadow"
+      "/etc/passwd"
+      "/etc/group"
+      "/etc/gshadow"
+    ];
     users.alexbn = {
       directories = [
         "Documents"
@@ -64,7 +72,6 @@
         ".local/share/direnv"
         ".local/share/zoxide"
         ".local/share/atuin"
-        ".local/state/nvim"
       ];
     };
   };

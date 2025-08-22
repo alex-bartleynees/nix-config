@@ -222,7 +222,7 @@ in {
       CPUQuota = "50%";
     };
 
-    # Environment variables (non-secret)
+    # Environment variables 
     environment = {
       # Enable repository check on Sundays
       RESTIC_CHECK = "true";
