@@ -13,6 +13,6 @@ in nixpkgs.lib.nixosSystem {
   };
   modules = shared.getImports {
     additionalImports =
-      [ ./nixos/configuration.nix ./modules ./specialisation/cosmic.nix ];
+      [ ./nixos/configuration.nix ./modules ./specialisations/cosmic.nix ];
   };
 }
