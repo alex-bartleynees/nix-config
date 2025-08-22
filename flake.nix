@@ -24,7 +24,7 @@
     mac-app-util = { url = "github:hraban/mac-app-util"; };
 
     stylix = {
-      url = "github:danth/stylix";
+      url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
