@@ -39,6 +39,12 @@
       "/var/lib/systemd/coredump"
       "/etc/NetworkManager/system-connections"
       "/etc/nixos"
+      {
+        directory = "/var/lib/backup";
+        user = "backup";
+        group = "backup";
+        mode = "0700";
+      }
     ];
     files = [ "/etc/machine-id" ];
     users.alexbn = {

@@ -1,4 +1,4 @@
-{ config, pkgs, background, ... }: {
+{ config, pkgs, background, lib, ... }: {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -32,6 +32,12 @@
   stylixTheming = {
     enable = true;
     image = background.wallpaper;
+  };
+
+  qt = {
+    enable = true;
+    platformTheme = lib.mkForce "gnome";
+    style = "adwaita-dark";
   };
 
   # This value determines the NixOS release from which the default

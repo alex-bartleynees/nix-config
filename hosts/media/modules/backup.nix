@@ -3,7 +3,7 @@
 let
   backupScript = pkgs.writeShellApplication {
     name = "restic-backup";
-    runtimeInputs = with pkgs; [ restic openssh coreutils ];
+    runtimeInputs = with pkgs; [ restic openssh coreutils nettools ];
     text = ''
       set -euo pipefail
 
@@ -20,23 +20,39 @@ let
           exit 1
       fi
 
+      # shellcheck disable=SC2153
       if [ ! -f "''${BACKUP_SERVER}" ]; then
           log "Error: BACKUP_SERVER file not found. Check sops secret 'backup/server-address'"
           exit 1
       fi
 
       # Read secrets from files
-      export RESTIC_PASSWORD="$(cat "''${RESTIC_PASSWORD}")"
+      RESTIC_PASSWORD_VALUE="$(cat "''${RESTIC_PASSWORD}")"
+      export RESTIC_PASSWORD="$RESTIC_PASSWORD_VALUE"
       backup_server="$(cat "''${BACKUP_SERVER}")"
-      # Build repository URL from the secret
       export RESTIC_REPOSITORY="sftp:''${backup_server}:/srv/restic-repo"
 
       log "Restic version: $(restic version)"
       log "Repository: ''${RESTIC_REPOSITORY}"
 
-      # Test SSH connection
-      log "Testing SSH connection to backup server..."
-      if timeout 30 ssh -o ConnectTimeout=10 -o BatchMode=yes "''${backup_server}" "echo 'SSH connection successful'" 2>/dev/null; then
+      # Configure SSH for backup user
+      log "Configuring SSH for backup..."
+      mkdir -p ~/.ssh
+      chmod 700 ~/.ssh
+      
+      # Create SSH config to handle Tailscale connections
+      cat > ~/.ssh/config << 'EOF'
+Host *
+    StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
+    LogLevel ERROR
+    BatchMode yes
+EOF
+      chmod 600 ~/.ssh/config
+      
+      # Test SSH connection via Tailscale
+      log "Testing SSH connection to backup server via Tailscale..."
+      if timeout 30 ssh -o ConnectTimeout=10 "''${backup_server}" "echo 'SSH connection successful'" 2>/dev/null; then
           log "SSH connection test passed"
       else
           log "Warning: SSH connection test failed. Backup may fail."
@@ -53,13 +69,12 @@ let
       # Define backup paths - adjust these for your setup
       backup_paths=(
           # User homelab directory
-          "/home/alexbn/homelab"
+          "/home/alexbn/Documents/homelab"
 
-          # Media directories (adjust paths as needed)
+          # Media directories 
           "/mnt/jellyfin-pool/books"
           "/mnt/jellyfin-pool/documents"
           "/mnt/jellyfin-pool/photos"
-          "/mnt/jellyfin-pool/seafile"
           
           # Docker volumes
           "/var/lib/docker/volumes"
@@ -106,9 +121,6 @@ let
       # Perform the backup
       if restic backup \
           --verbose \
-          --one-file-system \
-          --tag "$(hostname)" \
-          --tag "$(date '+%Y-%m')" \
           "''${exclude_args[@]}" \
           "''${existing_paths[@]}"; then
           log "Backup completed successfully"
@@ -123,7 +135,7 @@ let
           --keep-daily 7 \
           --keep-weekly 4 \
           --keep-monthly 6 \
-          --tag "$(hostname)" \
+          --tag "$(cat /etc/hostname)" \
           --prune \
           --verbose; then
           log "Pruning completed successfully"
@@ -167,7 +179,10 @@ in {
   users.users.backup = {
     isSystemUser = true;
     group = "backup";
+    extraGroups = [ "tailscale" ];
     shell = null;
+    home = "/var/lib/backup";
+    createHome = true;
   };
 
   users.groups.backup = { };
@@ -175,10 +190,19 @@ in {
   # Ensure SSH directory exists for backup user
   system.activationScripts.backup-ssh = {
     text = ''
+      # Create home directory if it doesn't exist
+      if [ ! -d /var/lib/backup ]; then
+        mkdir -p /var/lib/backup
+        chown backup:backup /var/lib/backup
+        chmod 755 /var/lib/backup
+      fi
+      
+      # Create SSH directory
       mkdir -p /var/lib/backup/.ssh
       chown backup:backup /var/lib/backup/.ssh
       chmod 700 /var/lib/backup/.ssh
     '';
+    deps = [ "users" ];
   };
 
   # Create systemd service for backup

@@ -119,16 +119,16 @@ in {
     wantedBy = [ "samba-smbd.service" ];
     before = [ "samba-smbd.service" ];
     after = [ "users.target" ];
-    
+
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
     };
-    
+
     script = ''
       # Ensure Samba directories exist
       mkdir -p /var/lib/samba/private
-      
+
       # Check if user exists in smbpasswd
       if ! ${pkgs.samba}/bin/pdbedit -L 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q "^${sambaUser}:" 2>/dev/null; then
         echo "Adding ${sambaUser} to Samba users..."
