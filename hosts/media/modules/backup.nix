@@ -5,159 +5,159 @@ let
     name = "restic-backup";
     runtimeInputs = with pkgs; [ restic openssh coreutils nettools ];
     text = ''
-      set -euo pipefail
+            set -euo pipefail
 
-      # Logging function
-      log() {
-          echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
-      }
+            # Logging function
+            log() {
+                echo "$(date '+%Y-%m-%d %H:%M:%S') - $1"
+            }
 
-      log "Starting Restic backup with SOPS-managed secrets..."
+            log "Starting Restic backup with SOPS-managed secrets..."
 
-      # Validate that required secrets are loaded from SOPS
-      if [ ! -f "''${RESTIC_PASSWORD}" ]; then
-          log "Error: RESTIC_PASSWORD file not found. Check sops secret 'backup/restic-password'"
-          exit 1
-      fi
+            # Validate that required secrets are loaded from SOPS
+            if [ ! -f "''${RESTIC_PASSWORD}" ]; then
+                log "Error: RESTIC_PASSWORD file not found. Check sops secret 'backup/restic-password'"
+                exit 1
+            fi
 
-      # shellcheck disable=SC2153
-      if [ ! -f "''${BACKUP_SERVER}" ]; then
-          log "Error: BACKUP_SERVER file not found. Check sops secret 'backup/server-address'"
-          exit 1
-      fi
+            # shellcheck disable=SC2153
+            if [ ! -f "''${BACKUP_SERVER}" ]; then
+                log "Error: BACKUP_SERVER file not found. Check sops secret 'backup/server-address'"
+                exit 1
+            fi
 
-      # Read secrets from files
-      RESTIC_PASSWORD_VALUE="$(cat "''${RESTIC_PASSWORD}")"
-      export RESTIC_PASSWORD="$RESTIC_PASSWORD_VALUE"
-      backup_server="$(cat "''${BACKUP_SERVER}")"
-      export RESTIC_REPOSITORY="sftp:''${backup_server}:/srv/restic-repo"
+            # Read secrets from files
+            RESTIC_PASSWORD_VALUE="$(cat "''${RESTIC_PASSWORD}")"
+            export RESTIC_PASSWORD="$RESTIC_PASSWORD_VALUE"
+            backup_server="$(cat "''${BACKUP_SERVER}")"
+            export RESTIC_REPOSITORY="sftp:''${backup_server}:/srv/restic-repo"
 
-      log "Restic version: $(restic version)"
-      log "Repository: ''${RESTIC_REPOSITORY}"
+            log "Restic version: $(restic version)"
+            log "Repository: ''${RESTIC_REPOSITORY}"
 
-      # Configure SSH for backup user
-      log "Configuring SSH for backup..."
-      mkdir -p ~/.ssh
-      chmod 700 ~/.ssh
-      
-      # Create SSH config to handle Tailscale connections
-      cat > ~/.ssh/config << 'EOF'
-Host *
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-    LogLevel ERROR
-    BatchMode yes
-EOF
-      chmod 600 ~/.ssh/config
-      
-      # Test SSH connection via Tailscale
-      log "Testing SSH connection to backup server via Tailscale..."
-      if timeout 30 ssh -o ConnectTimeout=10 "''${backup_server}" "echo 'SSH connection successful'" 2>/dev/null; then
-          log "SSH connection test passed"
-      else
-          log "Warning: SSH connection test failed. Backup may fail."
-      fi
+            # Configure SSH for backup user
+            log "Configuring SSH for backup..."
+            mkdir -p ~/.ssh
+            chmod 700 ~/.ssh
+            
+            # Create SSH config to handle Tailscale connections
+            cat > ~/.ssh/config << 'EOF'
+      Host *
+          StrictHostKeyChecking no
+          UserKnownHostsFile /dev/null
+          LogLevel ERROR
+          BatchMode yes
+      EOF
+            chmod 600 ~/.ssh/config
+            
+            # Test SSH connection via Tailscale
+            log "Testing SSH connection to backup server via Tailscale..."
+            if timeout 30 ssh -o ConnectTimeout=10 "''${backup_server}" "echo 'SSH connection successful'" 2>/dev/null; then
+                log "SSH connection test passed"
+            else
+                log "Warning: SSH connection test failed. Backup may fail."
+            fi
 
-      # Initialize Restic repository (ignore error if already exists)
-      log "Initializing Restic repository..."
-      if timeout 60 restic init 2>/dev/null; then
-          log "Repository initialized successfully"
-      else
-          log "Repository may already exist or initialization failed (this is usually normal)"
-      fi
+            # Initialize Restic repository (ignore error if already exists)
+            log "Initializing Restic repository..."
+            if timeout 60 restic init 2>/dev/null; then
+                log "Repository initialized successfully"
+            else
+                log "Repository may already exist or initialization failed (this is usually normal)"
+            fi
 
-      # Define backup paths - adjust these for your setup
-      backup_paths=(
-          # User homelab directory
-          "/home/alexbn/Documents/homelab"
+            # Define backup paths - adjust these for your setup
+            backup_paths=(
+                # User homelab directory
+                "/home/alexbn/Documents/homelab"
 
-          # Media directories 
-          "/mnt/jellyfin-pool/books"
-          "/mnt/jellyfin-pool/documents"
-          "/mnt/jellyfin-pool/photos"
-          
-          # Docker volumes
-          "/var/lib/docker/volumes"
-      )
+                # Media directories 
+                "/mnt/jellyfin-pool/books"
+                "/mnt/jellyfin-pool/documents"
+                "/mnt/jellyfin-pool/photos"
+                
+                # Docker volumes
+                "/var/lib/docker/volumes"
+            )
 
-      # Define exclusion patterns
-      exclude_patterns=(
-          "/home/*/homelab/jellyfin-docker/cache"
-          "**/.git"
-          "**/cache/**"
-          "**/tmp/**"
-          "**/.cache/**"
-          "**/node_modules/**"
-          "**/.terraform/**"
-          "**/target/**"
-      )
+            # Define exclusion patterns
+            exclude_patterns=(
+                "/home/*/homelab/jellyfin-docker/cache"
+                "**/.git"
+                "**/cache/**"
+                "**/tmp/**"
+                "**/.cache/**"
+                "**/node_modules/**"
+                "**/.terraform/**"
+                "**/target/**"
+            )
 
-      # Build exclude arguments
-      exclude_args=()
-      for pattern in "''${exclude_patterns[@]}"; do
-          exclude_args+=(--exclude="$pattern")
-      done
+            # Build exclude arguments
+            exclude_args=()
+            for pattern in "''${exclude_patterns[@]}"; do
+                exclude_args+=(--exclude="$pattern")
+            done
 
-      # Check which backup paths exist and warn about missing ones
-      existing_paths=()
-      for path in "''${backup_paths[@]}"; do
-          if [ -e "$path" ]; then
-              existing_paths+=("$path")
-              log "Found backup path: $path"
-          else
-              log "Warning: Backup path does not exist: $path"
-          fi
-      done
+            # Check which backup paths exist and warn about missing ones
+            existing_paths=()
+            for path in "''${backup_paths[@]}"; do
+                if [ -e "$path" ]; then
+                    existing_paths+=("$path")
+                    log "Found backup path: $path"
+                else
+                    log "Warning: Backup path does not exist: $path"
+                fi
+            done
 
-      if [ ''${#existing_paths[@]} -eq 0 ]; then
-          log "Error: No backup paths exist. Please check your configuration."
-          exit 1
-      fi
+            if [ ''${#existing_paths[@]} -eq 0 ]; then
+                log "Error: No backup paths exist. Please check your configuration."
+                exit 1
+            fi
 
-      # Backup data
-      log "Starting backup of ''${#existing_paths[@]} directories..."
-      log "Backup paths: ''${existing_paths[*]}"
+            # Backup data
+            log "Starting backup of ''${#existing_paths[@]} directories..."
+            log "Backup paths: ''${existing_paths[*]}"
 
-      # Perform the backup
-      if restic backup \
-          --verbose \
-          "''${exclude_args[@]}" \
-          "''${existing_paths[@]}"; then
-          log "Backup completed successfully"
-      else
-          log "Error: Backup failed"
-          exit 1
-      fi
+            # Perform the backup
+            if restic backup \
+                --verbose \
+                "''${exclude_args[@]}" \
+                "''${existing_paths[@]}"; then
+                log "Backup completed successfully"
+            else
+                log "Error: Backup failed"
+                exit 1
+            fi
 
-      # Prune old backups
-      log "Pruning old backups (keeping last 7 daily, 4 weekly, 6 monthly)..."
-      if restic forget \
-          --keep-daily 7 \
-          --keep-weekly 4 \
-          --keep-monthly 6 \
-          --tag "$(cat /etc/hostname)" \
-          --prune \
-          --verbose; then
-          log "Pruning completed successfully"
-      else
-          log "Warning: Pruning failed"
-      fi
+            # Prune old backups
+            log "Pruning old backups (keeping last 7 daily, 4 weekly, 6 monthly)..."
+            if restic forget \
+                --keep-daily 7 \
+                --keep-weekly 4 \
+                --keep-monthly 6 \
+                --tag "$(cat /etc/hostname)" \
+                --prune \
+                --verbose; then
+                log "Pruning completed successfully"
+            else
+                log "Warning: Pruning failed"
+            fi
 
-      # Optional: Check repository integrity (only on Sundays to save time)
-      if [ "$(date +%u)" -eq 7 ] && [ "''${RESTIC_CHECK:-false}" = "true" ]; then
-          log "Running weekly repository integrity check..."
-          if restic check --verbose; then
-              log "Repository check completed successfully"
-          else
-              log "Warning: Repository check failed"
-          fi
-      fi
+            # Optional: Check repository integrity (only on Sundays to save time)
+            if [ "$(date +%u)" -eq 7 ] && [ "''${RESTIC_CHECK:-false}" = "true" ]; then
+                log "Running weekly repository integrity check..."
+                if restic check --verbose; then
+                    log "Repository check completed successfully"
+                else
+                    log "Warning: Repository check failed"
+                fi
+            fi
 
-      # Show repository stats
-      log "Repository statistics:"
-      restic stats --mode restore-size
+            # Show repository stats
+            log "Repository statistics:"
+            restic stats --mode restore-size
 
-      log "Backup script completed successfully!"
+            log "Backup script completed successfully!"
     '';
   };
 in {
@@ -196,7 +196,7 @@ in {
         chown backup:backup /var/lib/backup
         chmod 755 /var/lib/backup
       fi
-      
+
       # Create SSH directory
       mkdir -p /var/lib/backup/.ssh
       chown backup:backup /var/lib/backup/.ssh

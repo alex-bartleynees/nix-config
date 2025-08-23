@@ -23,6 +23,7 @@
 
   tailscale = {
     enable = true; # Enable Tailscale support
+    routingFeatures = "both";
   };
 
   docker = {
