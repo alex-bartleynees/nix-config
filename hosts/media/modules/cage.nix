@@ -1,7 +1,11 @@
 { config, lib, pkgs, ... }: {
-  services.cage = {
+  services.greetd = {
     enable = true;
-    user = "alexbn";
-    program = "${pkgs.moonlight-qt}/bin/moonlight";
+    settings = {
+      initial_session = {
+        command = "cage ${pkgs.moonlight-qt}/bin/moonlight";
+        user = "alexbn";
+      };
+    };
   };
 }

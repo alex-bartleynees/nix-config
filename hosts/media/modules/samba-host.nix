@@ -25,7 +25,6 @@ in {
   services.samba = {
     enable = true;
     package = pkgs.samba;
-    securityType = "user";
 
     # Note: Not using openFirewall = true since we handle firewall manually for Tailscale-only access
 
@@ -76,7 +75,7 @@ in {
   systemd.services.samba-smbd = {
     after = [ "tailscaled.service" ];
     wants = [ "tailscaled.service" ];
-    requisite = [ "mnt-jellyfinx2dpool.mount" ];
+    requisite = [ "mnt-jellyfin\\x2dpool.mount" ];
 
     # Wait for Tailscale interface before starting
     preStart = ''
@@ -114,21 +113,37 @@ in {
     '';
   };
 
-  # Activation script to set up Samba user password using sops secret
-  system.activationScripts.setupSambaUser = {
-    text = ''
+  # Set up Samba user via systemd service instead of activation script
+  systemd.services.setup-samba-user = {
+    description = "Setup Samba User";
+    wantedBy = [ "samba-smbd.service" ];
+    before = [ "samba-smbd.service" ];
+    after = [ "users.target" ];
+    
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    
+    script = ''
+      # Ensure Samba directories exist
+      mkdir -p /var/lib/samba/private
+      
       # Check if user exists in smbpasswd
-      if ! ${pkgs.samba}/bin/pdbedit -L | ${pkgs.gnugrep}/bin/grep -q "^${sambaUser}:"; then
+      if ! ${pkgs.samba}/bin/pdbedit -L 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q "^${sambaUser}:" 2>/dev/null; then
         echo "Adding ${sambaUser} to Samba users..."
         # Read password from sops secret file
-        PASSWORD=$(cat ${config.sops.secrets."samba/password".path})
-        echo -e "$PASSWORD\n$PASSWORD" | ${pkgs.samba}/bin/smbpasswd -a ${sambaUser}
+        if [ -f "${config.sops.secrets."samba/password".path}" ]; then
+          PASSWORD=$(cat ${config.sops.secrets."samba/password".path})
+          echo -e "$PASSWORD\n$PASSWORD" | ${pkgs.samba}/bin/smbpasswd -a ${sambaUser}
+        else
+          echo "Warning: Samba password secret not found"
+        fi
       fi
 
       # Ensure user is enabled
       ${pkgs.samba}/bin/smbpasswd -e ${sambaUser} 2>/dev/null || true
     '';
-    deps = [ "users" "setupSecrets" ];
   };
 
   environment.systemPackages = with pkgs; [

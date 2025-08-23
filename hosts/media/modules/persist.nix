@@ -45,8 +45,6 @@
       directories = [
         "Documents"
         ".config/moonlight"
-        ".config/cosmic"
-        ".config/dconf"
         ".cache/moonlight"
         ".config/atuin"
         ".gnupg"
