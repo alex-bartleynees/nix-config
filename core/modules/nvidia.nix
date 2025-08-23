@@ -38,6 +38,8 @@ in {
       # };
 
       services.xserver.videoDrivers = [ "nvidia" ];
+      virtualisation.docker.daemon.settings.features.cdi = true;
+      hardware.nvidia-container-toolkit.enable = true;
 
       environment.sessionVariables = {
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";

@@ -5,10 +5,10 @@ let
     additionalImports = [ ../modules ../nixos/configuration.nix ];
   };
 in {
-  specialisation.cosmic = {
+  specialisation.gnome = {
     inheritParentConfig = false;
     configuration = {
-      imports = sharedImports ++ [ ../../../core/desktops/cosmic.nix ];
+      imports = sharedImports ++ [ ../../../core/desktops/gnome.nix ];
     };
   };
 }
