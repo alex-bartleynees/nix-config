@@ -10,6 +10,7 @@
     ./virtualisation.nix
     ./system.nix
     ./display-manager.nix
+    ./secrets.nix
   ];
 }
 

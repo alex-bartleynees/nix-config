@@ -1,5 +1,5 @@
-{ config, pkgs, lib, inputs, background, username, homeDirectory, hostName, theme
-, myUsers, ... }: {
+{ config, pkgs, lib, inputs, background, username, homeDirectory, hostName
+, theme, myUsers, ... }: {
 
   imports = [ ./modules/alacritty ./modules/tmux ]
     ++ (if builtins.pathExists ./modules/${hostName} then
@@ -86,43 +86,41 @@
     defaultEditor = true;
   };
 
-  home.packages = with pkgs; [
-    ripgrep
-    fd
-    fastfetch
-    tmux
-    fzf
-    btop
-    bat
-    bottom
-    lazygit
-    lazydocker
-    alacritty
-    font-awesome
-    icomoon-feather
-    iosevka
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.fira-code
-    nerd-fonts.hack
-    inputs.lazyvim.packages.${system}.default
-    inputs.neovim.packages.${system}.default
-    zoxide
-    tmuxinator
-    claude-code
-    delta
-    (vim_configurable.customize {
-      name = "vim";
-      vimrcConfig.customRC = ''
-        source $VIMRUNTIME/defaults.vim
-        set clipboard=unnamedplus
-      '';
-    })
-    wget
-    git
-  ] ++ lib.optionals pkgs.stdenv.isLinux [
-    wl-clipboard
-    wl-clipboard-x11
-  ];
+  home.packages = with pkgs;
+    [
+      ripgrep
+      fd
+      fastfetch
+      tmux
+      fzf
+      btop
+      bat
+      bottom
+      lazygit
+      lazydocker
+      alacritty
+      font-awesome
+      icomoon-feather
+      iosevka
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.fira-code
+      nerd-fonts.hack
+      inputs.lazyvim.packages.${system}.default
+      inputs.neovim.packages.${system}.default
+      zoxide
+      tmuxinator
+      claude-code
+      delta
+      (vim_configurable.customize {
+        name = "vim";
+        vimrcConfig.customRC = ''
+          source $VIMRUNTIME/defaults.vim
+          set clipboard=unnamedplus
+        '';
+      })
+      wget
+      git
+    ] ++ lib.optionals pkgs.stdenv.isLinux [ wl-clipboard wl-clipboard-x11 ];
 
   programs.zoxide.options = [ "--cmd cd" ];
   programs.zoxide.enable = true;

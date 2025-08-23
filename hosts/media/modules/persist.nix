@@ -40,19 +40,14 @@
       "/etc/NetworkManager/system-connections"
       "/etc/nixos"
     ];
-    files = [
-      "/etc/machine-id"
-      "/etc/shadow"
-      "/etc/passwd"
-      "/etc/group"
-      "/etc/gshadow"
-    ];
+    files = [ "/etc/machine-id" ];
     users.alexbn = {
       directories = [
         "Documents"
         ".config/moonlight"
+        ".config/cosmic"
+        ".config/dconf"
         ".cache/moonlight"
-        ".config/nix-config"
         ".config/atuin"
         ".gnupg"
         {

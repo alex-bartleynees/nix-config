@@ -1,3 +1,3 @@
 { config, pkgs, ... }: {
-  imports = [ ./cage.nix ./disk-config.nix ./storage.nix ./persist.nix ];
+  imports = [ ./cage.nix ./disk-config.nix ./storage.nix ];
 }

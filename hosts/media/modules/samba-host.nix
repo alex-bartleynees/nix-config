@@ -9,12 +9,6 @@ let
   mediaPath = "/mnt/jellyfin-pool";
 
 in {
-  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
-
-  sops.secrets.samba_password = {
-    sopsFile = "../../../secrets/samba-password.yaml";
-  };
-
   # Create the media user
   users.users.${sambaUser} = {
     isSystemUser = true;
@@ -127,7 +121,7 @@ in {
       if ! ${pkgs.samba}/bin/pdbedit -L | ${pkgs.gnugrep}/bin/grep -q "^${sambaUser}:"; then
         echo "Adding ${sambaUser} to Samba users..."
         # Read password from sops secret file
-        PASSWORD=$(cat ${config.sops.secrets.samba_password.path})
+        PASSWORD=$(cat ${config.sops.secrets."samba/password".path})
         echo -e "$PASSWORD\n$PASSWORD" | ${pkgs.samba}/bin/smbpasswd -a ${sambaUser}
       fi
 

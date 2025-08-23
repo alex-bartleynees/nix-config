@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 let
-  username = builtins.head
-    (builtins.filter (user: config.users.users.${user}.isNormalUser)
-      (builtins.attrNames config.users.users));
-
   backupScript = pkgs.writeShellApplication {
     name = "restic-backup";
     runtimeInputs = with pkgs; [ restic openssh coreutils ];
@@ -153,10 +149,6 @@ let
     '';
   };
 in {
-  # SOPS configuration
-  sops.defaultSopsFile = ../../../secrets/backup.yaml;
-  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
-
   # SOPS secrets configuration for backup
   sops.secrets = {
     "backup/restic-password" = {
@@ -175,9 +167,7 @@ in {
   users.users.backup = {
     isSystemUser = true;
     group = "backup";
-    home = "/var/lib/backup";
-    createHome = true;
-    shell = pkgs.bash;
+    shell = null;
   };
 
   users.groups.backup = { };

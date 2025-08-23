@@ -72,6 +72,11 @@ in {
         enable = true;
         pulse.enable = true;
       };
+
+      # Root user
+      users.users.root = {
+        hashedPasswordFile = config.sops.secrets."passwords/root".path;
+      };
     })
 
     # WSL-specific settings

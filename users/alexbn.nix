@@ -7,7 +7,7 @@
       extraGroups =
         [ "networkmanager" "wheel" "docker" "i2c" "plugdev" "video" "render" ];
       packages = with pkgs; [ ];
-      initialPassword = "temppassword";
+      hashedPasswordFile = config.sops.secrets."passwords/alexbn".path;
     };
   };
 

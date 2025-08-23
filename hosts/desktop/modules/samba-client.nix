@@ -1,25 +1,14 @@
-{ config, pkgs, ... }:
-let
-  username = builtins.head
-    (builtins.filter (user: config.users.users.${user}.isNormalUser)
-      (builtins.attrNames config.users.users));
-in {
+{ config, pkgs, ... }: {
   # Enable CIFS/SMB support
   boot.supportedFilesystems = [ "cifs" ];
 
   # Install CIFS utilities
   environment.systemPackages = with pkgs; [ cifs-utils ];
 
-  sops.defaultSopsFile = ../../../secrets/samba.yaml;
-  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
-
-  sops.secrets.samba_username = { };
-  sops.secrets.samba_password = { };
-
   sops.templates."samba-credentials" = {
     content = ''
-      username=${config.sops.placeholder.samba_username}
-      password=${config.sops.placeholder.samba_password}
+      username=${config.sops.placeholder."samba/username"}
+      password=${config.sops.placeholder."samba/password"}
       domain=WORKGROUP
     '';
     owner = "root";
