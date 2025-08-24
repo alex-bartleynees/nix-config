@@ -13,7 +13,7 @@ in {
   users.users.${sambaUser} = {
     isSystemUser = true;
     group = sambaUser;
-    shell = null;
+    shell = pkgs.shadow;
   };
   users.groups.${sambaUser} = { };
 

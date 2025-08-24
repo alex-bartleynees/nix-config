@@ -180,7 +180,7 @@ in {
     isSystemUser = true;
     group = "backup";
     extraGroups = [ "tailscale" ];
-    shell = null;
+    shell = pkgs.shadow;
     home = "/var/lib/backup";
     createHome = true;
   };
