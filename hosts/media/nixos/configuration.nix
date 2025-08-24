@@ -41,6 +41,31 @@
     style = "adwaita-dark";
   };
 
+  environment.systemPackages = with pkgs; [
+    gnome-keyring
+    libsecret
+    adwaita-qt
+    gtk-engine-murrine
+    gtk_engines
+    gsettings-desktop-schemas
+    adwaita-icon-theme
+    networkmanagerapplet
+    blueman
+  ];
+
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    NIXOS_OZONE_WL = "1";
+    WLR_RENDERER = "vulkan";
+    XDG_SESSION_TYPE = "wayland";
+    GTK_THEME = "Adwaita:dark";
+    QT_STYLE_OVERRIDE = "adwaita-dark";
+    MOZ_USE_XINPUT2 = "1";
+    # Force dark mode for websites
+    GTK_USE_PORTAL = "1";
+    GSETTINGS_SCHEMA_DIR = "/run/current-system/sw/share/gsettings-schemas/";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

@@ -66,6 +66,7 @@ in {
 
       # Networking
       networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
+      networking.networkmanager.enable = true;
 
       # Audio
       services.pipewire = {

@@ -75,9 +75,6 @@
   security.pam.services.login.enableGnomeKeyring = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
 
-  # Enable networking
-  networking.networkmanager.enable = true;
-
   displayManager = { enable = true; };
 
   system.nixos.tags = [ "sway" ];

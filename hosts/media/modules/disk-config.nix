@@ -43,10 +43,6 @@
                     mountpoint = "/home";
                     mountOptions = [ "compress=zstd" "noatime" ];
                   };
-                  "@persist" = {
-                    mountpoint = "/persist"; # Persistent subvolume
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
                   "@nix" = {
                     mountpoint = "/nix"; # Nix subvolume
                     mountOptions = [

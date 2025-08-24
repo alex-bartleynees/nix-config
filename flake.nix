@@ -38,8 +38,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    impermanence = { url = "github:nix-community/impermanence"; };
-
     dotfiles = {
       url = "github:alex-bartleynees/dotfiles";
       flake = false;

@@ -8,7 +8,6 @@
   services.upower.enable = true;
   services.accounts-daemon.enable = true;
 
-  networking.networkmanager.enable = true;
   programs.nm-applet.enable = true;
 
   environment.systemPackages = with pkgs; [
