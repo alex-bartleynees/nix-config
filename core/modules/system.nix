@@ -75,6 +75,7 @@ in {
       };
 
       # Root user
+      users.mutableUsers = false;
       users.users.root = {
         hashedPasswordFile = config.sops.secrets."passwords/root".path;
       };
