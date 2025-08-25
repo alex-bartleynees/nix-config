@@ -13,6 +13,6 @@ in nixpkgs.lib.nixosSystem {
   };
   modules = shared.getImports {
     additionalImports =
-      [ ./nixos/configuration.nix ./modules ./specialisations/gnome.nix ];
-  };
-}
+      [ ./nixos/configuration.nix ./modules ../../core/desktops/gnome.nix ];
+    };
+  }
