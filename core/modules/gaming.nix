@@ -176,11 +176,26 @@ in {
       environment.systemPackages = [ pkgs.moonlight-qt ];
       networking.firewall = {
         enable = true;
-        allowedTCPPorts = [ 47984 47989 47990 48010 ];
-        allowedUDPPortRanges = [{
-          from = 47998;
-          to = 48000;
-        }];
+        allowedTCPPortRanges = [
+          {
+            from = 47984;
+            to = 47990;
+          }
+          {
+            from = 48010;
+            to = 48010;
+          }
+        ];
+        allowedUDPPortRanges = [
+          {
+            from = 47998;
+            to = 48002;
+          }
+          {
+            from = 48010;
+            to = 48010;
+          }
+        ];
       };
     })
   ];
