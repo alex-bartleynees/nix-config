@@ -28,7 +28,7 @@ in {
       services.greetd = { enable = true; };
       programs.regreet = {
         enable = true;
-        cageArgs = [ "-m" "last" ];
+        cageArgs = [ "-s" "-m" "last" ];
       };
     })
 
