@@ -66,7 +66,8 @@
     GSETTINGS_SCHEMA_DIR = "/run/current-system/sw/share/gsettings-schemas/";
   };
 
-  displayManager.gdm.enable = false
+  displayManager.gdm.enable = false;
+  zswap.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

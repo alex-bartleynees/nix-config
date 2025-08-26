@@ -14,5 +14,5 @@ in nixpkgs.lib.nixosSystem {
   modules = shared.getImports {
     additionalImports =
       [ ./nixos/configuration.nix ./modules ../../core/desktops/gnome.nix ];
-    };
-  }
+  };
+}
