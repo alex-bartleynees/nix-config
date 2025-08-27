@@ -1,6 +1,5 @@
 { config, pkgs, lib, ... }: {
   users = lib.mkIf pkgs.stdenv.isLinux {
-    mutableUsers = false;
     users.alexbn = {
       isNormalUser = true;
       shell = pkgs.zsh;

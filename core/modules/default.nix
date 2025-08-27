@@ -12,6 +12,7 @@
     ./display-manager.nix
     ./secrets.nix
     ./zswap.nix
+    ./silent-boot.nix
   ];
 }
 

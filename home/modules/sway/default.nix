@@ -4,6 +4,9 @@
     swayidle
     swaylock
     sway-audio-idle-inhibit
+    grim
+    slurp
+    feh
   ];
 
   home.file = {

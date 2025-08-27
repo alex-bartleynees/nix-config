@@ -1,5 +1,5 @@
 { config, lib, ... }:
-let cfg = config.zwap;
+let cfg = config.zswap;
 in {
   options.zswap.enable = lib.mkEnableOption "Enable zswap support";
   config = lib.mkIf cfg.enable {

@@ -66,7 +66,7 @@
     GSETTINGS_SCHEMA_DIR = "/run/current-system/sw/share/gsettings-schemas/";
   };
 
-  displayManager.gdm.enable = false;
+  services.displayManager.gdm.enable = lib.mkForce false;
   zswap.enable = true;
 
   # This value determines the NixOS release from which the default

@@ -10,10 +10,10 @@ let
       mktplcRef = { inherit name publisher sha256 version; };
     };
 in {
-  stylix.targets.vscode.enable = false;
+  #stylix.targets.vscode.enable = false;
   programs.vscode = {
     enable = true;
-    profiles.default.enableExtensionUpdateCheck = true;
+    profiles.default.enableExtensionUpdateCheck = true; 
 
     profiles.default.extensions = (with pkgs.vscode-extensions; [
       bbenoist.nix
@@ -53,9 +53,9 @@ in {
       ms-dotnettools.vscodeintellicode-csharp
       christian-kohler.npm-intellisense
       ms-kubernetes-tools.vscode-kubernetes-tools
-      ms-python.python
-      ms-python.pylint
-      ms-python.debugpy
+      # ms-python.python
+      # ms-python.pylint
+      # ms-python.debugpy
       svelte.svelte-vscode
       vscodevim.vim
     ]) ++ [

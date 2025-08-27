@@ -4,6 +4,7 @@ let inherit (inputs) mac-app-util;
 in [
   mac-app-util.darwinModules.default
   inputs.home-manager.darwinModules.home-manager
+  inputs.stylix.darwinModules.stylix
 
   ({ config, pkgs, ... }: {
     home-manager.extraSpecialArgs = {

@@ -1,4 +1,4 @@
-{ config, pkgs, background, lib, ... }:
+{ config, pkgs, lib, ... }:
 let cfg = config.system;
 in {
   options.system = {

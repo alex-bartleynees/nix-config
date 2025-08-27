@@ -38,6 +38,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     dotfiles = {
       url = "github:alex-bartleynees/dotfiles";
       flake = false;
@@ -50,11 +52,12 @@
 
   outputs = inputs@{ self, nixpkgs, home-manager, nixos-wsl, nix-darwin
     , mac-app-util, stylix, lazyvim, neovim, nixos-cosmic, cosmic-nixpkgs
-    , sops-nix, disko, ... }: {
+    , sops-nix, disko, nixos-hardware, ... }: {
       nixosConfigurations = {
         desktop = import ./hosts/desktop { inherit inputs; };
         wsl = import ./hosts/wsl { inherit inputs; };
         media = import ./hosts/media { inherit inputs; };
+        thinkpad = import ./hosts/thinkpad { inherit inputs; };
       };
 
       darwinConfigurations = {

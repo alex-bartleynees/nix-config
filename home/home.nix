@@ -125,6 +125,7 @@
   programs.zoxide.options = [ "--cmd cd" ];
   programs.zoxide.enable = true;
   programs.zoxide.enableZshIntegration = true;
+  programs.yazi.enable = true;
 
   programs.atuin = {
     enable = true;
