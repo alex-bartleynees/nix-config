@@ -21,6 +21,8 @@
   # Docker support
   docker.enable = true;
 
+  tailscale.enable = true;
+
   systemd.tmpfiles.rules = [
     "L+ /etc/ssl/certs/mkcert-rootCA.pem - - - - /home/alexbn/.local/share/mkcert/rootCA.pem"
     "L+ /etc/ssl/certs/aspnet-fullchain.pem - - - - /mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem"
