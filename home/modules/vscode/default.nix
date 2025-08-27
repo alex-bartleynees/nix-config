@@ -10,7 +10,6 @@ let
       mktplcRef = { inherit name publisher sha256 version; };
     };
 in {
-  #stylix.targets.vscode.enable = false;
   programs.vscode = {
     enable = true;
     profiles.default.enableExtensionUpdateCheck = true; 
