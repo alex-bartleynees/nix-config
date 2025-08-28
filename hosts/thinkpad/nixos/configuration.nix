@@ -1,4 +1,4 @@
-{ config, pkgs, background, ... }: {
+{ config, pkgs, theme, ... }: {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -16,7 +16,7 @@
 
   stylixTheming = {
     enable = true;
-    image = background.wallpaper;
+    image = theme.wallpaper;
   };
 
   silentBoot.enable = true;

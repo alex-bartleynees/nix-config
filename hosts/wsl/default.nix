@@ -5,7 +5,7 @@ let
     inherit inputs;
     username = "alexbn";
     homeDirectory = "/home/alexbn";
-    theme = "tokyo-night";
+    theme = import ../../core/themes/tokyo-night.nix { inherit inputs; };
   };
 in nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";

@@ -1,5 +1,5 @@
-{ config, pkgs, lib, inputs, background, username, homeDirectory, hostName
-, theme, myUsers, ... }: {
+{ config, pkgs, lib, inputs, username, homeDirectory, hostName, theme, myUsers
+, ... }: {
 
   imports = [ ./modules/alacritty ./modules/tmux ]
     ++ (if builtins.pathExists ./modules/${hostName} then
@@ -144,7 +144,7 @@
     };
 
     ".config/nvim/lua/alex/plugins/colorscheme.lua" = {
-      source = "${inputs.dotfiles}/themes/${theme}/nvim/colorscheme.lua";
+      source = "${inputs.dotfiles}/themes/${theme.name}/nvim/colorscheme.lua";
     };
 
     ".config/lazyvim" = {
@@ -156,7 +156,7 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
-    BACKGROUND = background.wallpaper;
+    BACKGROUND = theme.wallpaper;
     NIX_BUILD_SHELL = "${pkgs.zsh}/bin/zsh";
     SHELL = "${pkgs.zsh}/bin/zsh";
   };

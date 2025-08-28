@@ -1,4 +1,4 @@
-{ pkgs, inputs, background, hostName, theme, ... }: {
+{ pkgs, inputs, hostName, theme, ... }: {
   home.packages = with pkgs; [
     swaybg
     swayidle
@@ -11,12 +11,12 @@
 
   home.file = {
     ".config/sway/colorscheme".source =
-      "${inputs.dotfiles}/themes/${theme}/sway/colorscheme";
+      "${inputs.dotfiles}/themes/${theme.name}/sway/colorscheme";
     ".config/sway/config".source = "${inputs.dotfiles}/configs/sway/config";
     ".config/sway/lock.sh".source = "${inputs.dotfiles}/configs/sway/lock.sh";
 
     ".config/sway/background".text = ''
-      set $background ${background.wallpaper}
+      set $background ${theme.wallpaper}
     '';
 
     ".config/sway/${hostName}/config".text = ''
@@ -60,9 +60,9 @@
 
 
       # start rofi (a program launcher)
-      bindsym $mod+d exec rofi -show drun -theme $HOME/.config/rofi/${theme}.rasi
+      bindsym $mod+d exec rofi -show drun -theme $HOME/.config/rofi/${theme.name}.rasi
       # start rofi powermenu
-      bindsym $mod+shift+p exec $HOME/.local/bin/powermenu powermenu-${theme}
+      bindsym $mod+shift+p exec $HOME/.local/bin/powermenu powermenu-${theme.name}
 
       input * {
         xkb_layout "us,us"

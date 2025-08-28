@@ -1,6 +1,4 @@
-{ inputs, username ? "alexbn", homeDirectory ? "/home/alexbn"
-, theme ? "catppuccin-mocha" }:
-
+{ inputs, username ? "alexbn", homeDirectory ? "/home/alexbn", theme }:
 let
   baseImports = [
     ./locale.nix

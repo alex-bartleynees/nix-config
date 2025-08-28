@@ -1,4 +1,4 @@
-{ config, pkgs, background, lib, ... }: {
+{ config, pkgs, lib, ... }: {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -30,10 +30,7 @@
     enable = true; # Enable Docker support
   };
 
-  stylixTheming = {
-    enable = true;
-    image = background.wallpaper;
-  };
+  stylixTheming = { enable = true; };
 
   qt = {
     enable = true;

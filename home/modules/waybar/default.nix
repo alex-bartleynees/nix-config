@@ -3,7 +3,7 @@
 
   home.file = {
     ".config/waybar" = {
-      source = "${inputs.dotfiles}/themes/${theme}/waybar";
+      source = "${inputs.dotfiles}/themes/${theme.name}/waybar";
       recursive = true;
     };
   };

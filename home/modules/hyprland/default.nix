@@ -1,43 +1,7 @@
-{ pkgs, config, lib, inputs, background, hostName, theme, ... }:
+{ pkgs, config, lib, inputs, hostName, theme, ... }:
 let
-  # Theme color definitions
-  themeColors = {
-    catppuccin-mocha = {
-      active_border = "rgb(cba6f7)"; # mauve
-      inactive_border = "rgb(6c7086)"; # overlay0
-      locked_active = "rgb(f9e2af)"; # yellow
-      locked_inactive = "rgb(585b70)"; # surface2
-      text = "rgb(cdd6f4)"; # text
-      groupbar_active = "rgb(cba6f7)"; # mauve
-      groupbar_inactive = "rgb(313244)"; # surface0
-      groupbar_locked_active = "rgb(f9e2af)"; # yellow
-      groupbar_locked_inactive = "rgb(585b70)"; # surface2
-    };
-    tokyo-night = {
-      active_border = "rgb(7aa2f7)"; # blue
-      inactive_border = "rgb(565f89)"; # comment
-      locked_active = "rgb(e0af68)"; # yellow
-      locked_inactive = "rgb(3b4261)"; # bg_highlight
-      text = "rgb(c0caf5)"; # foreground
-      groupbar_active = "rgb(7aa2f7)"; # blue
-      groupbar_inactive = "rgb(24283b)"; # bg_dark
-      groupbar_locked_active = "rgb(e0af68)"; # yellow
-      groupbar_locked_inactive = "rgb(3b4261)"; # bg_highlight
-    };
-    everforest = {
-      active_border = "rgb(a7c080)"; # green
-      inactive_border = "rgb(7a8478)"; # grey1
-      locked_active = "rgb(dbbc7f)"; # yellow
-      locked_inactive = "rgb(4f5b58)"; # bg2
-      text = "rgb(d3c6aa)"; # fg
-      groupbar_active = "rgb(a7c080)"; # green
-      groupbar_inactive = "rgb(2d353b)"; # bg0
-      groupbar_locked_active = "rgb(dbbc7f)"; # yellow
-      groupbar_locked_inactive = "rgb(4f5b58)"; # bg2
-    };
-  };
-
-  colors = themeColors.${theme} or themeColors.catppuccin-mocha;
+  colors = theme.themeColors;
+  background = theme.wallpaper;
 in {
   home.packages = with pkgs; [
     hyprpaper
@@ -180,8 +144,8 @@ in {
         "$mod, Q, killactive"
         "$mod, T, exec, $terminal"
         "$mod, B, exec, $browser"
-        "$mod, D, exec, rofi -show drun -theme $HOME/.config/rofi/${theme}.rasi"
-        "$mod SHIFT, P, exec, $HOME/.local/bin/powermenu powermenu-${theme}"
+        "$mod, D, exec, rofi -show drun -theme $HOME/.config/rofi/${theme.name}.rasi"
+        "$mod SHIFT, P, exec, $HOME/.local/bin/powermenu powermenu-${theme.name}"
         "$mod, F, fullscreen"
         "$mod SHIFT, SPACE, togglefloating"
         #"$mod, A, focusparent"
@@ -402,7 +366,7 @@ in {
       };
 
       background = lib.mkForce [{
-        path = "${background.wallpaper}";
+        path = "${background}";
         blur_passes = 3;
         blur_size = 8;
       }];
@@ -431,13 +395,13 @@ in {
       splash = false;
       splash_offset = 2.0;
 
-      preload = [ "${background.wallpaper}" ];
+      preload = [ "${background}" ];
 
       wallpaper = if hostName == "thinkpad" then
-        [ "eDP-1,${background.wallpaper}" ]
+        [ "eDP-1,${background}" ]
       else [
-        "DP-6,${background.wallpaper}"
-        "DP-4,${background.wallpaper}"
+        "DP-6,${background}"
+        "DP-4,${background}"
       ];
     };
   };
