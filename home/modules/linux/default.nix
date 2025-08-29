@@ -21,6 +21,6 @@
   home.file = { ".config/ghostty/config".source = ../ghostty/ghostty.linux; };
 
   fonts.fontconfig.enable = true;
-  
+
   stylix.targets.vscode.enable = false;
 }

@@ -7,7 +7,8 @@
       extraGroups =
         [ "networkmanager" "wheel" "docker" "i2c" "plugdev" "video" "render" ];
       packages = with pkgs; [ ];
-      initialHashedPassword = "$6$fj6v7DyFbiqBDSSi$3M6vGFcbI2rxhKwAU49FDhWeA6ZKZKMPRuTtWkZMkrECXko9goxJje94.drywOXZSV4Sv7GFecTX1c06qOxTV/";
+      initialHashedPassword =
+        "$6$fj6v7DyFbiqBDSSi$3M6vGFcbI2rxhKwAU49FDhWeA6ZKZKMPRuTtWkZMkrECXko9goxJje94.drywOXZSV4Sv7GFecTX1c06qOxTV/";
       hashedPasswordFile = config.sops.secrets."passwords/alexbn".path;
     };
   };

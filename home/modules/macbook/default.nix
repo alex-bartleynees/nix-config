@@ -1,5 +1,5 @@
 { pkgs, inputs, ... }: {
-  imports = [ ../vscode ../brave  ];
+  imports = [ ../vscode ../brave ];
 
   home.packages = with pkgs; [ aerospace tailscale ];
 

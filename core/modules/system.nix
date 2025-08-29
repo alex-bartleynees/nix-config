@@ -77,7 +77,8 @@ in {
       # Root user
       users.mutableUsers = false;
       users.users.root = {
-        initialHashedPassword = "$6$n2D1ZBpbcavgoyMs$lwoQv71z3pGUStla4XV7jWGJnFEfU16aODX0F1JbhuUrvqn1JsjEQ7QMKB8qvItrmH5R0qEax/AIOAygpJdRW.";
+        initialHashedPassword =
+          "$6$n2D1ZBpbcavgoyMs$lwoQv71z3pGUStla4XV7jWGJnFEfU16aODX0F1JbhuUrvqn1JsjEQ7QMKB8qvItrmH5R0qEax/AIOAygpJdRW.";
         hashedPasswordFile = config.sops.secrets."passwords/root".path;
       };
     })

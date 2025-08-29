@@ -54,11 +54,15 @@ in {
     rofi-wayland
   ];
 
+  xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh"; 
+
   wayland.windowManager.hyprland = {
     enable = true;
     settings = {
-      # Monitor configuration - matches your desktop setup
-      monitor = [
+      # Monitor configuration per host
+      monitor = if hostName == "thinkpad" then [
+        "eDP-1,1920x1080@60,0x0,1" # Built-in laptop display
+      ] else [
         "DP-6,2560x1440@165,0x0,1" # Main monitor
         "DP-4,2560x1440@165,2560x0,1,transform,3" # Secondary monitor rotated 270°
       ];
@@ -139,7 +143,7 @@ in {
         kb_layout = "us";
         follow_mouse = 1;
 
-        touchpad = { natural_scroll = false; };
+        touchpad = { natural_scroll = true; };
 
         sensitivity = 0;
       };
@@ -149,7 +153,6 @@ in {
 
       # Autostart
       exec-once = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "nm-applet"
         "blueman-applet"
         "udiskie --tray"
@@ -276,8 +279,19 @@ in {
       # Mouse bindings
       bindm = [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
 
-      # Workspace rules
-      workspace = [
+      # Workspace rules per host
+      workspace = if hostName == "thinkpad" then [
+        "1, monitor:eDP-1"
+        "2, monitor:eDP-1"
+        "3, monitor:eDP-1"
+        "4, monitor:eDP-1"
+        "5, monitor:eDP-1"
+        "6, monitor:eDP-1"
+        "7, monitor:eDP-1"
+        "8, monitor:eDP-1"
+        "9, monitor:eDP-1"
+        "10, monitor:eDP-1"
+      ] else [
         "1, monitor:DP-6"
         "2, monitor:DP-6"
         "3, monitor:DP-6"
@@ -404,8 +418,12 @@ in {
 
       preload = [ "${background.wallpaper}" ];
 
-      wallpaper =
-        [ "DP-6,${background.wallpaper}" "DP-4,${background.wallpaper}" ];
+      wallpaper = if hostName == "thinkpad" then [
+        "eDP-1,${background.wallpaper}"
+      ] else [
+        "DP-6,${background.wallpaper}"
+        "DP-4,${background.wallpaper}"
+      ];
     };
   };
 }

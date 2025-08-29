@@ -43,9 +43,11 @@
     enable = true;
     powertop.enable = true;
   };
-  services.power-profiles-daemon.enable = true;
   boot.kernelParams = [ "mem_sleep_default=deep" ];
   services.thermald.enable = true;
+
+  # Packages
+  environment.systemPackages = with pkgs; [ brightnessctl powertop ];
 
   system.stateVersion = "25.05";
 }
