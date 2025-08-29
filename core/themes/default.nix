@@ -13,22 +13,30 @@ let
     });
 
   # Generate specializations for each theme
-  generateThemeSpecialisations = baseConfig: desktop:
-    lib.genAttrs (builtins.attrNames themes) (themeName: {
-      inheritParentConfig = false;
-      configuration = {
-        imports = baseConfig ++ [ ../desktops/${desktop}.nix ];
-        # Override theme in specialization
-        _module.args.theme = themes.${themeName};
-      };
-    });
+  generateThemeSpecialisations = baseImports: desktop:
+    lib.genAttrs (builtins.attrNames themes) (themeName:
+      let
+        shared = import ../../shared/nixos-default.nix {
+          inherit inputs;
+          theme = themes.${themeName};
+        };
+        baseConfig = shared.getImports {
+          additionalImports = baseImports
+            ++ [{ _module.args.theme = themes.${themeName}; }];
+        };
+      in {
+        inheritParentConfig = false;
+        configuration = {
+          imports = baseConfig ++ [ ../desktops/${desktop}.nix ];
+        };
+      });
 
 in {
   inherit themes;
   inherit generateThemeSpecialisations;
 
   # Helper function to create theme specializations for a host
-  mkThemeSpecialisations = { baseConfig, desktop ? "hypr" }: {
-    specialisation = generateThemeSpecialisations baseConfig desktop;
+  mkThemeSpecialisations = { baseImports, desktop ? "hypr" }: {
+    specialisation = generateThemeSpecialisations baseImports desktop;
   };
 }
