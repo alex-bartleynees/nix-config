@@ -156,6 +156,12 @@ in {
         sensitivity = 0;
       };
 
+      # Gestures configuration
+      gestures = {
+        workspace_swipe = true;
+        workspace_swipe_fingers = 3;
+      };
+
       # Environment variables
       env = [ "XCURSOR_SIZE,24" "HYPRCURSOR_SIZE,24" ];
 
@@ -255,21 +261,21 @@ in {
       ];
 
       # Resize submap
-      submap = [
-        "resize"
-        "bind = , J, resizeactive, -10 0"
-        "bind = , K, resizeactive, 0 -10"
-        "bind = , L, resizeactive, 0 10"
-        "bind = , SEMICOLON, resizeactive, 10 0"
-        "bind = , LEFT, resizeactive, -10 0"
-        "bind = , DOWN, resizeactive, 0 10"
-        "bind = , UP, resizeactive, 0 -10"
-        "bind = , RIGHT, resizeactive, 10 0"
-        "bind = , RETURN, submap, reset"
-        "bind = , ESCAPE, submap, reset"
-        "bind = $mod, R, submap, reset"
-        "submap = reset"
-      ];
+      # submap = [
+      #   "resize"
+      #   "bind = , J, resizeactive, -10 0"
+      #   "bind = , K, resizeactive, 0 -10"
+      #   "bind = , L, resizeactive, 0 10"
+      #   "bind = , SEMICOLON, resizeactive, 10 0"
+      #   "bind = , LEFT, resizeactive, -10 0"
+      #   "bind = , DOWN, resizeactive, 0 10"
+      #   "bind = , UP, resizeactive, 0 -10"
+      #   "bind = , RIGHT, resizeactive, 10 0"
+      #   "bind = , RETURN, submap, reset"
+      #   "bind = , ESCAPE, submap, reset"
+      #   "bind = $mod, R, submap, reset"
+      #   "submap = reset"
+      # ];
 
       # Function keys
       bindel = [
