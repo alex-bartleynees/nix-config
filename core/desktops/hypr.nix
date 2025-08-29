@@ -16,14 +16,14 @@
     adwaita-icon-theme
   ];
 
-  # xdg.portal = {
-  #   enable = true;
-  #   wlr.enable = true;
-  #   extraPortals = with pkgs; [
-  #     xdg-desktop-portal-hyprland
-  #     xdg-desktop-portal-gtk
-  #   ];
-  # };
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+    ];
+  };
 
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
