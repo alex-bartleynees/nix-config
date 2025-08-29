@@ -130,12 +130,14 @@ in {
       env = [ "XCURSOR_SIZE,24" "HYPRCURSOR_SIZE,24" ];
 
       # Autostart
-      exec = [ "systemctl --user restart hyprland-session.target" ];
+      exec = [ 
+        "systemctl --user restart hyprland-session.target"
+        "systemctl --user restart waybar"
+      ];
       exec-once = [
         "nm-applet"
         "blueman-applet"
         "udiskie --tray"
-        "waybar -c ~/.config/waybar/config-hyprland.jsonc -s ~/.config/waybar/style.css"
       ];
 
       # Key bindings
@@ -384,6 +386,29 @@ in {
         placeholder_text = "Password...";
         shadow_passes = 2;
       }];
+    };
+  };
+
+  # Waybar systemd service
+  systemd.user.services.waybar = {
+    Unit = {
+      Description = "Highly customizable Wayland bar for Sway and Wlroots based compositors";
+      Documentation = "https://github.com/Alexays/Waybar/wiki";
+      PartOf = [ "hyprland-session.target" ];
+      After = [ "hyprland-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config-hyprland.jsonc -s %h/.config/waybar/style.css";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+      Environment = [
+        "PATH=${pkgs.waybar}/bin"
+      ];
+    };
+    Install = {
+      WantedBy = [ "hyprland-session.target" ];
     };
   };
 
