@@ -54,15 +54,23 @@ in {
     rofi-wayland
   ];
 
-  xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh"; 
+  xdg.configFile."uwsm/env".source =
+    "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
   wayland.windowManager.hyprland = {
     enable = true;
+    package = null;
+    portalPackage = null;
+    systemdIntegration = true;
+    systemd.variables = [ "--all" ];
+
     settings = {
       # Monitor configuration per host
-      monitor = if hostName == "thinkpad" then [
-        "eDP-1,1920x1080@60,0x0,1" # Built-in laptop display
-      ] else [
+      monitor = if hostName == "thinkpad" then
+        [
+          "eDP-1,1920x1080@60,0x0,1" # Built-in laptop display
+        ]
+      else [
         "DP-6,2560x1440@165,0x0,1" # Main monitor
         "DP-4,2560x1440@165,2560x0,1,transform,3" # Secondary monitor rotated 270°
       ];
@@ -418,9 +426,9 @@ in {
 
       preload = [ "${background.wallpaper}" ];
 
-      wallpaper = if hostName == "thinkpad" then [
-        "eDP-1,${background.wallpaper}"
-      ] else [
+      wallpaper = if hostName == "thinkpad" then
+        [ "eDP-1,${background.wallpaper}" ]
+      else [
         "DP-6,${background.wallpaper}"
         "DP-4,${background.wallpaper}"
       ];
