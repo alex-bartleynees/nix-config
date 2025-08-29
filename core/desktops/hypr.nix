@@ -3,9 +3,6 @@
     enable = true;
     withUWSM = true;
     xwayland.enable = true;
-    package = pkgs.hyprland.override {
-      withSystemd = false;
-    };
   };
 
   environment.systemPackages = with pkgs; [
