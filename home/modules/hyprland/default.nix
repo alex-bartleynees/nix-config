@@ -160,6 +160,7 @@ in {
       env = [ "XCURSOR_SIZE,24" "HYPRCURSOR_SIZE,24" ];
 
       # Autostart
+      exec = [ "systemctl --user restart hyprland-session.target" ];
       exec-once = [
         "nm-applet"
         "blueman-applet"
