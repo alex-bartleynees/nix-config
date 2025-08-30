@@ -4,10 +4,9 @@
     settings = {
       # CPU Performance Settings
       CPU_BOOST_ON_AC = 1;
-      CPU_BOOST_ON_BAT =
-        0; # Disable turbo boost on battery for better efficiency
+      CPU_BOOST_ON_BAT = 1; # Enable turbo boost on battery
       CPU_HWP_DYN_BOOST_ON_AC = 1;
-      CPU_HWP_DYN_BOOST_ON_BAT = 0; # Disable dynamic boost on battery
+      CPU_HWP_DYN_BOOST_ON_BAT = 1; # Enable dynamic boost on battery
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
@@ -24,7 +23,7 @@
       CPU_SCALING_MAX_FREQ_ON_AC = 4600000; # Allow full turbo on AC
       CPU_SCALING_MIN_FREQ_ON_BAT = 400000; # 400 MHz minimum
       CPU_SCALING_MAX_FREQ_ON_BAT =
-        2600000; # Limit to base frequency on battery
+        2400000; # Allow moderate turbo boost up to 2.4GHz on battery
 
       # Battery Care (your settings are good, minor adjustment)
       START_CHARGE_THRESH_BAT0 = 75;
