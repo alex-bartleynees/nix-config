@@ -2,6 +2,9 @@
 let
   colors = theme.themeColors;
   background = theme.wallpaper;
+  
+  # Function to convert hex colors to rgb format for Hyprland
+  hexToRgb = hex: "rgb(${builtins.substring 1 6 hex})";
 in {
   home.packages = with pkgs; [
     hyprpaper
@@ -11,7 +14,7 @@ in {
     grim
     slurp
     wl-clipboard
-    light
+    brightnessctl
     blueman
     networkmanagerapplet
     udiskie
@@ -51,8 +54,8 @@ in {
         gaps_in = 10;
         gaps_out = 10;
         border_size = 3;
-        "col.active_border" = lib.mkForce colors.active_border;
-        "col.inactive_border" = lib.mkForce colors.inactive_border;
+        "col.active_border" = lib.mkForce (hexToRgb colors.active_border);
+        "col.inactive_border" = lib.mkForce (hexToRgb colors.inactive_border);
         resize_on_border = false;
         allow_tearing = true;
         layout = "dwindle";
@@ -89,10 +92,10 @@ in {
 
       # Group styling
       group = {
-        "col.border_active" = lib.mkForce colors.active_border;
-        "col.border_inactive" = lib.mkForce colors.inactive_border;
-        "col.border_locked_active" = lib.mkForce colors.locked_active;
-        "col.border_locked_inactive" = lib.mkForce colors.locked_inactive;
+        "col.border_active" = lib.mkForce (hexToRgb colors.active_border);
+        "col.border_inactive" = lib.mkForce (hexToRgb colors.inactive_border);
+        "col.border_locked_active" = lib.mkForce (hexToRgb colors.locked_active);
+        "col.border_locked_inactive" = lib.mkForce (hexToRgb colors.locked_inactive);
 
         groupbar = {
           enabled = true;
@@ -103,11 +106,11 @@ in {
           priority = 3;
           render_titles = true;
           scrolling = true;
-          text_color = lib.mkForce colors.text;
-          "col.active" = lib.mkForce colors.groupbar_active;
-          "col.inactive" = lib.mkForce colors.groupbar_inactive;
-          "col.locked_active" = lib.mkForce colors.groupbar_locked_active;
-          "col.locked_inactive" = lib.mkForce colors.groupbar_locked_inactive;
+          text_color = lib.mkForce (hexToRgb colors.text);
+          "col.active" = lib.mkForce (hexToRgb colors.groupbar_active);
+          "col.inactive" = lib.mkForce (hexToRgb colors.groupbar_inactive);
+          "col.locked_active" = lib.mkForce (hexToRgb colors.groupbar_locked_active);
+          "col.locked_inactive" = lib.mkForce (hexToRgb colors.groupbar_locked_inactive);
         };
       };
 
@@ -150,6 +153,8 @@ in {
         "$mod, B, exec, $browser"
         "$mod, D, exec, rofi -show drun -theme $HOME/.config/rofi/${theme.name}.rasi"
         "$mod SHIFT, P, exec, $HOME/.local/bin/powermenu powermenu-${theme.name}"
+        "$mod SHIFT, T, exec, ${inputs.dotfiles}/configs/rofi-custom/themeselector.sh powermenu-${theme.name}"
+        # Set wallpaper with swww if BACKGROUND env variable is set (with delay for theme to load)
         "$mod, F, fullscreen"
         "$mod SHIFT, SPACE, togglefloating"
         #"$mod, A, focusparent"
@@ -247,16 +252,16 @@ in {
 
       # Function keys
       bindel = [
-        ", XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +10%"
-        ", XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -10%"
-        ", XF86MonBrightnessUp, exec, light -A 5"
-        ", XF86MonBrightnessDown, exec, light -U 5"
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+"
+        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-"
+        ", XF86MonBrightnessUp, exec, rightnessctl set +5%"
+        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
       ];
 
       # Special keys
       bindl = [
-        ", XF86AudioMute, exec, pactl set-sink-mute @DEFAULT_SINK@ toggle"
-        ", XF86AudioMicMute, exec, pactl set-source-mute @DEFAULT_SOURCE@ toggle"
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
       ];
 
       # Mouse bindings

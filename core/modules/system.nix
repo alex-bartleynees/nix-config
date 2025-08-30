@@ -64,6 +64,15 @@ in {
       services.udisks2.enable = true;
       services.gnome.gnome-keyring.enable = true;
 
+      # Allow users in wheel group to switch specialisations without sudo
+      security.sudo.extraRules = [{
+        groups = [ "wheel" ];
+        commands = [{
+          command = "/nix/store/*/specialisation/*/bin/switch-to-configuration";
+          options = [ "NOPASSWD" ];
+        }];
+      }];
+
       # Networking
       networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
       networking.networkmanager.enable = true;
