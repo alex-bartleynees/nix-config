@@ -15,7 +15,7 @@
 
     # Second media drive  
     "/mnt/media2" = {
-      device = "/dev/disk/by-uuid/cde12443-c52b-4395-b7ea-907603052d8d";
+      device = "/dev/disk/by-uuid/d74c8238-4030-4924-b4b1-0be0fd406187";
       fsType = "ext4";
       options = [ "defaults" "noatime" ];
     };
