@@ -4,22 +4,14 @@ let
   username = builtins.head
     (builtins.filter (user: config.users.users.${user}.isNormalUser)
       (builtins.attrNames config.users.users));
-  sambaUser = "mediauser";
+  sambaUser = username;
   shareName = "jellyfin-pool";
   mediaPath = "/mnt/jellyfin-pool";
 
 in {
-  # Create the media user
-  users.users.${sambaUser} = {
-    isSystemUser = true;
-    group = sambaUser;
-    shell = pkgs.shadow;
-  };
-  users.groups.${sambaUser} = { };
+  # Note: Using existing regular user instead of creating system user
 
-  # Ensure media directory exists with proper permissions
-  systemd.tmpfiles.rules =
-    [ "d ${mediaPath} 0775 ${sambaUser} ${sambaUser} - -" ];
+  # Note: Directory permissions handled by storage.nix MergerFS mount
 
   # Configure Samba service
   services.samba = {
