@@ -19,6 +19,8 @@
     image = theme.wallpaper;
   };
 
+  sambaClient = { enable = true; };
+
   silentBoot.enable = true;
 
   zswap.enable = true;
