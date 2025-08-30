@@ -37,6 +37,8 @@
     image = background.wallpaper;
   };
 
+  sambaClient = { enable = true; };
+
   services.udev.extraRules = ''
     # Disable wake-up for Logitech USB Receiver (C548)
     SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c548", ATTR{power/wakeup}="disabled"

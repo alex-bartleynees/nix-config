@@ -1,2 +1,2 @@
-{ ... }: { imports = [ ./samba-client.nix ./voyager.nix ./disk-config.nix ]; }
+{ ... }: { imports = [ ./voyager.nix ./disk-config.nix ]; }
 

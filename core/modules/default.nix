@@ -13,6 +13,7 @@
     ./secrets.nix
     ./zswap.nix
     ./silent-boot.nix
+    ./samba-client.nix
   ];
 }
 
