@@ -25,7 +25,7 @@ in nixpkgs.lib.nixosSystem {
     additionalImports = [
       ./modules
       ./nixos/configuration.nix
-      #./specialisations
+      ./specialisations
       ../../core/desktops/hypr.nix
       {
         _module.args.theme = theme;

@@ -2,14 +2,20 @@
 let
   inherit (inputs) nixpkgs;
   system = builtins.currentSystem;
-  shared = import ../../shared/nixos-default.nix {
-    inherit inputs;
-    theme = import ../../core/themes/tokyo-night.nix { inherit inputs; };
+  pkgs = import nixpkgs {
+    system = "x86_64-linux";
+    config = { allowUnfree = true; };
   };
+  theme = import ../../core/themes/tokyo-night.nix { inherit inputs pkgs; };
+  shared = import ../../shared/nixos-default.nix { inherit inputs theme; };
 in nixpkgs.lib.nixosSystem {
   specialArgs = { inherit inputs; };
   modules = shared.getImports {
-    additionalImports =
-      [ ./nixos/configuration.nix ./modules ../../core/desktops/gnome.nix ];
+    additionalImports = [
+      ./nixos/configuration.nix
+      ./modules
+      ../../core/desktops/gnome.nix
+      { _module.args.theme = theme; }
+    ];
   };
 }

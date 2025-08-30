@@ -1,8 +1,11 @@
 { config, lib, pkgs, inputs, ... }:
 let
-  shared = import ../../../shared/nixos-default.nix { inherit inputs; };
+  theme =
+    import ../../../core/themes/catppuccin-mocha.nix { inherit inputs pkgs; };
+  shared = import ../../../shared/nixos-default.nix { inherit inputs theme; };
   sharedImports = shared.getImports {
-    additionalImports = [ ../modules ../nixos/configuration.nix ];
+    additionalImports =
+      [ ../modules ../nixos/configuration.nix { _module.args.theme = theme; } ];
   };
 in {
   specialisation.sway = {

@@ -1,11 +1,15 @@
 { inputs, ... }:
 let
   inherit (inputs) nixpkgs nixos-wsl;
+  pkgs = import nixpkgs {
+    system = "x86_64-linux";
+    config = { allowUnfree = true; };
+  };
+  theme = import ../../core/themes/tokyo-night.nix { inherit inputs pkgs; };
   nixosDefaults = import ../../shared/nixos-default.nix {
-    inherit inputs;
+    inherit inputs theme;
     username = "alexbn";
     homeDirectory = "/home/alexbn";
-    theme = import ../../core/themes/tokyo-night.nix { inherit inputs; };
   };
 in nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
@@ -13,7 +17,7 @@ in nixpkgs.lib.nixosSystem {
     additionalImports = [
       nixos-wsl.nixosModules.wsl
       ./nixos/configuration.nix
-      { nixpkgs.config.allowUnfree = true; }
+      { _module.args.theme = theme; }
     ];
   };
 }
