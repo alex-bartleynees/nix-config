@@ -20,6 +20,7 @@ in {
 
   xdg.configFile."uwsm/env".source =
     "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+  stylix.targets.hyprland.enable = false;
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -130,7 +131,7 @@ in {
       env = [ "XCURSOR_SIZE,24" "HYPRCURSOR_SIZE,24" ];
 
       # Autostart
-      exec = [ 
+      exec = [
         "systemctl --user restart hyprland-session.target"
         "systemctl --user restart waybar"
       ];
@@ -138,6 +139,7 @@ in {
         "nm-applet"
         "blueman-applet"
         "udiskie --tray"
+        "swww-daemon --format xrgb"
       ];
 
       # Key bindings
@@ -392,42 +394,40 @@ in {
   # Waybar systemd service
   systemd.user.services.waybar = {
     Unit = {
-      Description = "Highly customizable Wayland bar for Sway and Wlroots based compositors";
+      Description =
+        "Highly customizable Wayland bar for Sway and Wlroots based compositors";
       Documentation = "https://github.com/Alexays/Waybar/wiki";
       PartOf = [ "hyprland-session.target" ];
       After = [ "hyprland-session.target" ];
     };
     Service = {
       Type = "simple";
-      ExecStart = "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config-hyprland.jsonc -s %h/.config/waybar/style.css";
+      ExecStart =
+        "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config-hyprland.jsonc -s %h/.config/waybar/style.css";
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;
-      Environment = [
-        "PATH=${pkgs.waybar}/bin"
-      ];
+      Environment = [ "PATH=${pkgs.waybar}/bin" ];
     };
-    Install = {
-      WantedBy = [ "hyprland-session.target" ];
-    };
+    Install = { WantedBy = [ "hyprland-session.target" ]; };
   };
 
-  # Hyprpaper configuration
-  services.hyprpaper = {
-    enable = true;
-    settings = {
-      ipc = "on";
-      splash = false;
-      splash_offset = 2.0;
+  # Hyprpaper configuration - commented out in favor of swww
+  # services.hyprpaper = {
+  #   enable = true;
+  #   settings = {
+  #     ipc = "on";
+  #     splash = false;
+  #     splash_offset = 2.0;
 
-      preload = [ "${background}" ];
+  #     preload = [ "${background}" ];
 
-      wallpaper = if hostName == "thinkpad" then
-        [ "eDP-1,${background}" ]
-      else [
-        "DP-6,${background}"
-        "DP-4,${background}"
-      ];
-    };
-  };
+  #     wallpaper = if hostName == "thinkpad" then
+  #       [ "eDP-1,${background}" ]
+  #     else [
+  #       "DP-6,${background}"
+  #       "DP-4,${background}"
+  #     ];
+  #   };
+  # };
 }
