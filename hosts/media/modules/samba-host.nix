@@ -1,16 +1,12 @@
 { config, pkgs, lib, ... }:
 
 let
-  username = builtins.head
-    (builtins.filter (user: config.users.users.${user}.isNormalUser)
-      (builtins.attrNames config.users.users));
-  sambaUser = username;
+  sambaUser = "alexbn";
   shareName = "jellyfin-pool";
   mediaPath = "/mnt/jellyfin-pool";
 
 in {
   # Note: Using existing regular user instead of creating system user
-
   # Note: Directory permissions handled by storage.nix MergerFS mount
 
   # Configure Samba service
@@ -54,7 +50,7 @@ in {
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "valid users" = "${sambaUser} ${username}";
+        "valid users" = sambaUser;
         "create mask" = "0664";
         "directory mask" = "0775";
         "force user" = sambaUser;
