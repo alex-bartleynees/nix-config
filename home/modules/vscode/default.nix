@@ -16,6 +16,7 @@ in {
 
     profiles.default.extensions = (with pkgs.vscode-extensions; [
       bbenoist.nix
+      jnoortheen.nix-ide
       bradlc.vscode-tailwindcss
       denoland.vscode-deno
       editorconfig.editorconfig
