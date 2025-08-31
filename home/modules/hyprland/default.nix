@@ -158,6 +158,7 @@ in {
         "$mod, D, exec, rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi"
         "$mod SHIFT, P, exec, $HOME/.local/bin/powermenu powermenu-${theme.name}"
         "$mod SHIFT, T, exec, $HOME/.local/bin/themeselector powermenu-${theme.name}"
+        "$mod SHIFT, W, exec, $HOME/.local/bin/wallpaper ${theme.name}"
         "$mod, F, fullscreen"
         "$mod SHIFT, SPACE, togglefloating"
         #"$mod, A, focusparent"
@@ -230,7 +231,7 @@ in {
 
         # Lock and display control
         "CTRL $mod, L, exec, $lock"
-        "$mod SHIFT, W, exec, hyprctl dispatch dpms on"
+        "$mod CTRL, W, exec, hyprctl dispatch dpms on"
 
         # Resize mode
         "$mod, R, submap, resize"

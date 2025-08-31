@@ -18,6 +18,11 @@
     executable = true;
   };
 
+  home.file.".local/bin/wallpaper" = {
+    source = "${inputs.dotfiles}/configs/rofi-custom/scripts/wallpaper.sh";
+    executable = true;
+  };
+
   home.sessionPath = [ "$HOME/.local/bin" ];
 
 }
