@@ -57,7 +57,6 @@
     "d /mnt/jellyfin-pool/books 0775 1000 1000 - -"
     "d /mnt/jellyfin-pool/documents 0775 1000 1000 - -"
     "d /mnt/jellyfin-pool/photos 0775 1000 1000 - -"
-    "d /mnt/jellyfin-pool/seafile 0775 1000 1000 - -"
     "d /mnt/jellyfin-pool/movies 0775 1000 1000 - -"
     "d /mnt/jellyfin-pool/tv 0775 1000 1000 - -"
     "d /mnt/jellyfin-pool/music 0775 1000 1000 - -"
