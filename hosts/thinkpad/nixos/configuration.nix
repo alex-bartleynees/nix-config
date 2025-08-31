@@ -26,9 +26,9 @@
   zswap.enable = true;
 
   # Lid close
-  services.logind.lidSwitch = "suspend-then-hibernate";
-  services.logind.lidSwitchExternalPower = "lock";
-  services.logind.lidSwitchDocked = "ignore";
+  services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
+  services.logind.settings.Login.HandleLidSwitchExternalPower = "lock";
+  services.logind.settings.Login.HandleLidSwitchDocked = "ignore";
 
   # Define time delay for hibernation
   systemd.sleep.extraConfig = ''
@@ -37,8 +37,8 @@
   '';
 
   # Power button
-  services.logind.powerKey = "hibernate";
-  services.logind.powerKeyLongPress = "poweroff";
+  services.logind.settings.Login.HandlePowerKey = "hibernate";
+  services.logind.settings.Login.HandlePowerKeyLongPress = "poweroff";
 
   # Power Management
   powerManagement = {
