@@ -1,7 +1,7 @@
 { inputs, pkgs, ... }: {
   name = "tokyo-night";
   wallpaper =
-    "${inputs.dotfiles}/backgrounds/3--Milad-Fakurian-Abstract-Purple-Blue.jpg";
+    "${inputs.dotfiles}/backgrounds/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png";
   base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-storm.yaml";
   themeColors = {
     active_border = "#7aa2f7"; # blue
