@@ -29,7 +29,7 @@ in {
     enable = true;
     package = null;
     portalPackage = null;
-    systemdIntegration = true;
+    systemd.enable = true;
     systemd.variables = [ "--all" ];
 
     settings = {
@@ -153,8 +153,7 @@ in {
         "$mod, B, exec, $browser"
         "$mod, D, exec, rofi -show drun -theme $HOME/.config/rofi/${theme.name}.rasi"
         "$mod SHIFT, P, exec, $HOME/.local/bin/powermenu powermenu-${theme.name}"
-        "$mod SHIFT, T, exec, ${inputs.dotfiles}/configs/rofi-custom/themeselector.sh powermenu-${theme.name}"
-        # Set wallpaper with swww if BACKGROUND env variable is set (with delay for theme to load)
+        "$mod SHIFT, T, exec, $HOME/.local/bin/themeselector powermenu-${theme.name}"
         "$mod, F, fullscreen"
         "$mod SHIFT, SPACE, togglefloating"
         #"$mod, A, focusparent"
@@ -254,7 +253,7 @@ in {
       bindel = [
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+"
         ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-"
-        ", XF86MonBrightnessUp, exec, rightnessctl set +5%"
+        ", XF86MonBrightnessUp, exec, brightnessctl set +5%"
         ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
       ];
 
