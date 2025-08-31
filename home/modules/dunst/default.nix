@@ -9,10 +9,12 @@
       urgency_low = {
         background = lib.mkForce theme.themeColors.groupbar_inactive;
         foreground = lib.mkForce theme.themeColors.text;
+        frame_color = lib.mkForce theme.themeColors.active_border;
       };
       urgency_normal = {
         background = lib.mkForce theme.themeColors.groupbar_inactive;
         foreground = lib.mkForce theme.themeColors.text;
+        frame_color = lib.mkForce theme.themeColors.active_border;
       };
       urgency_critical = {
         background = lib.mkForce theme.themeColors.groupbar_inactive;

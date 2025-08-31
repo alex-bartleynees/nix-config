@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }: {
   nixpkgs.config.allowUnfree = true;
 
-  environment.systemPackages = with pkgs; [ fontconfig killall ];
+  environment.systemPackages = with pkgs; [ fontconfig killall libnotify ];
 }
