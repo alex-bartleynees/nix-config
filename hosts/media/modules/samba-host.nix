@@ -50,11 +50,10 @@ in {
         "browseable" = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "valid users" = sambaUser;
         "create mask" = "0664";
         "directory mask" = "0775";
         "force user" = sambaUser;
-        "force group" = sambaUser;
+        "force group" = "users";
       };
     };
   };
