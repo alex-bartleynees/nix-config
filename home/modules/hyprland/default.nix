@@ -2,7 +2,7 @@
 let
   colors = theme.themeColors;
   background = theme.wallpaper;
-  
+
   # Function to convert hex colors to rgb format for Hyprland
   hexToRgb = hex: "rgb(${builtins.substring 1 6 hex})";
 in {
@@ -94,8 +94,10 @@ in {
       group = {
         "col.border_active" = lib.mkForce (hexToRgb colors.active_border);
         "col.border_inactive" = lib.mkForce (hexToRgb colors.inactive_border);
-        "col.border_locked_active" = lib.mkForce (hexToRgb colors.locked_active);
-        "col.border_locked_inactive" = lib.mkForce (hexToRgb colors.locked_inactive);
+        "col.border_locked_active" =
+          lib.mkForce (hexToRgb colors.locked_active);
+        "col.border_locked_inactive" =
+          lib.mkForce (hexToRgb colors.locked_inactive);
 
         groupbar = {
           enabled = true;
@@ -109,8 +111,10 @@ in {
           text_color = lib.mkForce (hexToRgb colors.text);
           "col.active" = lib.mkForce (hexToRgb colors.groupbar_active);
           "col.inactive" = lib.mkForce (hexToRgb colors.groupbar_inactive);
-          "col.locked_active" = lib.mkForce (hexToRgb colors.groupbar_locked_active);
-          "col.locked_inactive" = lib.mkForce (hexToRgb colors.groupbar_locked_inactive);
+          "col.locked_active" =
+            lib.mkForce (hexToRgb colors.groupbar_locked_active);
+          "col.locked_inactive" =
+            lib.mkForce (hexToRgb colors.groupbar_locked_inactive);
         };
       };
 

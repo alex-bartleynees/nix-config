@@ -31,7 +31,7 @@ in {
       in [
         "${automount_opts},credentials=${
           config.sops.templates."samba-credentials".path
-        },uid=1000,gid=1000,file_mode=0664,dir_mode=0775,forceuid,forcegid"
+        },uid=1000,gid=1000,file_mode=0664,dir_mode=0775,forceuid,forcegid,vers=3.0"
       ];
     };
   };
