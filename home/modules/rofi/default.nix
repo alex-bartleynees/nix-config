@@ -9,12 +9,12 @@
   };
 
   home.file.".local/bin/powermenu" = {
-    source = "${inputs.dotfiles}/configs/rofi-custom/powermenu.sh";
+    source = "${inputs.dotfiles}/configs/rofi-custom/scripts/powermenu.sh";
     executable = true;
   };
 
   home.file.".local/bin/themeselector" = {
-    source = "${inputs.dotfiles}/configs/rofi-custom/themeselector.sh";
+    source = "${inputs.dotfiles}/configs/rofi-custom/scripts/themeselector.sh";
     executable = true;
   };
 

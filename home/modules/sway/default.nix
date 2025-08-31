@@ -60,7 +60,7 @@
 
 
       # start rofi (a program launcher)
-      bindsym $mod+d exec rofi -show drun -theme $HOME/.config/rofi/${theme.name}.rasi
+      bindsym $mod+d exec rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi
       # start rofi powermenu
       bindsym $mod+shift+p exec $HOME/.local/bin/powermenu powermenu-${theme.name}
 

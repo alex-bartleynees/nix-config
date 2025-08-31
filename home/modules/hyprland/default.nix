@@ -155,7 +155,7 @@ in {
         "$mod, Q, killactive"
         "$mod, T, exec, $terminal"
         "$mod, B, exec, $browser"
-        "$mod, D, exec, rofi -show drun -theme $HOME/.config/rofi/${theme.name}.rasi"
+        "$mod, D, exec, rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi"
         "$mod SHIFT, P, exec, $HOME/.local/bin/powermenu powermenu-${theme.name}"
         "$mod SHIFT, T, exec, $HOME/.local/bin/themeselector powermenu-${theme.name}"
         "$mod, F, fullscreen"
