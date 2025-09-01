@@ -327,7 +327,6 @@ in {
           command =
             "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP";
         }
-        { command = "systemctl --user restart sway-session.target"; }
         { command = "nm-applet"; }
         { command = "blueman-applet"; }
         { command = "udiskie --tray"; }
@@ -340,7 +339,7 @@ in {
       ];
 
       # Disable default sway bar
-      bars = [];
+      bars = [ ];
     };
   };
 
