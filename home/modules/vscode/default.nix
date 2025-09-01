@@ -129,6 +129,8 @@ in {
 
     profiles.default.userSettings = {
       "[nix]" = {
+        "enableLanguageServer" = true;
+        "serverPath" = "nil";
         "editor.defaultFormatter" = "B4dM4n.nixpkgs-fmt";
         "editor.formatOnSave" = true;
       };

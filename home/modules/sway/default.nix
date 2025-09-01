@@ -94,8 +94,7 @@ in {
             "exec $HOME/.local/bin/themeselector powermenu-${theme.name}";
           "${modifier}+Shift+w" =
             "exec $HOME/.local/bin/wallpaper ${theme.name}";
-          "${modifier}+i" =
-            "exec $HOME/.local/bin/keybindings ${theme.name}";
+          "${modifier}+i" = "exec $HOME/.local/bin/keybindings ${theme.name}";
 
           # Screenshot
           "${modifier}+p" = ''exec grim -g "$(slurp -d)" - | wl-copy'';
