@@ -211,7 +211,10 @@ in {
       ];
 
       # Input configuration
-      input = { "*" = { xkb_layout = "us"; }; };
+      input = {
+        "*" = { xkb_layout = "us"; };
+        "type:touchpad" = { natural_scroll = "enabled"; };
+      };
 
       # Output configuration per host
       output = if hostName == "thinkpad" then {
