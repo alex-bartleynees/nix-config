@@ -25,6 +25,8 @@
 
   zswap.enable = true;
 
+  snapshots.enable = true;
+
   # Lid close
   services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
   services.logind.settings.Login.HandleLidSwitchExternalPower = "lock";

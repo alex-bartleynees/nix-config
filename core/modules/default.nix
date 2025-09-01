@@ -14,6 +14,7 @@
     ./zswap.nix
     ./silent-boot.nix
     ./samba-client.nix
+    ./snapshots.nix
   ];
 }
 
