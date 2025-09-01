@@ -5,7 +5,6 @@ in {
     lib.mkEnableOption "Enable btrfs filesystem snapshots";
   config = lib.mkIf cfg.enable {
     services.snapper = {
-      enable = true;
       snapshotInterval = "daily";
 
       configs = {
