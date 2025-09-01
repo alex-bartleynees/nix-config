@@ -23,6 +23,11 @@
     executable = true;
   };
 
+  home.file.".local/bin/keybindings" = {
+    source = "${inputs.dotfiles}/configs/rofi-custom/scripts/keybindings.sh";
+    executable = true;
+  };
+
   home.sessionPath = [ "$HOME/.local/bin" ];
 
 }

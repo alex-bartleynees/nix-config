@@ -159,6 +159,7 @@ in {
         "$mod SHIFT, P, exec, $HOME/.local/bin/powermenu powermenu-${theme.name}"
         "$mod SHIFT, T, exec, $HOME/.local/bin/themeselector powermenu-${theme.name}"
         "$mod SHIFT, W, exec, $HOME/.local/bin/wallpaper ${theme.name}"
+        "$mod, I, exec, $HOME/.local/bin/keybindings ${theme.name}"
         "$mod, F, fullscreen"
         "$mod SHIFT, SPACE, togglefloating"
         #"$mod, A, focusparent"
