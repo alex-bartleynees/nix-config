@@ -416,7 +416,6 @@ in {
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;
-      Environment = [ "PATH=${pkgs.waybar}/bin" ];
     };
     Install = { WantedBy = [ "hyprland-session.target" ]; };
   };
