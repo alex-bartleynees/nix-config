@@ -110,6 +110,7 @@
       zoxide
       tmuxinator
       claude-code
+      opencode
       delta
       (vim_configurable.customize {
         name = "vim";
