@@ -10,7 +10,7 @@ in {
     keyMode = "vi";
     mouse = true;
     customPaneNavigationAndResize = true;
-    terminal = "xterm-256color";
+    terminal = "tmux-256color";
     plugins = [
       pkgs.tmuxPlugins.sensible
       {
