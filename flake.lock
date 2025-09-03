@@ -105,11 +105,11 @@
     "dotfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1756839047,
-        "narHash": "sha256-uClS8GVnYyQSWUyoHM4sBCo3PKfu8+vOLRo3ijhBj7E=",
+        "lastModified": 1756927460,
+        "narHash": "sha256-9akrMPNaj0jW96+qNUCfWgxM0mGJ8oCn7m3ilVX2Eh4=",
         "owner": "alex-bartleynees",
         "repo": "dotfiles",
-        "rev": "6e4cdecb2df507e5391f786d8162040ae16a08a5",
+        "rev": "6873724c312f7c56f48c8040b4fc0ed4d1249cbe",
         "type": "github"
       },
       "original": {
@@ -300,11 +300,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1756842514,
-        "narHash": "sha256-XbtRMewPGJwTNhBC4pnBu3w/xT1XejvB0HfohC2Kga8=",
+        "lastModified": 1756903364,
+        "narHash": "sha256-vZh/YH2D7oDFek10r0TbGn3qJrqGv69sSP+oF8PFDqQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "30fc1b532645a21e157b6e33e3f8b4c154f86382",
+        "rev": "6159629d05a0e92bb7fb7211e74106ae1d552401",
         "type": "github"
       },
       "original": {
@@ -421,11 +421,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1756750488,
-        "narHash": "sha256-e4ZAu2sjOtGpvbdS5zo+Va5FUUkAnizl4wb0/JlIL2I=",
+        "lastModified": 1756924456,
+        "narHash": "sha256-MZfayF6Z57AhTFsaxj31aycO4JztRcQKuaOHYHS0KVw=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "47eb4856cfd01eaeaa7bb5944a0f27db8fb9b94a",
+        "rev": "71841ee366d7b3ddb607c6c3fe3a43c50047f769",
         "type": "github"
       },
       "original": {

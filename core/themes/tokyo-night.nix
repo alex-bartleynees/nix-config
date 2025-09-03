@@ -15,4 +15,5 @@
     groupbar_locked_inactive = "#3b4261"; # bg_highlight
   };
   codeTheme = "Tokyo Night";
+  ghosttyTheme = "tokyonight_night";
 }

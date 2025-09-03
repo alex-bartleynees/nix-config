@@ -58,6 +58,7 @@ in {
       # ms-python.debugpy
       svelte.svelte-vscode
       vscodevim.vim
+      arcticicestudio.nord-visual-studio-code
     ]) ++ [
       # Extensions not in Nixpkgs
       (ext "andrejunges" "Handlebars" "0.4.1"
@@ -158,7 +159,8 @@ in {
       "editor.defaultFormatter" = "esbenp.prettier-vscode";
       "terminal.integrated.fontFamily" = terminalFont;
       "window.autoDetectColorScheme" = false;
-      "workbench.colorTheme" = lib.mkDefault (theme.codeTheme or "Monokai Pro (Filter Spectrum)");
+      "workbench.colorTheme" =
+        lib.mkDefault (theme.codeTheme or "Monokai Pro (Filter Spectrum)");
       "workbench.iconTheme" = iconTheme;
       "files.autoSave" = "onFocusChange";
       "editor.formatOnPaste" = true;
