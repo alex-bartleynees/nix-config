@@ -14,4 +14,5 @@
     groupbar_locked_inactive = "#3b4252"; # nord1 - polar night
   };
   codeTheme = "Nord";
+  chromeThemeExtensionId = "abehfkkfjlplnjadfcjiflnejblfmmpj";
 }

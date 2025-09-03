@@ -14,4 +14,5 @@
     groupbar_locked_inactive = "#585b70"; # surface2
   };
   codeTheme = "Catppuccin Mocha";
+  chromeThemeExtensionId = "bkkmolkhemgaeaeggcmfbghljjjoofoh";
 }

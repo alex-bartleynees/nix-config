@@ -16,4 +16,5 @@
   };
   codeTheme = "Tokyo Night";
   ghosttyTheme = "tokyonight_night";
+  chromeThemeExtensionId = "pgbjifpikialeahbdendkjioeafbmfkn";
 }

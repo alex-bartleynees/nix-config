@@ -1,8 +1,6 @@
 { pkgs, inputs, hostName, theme, lib, ... }: {
-  imports = [ ../waybar ../rofi ../dunst ../obsidian ../ghostty ];
+  imports = [ ../waybar ../rofi ../dunst ../obsidian ../ghostty ../brave ];
   home.packages = with pkgs; [ firefox vlc xfce.thunar pavucontrol pulsemixer ];
-
-  programs.brave = { enable = true; };
 
   home.pointerCursor = {
     name = lib.mkDefault "Adwaita";
