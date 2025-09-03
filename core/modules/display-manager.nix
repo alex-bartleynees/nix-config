@@ -17,7 +17,7 @@ in {
       };
       command = lib.mkOption {
         type = lib.types.str;
-        default = "${pkgs.hyprland}/bin/hyprland";
+        default = "${pkgs.uwsm}/bin/uwsm start ${pkgs.hyprland}/bin/Hyprland";
         description = "The command to run for the initial session";
       };
     };
