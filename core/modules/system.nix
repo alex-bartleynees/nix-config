@@ -16,6 +16,12 @@ in {
       programs.zsh.enable = true;
       programs.dconf.enable = true;
 
+      # DBus
+      services.dbus = {
+        enable = true;
+        implementation = "broker";
+      };
+
       # System wide settings
       nix = {
         settings = {
@@ -49,7 +55,6 @@ in {
       programs.nm-applet = { enable = true; };
 
       # Services
-      services.dbus.enable = true;
       services.dbus.packages = with pkgs; [
         pkgs.gnome-keyring
         pkgs.xdg-desktop-portal
@@ -101,13 +106,7 @@ in {
       };
 
       # Services
-      services = {
-        openssh.enable = true;
-        dbus = {
-          enable = true;
-          implementation = "broker";
-        };
-      };
+      services = { openssh.enable = true; };
 
       # WSL-specific packages
       environment.systemPackages = with pkgs; [
