@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, theme, ... }:
 
 let
   font = "JetBrains Mono";
@@ -158,7 +158,7 @@ in {
       "editor.defaultFormatter" = "esbenp.prettier-vscode";
       "terminal.integrated.fontFamily" = terminalFont;
       "window.autoDetectColorScheme" = false;
-      "workbench.colorTheme" = lib.mkDefault "Monokai Pro (Filter Spectrum)";
+      "workbench.colorTheme" = lib.mkDefault (theme.codeTheme or "Monokai Pro (Filter Spectrum)");
       "workbench.iconTheme" = iconTheme;
       "files.autoSave" = "onFocusChange";
       "editor.formatOnPaste" = true;

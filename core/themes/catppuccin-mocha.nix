@@ -13,4 +13,5 @@
     groupbar_locked_active = "#f9e2af"; # yellow
     groupbar_locked_inactive = "#585b70"; # surface2
   };
+  codeTheme = "Catppuccin Mocha";
 }
