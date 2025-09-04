@@ -9,7 +9,7 @@ A comprehensive Nix flake configuration for managing system configurations acros
 ├── core/                  # Core system modules
 │   ├── desktops/         # Desktop environment configurations
 │   ├── modules/          # System modules (gaming, nvidia, docker, etc.)
-│   └── themes/           # System themes (catppuccin, tokyo-night)
+│   └── themes/           # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
 ├── home/                  # Home Manager configurations
 │   └── modules/          # User application configurations
 ├── hosts/                 # Host-specific configurations
@@ -25,13 +25,13 @@ A comprehensive Nix flake configuration for managing system configurations acros
 
 ## 🖥️ Hosts
 
-| Host | Platform | Description |
-|------|----------|-------------|
-| `desktop` | NixOS | Main desktop with GNOME, KDE, Cosmic, and Sway specializations |
-| `macbook` | macOS | MacBook configuration with nix-darwin |
-| `media` | NixOS | Media server with Samba and backup services |
-| `thinkpad` | NixOS | ThinkPad laptop with TLP power management |
-| `wsl` | NixOS-WSL | Windows Subsystem for Linux setup |
+| Host       | Platform  | Description                                                    |
+| ---------- | --------- | -------------------------------------------------------------- |
+| `desktop`  | NixOS     | Main desktop with GNOME, KDE, Cosmic, and Sway specializations |
+| `macbook`  | macOS     | MacBook configuration with nix-darwin                          |
+| `media`    | NixOS     | Media server with Samba and backup services                    |
+| `thinkpad` | NixOS     | ThinkPad laptop with TLP power management                      |
+| `wsl`      | NixOS-WSL | Windows Subsystem for Linux setup                              |
 
 ## 🚀 Quick Start
 
@@ -110,7 +110,8 @@ sudo nixos-rebuild switch --flake .#desktop --specialisation sway
 ## 🎨 Features
 
 ### Core Modules
-- **Gaming**: Steam, GameMode, Lutris with optimizations
+
+- **Gaming**: Steam, Sunshine and Moonlight game streaming
 - **NVIDIA**: Proprietary drivers with CUDA support
 - **Docker**: Container runtime with user access
 - **Tailscale**: Mesh VPN networking
@@ -118,6 +119,7 @@ sudo nixos-rebuild switch --flake .#desktop --specialisation sway
 - **Stylix**: System-wide theming
 
 ### Desktop Environments
+
 - **GNOME**: Full GNOME desktop with extensions
 - **KDE Plasma**: Complete KDE experience
 - **Cosmic**: System76's new desktop environment
@@ -125,6 +127,7 @@ sudo nixos-rebuild switch --flake .#desktop --specialisation sway
 - **Hyprland**: Dynamic tiling compositor
 
 ### Applications
+
 - Development: VSCode, JetBrains Rider, Neovim
 - Terminal: Alacritty, Ghostty, Tmux
 - Browser: Brave with custom policies
