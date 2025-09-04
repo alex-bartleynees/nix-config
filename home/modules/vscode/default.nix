@@ -113,6 +113,8 @@ in {
         "sha256-W9XuAp2l+PQG3URQTMoqwBMIGKwI6VumppjuTrPSmuk=")
       (ext "Sourcegraph" "amp" "0.0.1748016644"
         "sha256-avI4SiNHSgHZMqGrZjC7vaBhocO2kU4Dqoejpwt1cRk=")
+      (ext "sainnhe" "everforest" "0.3.0"
+        "sha256-nZirzVvM160ZTpBLTimL2X35sIGy5j2LQOok7a2Yc7U=")
     ];
 
     profiles.default.keybindings = [
