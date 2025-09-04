@@ -13,7 +13,7 @@
     groupbar_locked_active = "#DBBC7F"; # everforest yellow - attention/warning
     groupbar_locked_inactive = "#343F44"; # everforest bg1 - inactive state
   };
-  codeTheme = "Everforest";
+  codeTheme = "Everforest Dark";
   ghosttyTheme = "Everforest Dark - Hard";
   chromeThemeExtensionId = "dlcadbmcfambdjhecipbnolmjchgnode";
 }
