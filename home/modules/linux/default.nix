@@ -1,6 +1,14 @@
 { pkgs, inputs, hostName, theme, lib, ... }: {
   imports = [ ../waybar ../rofi ../dunst ../obsidian ../ghostty ../brave ];
-  home.packages = with pkgs; [ firefox vlc xfce.thunar pavucontrol pulsemixer ];
+  home.packages = with pkgs; [
+    firefox
+    vlc
+    xfce.thunar
+    pavucontrol
+    pulsemixer
+    xfce.tumbler
+    xfce.ristretto
+  ];
 
   home.pointerCursor = {
     name = lib.mkDefault "Adwaita";
