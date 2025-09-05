@@ -51,6 +51,14 @@
       git-personal =
         "git config user.email '${myUsers.${username}.git.userEmail}'";
       git-whoami = "git config user.email";
+      rebuild-desktop =
+        "sudo nixos-rebuild switch --flake ~/.config/nix-config#desktop";
+      rebuild-thinkpad =
+        "sudo nixos-rebuild switch --flake ~/.config/nix-config#thinkpad";
+      rebuild-wsl =
+        "sudo nixos-rebuild switch --flake ~/.config/nix-config#wsl";
+      rebuild-media =
+        "sudo nixos-rebuild switch --flake ~/.config/nix-config#media";
     };
     initContent = "source ~/.p10k.zsh";
     oh-my-zsh = {
