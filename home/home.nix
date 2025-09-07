@@ -47,6 +47,7 @@
       tx = "tmuxinator";
       lg = "lazygit";
       ld = "lazydocker";
+      ls = "eza --icons";
       git-work = "git config user.email '${myUsers.${username}.git.workEmail}'";
       git-personal =
         "git config user.email '${myUsers.${username}.git.userEmail}'";
@@ -120,6 +121,7 @@
       claude-code
       opencode
       delta
+      eza
       (vim_configurable.customize {
         name = "vim";
         vimrcConfig.customRC = ''
