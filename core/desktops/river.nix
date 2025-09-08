@@ -1,5 +1,6 @@
 { pkgs, ... }: {
   environment.systemPackages = with pkgs; [
+    river-classic
     gnome-keyring
     libsecret
     xdg-desktop-portal
@@ -17,35 +18,18 @@
     uwsm
   ];
 
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    extraSessionCommands = ''
-      export ZDOTDIR=''${HOME}
-      export SHELL=${pkgs.zsh}/bin/zsh
-      source "''${HOME}/.zshenv"
-      ZSH_DISABLE_COMPFIX=true
-      DISABLE_AUTO_UPDATE=true
-    '';
+  programs.river = { enable = true; };
 
-    extraOptions = [ "--unsupported-gpu" ];
-  };
-
-  # Enable uwsm for sway session management
   programs.uwsm = {
     enable = true;
-    waylandCompositors.sway = {
-      binPath = "/run/current-system/sw/bin/sway";
-      prettyName = "Sway";
-      comment = "Sway compositor with UWSM";
+    waylandCompositors.river = {
+      binPath = "/run/current-system/sw/bin/river";
+      prettyName = "River";
+      comment = "River compositor with UWSM";
     };
   };
 
-  qt = {
-    enable = true;
-    #platformTheme = "gtk2";
-    #style = "adwaita-dark";
-  };
+  qt = { enable = true; };
 
   programs.xwayland.enable = true;
 
@@ -54,6 +38,8 @@
     NIXOS_OZONE_WL = "1";
     WLR_RENDERER = "vulkan";
     XDG_SESSION_TYPE = "wayland";
+    XDG_CURRENT_DESKTOP = "river";
+    XDG_SESSION_DESKTOP = "river";
     #GTK_THEME = "Adwaita:dark";
     QT_STYLE_OVERRIDE = "adwaita-dark";
     MOZ_USE_XINPUT2 = "1";
@@ -77,5 +63,7 @@
 
   displayManager = { enable = true; };
 
-  system.nixos.tags = [ "sway" ];
+  system.nixos.tags = [ "river" ];
+
 }
+
