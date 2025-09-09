@@ -105,11 +105,11 @@
     "dotfiles": {
       "flake": false,
       "locked": {
-        "lastModified": 1756977962,
-        "narHash": "sha256-egrEDPOZt8L0rdf68d517nZsMU8H0HkdrWH4EiSDzBA=",
+        "lastModified": 1757382107,
+        "narHash": "sha256-kvaQrWBwyYDRMKV/Q47L6CYV6a1+LE2RqnikrfhwPv0=",
         "owner": "alex-bartleynees",
         "repo": "dotfiles",
-        "rev": "c2329089626b23fb07bc68a66a597d787a7aab3b",
+        "rev": "74506ad712915c1ada92ad5694707f49b1bacc19",
         "type": "github"
       },
       "original": {

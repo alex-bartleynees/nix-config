@@ -18,7 +18,7 @@ in nixpkgs.lib.nixosSystem {
     additionalImports = [
       ./modules
       ./nixos/configuration.nix
-      ../../core/desktops/hypr.nix
+      ../../core/desktops/river.nix
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t490
       {
         _module.args.theme = theme;
@@ -26,7 +26,7 @@ in nixpkgs.lib.nixosSystem {
       # Auto-generated theme specializations
       (themes.mkThemeSpecialisations {
         baseImports = [ ./modules ./nixos/configuration.nix ];
-        desktop = "hypr";
+        desktop = "river";
       })
     ];
   };
