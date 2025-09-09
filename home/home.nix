@@ -122,6 +122,7 @@
       opencode
       delta
       eza
+      jq
       (vim_configurable.customize {
         name = "vim";
         vimrcConfig.customRC = ''
