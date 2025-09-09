@@ -40,7 +40,7 @@ in {
         ]
       else [
         "DP-6,2560x1440@165,0x0,1" # Main monitor
-        "DP-4,2560x1440@165,2560x0,1,transform,3" # Secondary monitor rotated 270°
+        "DP-4,2560x1440@144,2560x0,1,transform,3" # Secondary monitor rotated 270°
       ];
 
       # Variables
@@ -155,6 +155,7 @@ in {
         "$mod, Q, killactive"
         "$mod, T, exec, $terminal"
         "$mod, B, exec, $browser"
+        "$mod, C, exec, code"
         "$mod, D, exec, rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi"
         "$mod SHIFT, P, exec, $HOME/.local/bin/powermenu powermenu-${theme.name}"
         "$mod SHIFT, T, exec, $HOME/.local/bin/themeselector powermenu-${theme.name}"
@@ -233,6 +234,8 @@ in {
         # Lock and display control
         "CTRL $mod, L, exec, $lock"
         "$mod CTRL, W, exec, hyprctl dispatch dpms on"
+        "$mod CTRL, M, exec, hyprctl keyword monitor \"DP-4,disable\""
+        "$mod CTRL SHIFT, M, exec, hyprctl keyword monitor \"DP-4,2560x1440@144,2560x0,1,transform,3\""
 
         # Resize mode
         "$mod, R, submap, resize"
