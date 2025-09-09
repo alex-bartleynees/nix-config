@@ -86,6 +86,7 @@ in {
           "${modifier}+t" =
             "exec ${config.wayland.windowManager.sway.config.terminal}";
           "${modifier}+b" = "exec brave";
+          "${modifier}+c" = "exec code";
           "${modifier}+d" =
             "exec rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi";
           "${modifier}+Shift+p" =
