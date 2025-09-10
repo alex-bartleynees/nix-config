@@ -1,5 +1,14 @@
 { pkgs, inputs, hostName, theme, lib, ... }: {
-  imports = [ ../waybar ../rofi ../dunst ../obsidian ../ghostty ../brave ];
+  imports = [
+    ../waybar
+    ../rofi
+    ../dunst
+    ../obsidian
+    ../ghostty
+    ../brave
+    ../hypridle
+    ../alacritty
+  ];
   home.packages = with pkgs; [
     firefox
     vlc

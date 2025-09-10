@@ -1,7 +1,7 @@
 { config, pkgs, lib, inputs, username, homeDirectory, hostName, theme, myUsers
 , ... }: {
 
-  imports = [ ./modules/alacritty ./modules/tmux ]
+  imports = [ ./modules/tmux ]
     ++ (if builtins.pathExists ./modules/${hostName} then
       [ ./modules/${hostName} ]
     else

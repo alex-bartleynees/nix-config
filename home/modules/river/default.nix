@@ -15,7 +15,7 @@ in {
     networkmanagerapplet
     udiskie
     rofi-wayland
-    swaylock
+    hyprlock
     waybar
     wlr-randr
   ];
@@ -64,7 +64,7 @@ in {
           "Alt P" = "spawn 'sh -c \"grim -g \\\"$(slurp -d)\\\" - | wl-copy\"'";
 
           # Lock screen
-          "Control+Alt L" = "spawn 'swaylock -i ${background}'";
+          "Control+Alt L" = "spawn 'hyprlock'";
 
           # Window management
           "Alt Q" = "close";
