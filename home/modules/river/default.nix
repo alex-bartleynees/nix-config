@@ -3,6 +3,7 @@ let
   colors = theme.themeColors;
   background = theme.wallpaper;
 in {
+  imports = [ ../hypridle ];
   home.packages = with pkgs; [
     river-classic
     river-bsp-layout

@@ -1,3 +1,3 @@
 { pkgs, inputs, hostName, theme, lib, ... }: {
-  imports = [ ../vscode ../rider ../linux ../river ];
+  imports = [ ../vscode ../rider ../linux ];
 }

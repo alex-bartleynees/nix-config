@@ -1,9 +1,13 @@
 { config, pkgs, lib, inputs, username, homeDirectory, hostName, theme, myUsers
-, ... }: {
+, desktop, ... }: {
 
   imports = [ ./modules/tmux ]
     ++ (if builtins.pathExists ./modules/${hostName} then
       [ ./modules/${hostName} ]
+    else
+      [ ])
+    ++ (if desktop != null && builtins.pathExists ./modules/${desktop} then
+      [ ./modules/${desktop} ]
     else
       [ ]);
 

@@ -1,5 +1,5 @@
 { pkgs, inputs, hostName, theme, lib, ... }: {
-  imports = [ ../vscode ../sway ../hyprland ../river ../rider ../linux ];
+  imports = [ ../vscode ../rider ../linux ];
   home.packages = with pkgs; [
     qbittorrent-enhanced
     yaak

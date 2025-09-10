@@ -6,6 +6,7 @@ let
   # Function to convert hex colors to rgb format for Hyprland
   hexToRgb = hex: "rgb(${builtins.substring 1 6 hex})";
 in {
+  imports = [ ../hypridle ];
   home.packages = with pkgs; [
     hyprpaper
     swww

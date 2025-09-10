@@ -1,5 +1,5 @@
 { inputs, username ? "alexbn", homeDirectory ? "/home/alexbn", theme
-, desktop ? "hyprland" }:
+, desktop }:
 let
   baseImports = [
     ./locale.nix
