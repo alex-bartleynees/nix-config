@@ -5,6 +5,7 @@ let
 in {
   home.packages = with pkgs; [
     river-classic
+    river-bsp-layout
     swww
     grim
     slurp
@@ -41,7 +42,7 @@ in {
       border-width = 2;
 
       # Set the default layout generator
-      default-layout = "rivertile";
+      default-layout = "bsp-layout";
 
       # Key mappings - using Alt as modifier (consistent with Sway/Hyprland)
       map = {
@@ -224,7 +225,8 @@ in {
       uwsm finalize SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME &
 
       # Start rivertile layout generator
-      rivertile -view-padding 6 -outer-padding 6 &
+      #rivertile -view-padding 6 -outer-padding 6 &
+      river-bsp-layout --inner-gap 5 --outer-gap 10 --split-perc 0.5 &
 
       # Ensure borders are visible by setting focus ring
       riverctl focus-follows-cursor normal
