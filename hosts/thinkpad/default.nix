@@ -11,7 +11,10 @@ let
     inherit inputs;
     lib = nixpkgs.lib;
   };
-  shared = import ../../shared/nixos-default.nix { inherit inputs theme; };
+  shared = import ../../shared/nixos-default.nix {
+    inherit inputs theme;
+    desktop = "river";
+  };
 in nixpkgs.lib.nixosSystem {
   specialArgs = { inherit inputs; };
   modules = shared.getImports {

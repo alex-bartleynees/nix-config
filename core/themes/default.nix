@@ -17,7 +17,7 @@ let
     lib.genAttrs (builtins.attrNames themes) (themeName:
       let
         shared = import ../../shared/nixos-default.nix {
-          inherit inputs;
+          inherit inputs desktop;
           theme = themes.${themeName};
         };
         baseConfig = shared.getImports {

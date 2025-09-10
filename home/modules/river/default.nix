@@ -255,7 +255,7 @@ in {
     Service = {
       Type = "simple";
       ExecStart =
-        "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config-river.jsonc -s %h/.config/waybar/style.css";
+        "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;
