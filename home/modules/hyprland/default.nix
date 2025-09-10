@@ -234,8 +234,9 @@ in {
         # Lock and display control
         "CTRL $mod, L, exec, $lock"
         "$mod CTRL, W, exec, hyprctl dispatch dpms on"
-        "$mod CTRL, M, exec, hyprctl keyword monitor \"DP-4,disable\""
-        "$mod CTRL SHIFT, M, exec, hyprctl keyword monitor \"DP-4,2560x1440@144,2560x0,1,transform,3\""
+        ''$mod CTRL, M, exec, hyprctl keyword monitor "DP-4,disable"''
+        ''
+          $mod CTRL SHIFT, M, exec, hyprctl keyword monitor "DP-4,2560x1440@144,2560x0,1,transform,3"''
 
         # Resize mode
         "$mod, R, submap, resize"
@@ -416,7 +417,7 @@ in {
     Service = {
       Type = "simple";
       ExecStart =
-        "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config-hyprland.jsonc -s %h/.config/waybar/style.css";
+        "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;

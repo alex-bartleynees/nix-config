@@ -1,9 +1,10 @@
-{ inputs, username, homeDirectory, extraModules ? [ ], theme ? null }: [
+{ inputs, username, homeDirectory, extraModules ? [ ], theme ? null, desktop
+}: [
   inputs.home-manager.nixosModules.home-manager
   ({ lib, config, pkgs, ... }: {
     home-manager = {
       extraSpecialArgs = {
-        inherit inputs username homeDirectory theme;
+        inherit inputs username homeDirectory theme desktop;
         inherit (config.networking) hostName;
         inherit (config) myUsers;
       };

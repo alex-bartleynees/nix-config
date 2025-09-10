@@ -1,4 +1,5 @@
-{ inputs, username ? "alexbn", homeDirectory ? "/home/alexbn", theme }:
+{ inputs, username ? "alexbn", homeDirectory ? "/home/alexbn", theme
+, desktop ? "hyprland" }:
 let
   baseImports = [
     ./locale.nix
@@ -11,7 +12,7 @@ let
   ];
 
   homeManagerImports = import ./home-manager.nix {
-    inherit inputs username homeDirectory;
+    inherit inputs username homeDirectory desktop;
     extraModules = [ ../home ];
     inherit theme;
   };
