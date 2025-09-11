@@ -13,6 +13,7 @@ let
     '';
 in {
   programs.waybar = { enable = true; };
+  stylix.targets.waybar.enable = false;
 
   home.file.".config/waybar" = {
     source = waybarConfig;

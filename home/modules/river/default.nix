@@ -216,7 +216,6 @@ in {
       systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &
       nm-applet &
       blueman-applet &
-      udiskie --tray &
       swww-daemon --format xrgb &
 
       # Set wallpaper with swww after daemon starts
@@ -246,6 +245,23 @@ in {
   # XDG configuration for River/UWSM compatibility
   xdg.configFile."uwsm/env".source =
     "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+
+  # Udiskie systemd service for River
+  systemd.user.services.udiskie-river = {
+    Unit = {
+      Description = "Udiskie";
+      PartOf = [ "river-session.target" ];
+      After = [ "river-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.udiskie}/bin/udiskie --tray";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
+    Install = { WantedBy = [ "river-session.target" ]; };
+  };
 
   # Waybar systemd service for River
   systemd.user.services.waybar-river = {
