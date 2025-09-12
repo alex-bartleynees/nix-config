@@ -6,6 +6,9 @@
   # Networking
   networking.hostName = "thinkpad";
 
+  # Create host identifier file for impermanence auto-rebuild
+  environment.etc."hostname-for-rebuild".text = "thinkpad";
+
   tailscale = {
     enable = true; # Enable Tailscale support
   };
@@ -26,6 +29,78 @@
   zswap.enable = true;
 
   snapshots.enable = true;
+
+  # Enable impermanence with BTRFS reset on boot
+  impermanence = {
+    enable = true;
+    persistPaths = [
+      # System critical paths
+      "/etc/sops"
+      "/etc/ssh" # SSH host keys
+      "/etc/machine-id" # Unique machine identifier
+      "/etc/hostname-for-rebuild" # Host identifier for auto-rebuild
+      "/var/log" # System logs
+      "/var/lib/nixos" # NixOS state
+      "/var/lib/systemd/random-seed" # Random seed for reproducibility
+      "/var/lib/systemd/coredump" # Core dumps for debugging
+      "/var/lib/systemd/timers" # Systemd timer state
+      "/var/lib/tailscale" # Tailscale state
+      "/var/lib/bluetooth" # Bluetooth pairings and device info
+      "/var/lib/colord" # Color management profiles
+      "/var/lib/docker" # Docker images, containers, volumes, networks
+      "/etc/NetworkManager/system-connections" # Wifi passwords and network configs
+
+      # User SSH and GPG keys
+      "/home/alexbn/.ssh"
+      "/home/alexbn/.gnupg"
+
+      # Development tools
+      "/home/alexbn/.vscode" # VSCode settings and workspace state
+      "/home/alexbn/.config/JetBrains" # Rider settings and projects
+      "/home/alexbn/.local/share/JetBrains" # Rider data
+      "/home/alexbn/.dotnet" # .NET user secrets and tools
+      "/home/alexbn/.nuget" # NuGet package cache
+
+      # Browsers (profiles, bookmarks, extensions, passwords)
+      "/home/alexbn/.config/BraveSoftware" # Brave browser data
+      "/home/alexbn/.mozilla" # Firefox profiles and data
+
+      # Applications with important user data
+      "/home/alexbn/.local/share/obsidian" # Obsidian vaults and settings
+      "/home/alexbn/Documents" # User documents
+      "/home/alexbn/Downloads" # Downloads folder
+      "/home/alexbn/Pictures" # Photos/screenshots
+      "/home/alexbn/workspaces"
+
+      # Config files
+      "/home/alexbn/.config/nix-config"
+      "/home/alexbn/.config/nix-devenv"
+      "/home/alexbn/.config/nixos-secrets"
+      "/home/alexbn/.config/dotfiles"
+      "/home/alexbn/.config/sops"
+
+      # Git configuration
+      "/home/alexbn/.gitconfig"
+      "/home/alexbn/.config/git" # Git global config
+
+      # Shell and terminal tools
+      "/home/alexbn/.zsh_history"
+      "/home/alexbn/.bash_history"
+      "/home/alexbn/.p10k.zsh" # Powerlevel10k configuration
+      "/home/alexbn/.local/share/atuin" # Atuin shell history database
+      "/home/alexbn/.local/share/zoxide" # Zoxide frecency database
+      "/home/alexbn/.config/direnv" # Direnv configuration
+      "/home/alexbn/.tmux" # Tmux configurations
+      "/home/alexbn/.config/tmuxinator" # Tmuxinator project configs
+      "/home/alexbn/.local/share/nvim" # Neovim plugins and data
+      "/home/alexbn/.cache/nvim" # Neovim cache
+      "/home/alexbn/.config/yazi" # Yazi file manager config
+
+      # XDG directories with app data
+      "/home/alexbn/.local/share/applications" # Custom .desktop files
+    ];
+    resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
+  };
 
   # Lid close
   services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";

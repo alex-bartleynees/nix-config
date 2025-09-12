@@ -10,6 +10,7 @@ let
     inherit inputs theme;
     username = "alexbn";
     homeDirectory = "/home/alexbn";
+    desktop = "wsl";
   };
 in nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
