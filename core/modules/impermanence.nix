@@ -535,25 +535,6 @@ in {
     # Prevent SSH logins until rebuild is complete (if using SSH)
     systemd.services."sshd".after = [ "nixos-auto-rebuild.service" ];
 
-    # Optional: Show rebuild progress on console
-    systemd.services.rebuild-progress = {
-      description = "Show rebuild progress on console";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "nixos-auto-rebuild.service" ];
-      unitConfig.ConditionPathExists = "!/tmp/.nixos-needs-rebuild";
-      serviceConfig = {
-        Type = "oneshot";
-        StandardOutput = "tty";
-        TTYPath = "/dev/tty1";
-        ExecStart = pkgs.writeScript "show-progress" ''
-          #!/bin/bash
-          echo
-          echo "✓ NixOS configuration rebuilt successfully"
-          echo "✓ System ready for use"
-          echo
-        '';
-      };
-    };
 
     # Enhanced management script
     environment.systemPackages = [
