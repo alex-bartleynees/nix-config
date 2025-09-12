@@ -9,6 +9,7 @@
     pulsemixer
     xfce.tumbler
     xfce.ristretto
+    wdisplays
   ];
 
   home.pointerCursor = {
