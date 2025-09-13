@@ -24,7 +24,7 @@
 
   sambaClient = { enable = true; };
 
-  silentBoot.enable = true;
+  silentBoot.enable = false;
 
   zswap.enable = true;
 
@@ -33,6 +33,10 @@
   # Enable impermanence with BTRFS reset on boot
   impermanence = {
     enable = true;
+    subvolumes = {
+      "@" = { mountpoint = "/"; };
+      "@home" = { mountpoint = "/home"; };
+    };
     persistPaths = [
       # System critical paths
       "/etc/sops"
