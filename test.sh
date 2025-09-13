@@ -1,135 +1,4 @@
-{ config, lib, pkgs, ... }:
-let
-  # Find BTRFS filesystem by label 
-  device = "/dev/disk/by-label/nixos";
-
-  # Use standard crypted device name since we're using nixos label
-  luksDeviceName = "crypted";
-  deviceDependency = "dev-mapper-${luksDeviceName}.device";
-  snapshotsSubvolumeName = "@snapshots";
-
-  pathsToKeep =
-    ''"${lib.strings.concatStringsSep " " config.impermanence.persistPaths}"'';
-
-  # Use configured subvolumes instead of trying to extract from disko
-  subvolumes = config.impermanence.subvolumes;
-
-  getResetSubvolumes = let
-    # Function to check if a subvolume should never be reset
-    isProtectedSubvolume = name:
-      name == "@nix" || name == "@snapshots" || lib.hasInfix ".snapshots"
-      name; # Protect any subvolume containing .snapshots
-
-    resetSubvols = lib.filterAttrs (name: subvol:
-      # If resetSubvolumes is empty, reset all except protected subvolumes
-      # Otherwise only reset specified subvolumes (but still protect critical ones)
-      if config.impermanence.resetSubvolumes == [ ] then
-        !isProtectedSubvolume name
-      else
-        lib.elem name config.impermanence.resetSubvolumes
-        && !isProtectedSubvolume name) subvolumes;
-  in lib.strings.concatStringsSep " "
-  (lib.mapAttrsToList (name: subvol: "${name}=${subvol.mountpoint}")
-    resetSubvols);
-
-  subvolumeNameMountPointPairs = ''"${getResetSubvolumes}"'';
-
-in {
-  # Define the impermanence options
-  options.impermanence = {
-    enable =
-      lib.mkEnableOption "Enable BTRFS impermanence with automatic reset";
-
-    persistPaths = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [
-        "/etc/sops"
-        "/etc/ssh" # SSH host keys
-        "/var/log" # System logs
-        "/var/lib/nixos" # NixOS state
-        "/var/lib/systemd/random-seed" # Random seed for reproducibility
-      ];
-      description = "Paths to persist across impermanence resets";
-    };
-
-    resetSubvolumes = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ]; # Empty list means reset all except protected subvolumes
-      description =
-        "List of subvolume names to reset. Empty list resets all except @nix, @snapshots, and any subvolume containing '.snapshots' (which should never be reset).";
-    };
-
-    subvolumes = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.submodule {
-        options = {
-          mountpoint = lib.mkOption {
-            type = lib.types.str;
-            description = "Mount point for the subvolume";
-          };
-        };
-      });
-      default = { };
-      example = {
-        "@home" = { mountpoint = "/home"; };
-        "@var" = { mountpoint = "/var"; };
-        "@tmp" = { mountpoint = "/tmp"; };
-      };
-      description = "Subvolumes configuration with their mount points";
-    };
-
-  };
-
-  config = lib.mkIf (config.impermanence.enable && subvolumes != { }) {
-    # Mark reset subvolumes as needed for boot
-    fileSystems = lib.mkMerge (let
-      # Function to check if a subvolume should never be reset
-      isProtectedSubvolume = name:
-        name == "@nix" || name == "@snapshots" || lib.hasInfix ".snapshots"
-        name; # Protect any subvolume containing .snapshots
-
-      resetSubvols = lib.filterAttrs (name: subvol:
-        # If resetSubvolumes is empty, reset all except protected subvolumes
-        # Otherwise only reset specified subvolumes (but still protect critical ones)
-        if config.impermanence.resetSubvolumes == [ ] then
-          !isProtectedSubvolume name
-        else
-          lib.elem name config.impermanence.resetSubvolumes
-          && !isProtectedSubvolume name) subvolumes;
-    in lib.mapAttrsToList
-    (name: subvol: { "${subvol.mountpoint}".neededForBoot = lib.mkForce true; })
-    resetSubvols);
-
-    boot.nixStoreMountOpts = [ "ro" ]; # Mount Nix store read-only
-    boot.tmp.useTmpfs = true;
-
-    boot.initrd = {
-      supportedFilesystems = [ "btrfs" ];
-      systemd = {
-        enable = true;
-        extraBin = {
-          grep = "${pkgs.gnugrep}/bin/grep";
-          which = "${pkgs.which}/bin/which";
-          lsblk = "${pkgs.util-linux}/bin/lsblk";
-          findmnt = "${pkgs.util-linux}/bin/findmnt";
-          btrfs = "${pkgs.btrfs-progs}/bin/btrfs";
-          find = "${pkgs.findutils}/bin/find";
-          file = "${pkgs.file}/bin/file";
-          awk = "${pkgs.gawk}/bin/awk";
-        };
-        services.immutability = {
-          description =
-            "Factory resets BTRFS subvolumes that are marked for resetOnBoot. Intentionally preserved files are restored.";
-          wantedBy = [ "initrd.target" ];
-          requires = [ deviceDependency ];
-          after =
-            [ "systemd-cryptsetup@${luksDeviceName}.service" deviceDependency ];
-          before = [ "sysroot.mount" ];
-          unitConfig.DefaultDependencies = "no";
-          serviceConfig.Type = "oneshot";
-          scriptArgs =
-            "${device} ${snapshotsSubvolumeName} ${subvolumeNameMountPointPairs} ${pathsToKeep}";
-          script = ''
-                          #!/bin/bash
+            #!/bin/bash
 
             set -euo pipefail
 
@@ -191,12 +60,12 @@ in {
                 done
                 
                 ((DEPTH++))
-                log "''${cmd[*]}"
+                log "${cmd[*]}"
                 
                 local output stderr_output
                 if output=$(mktemp) && stderr_output=$(mktemp); then
                     local exit_code=0
-                    "''${cmd[@]}" >"$output" 2>"$stderr_output" || exit_code=$?
+                    "${cmd[@]}" >"$output" 2>"$stderr_output" || exit_code=$?
                     
                     # Print stdout if not empty
                     if [[ -s "$output" ]]; then
@@ -239,8 +108,9 @@ in {
 
             cleanup() {
                 if mountpoint -q "$MOUNT_POINT" 2>/dev/null; then
-                    trace umount -R "$MOUNT_POINT" nocheck
-                    rm -rf "$MOUNT_POINT"
+                  echo "test"
+                    # trace umount -R "$MOUNT_POINT" nocheck
+                    # rm -rf "$MOUNT_POINT"
                 fi
             }
 
@@ -280,7 +150,7 @@ in {
             }
 
             btrfs_subvolume_delete() {
-               local path="$1"
+                local path="$1"
                 if [[ -e "$path" ]]; then
                     debug "Attempting to delete subvolume: $path"
                     if ! btrfs subvolume delete "$path" --commit-after 2>/dev/null; then
@@ -368,20 +238,31 @@ in {
                     ls -la "$path" 2>/dev/null || true
                     btrfs subvolume list -o "$path" 2>/dev/null || true
                 fi
-
             }
 
             btrfs_subvolume_snapshot() {
                 local source="$1"
                 local target="$2"
-                local readonly="''${3:-false}"
+                local readonly="${3:-false}"
                 
+                #require_test "-d" "$source"
+                #btrfs_subvolume_delete_recursively "$target"
+                debug "making snapshot of ${source} to ${target}"
                 
                 local cmd=(btrfs subvolume snapshot)
                 if [[ "$readonly" == "true" ]]; then
                     cmd+=(-r)
                 fi
                 cmd+=("$source" "$target")
+
+                debug "subvolume snapshot successfully"
+                
+                #trace "${cmd[@]}"
+                #btrfs_sync "$source"
+                # Only sync target if the snapshot was created successfully
+                #if [[ -e "$target" ]]; then
+                 #   btrfs_sync "$target"
+                #fi
             }
 
             btrfs_subvolume_rw() {
@@ -409,7 +290,7 @@ in {
                 IFS=' ' read -ra paths_array <<< "$paths_to_keep"
                 
                 # Copy only the persistent files/directories that belong to this subvolume
-                for path_to_keep in "''${paths_array[@]}"; do
+                for path_to_keep in "${paths_array[@]}"; do
                     # Check if this path belongs to the current subvolume's mount point
                     local path_belongs_to_subvol=false
                     
@@ -425,8 +306,8 @@ in {
                     fi
                     
                     if [[ "$path_belongs_to_subvol" == true ]]; then
-                        local rel_path="''${path_to_keep#$subvolume_mount_point}"
-                        rel_path="''${rel_path#/}"
+                        local rel_path="${path_to_keep#$subvolume_mount_point}"
+                        rel_path="${rel_path#/}"
                         local source_path="$source_subvolume/$rel_path"
                         local target_path="$persistent_subvol/$rel_path"
                         
@@ -496,7 +377,7 @@ in {
                 
                 debug "Mounting subvolumes from disk $disk to $mount_point"
                 debug "Snapshots subvolume: $snapshots_subvolume"
-                debug "Subvolume names: ''${subvolume_names[*]}"
+                debug "Subvolume names: ${subvolume_names[*]}"
                 
                 require_test "-b" "$disk"
                 mkdir -p "$mount_point"
@@ -519,10 +400,10 @@ in {
                 btrfs subvolume list "$mount_point" || warning "Could not list subvolumes"
                 
                 # Mount all subvolumes including snapshots
-                local all_subvolumes=("''${subvolume_names[@]}" "$snapshots_subvolume")
-                debug "All subvolumes to mount: ''${all_subvolumes[*]}"
+                local all_subvolumes=("${subvolume_names[@]}" "$snapshots_subvolume")
+                debug "All subvolumes to mount: ${all_subvolumes[*]}"
                 
-                for subvolume_name in "''${all_subvolumes[@]}"; do
+                for subvolume_name in "${all_subvolumes[@]}"; do
                     local subvol_mount="$mount_point/$subvolume_name"
                     debug "Mounting subvolume $subvolume_name to $subvol_mount"
                     mkdir -p "$subvol_mount"
@@ -572,21 +453,21 @@ in {
                 # Convert space-separated strings to arrays
                 local -a subvolume_pairs subvolume_names
                 IFS=' ' read -ra subvolume_pairs <<< "$subvolume_pairs_str"
-                debug "Parsed subvolume pairs: ''${subvolume_pairs[*]}"
+                debug "Parsed subvolume pairs: ${subvolume_pairs[*]}"
                 
                 # Extract subvolume names from pairs
-                for pair in "''${subvolume_pairs[@]}"; do
-                    subvolume_names+=("''${pair%%=*}")
+                for pair in "${subvolume_pairs[@]}"; do
+                    subvolume_names+=("${pair%%=*}")
                 done
-                debug "Extracted subvolume names: ''${subvolume_names[*]}"
+                debug "Extracted subvolume names: ${subvolume_names[*]}"
                 
                 # Sort paths to keep
                 local paths_to_keep
                 paths_to_keep=$(echo "$paths_to_keep_str" | tr ' ' '\n' | sort | tr '\n' ' ')
-                paths_to_keep="''${paths_to_keep% }"  # Remove trailing space
+                paths_to_keep="${paths_to_keep% }"  # Remove trailing space
                 debug "Sorted paths to keep: $paths_to_keep"
                 
-                log "Starting btrfs send/receive impermanence reset for: ''${subvolume_names[*]}"
+                log "Starting btrfs send/receive impermanence reset for: ${subvolume_names[*]}"
                 log "Preserving paths: $paths_to_keep"
                 
                 # Set up cleanup trap
@@ -594,12 +475,12 @@ in {
                 trap cleanup EXIT ERR
                 
                 debug "About to call mount_subvolumes"
-                mount_subvolumes "$disk" "$MOUNT_POINT" "$snapshots_subvolume_name" "''${subvolume_names[@]}"
+                mount_subvolumes "$disk" "$MOUNT_POINT" "$snapshots_subvolume_name" "${subvolume_names[@]}"
                 debug "mount_subvolumes completed successfully"
                 
-                for pair in "''${subvolume_pairs[@]}"; do
-                    local subvolume_name="''${pair%%=*}"
-                    local subvolume_mount_point="''${pair#*=}"
+                for pair in "${subvolume_pairs[@]}"; do
+                    local subvolume_name="${pair%%=*}"
+                    local subvolume_mount_point="${pair#*=}"
                     debug "Processing pair: $pair"
                     debug "Subvolume name: $subvolume_name"
                     debug "Mount point: $subvolume_mount_point"
@@ -687,161 +568,3 @@ in {
             # Run main function with all arguments
             main "$@" 
 
-          '';
-        };
-      };
-    };
-
-    # Critical: Auto-rebuild NixOS configuration early in boot process
-    # systemd.services.nixos-auto-rebuild = {
-    #   description = "Auto-rebuild NixOS configuration after impermanence reset";
-    #   wantedBy = [ "multi-user.target" ];
-    #   # Run after basic filesystem setup but before user services
-    #   after = [ "local-fs.target" "systemd-remount-fs.service" ];
-    #   before = [
-    #     "display-manager.service"
-    #     "getty@tty1.service"
-    #     "systemd-user-sessions.service" # Blocks user logins until complete
-    #   ];
-    #   unitConfig = {
-    #     DefaultDependencies = false;
-    #     ConditionPathExists = "/tmp/.nixos-needs-rebuild";
-    #   };
-    #   serviceConfig = {
-    #     Type = "oneshot";
-    #     RemainAfterExit = true;
-    #     StandardOutput = "journal";
-    #     StandardError = "journal";
-    #     # Ensure we have a clean environment
-    #     Environment = [
-    #       "HOME=/root"
-    #       "USER=root"
-    #       "PATH=${lib.makeBinPath [ pkgs.nixos-rebuild pkgs.git pkgs.nix ]}"
-    #     ];
-    #     ExecStart = pkgs.writeScript "auto-rebuild" ''
-    #       #!/bin/bash
-    #       set -euo pipefail
-    #
-    #       echo "=== NixOS Auto-Rebuild Starting ==="
-    #       echo "System was reset, rebuilding declarative configuration..."
-    #
-    #       # Check for host identifier to determine which flake target to build
-    #       if [ -f /etc/hostname-for-rebuild ]; then
-    #         HOST=$(cat /etc/hostname-for-rebuild)
-    #         echo "Building for host: $HOST"
-    #         
-    #         # Use the home flake configuration
-    #         cd /home/alexbn/.config/nix-config
-    #         if nixos-rebuild switch --flake ".#$HOST" --install-bootloader; then
-    #           echo "=== NixOS rebuild completed successfully ==="
-    #           rm -f /tmp/.nixos-needs-rebuild
-    #         else
-    #           echo "=== NixOS rebuild failed! ==="
-    #           echo "Manual intervention may be required."
-    #           exit 1
-    #         fi
-    #       else
-    #         echo "ERROR: /etc/hostname-for-rebuild not found!"
-    #         echo "Please create this file with your host name (e.g., 'echo thinkpad | sudo tee /etc/hostname-for-rebuild')"
-    #         exit 1
-    #       fi
-    #     '';
-    #     # If rebuild fails, don't block the boot process entirely
-    #     # but log the failure clearly
-    #     ExecStartPost = pkgs.writeScript "rebuild-cleanup" ''
-    #       #!/bin/bash
-    #       if [ -f /tmp/.nixos-needs-rebuild ]; then
-    #         echo "WARNING: NixOS rebuild failed, system may not be properly configured!"
-    #         echo "Run 'sudo nixos-rebuild switch' manually when possible."
-    #         # Create a prominent warning file
-    #         echo "NixOS rebuild failed on $(date)" > /etc/REBUILD_FAILED_WARNING
-    #       fi
-    #     '';
-    #   };
-    # };
-
-    # Ensure the rebuild service blocks user sessions
-    # systemd.services."systemd-user-sessions".after =
-    #   [ "nixos-auto-rebuild.service" ];
-    #
-    # # Alternative: If you want to be even more aggressive, prevent all logins until rebuild completes
-    # systemd.services."getty@".after = [ "nixos-auto-rebuild.service" ];
-    # systemd.services."serial-getty@".after = [ "nixos-auto-rebuild.service" ];
-    #
-    # # Prevent SSH logins until rebuild is complete (if using SSH)
-    # systemd.services."sshd".after = [ "nixos-auto-rebuild.service" ];
-
-    # Enhanced management script
-    environment.systemPackages = [
-      (pkgs.writeShellScriptBin "nixos-impermanence" ''
-        #!/bin/bash
-        set -euo pipefail
-
-        usage() {
-          echo "Usage: $0 <command> [options]"
-          echo "Commands:"
-          echo "  status                    Show impermanence status"
-          echo "  check-rebuild            Check if rebuild is needed"
-          echo "  force-rebuild            Force a rebuild now"
-          echo "  list-snapshots           List available snapshots"
-          echo "  simulate-reset           Test the reset process"
-        }
-
-        case "$''${1:-}" in
-          status)
-            echo "=== NixOS Impermanence Status ==="
-            if [ -f /tmp/.nixos-needs-rebuild ]; then
-              echo "⚠️  System reset detected, rebuild pending"
-            else
-              echo "✓ System in normal state"
-            fi
-            
-            if [ -f /etc/REBUILD_FAILED_WARNING ]; then
-              echo "❌ Last rebuild failed!"
-              cat /etc/REBUILD_FAILED_WARNING
-            fi
-            
-            systemctl status nixos-auto-rebuild.service --no-pager || true
-            ;;
-            
-          check-rebuild)
-            if [ -f /tmp/.nixos-needs-rebuild ]; then
-              echo "Rebuild needed"
-              exit 1
-            else
-              echo "No rebuild needed"
-              exit 0
-            fi
-            ;;
-            
-          force-rebuild)
-            echo "Forcing NixOS rebuild..."
-            touch /tmp/.nixos-needs-rebuild
-            systemctl start nixos-auto-rebuild.service
-            ;;
-            
-          simulate-reset)
-            echo "Simulating system reset..."
-            touch /tmp/.nixos-needs-rebuild
-            echo "✓ Reset marker created"
-            echo "Run 'systemctl start nixos-auto-rebuild.service' to test rebuild"
-            ;;
-            
-          list-snapshots)
-            echo "=== Available Snapshots ==="
-            if [ -d /.snapshots ]; then
-              find /.snapshots -name "PREVIOUS" -o -name "PENULTIMATE" | sort
-            else
-              echo "No snapshots directory found"
-            fi
-            ;;
-            
-          *)
-            usage
-            exit 1
-            ;;
-        esac
-      '')
-    ];
-  };
-}
