@@ -110,6 +110,7 @@ in {
           grep = "${pkgs.gnugrep}/bin/grep";
           which = "${pkgs.which}/bin/which";
           lsblk = "${pkgs.util-linux}/bin/lsblk";
+          findmnt = "${pkgs.util-linux}/bin/findmnt";
           btrfs = "${pkgs.btrfs-progs}/bin/btrfs";
           find = "${pkgs.findutils}/bin/find";
           file = "${pkgs.file}/bin/file";
@@ -265,6 +266,10 @@ in {
                         fi
                         debug "Block device check passed: $path"
                         ;;
+                    *)
+                        error "Unknown condition: $condition"
+                        abort "Invalid condition in require_test: $condition"
+                        ;;
                 esac
             }
 
@@ -293,6 +298,17 @@ in {
                     return 0
                 fi
                 
+                # Get the mount root to properly construct paths
+                local mount_root
+                if command -v findmnt >/dev/null 2>&1; then
+                    mount_root=$(findmnt -n -o TARGET --target "$path" 2>/dev/null | head -1)
+                fi
+                if [[ -z "$mount_root" ]]; then
+                    # Fallback: assume we're in the global mount point structure
+                    mount_root="$MOUNT_POINT"
+                    debug "Using fallback mount root: $mount_root"
+                fi
+                
                 # Get list of child subvolumes
                 local output
                 if output=$(btrfs subvolume list -o "$path" 2>/dev/null); then
@@ -302,7 +318,9 @@ in {
                             local subvol_path
                             subvol_path=$(echo "$line" | awk '{for(i=9;i<=NF;i++) printf "%s%s", $i, (i<NF?" ":"");}')
                             if [[ -n "$subvol_path" ]]; then
-                                local full_path="$(dirname "$path")/$subvol_path"
+                                # The subvol_path is relative to mount root
+                                local full_path="$mount_root/$subvol_path"
+                                debug "Recursively deleting child subvolume: $full_path"
                                 btrfs_subvolume_delete_recursively "$full_path"
                             fi
                         fi
