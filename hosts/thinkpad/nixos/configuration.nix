@@ -53,6 +53,12 @@
       "/var/lib/colord" # Color management profiles
       "/var/lib/docker" # Docker images, containers, volumes, networks
       "/etc/NetworkManager/system-connections" # Wifi passwords and network configs
+      
+      # User authentication files (for testing - reduces security benefits)
+      "/etc/shadow" # User password hashes
+      "/etc/passwd" # User account info
+      "/etc/group" # Group definitions
+      "/etc/gshadow" # Group password hashes
 
       # User SSH and GPG keys
       "/home/alexbn/.ssh"

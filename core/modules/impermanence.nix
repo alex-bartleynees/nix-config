@@ -287,6 +287,12 @@ in {
                     return 0
                 fi
                 
+                # Check if this is actually a subvolume before trying to list child subvolumes
+                if ! btrfs subvolume show "$path" >/dev/null 2>&1; then
+                    warning "$path is not a subvolume, skipping"
+                    return 0
+                fi
+                
                 # Get list of child subvolumes
                 local output
                 if output=$(btrfs subvolume list -o "$path" 2>/dev/null); then
@@ -322,7 +328,10 @@ in {
                 
                 trace "''${cmd[@]}"
                 btrfs_sync "$source"
-                btrfs_sync "$target"
+                # Only sync target if the snapshot was created successfully
+                if [[ -e "$target" ]]; then
+                    btrfs_sync "$target"
+                fi
             }
 
             btrfs_subvolume_rw() {
@@ -348,7 +357,20 @@ in {
                 # Copy only the persistent files/directories that belong to this subvolume
                 for path_to_keep in "''${paths_array[@]}"; do
                     # Check if this path belongs to the current subvolume's mount point
-                    if [[ "$path_to_keep" == "$subvolume_mount_point"* ]] || [[ "$subvolume_mount_point" == "/" && "$path_to_keep" != "/home"* ]]; then
+                    local path_belongs_to_subvol=false
+                    
+                    if [[ "$subvolume_mount_point" == "/" ]]; then
+                        # For root subvolume, only handle paths that don't belong to other subvolumes
+                        # Exclude /home paths which belong to @home subvolume
+                        if [[ "$path_to_keep" != "/home/"* ]]; then
+                            path_belongs_to_subvol=true
+                        fi
+                    elif [[ "$path_to_keep" == "$subvolume_mount_point/"* ]]; then
+                        # For non-root subvolumes, handle paths that start with the mount point
+                        path_belongs_to_subvol=true
+                    fi
+                    
+                    if [[ "$path_belongs_to_subvol" == true ]]; then
                         local rel_path="''${path_to_keep#$subvolume_mount_point}"
                         rel_path="''${rel_path#/}"
                         local source_path="$source_subvolume/$rel_path"
@@ -561,14 +583,21 @@ in {
                     
                     # Rotate snapshots (keep history for debugging)
                     log "Rotating snapshots"
+                    require_test "-d" "$subvolume"
                     if [[ -e "$previous_snapshot" ]]; then
+                        debug "Previous snapshot exists, rotating to penultimate"
                         btrfs_subvolume_snapshot "$previous_snapshot" "$penultimate_snapshot"
+                    else
+                        debug "No previous snapshot found, skipping rotation"
                     fi
+                    debug "Creating new previous snapshot from current subvolume"
                     btrfs_subvolume_snapshot "$subvolume" "$previous_snapshot" true
                     
                     # Create completely fresh empty subvolume
                     log "Creating fresh empty subvolume"
+                    debug "Deleting any existing fresh snapshot at: $fresh_snapshot"
                     btrfs_subvolume_delete_recursively "$fresh_snapshot"
+                    debug "Creating fresh subvolume at: $fresh_snapshot"
                     trace btrfs subvolume create "$fresh_snapshot"
                     
                     # Apply persistent files to the fresh subvolume
