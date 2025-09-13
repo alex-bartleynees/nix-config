@@ -335,40 +335,40 @@ in {
                     done
                 fi
                 
-                # Get list of child subvolumes that need to be deleted first
-                local output
-                debug "Checking for child subvolumes of: $path"
-                if output=$(btrfs subvolume list -o "$path" 2>/dev/null); then
-                    debug "Found child subvolumes, deleting them first"
-                    while IFS= read -r line; do
-                        if [[ -n "$line" ]]; then
-                            # Parse the subvolume path from the output
-                            local subvol_path
-                            subvol_path=$(echo "$line" | awk '{for(i=9;i<=NF;i++) printf "%s%s", $i, (i<NF?" ":"");}')
-                            if [[ -n "$subvol_path" ]]; then
-                                # Skip snapshot-related child subvolumes
-                                if [[ "$subvol_path" == *"@snapshots"* || "$subvol_path" == *".snapshots"* ]]; then
-                                    debug "Skipping snapshot child subvolume: $subvol_path"
-                                    continue
-                                fi
-                                
-                                # The subvol_path is relative to filesystem root
-                                local full_path="$MOUNT_POINT/$subvol_path"
-                                debug "Recursively deleting child subvolume: $full_path"
-                                btrfs_subvolume_delete_recursively "$full_path"
-                            fi
-                        fi
-                    done <<< "$output"
-                fi
-                
-                # Now try to delete the parent subvolume (should be empty now)
-                debug "Attempting to delete now-empty subvolume: $path"
-                if ! btrfs_subvolume_delete "$path"; then
-                    warning "Failed to delete $path, checking what's left"
-                    ls -la "$path" 2>/dev/null || true
-                    btrfs subvolume list -o "$path" 2>/dev/null || true
-                fi
-
+                # # Get list of child subvolumes that need to be deleted first
+                # local output
+                # debug "Checking for child subvolumes of: $path"
+                # if output=$(btrfs subvolume list -o "$path" 2>/dev/null); then
+                #     debug "Found child subvolumes, deleting them first"
+                #     while IFS= read -r line; do
+                #         if [[ -n "$line" ]]; then
+                #             # Parse the subvolume path from the output
+                #             local subvol_path
+                #             subvol_path=$(echo "$line" | awk '{for(i=9;i<=NF;i++) printf "%s%s", $i, (i<NF?" ":"");}')
+                #             if [[ -n "$subvol_path" ]]; then
+                #                 # Skip snapshot-related child subvolumes
+                #                 if [[ "$subvol_path" == *"@snapshots"* || "$subvol_path" == *".snapshots"* ]]; then
+                #                     debug "Skipping snapshot child subvolume: $subvol_path"
+                #                     continue
+                #                 fi
+                #                 
+                #                 # The subvol_path is relative to filesystem root
+                #                 local full_path="$MOUNT_POINT/$subvol_path"
+                #                 debug "Recursively deleting child subvolume: $full_path"
+                #                 btrfs_subvolume_delete_recursively "$full_path"
+                #             fi
+                #         fi
+                #     done <<< "$output"
+                # fi
+                # 
+                # # Now try to delete the parent subvolume (should be empty now)
+                # debug "Attempting to delete now-empty subvolume: $path"
+                # if ! btrfs_subvolume_delete "$path"; then
+                #     warning "Failed to delete $path, checking what's left"
+                #     ls -la "$path" 2>/dev/null || true
+                #     btrfs subvolume list -o "$path" 2>/dev/null || true
+                # fi
+                #
             }
 
             btrfs_subvolume_snapshot() {
@@ -447,6 +447,79 @@ in {
                 done
                 
                 echo "$persistent_subvol"
+            }
+
+            clear_subvolume_contents() {
+                local subvolume="$1"
+                local paths_to_keep="$2"
+                
+                debug "Clearing contents of subvolume: $subvolume"
+                debug "Paths to preserve: $paths_to_keep"
+                
+                if [[ ! -d "$subvolume" ]]; then
+                    warning "Subvolume directory does not exist: $subvolume"
+                    return 1
+                fi
+                
+                # Convert paths_to_keep to array for easier processing
+                local -a paths_array
+                IFS=' ' read -ra paths_array <<< "$paths_to_keep"
+                
+                # Critical directories/files to always preserve (regardless of paths_to_keep)
+                local -a critical_paths=(
+                    "nix"
+                    ".snapshots"
+                    "@snapshots"
+                    "boot"
+                    "sys"
+                    "proc"
+                    "dev"
+                    "run"
+                )
+                
+                # Add user-specified paths to critical paths
+                for path in "''${paths_array[@]}"; do
+                    # Convert absolute paths to relative paths for this subvolume
+                    local rel_path="''${path#/}"
+                    if [[ -n "$rel_path" && "$rel_path" != "." ]]; then
+                        critical_paths+=("''${rel_path%%/*}")
+                    fi
+                done
+                
+                debug "Critical paths to preserve: ''${critical_paths[*]}"
+                
+                # Remove all contents except critical paths
+                find "$subvolume" -mindepth 1 -maxdepth 1 | while read -r item; do
+                    local basename_item=$(basename "$item")
+                    local should_preserve=false
+                    
+                    # Check if this item should be preserved
+                    for critical_path in "''${critical_paths[@]}"; do
+                        if [[ "$basename_item" == "$critical_path" ]]; then
+                            should_preserve=true
+                            break
+                        fi
+                    done
+                    
+                    # Also preserve any btrfs subvolumes to avoid destroying snapshots
+                    if btrfs subvolume show "$item" >/dev/null 2>&1; then
+                        debug "Preserving subvolume: $item"
+                        should_preserve=true
+                    fi
+                    
+                    if [[ "$should_preserve" == true ]]; then
+                        debug "Preserving critical path: $item"
+                    else
+                        debug "Removing non-critical item: $item"
+                        if [[ -d "$item" ]]; then
+                            rm -rf "$item" 2>/dev/null || warning "Failed to remove directory: $item"
+                        else
+                            rm -f "$item" 2>/dev/null || warning "Failed to remove file: $item"
+                        fi
+                    fi
+                done
+                
+                debug "Subvolume contents cleared successfully"
             }
 
             apply_persistent_files_via_send_receive() {
@@ -662,10 +735,13 @@ in {
                     log "Applying persistent files to fresh subvolume"
                     apply_persistent_files_via_send_receive "$persistent_subvol" "$fresh_snapshot"
                     
-                    # Replace current subvolume with fresh one
-                    log "Replacing subvolume with fresh snapshot"
-                    btrfs_subvolume_delete_recursively "$subvolume"
-                    btrfs_subvolume_snapshot "$fresh_snapshot" "$subvolume"
+                    # Clear contents of current subvolume instead of deleting it
+                    log "Clearing contents of subvolume while preserving structure"
+                    clear_subvolume_contents "$subvolume" "$paths_to_keep"
+                    
+                    # Copy fresh contents back
+                    log "Copying fresh contents to cleared subvolume"
+                    apply_persistent_files_via_send_receive "$fresh_snapshot" "$subvolume"
                     
                     # Clean up the fresh snapshot (we don't need to keep it)
                     btrfs_subvolume_delete "$fresh_snapshot"
