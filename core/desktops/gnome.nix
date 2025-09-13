@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }: {
+{ pkgs, ... }: {
   services.desktopManager = { gnome.enable = true; };
 
   services.displayManager = {

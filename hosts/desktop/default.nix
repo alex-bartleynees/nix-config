@@ -28,14 +28,14 @@ in nixpkgs.lib.nixosSystem {
       ./modules
       ./nixos/configuration.nix
       ./specialisations
-      ../../core/desktops/hypr.nix
+      ../../core/desktops/hyprland.nix
       {
         _module.args.theme = theme;
       }
       # Auto-generated theme specializations
       (themes.mkThemeSpecialisations {
         baseImports = [ ./modules ./nixos/configuration.nix ];
-        desktop = "hypr";
+        desktop = desktop;
       })
     ];
   };

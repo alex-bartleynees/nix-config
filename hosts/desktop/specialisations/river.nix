@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ pkgs, inputs, ... }:
 let
   theme =
     import ../../../core/themes/catppuccin-mocha.nix { inherit inputs pkgs; };
