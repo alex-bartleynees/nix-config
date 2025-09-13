@@ -281,8 +281,8 @@ in {
             btrfs_subvolume_delete() {
                 local path="$1"
                 if [[ -e "$path" ]]; then
-                    trace btrfs subvolume delete "$path" --commit-after
-                    btrfs_sync "$(dirname "$path")"
+                    btrfs subvolume delete "$path" --commit-after
+                    debug "Fresh deleted"
                 fi
             }
 
@@ -366,7 +366,11 @@ in {
                 local persistent_subvol="$temp_dir/persistent_files"
                 
                 # Create a minimal subvolume with just the persistent files
-                trace btrfs subvolume create "$persistent_subvol"
+                if ! btrfs subvolume create "$persistent_subvol" >/dev/null 2>&1; then
+                    error "Failed to create persistent subvolume: $persistent_subvol" >&2
+                    return 1
+                fi
+                debug "Created persistent subvolume: $persistent_subvol" >&2
                 
                 # Convert paths_to_keep string to array
                 local -a paths_array
@@ -399,9 +403,13 @@ in {
                             mkdir -p "$(dirname "$target_path")"
                             
                             # Copy with attributes
-                            trace cp -a "$source_path" "$target_path"
+                            if ! cp -a "$source_path" "$target_path" 2>/dev/null; then
+                                warning "Failed to copy: $source_path -> $target_path" >&2
+                            else
+                                debug "Copied: $source_path -> $target_path" >&2
+                            fi
                         else
-                            warning "Persistent path not found: $source_path"
+                            warning "Persistent path not found: $source_path" >&2
                         fi
                     fi
                 done
@@ -412,43 +420,39 @@ in {
             apply_persistent_files_via_send_receive() {
                 local persistent_subvol="$1"
                 local target_subvolume="$2"
+
+                debug "Apply persistent files to fresh"
+                debug "Source: $persistent_subvol"
+                debug "Target: $target_subvolume"
                 
-                # First, create a readonly snapshot of the persistent files
-                local persistent_snapshot="''${persistent_subvol}_snapshot"
-                btrfs_subvolume_snapshot "$persistent_subvol" "$persistent_snapshot" true
+                # Check if persistent subvolume has any content
+                local file_count
+                file_count=$(find "$persistent_subvol" -type f 2>/dev/null | wc -l)
+                debug "Found $file_count files in persistent subvolume"
                 
-                local stream_file
-                stream_file=$(mktemp)
-                
-                # Generate send stream
-                log "Generating send stream from $persistent_snapshot"
-                if btrfs send "$persistent_snapshot" > "$stream_file" 2>/dev/null; then
-                    # Apply the stream to target subvolume
-                    log "Applying persistent files to $target_subvolume"
-                    if btrfs receive "$target_subvolume" < "$stream_file" 2>/dev/null; then
-                        log "Successfully applied persistent files via send/receive"
-                        
-                        # The receive creates a new subvolume, we need to merge it
-                        local received_subvol="$target_subvolume/$(basename "$persistent_snapshot")"
-                        if [[ -e "$received_subvol" ]]; then
-                            trace cp -a "$received_subvol/." "$target_subvolume/"
-                            btrfs_subvolume_delete "$received_subvol"
-                        fi
-                    else
-                        error "btrfs receive failed"
-                        warning "Falling back to direct file copy"
-                        trace cp -a "$persistent_subvol/." "$target_subvolume/"
-                    fi
-                else
-                    error "btrfs send failed"
-                    warning "Falling back to direct file copy"
-                    trace cp -a "$persistent_subvol/." "$target_subvolume/"
+                if [[ $file_count -eq 0 ]]; then
+                    log "No persistent files to transfer, skipping"
+                    return 0
                 fi
                 
-                rm -f "$stream_file"
+                # Skip the complex send/receive and just use direct copy for now
+                log "Using direct file copy to transfer persistent files"
+                debug "Copying from $persistent_subvol to $target_subvolume"
                 
-                # Clean up the readonly snapshot
-                btrfs_subvolume_delete "$persistent_snapshot"
+                if [[ -d "$persistent_subvol" && -d "$target_subvolume" ]]; then
+                    # Use rsync-like behavior with cp
+                    if trace cp -a "$persistent_subvol/." "$target_subvolume/"; then
+                        log "Successfully copied persistent files"
+                    else
+                        error "Failed to copy persistent files"
+                        return 1
+                    fi
+                else
+                    error "Source or target directory does not exist"
+                    error "Source exists: $([[ -d "$persistent_subvol" ]] && echo "yes" || echo "no")"
+                    error "Target exists: $([[ -d "$target_subvolume" ]] && echo "yes" || echo "no")"
+                    return 1
+                fi
             }
 
             mount_subvolumes() {
@@ -600,23 +604,27 @@ in {
                     debug "extract_persistent_files returned: $persistent_subvol"
                     
                     # Rotate snapshots (keep history for debugging)
-                    log "Rotating snapshots"
-                    require_test "-d" "$subvolume"
-                    if [[ -e "$previous_snapshot" ]]; then
-                        debug "Previous snapshot exists, rotating to penultimate"
-                        btrfs_subvolume_snapshot "$previous_snapshot" "$penultimate_snapshot"
-                    else
-                        debug "No previous snapshot found, skipping rotation"
-                    fi
-                    debug "Creating new previous snapshot from current subvolume"
-                    btrfs_subvolume_snapshot "$subvolume" "$previous_snapshot" true
+                    # log "Rotating snapshots"
+                    # require_test "-d" "$subvolume"
+                    # if [[ -e "$previous_snapshot" ]]; then
+                    #     debug "Previous snapshot exists, rotating to penultimate"
+                    #     btrfs_subvolume_snapshot "$previous_snapshot" "$penultimate_snapshot"
+                    # else
+                    #     debug "No previous snapshot found, skipping rotation"
+                    # fi
+                    # debug "Creating new previous snapshot from current subvolume"
+                    # btrfs_subvolume_snapshot "$subvolume" "$previous_snapshot" true
                     
                     # Create completely fresh empty subvolume
                     log "Creating fresh empty subvolume"
                     debug "Deleting any existing fresh snapshot at: $fresh_snapshot"
                     btrfs_subvolume_delete_recursively "$fresh_snapshot"
                     debug "Creating fresh subvolume at: $fresh_snapshot"
-                    trace btrfs subvolume create "$fresh_snapshot"
+                    debug "Ensuring parent directory exists: $(dirname "$fresh_snapshot")"
+                    mkdir -p "$(dirname "$fresh_snapshot")"
+                    debug "Directory created"
+                    btrfs subvolume create "$fresh_snapshot"
+                    debug "Fresh created"
                     
                     # Apply persistent files to the fresh subvolume
                     log "Applying persistent files to fresh subvolume"
