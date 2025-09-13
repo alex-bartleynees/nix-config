@@ -32,7 +32,7 @@
 
   # Enable impermanence with BTRFS reset on boot
   impermanence = {
-    enable = true;
+    enable = false;
     subvolumes = {
       "@" = { mountpoint = "/"; };
       "@home" = { mountpoint = "/home"; };
@@ -53,7 +53,7 @@
       "/var/lib/colord" # Color management profiles
       "/var/lib/docker" # Docker images, containers, volumes, networks
       "/etc/NetworkManager/system-connections" # Wifi passwords and network configs
-      
+
       # User authentication files (for testing - reduces security benefits)
       "/etc/shadow" # User password hashes
       "/etc/passwd" # User account info
