@@ -447,9 +447,23 @@ in {
                             if ! cp -a --preserve=all "$source_path/." "$target_path/" 2>/dev/null; then
                                 warning "Failed to copy: $source_path -> $target_path" >&2
                             else
-                                # Ensure target directory ownership matches source
-                                chown --reference="$source_path" "$target_path" 2>/dev/null || true
-                                debug "Copied: $source_path -> $target_path" >&2
+                                # Use existing cp method for other paths
+                                if [[ -d "$source_path" ]]; then
+                                    # It's a directory - copy contents
+                                    if ! cp -a --preserve=all "$source_path/." "$target_path/" 2>/dev/null; then
+                                        warning "Failed to copy directory: $source_path -> $target_path" >&2
+                                    else
+                                        chown --reference="$source_path" "$target_path" 2>/dev/null || true
+                                        debug "Copied directory: $source_path -> $target_path" >&2
+                                    fi
+                                else
+                                    # It's a file - copy the file itself
+                                    if ! cp -a --preserve=all "$source_path" "$target_path" 2>/dev/null; then
+                                        warning "Failed to copy file: $source_path -> $target_path" >&2
+                                    else
+                                        debug "Copied file: $source_path -> $target_path" >&2
+                                    fi
+                                fi
                             fi
                         else
                             warning "Persistent path not found: $source_path" >&2
@@ -768,157 +782,5 @@ in {
         };
       };
     };
-
-    # Critical: Auto-rebuild NixOS configuration early in boot process
-    systemd.services.nixos-auto-rebuild = {
-      description = "Auto-rebuild NixOS configuration after impermanence reset";
-      wantedBy = [ "multi-user.target" ];
-      # Run after basic filesystem setup but before user services
-      after = [ "local-fs.target" "systemd-remount-fs.service" ];
-      before = [
-        "display-manager.service"
-        "getty@tty1.service"
-        "systemd-user-sessions.service" # Blocks user logins until complete
-      ];
-      unitConfig = {
-        DefaultDependencies = false;
-        ConditionPathExists = "/tmp/.nixos-needs-rebuild";
-      };
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        StandardOutput = "journal";
-        StandardError = "journal";
-        # Ensure we have a clean environment
-        Environment = [
-          "HOME=/root"
-          "USER=root"
-          "PATH=${lib.makeBinPath [ pkgs.nixos-rebuild pkgs.git pkgs.nix ]}"
-        ];
-        ExecStart = pkgs.writeScript "auto-rebuild" ''
-          #!/bin/bash
-          set -euo pipefail
-
-          echo "=== NixOS Auto-Rebuild Starting ==="
-          echo "System was reset, rebuilding declarative configuration..."
-
-          # Check for host identifier to determine which flake target to build
-          if [ -f /etc/hostname-for-rebuild ]; then
-            HOST=$(cat /etc/hostname-for-rebuild)
-            echo "Building for host: $HOST"
-            
-            # Use the home flake configuration
-            cd /home/alexbn/.config/nix-config
-            if nixos-rebuild switch --flake ".#$HOST"; then
-              echo "=== NixOS rebuild completed successfully ==="
-              rm -f /tmp/.nixos-needs-rebuild
-            else
-              echo "=== NixOS rebuild failed! ==="
-              echo "Manual intervention may be required."
-              exit 1
-            fi
-          else
-            echo "ERROR: /etc/hostname-for-rebuild not found!"
-            echo "Please create this file with your host name (e.g., 'echo thinkpad | sudo tee /etc/hostname-for-rebuild')"
-            exit 1
-          fi
-        '';
-        # If rebuild fails, don't block the boot process entirely
-        # but log the failure clearly
-        ExecStartPost = pkgs.writeScript "rebuild-cleanup" ''
-          #!/bin/bash
-          if [ -f /tmp/.nixos-needs-rebuild ]; then
-            echo "WARNING: NixOS rebuild failed, system may not be properly configured!"
-            echo "Run 'sudo nixos-rebuild switch' manually when possible."
-            # Create a prominent warning file
-            echo "NixOS rebuild failed on $(date)" > /etc/REBUILD_FAILED_WARNING
-          fi
-        '';
-      };
-    };
-
-    # Ensure the rebuild service blocks user sessions
-    # systemd.services."systemd-user-sessions".after =
-    #   [ "nixos-auto-rebuild.service" ];
-    #
-    # # Alternative: If you want to be even more aggressive, prevent all logins until rebuild completes
-    # systemd.services."getty@".after = [ "nixos-auto-rebuild.service" ];
-    # systemd.services."serial-getty@".after = [ "nixos-auto-rebuild.service" ];
-    #
-    # # Prevent SSH logins until rebuild is complete (if using SSH)
-    # systemd.services."sshd".after = [ "nixos-auto-rebuild.service" ];
-
-    # Enhanced management script
-    environment.systemPackages = [
-      (pkgs.writeShellScriptBin "nixos-impermanence" ''
-        #!/bin/bash
-        set -euo pipefail
-
-        usage() {
-          echo "Usage: $0 <command> [options]"
-          echo "Commands:"
-          echo "  status                    Show impermanence status"
-          echo "  check-rebuild            Check if rebuild is needed"
-          echo "  force-rebuild            Force a rebuild now"
-          echo "  list-snapshots           List available snapshots"
-          echo "  simulate-reset           Test the reset process"
-        }
-
-        case "$''${1:-}" in
-          status)
-            echo "=== NixOS Impermanence Status ==="
-            if [ -f /tmp/.nixos-needs-rebuild ]; then
-              echo "⚠️  System reset detected, rebuild pending"
-            else
-              echo "✓ System in normal state"
-            fi
-            
-            if [ -f /etc/REBUILD_FAILED_WARNING ]; then
-              echo "❌ Last rebuild failed!"
-              cat /etc/REBUILD_FAILED_WARNING
-            fi
-            
-            systemctl status nixos-auto-rebuild.service --no-pager || true
-            ;;
-            
-          check-rebuild)
-            if [ -f /tmp/.nixos-needs-rebuild ]; then
-              echo "Rebuild needed"
-              exit 1
-            else
-              echo "No rebuild needed"
-              exit 0
-            fi
-            ;;
-            
-          force-rebuild)
-            echo "Forcing NixOS rebuild..."
-            touch /tmp/.nixos-needs-rebuild
-            systemctl start nixos-auto-rebuild.service
-            ;;
-            
-          simulate-reset)
-            echo "Simulating system reset..."
-            touch /tmp/.nixos-needs-rebuild
-            echo "✓ Reset marker created"
-            echo "Run 'systemctl start nixos-auto-rebuild.service' to test rebuild"
-            ;;
-            
-          list-snapshots)
-            echo "=== Available Snapshots ==="
-            if [ -d /.snapshots ]; then
-              find /.snapshots -name "PREVIOUS" -o -name "PENULTIMATE" | sort
-            else
-              echo "No snapshots directory found"
-            fi
-            ;;
-            
-          *)
-            usage
-            exit 1
-            ;;
-        esac
-      '')
-    ];
   };
 }
