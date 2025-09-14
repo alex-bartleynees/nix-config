@@ -359,13 +359,13 @@
                 )
                 
                 # Add user-specified paths to critical paths
-                for path in "${paths_array[@]}"; do
-                    # Convert absolute paths to relative paths for this subvolume
-                    local rel_path="${path#/}"
-                    if [[ -n "$rel_path" && "$rel_path" != "." ]]; then
-                        critical_paths+=("${rel_path%%/*}")
-                    fi
-                done
+                # for path in "${paths_array[@]}"; do
+                #     # Convert absolute paths to relative paths for this subvolume
+                #     local rel_path="${path#/}"
+                #     if [[ -n "$rel_path" && "$rel_path" != "." ]]; then
+                #         critical_paths+=("${rel_path%%/*}")
+                #     fi
+                # done
                 
                 debug "Critical paths to preserve: ${critical_paths[*]}"
                 

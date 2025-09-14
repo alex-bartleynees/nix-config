@@ -32,7 +32,7 @@
 
   # Enable impermanence with BTRFS reset on boot
   impermanence = {
-    enable = false;
+    enable = true;
     subvolumes = {
       "@" = { mountpoint = "/"; };
       "@home" = { mountpoint = "/home"; };
@@ -65,7 +65,6 @@
       "/home/alexbn/.gnupg"
 
       # Development tools
-      "/home/alexbn/.vscode" # VSCode settings and workspace state
       "/home/alexbn/.config/JetBrains" # Rider settings and projects
       "/home/alexbn/.local/share/JetBrains" # Rider data
       "/home/alexbn/.dotnet" # .NET user secrets and tools
@@ -78,8 +77,6 @@
       # Applications with important user data
       "/home/alexbn/.local/share/obsidian" # Obsidian vaults and settings
       "/home/alexbn/Documents" # User documents
-      "/home/alexbn/Downloads" # Downloads folder
-      "/home/alexbn/Pictures" # Photos/screenshots
       "/home/alexbn/workspaces"
 
       # Config files
@@ -89,25 +86,15 @@
       "/home/alexbn/.config/dotfiles"
       "/home/alexbn/.config/sops"
 
-      # Git configuration
-      "/home/alexbn/.gitconfig"
-      "/home/alexbn/.config/git" # Git global config
-
       # Shell and terminal tools
       "/home/alexbn/.zsh_history"
       "/home/alexbn/.bash_history"
       "/home/alexbn/.p10k.zsh" # Powerlevel10k configuration
       "/home/alexbn/.local/share/atuin" # Atuin shell history database
       "/home/alexbn/.local/share/zoxide" # Zoxide frecency database
-      "/home/alexbn/.config/direnv" # Direnv configuration
-      "/home/alexbn/.tmux" # Tmux configurations
       "/home/alexbn/.config/tmuxinator" # Tmuxinator project configs
       "/home/alexbn/.local/share/nvim" # Neovim plugins and data
       "/home/alexbn/.cache/nvim" # Neovim cache
-      "/home/alexbn/.config/yazi" # Yazi file manager config
-
-      # XDG directories with app data
-      "/home/alexbn/.local/share/applications" # Custom .desktop files
     ];
     resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
   };

@@ -335,40 +335,40 @@ in {
                     done
                 fi
                 
-                # # Get list of child subvolumes that need to be deleted first
-                # local output
-                # debug "Checking for child subvolumes of: $path"
-                # if output=$(btrfs subvolume list -o "$path" 2>/dev/null); then
-                #     debug "Found child subvolumes, deleting them first"
-                #     while IFS= read -r line; do
-                #         if [[ -n "$line" ]]; then
-                #             # Parse the subvolume path from the output
-                #             local subvol_path
-                #             subvol_path=$(echo "$line" | awk '{for(i=9;i<=NF;i++) printf "%s%s", $i, (i<NF?" ":"");}')
-                #             if [[ -n "$subvol_path" ]]; then
-                #                 # Skip snapshot-related child subvolumes
-                #                 if [[ "$subvol_path" == *"@snapshots"* || "$subvol_path" == *".snapshots"* ]]; then
-                #                     debug "Skipping snapshot child subvolume: $subvol_path"
-                #                     continue
-                #                 fi
-                #                 
-                #                 # The subvol_path is relative to filesystem root
-                #                 local full_path="$MOUNT_POINT/$subvol_path"
-                #                 debug "Recursively deleting child subvolume: $full_path"
-                #                 btrfs_subvolume_delete_recursively "$full_path"
-                #             fi
-                #         fi
-                #     done <<< "$output"
-                # fi
-                # 
-                # # Now try to delete the parent subvolume (should be empty now)
-                # debug "Attempting to delete now-empty subvolume: $path"
-                # if ! btrfs_subvolume_delete "$path"; then
-                #     warning "Failed to delete $path, checking what's left"
-                #     ls -la "$path" 2>/dev/null || true
-                #     btrfs subvolume list -o "$path" 2>/dev/null || true
-                # fi
-                #
+                # Get list of child subvolumes that need to be deleted first
+                local output
+                debug "Checking for child subvolumes of: $path"
+                if output=$(btrfs subvolume list -o "$path" 2>/dev/null); then
+                    debug "Found child subvolumes, deleting them first"
+                    while IFS= read -r line; do
+                        if [[ -n "$line" ]]; then
+                            # Parse the subvolume path from the output
+                            local subvol_path
+                            subvol_path=$(echo "$line" | awk '{for(i=9;i<=NF;i++) printf "%s%s", $i, (i<NF?" ":"");}')
+                            if [[ -n "$subvol_path" ]]; then
+                                # Skip snapshot-related child subvolumes
+                                if [[ "$subvol_path" == *"@snapshots"* || "$subvol_path" == *".snapshots"* ]]; then
+                                    debug "Skipping snapshot child subvolume: $subvol_path"
+                                    continue
+                                fi
+                                
+                                # The subvol_path is relative to filesystem root
+                                local full_path="$MOUNT_POINT/$subvol_path"
+                                debug "Recursively deleting child subvolume: $full_path"
+                                btrfs_subvolume_delete_recursively "$full_path"
+                            fi
+                        fi
+                    done <<< "$output"
+                fi
+
+                # Now try to delete the parent subvolume (should be empty now)
+                debug "Attempting to delete now-empty subvolume: $path"
+                if ! btrfs_subvolume_delete "$path"; then
+                    warning "Failed to delete $path, checking what's left"
+                    ls -la "$path" 2>/dev/null || true
+                    btrfs subvolume list -o "$path" 2>/dev/null || true
+                fi
+
             }
 
             btrfs_subvolume_snapshot() {
@@ -476,15 +476,6 @@ in {
                     "dev"
                     "run"
                 )
-                
-                # Add user-specified paths to critical paths
-                for path in "''${paths_array[@]}"; do
-                    # Convert absolute paths to relative paths for this subvolume
-                    local rel_path="''${path#/}"
-                    if [[ -n "$rel_path" && "$rel_path" != "." ]]; then
-                        critical_paths+=("''${rel_path%%/*}")
-                    fi
-                done
                 
                 debug "Critical paths to preserve: ''${critical_paths[*]}"
                 
