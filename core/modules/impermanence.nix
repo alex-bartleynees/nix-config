@@ -435,8 +435,8 @@ in {
                             # Create parent directories
                             mkdir -p "$(dirname "$target_path")"
                             
-                            # Copy with attributes
-                            if ! rsync -rlptgoD --numeric-ids "$source_path" "$target_path" 2>/dev/null; then
+                            # Copy with attributes - Option 2: Use cp with explicit ownership preservation (more reliable)
+                            if ! cp -a --preserve=all "$source_path/." "$target_path/" 2>/dev/null; then
                                 warning "Failed to copy: $source_path -> $target_path" >&2
                             else
                                 debug "Copied: $source_path -> $target_path" >&2
@@ -537,7 +537,7 @@ in {
                 debug "Copying from $persistent_subvol to $target_subvolume"
                 
                 if [[ -d "$persistent_subvol" && -d "$target_subvolume" ]]; then
-                    if rsync -rlptgoD --numeric-ids "$persistent_subvol/." "$target_subvolume/"; then
+                    if cp -a --preserve=all "$persistent_subvol/." "$target_subvolume/"; then
                         log "Successfully copied persistent files"
                     else
                         error "Failed to copy persistent files"
@@ -760,72 +760,72 @@ in {
     };
 
     # Critical: Auto-rebuild NixOS configuration early in boot process
-    # systemd.services.nixos-auto-rebuild = {
-    #   description = "Auto-rebuild NixOS configuration after impermanence reset";
-    #   wantedBy = [ "multi-user.target" ];
-    #   # Run after basic filesystem setup but before user services
-    #   after = [ "local-fs.target" "systemd-remount-fs.service" ];
-    #   before = [
-    #     "display-manager.service"
-    #     "getty@tty1.service"
-    #     "systemd-user-sessions.service" # Blocks user logins until complete
-    #   ];
-    #   unitConfig = {
-    #     DefaultDependencies = false;
-    #     ConditionPathExists = "/tmp/.nixos-needs-rebuild";
-    #   };
-    #   serviceConfig = {
-    #     Type = "oneshot";
-    #     RemainAfterExit = true;
-    #     StandardOutput = "journal";
-    #     StandardError = "journal";
-    #     # Ensure we have a clean environment
-    #     Environment = [
-    #       "HOME=/root"
-    #       "USER=root"
-    #       "PATH=${lib.makeBinPath [ pkgs.nixos-rebuild pkgs.git pkgs.nix ]}"
-    #     ];
-    #     ExecStart = pkgs.writeScript "auto-rebuild" ''
-    #       #!/bin/bash
-    #       set -euo pipefail
-    #
-    #       echo "=== NixOS Auto-Rebuild Starting ==="
-    #       echo "System was reset, rebuilding declarative configuration..."
-    #
-    #       # Check for host identifier to determine which flake target to build
-    #       if [ -f /etc/hostname-for-rebuild ]; then
-    #         HOST=$(cat /etc/hostname-for-rebuild)
-    #         echo "Building for host: $HOST"
-    #         
-    #         # Use the home flake configuration
-    #         cd /home/alexbn/.config/nix-config
-    #         if nixos-rebuild switch --flake ".#$HOST" --install-bootloader; then
-    #           echo "=== NixOS rebuild completed successfully ==="
-    #           rm -f /tmp/.nixos-needs-rebuild
-    #         else
-    #           echo "=== NixOS rebuild failed! ==="
-    #           echo "Manual intervention may be required."
-    #           exit 1
-    #         fi
-    #       else
-    #         echo "ERROR: /etc/hostname-for-rebuild not found!"
-    #         echo "Please create this file with your host name (e.g., 'echo thinkpad | sudo tee /etc/hostname-for-rebuild')"
-    #         exit 1
-    #       fi
-    #     '';
-    #     # If rebuild fails, don't block the boot process entirely
-    #     # but log the failure clearly
-    #     ExecStartPost = pkgs.writeScript "rebuild-cleanup" ''
-    #       #!/bin/bash
-    #       if [ -f /tmp/.nixos-needs-rebuild ]; then
-    #         echo "WARNING: NixOS rebuild failed, system may not be properly configured!"
-    #         echo "Run 'sudo nixos-rebuild switch' manually when possible."
-    #         # Create a prominent warning file
-    #         echo "NixOS rebuild failed on $(date)" > /etc/REBUILD_FAILED_WARNING
-    #       fi
-    #     '';
-    #   };
-    # };
+    systemd.services.nixos-auto-rebuild = {
+      description = "Auto-rebuild NixOS configuration after impermanence reset";
+      wantedBy = [ "multi-user.target" ];
+      # Run after basic filesystem setup but before user services
+      after = [ "local-fs.target" "systemd-remount-fs.service" ];
+      before = [
+        "display-manager.service"
+        "getty@tty1.service"
+        "systemd-user-sessions.service" # Blocks user logins until complete
+      ];
+      unitConfig = {
+        DefaultDependencies = false;
+        ConditionPathExists = "/tmp/.nixos-needs-rebuild";
+      };
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        StandardOutput = "journal";
+        StandardError = "journal";
+        # Ensure we have a clean environment
+        Environment = [
+          "HOME=/root"
+          "USER=root"
+          "PATH=${lib.makeBinPath [ pkgs.nixos-rebuild pkgs.git pkgs.nix ]}"
+        ];
+        ExecStart = pkgs.writeScript "auto-rebuild" ''
+          #!/bin/bash
+          set -euo pipefail
+
+          echo "=== NixOS Auto-Rebuild Starting ==="
+          echo "System was reset, rebuilding declarative configuration..."
+
+          # Check for host identifier to determine which flake target to build
+          if [ -f /etc/hostname-for-rebuild ]; then
+            HOST=$(cat /etc/hostname-for-rebuild)
+            echo "Building for host: $HOST"
+            
+            # Use the home flake configuration
+            cd /home/alexbn/.config/nix-config
+            if nixos-rebuild switch --flake ".#$HOST"; then
+              echo "=== NixOS rebuild completed successfully ==="
+              rm -f /tmp/.nixos-needs-rebuild
+            else
+              echo "=== NixOS rebuild failed! ==="
+              echo "Manual intervention may be required."
+              exit 1
+            fi
+          else
+            echo "ERROR: /etc/hostname-for-rebuild not found!"
+            echo "Please create this file with your host name (e.g., 'echo thinkpad | sudo tee /etc/hostname-for-rebuild')"
+            exit 1
+          fi
+        '';
+        # If rebuild fails, don't block the boot process entirely
+        # but log the failure clearly
+        ExecStartPost = pkgs.writeScript "rebuild-cleanup" ''
+          #!/bin/bash
+          if [ -f /tmp/.nixos-needs-rebuild ]; then
+            echo "WARNING: NixOS rebuild failed, system may not be properly configured!"
+            echo "Run 'sudo nixos-rebuild switch' manually when possible."
+            # Create a prominent warning file
+            echo "NixOS rebuild failed on $(date)" > /etc/REBUILD_FAILED_WARNING
+          fi
+        '';
+      };
+    };
 
     # Ensure the rebuild service blocks user sessions
     # systemd.services."systemd-user-sessions".after =
