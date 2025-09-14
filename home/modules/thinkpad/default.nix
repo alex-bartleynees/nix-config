@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ../rider ../linux ];
+  imports = [ ../vscode ../rider ../linux ];
   home.packages = with pkgs; [ kanshi ];
 
   services.kanshi = {

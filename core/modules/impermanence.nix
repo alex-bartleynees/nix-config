@@ -101,15 +101,10 @@ in {
       systemd = {
         enable = true;
         extraBin = {
-          grep = "${pkgs.gnugrep}/bin/grep";
-          which = "${pkgs.which}/bin/which";
-          lsblk = "${pkgs.util-linux}/bin/lsblk";
-          findmnt = "${pkgs.util-linux}/bin/findmnt";
           btrfs = "${pkgs.btrfs-progs}/bin/btrfs";
           find = "${pkgs.findutils}/bin/find";
           file = "${pkgs.file}/bin/file";
           awk = "${pkgs.gawk}/bin/awk";
-          rsync = "${pkgs.rsync}/bin/rsync";
         };
         services.immutability = {
           description =
@@ -141,14 +136,6 @@ in {
             exec > >(tee -a "$DEBUG_LOG") 2>&1
             echo "=== IMMUTABILITY SERVICE DEBUG LOG - $(date) ==="
             echo "Script started with arguments: $*"
-            echo "Environment variables:"
-            env | grep -E "(PATH|HOME|USER)" || true
-            echo "Available commands:"
-            which btrfs mount umount mktemp mkdir rm cp || true
-            echo "Disk devices:"
-            ls -la /dev/disk/by-label/ || true
-            echo "Block devices:"
-            lsblk || true
 
             # Logger functions
             log() {
@@ -505,9 +492,6 @@ in {
                 
                 if ! mount -t btrfs -o "subvolid=5,user_subvol_rm_allowed" "$disk" "$mount_point" 2>&1; then
                     error "Failed to mount root subvolume"
-                    error "Checking disk status:"
-                    ls -la "$disk" || true
-                    lsblk | grep -E "(dm-0|crypted)" || true
                     abort "Cannot mount BTRFS root subvolume"
                 fi
                 debug "Root subvolume mounted successfully"
@@ -536,8 +520,7 @@ in {
                     fi
                 done
                 
-                debug "Mount operations completed, current mounts:"
-                mount | grep "$mount_point" || warning "No mounts found for $mount_point"
+                debug "Mount operations completed"
             }
 
             unmount_subvolumes() {

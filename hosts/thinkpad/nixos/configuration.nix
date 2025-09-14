@@ -6,9 +6,6 @@
   # Networking
   networking.hostName = "thinkpad";
 
-  # Create host identifier file for impermanence auto-rebuild
-  environment.etc."hostname-for-rebuild".text = "thinkpad";
-
   tailscale = {
     enable = true; # Enable Tailscale support
   };
@@ -42,7 +39,6 @@
       "/etc/sops"
       "/etc/ssh" # SSH host keys
       "/etc/machine-id" # Unique machine identifier
-      "/etc/hostname-for-rebuild" # Host identifier for auto-rebuild
       "/var/log" # System logs
       "/var/lib/nixos" # NixOS state
       "/var/lib/systemd/random-seed" # Random seed for reproducibility
@@ -54,27 +50,22 @@
       "/var/lib/docker" # Docker images, containers, volumes, networks
       "/etc/NetworkManager/system-connections" # Wifi passwords and network configs
 
-      # User authentication files (for testing - reduces security benefits)
-      "/etc/shadow" # User password hashes
-      "/etc/passwd" # User account info
-      "/etc/group" # Group definitions
-      "/etc/gshadow" # Group password hashes
-
-      # User SSH and GPG keys
+      # User SSH keys
       "/home/alexbn/.ssh"
-      "/home/alexbn/.gnupg"
 
       # Development tools
       "/home/alexbn/.config/JetBrains" # Rider settings and projects
+      "/home/alexbn/.local/share/JetBrains"
       "/home/alexbn/.dotnet" # .NET user secrets and tools
       "/home/alexbn/.nuget" # NuGet package cache
+      "/home/.claude"
 
       # Browsers (profiles, bookmarks, extensions, passwords)
       "/home/alexbn/.config/BraveSoftware" # Brave browser data
       "/home/alexbn/.mozilla" # Firefox profiles and data
 
       # Applications with important user data
-      #"/home/alexbn/.local/share/obsidian" # Obsidian vaults and settings
+      "/home/alexbn/.config/obsidian" # Obsidian vaults and settings
       "/home/alexbn/Documents" # User documents
       "/home/alexbn/workspaces"
 
@@ -94,6 +85,7 @@
       "/home/alexbn/.config/tmuxinator" # Tmuxinator project configs
       "/home/alexbn/.local/share/nvim" # Neovim plugins and data
       "/home/alexbn/.cache/nvim" # Neovim cache
+      "/home/.local/share/direnv"
     ];
     resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
   };
