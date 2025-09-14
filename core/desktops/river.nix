@@ -61,7 +61,11 @@
   security.pam.services.login.enableGnomeKeyring = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
 
-  displayManager = { enable = true; };
+  displayManager = {
+    enable = true;
+    autoLogin = true;
+    command = "${pkgs.uwsm}/bin/uwsm start ${pkgs.river-classic}/bin/river";
+  };
 
   system.nixos.tags = [ "river" ];
 

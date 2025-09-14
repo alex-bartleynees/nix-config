@@ -21,7 +21,7 @@
 
   sambaClient = { enable = true; };
 
-  silentBoot.enable = false;
+  silentBoot.enable = true;
 
   zswap.enable = true;
 
@@ -58,7 +58,7 @@
       "/home/alexbn/.local/share/JetBrains"
       "/home/alexbn/.dotnet" # .NET user secrets and tools
       "/home/alexbn/.nuget" # NuGet package cache
-      "/home/.claude"
+      "/home/alexbn/.claude"
 
       # Browsers (profiles, bookmarks, extensions, passwords)
       "/home/alexbn/.config/BraveSoftware" # Brave browser data
@@ -85,7 +85,7 @@
       "/home/alexbn/.config/tmuxinator" # Tmuxinator project configs
       "/home/alexbn/.local/share/nvim" # Neovim plugins and data
       "/home/alexbn/.cache/nvim" # Neovim cache
-      "/home/.local/share/direnv"
+      "/home/alexbn/.local/share/direnv"
     ];
     resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
   };
