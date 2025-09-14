@@ -86,6 +86,7 @@
       "/home/alexbn/.local/share/nvim" # Neovim plugins and data
       "/home/alexbn/.cache/nvim" # Neovim cache
       "/home/alexbn/.local/share/direnv"
+      "/home/alexbn/.local/state/lazygit"
     ];
     resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
   };
