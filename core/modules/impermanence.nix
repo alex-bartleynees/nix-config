@@ -14,12 +14,11 @@ let
   # Use configured subvolumes instead of trying to extract from disko
   subvolumes = config.impermanence.subvolumes;
 
-  getResetSubvolumes = let
-    # Function to check if a subvolume should never be reset
-    isProtectedSubvolume = name:
-      name == "@nix" || name == "@snapshots" || lib.hasInfix ".snapshots"
-      name; # Protect any subvolume containing .snapshots
+  # Function to check if a subvolume should never be reset
+  isProtectedSubvolume = name:
+    name == "@nix" || name == "@snapshots" || lib.hasInfix ".snapshots" name;
 
+  getResetSubvolumes = let
     resetSubvols = lib.filterAttrs (name: subvol:
       # If resetSubvolumes is empty, reset all except protected subvolumes
       # Otherwise only reset specified subvolumes (but still protect critical ones)
@@ -82,11 +81,6 @@ in {
   config = lib.mkIf (config.impermanence.enable && subvolumes != { }) {
     # Mark reset subvolumes as needed for boot
     fileSystems = lib.mkMerge (let
-      # Function to check if a subvolume should never be reset
-      isProtectedSubvolume = name:
-        name == "@nix" || name == "@snapshots" || lib.hasInfix ".snapshots"
-        name; # Protect any subvolume containing .snapshots
-
       resetSubvols = lib.filterAttrs (name: subvol:
         # If resetSubvolumes is empty, reset all except protected subvolumes
         # Otherwise only reset specified subvolumes (but still protect critical ones)
@@ -135,7 +129,6 @@ in {
             set -euo pipefail
 
             # Global variables
-            DEPTH=0
             MOUNT_POINT="/tmp/btrfs-immutable"
 
             # Enable debug logging (try multiple locations for persistence)
@@ -159,11 +152,7 @@ in {
 
             # Logger functions
             log() {
-                local indent=""
-                for ((i=0; i<DEPTH; i++)); do
-                    indent="  $indent"
-                done
-                echo "[$(date '+%H:%M:%S')] $indent$*"
+                echo "[$(date '+%H:%M:%S')] $*"
             }
 
             warning() {
@@ -178,58 +167,6 @@ in {
                 log "DBG $*"
             }
 
-            trace() {
-                local check=true
-                local cmd=()
-                
-                # Parse arguments - if last arg is "nocheck", don't fail on error
-                for arg in "$@"; do
-                    if [[ "$arg" == "nocheck" ]]; then
-                        check=false
-                    else
-                        cmd+=("$arg")
-                    fi
-                done
-                
-                ((DEPTH++))
-                log "''${cmd[*]}"
-                
-                local output stderr_output
-                if output=$(mktemp) && stderr_output=$(mktemp); then
-                    local exit_code=0
-                    "''${cmd[@]}" >"$output" 2>"$stderr_output" || exit_code=$?
-                    
-                    # Print stdout if not empty
-                    if [[ -s "$output" ]]; then
-                        while IFS= read -r line; do
-                            log "$line"
-                        done < "$output"
-                    fi
-                    
-                    # Print stderr if not empty
-                    if [[ -s "$stderr_output" ]]; then
-                        while IFS= read -r line; do
-                            warning "$line"
-                        done < "$stderr_output"
-                    fi
-                    
-                    rm -f "$output" "$stderr_output"
-                    ((DEPTH--))
-                    
-                    if [[ $exit_code -ne 0 ]]; then
-                        warning "Command failed with status $exit_code"
-                        if [[ "$check" == true ]]; then
-                            return $exit_code
-                        fi
-                    fi
-                    
-                    return $exit_code
-                else
-                    ((DEPTH--))
-                    return 1
-                fi
-            }
-
             abort() {
                 error "$1"
                 error "Unmounting and quitting"
@@ -240,7 +177,7 @@ in {
 
             cleanup() {
                 if mountpoint -q "$MOUNT_POINT" 2>/dev/null; then
-                    trace umount -R "$MOUNT_POINT" nocheck
+                    umount -R "$MOUNT_POINT" 2>/dev/null || true
                     rm -rf "$MOUNT_POINT"
                 fi
             }
@@ -277,11 +214,11 @@ in {
 
             btrfs_sync() {
                 local path="$1"
-                trace btrfs filesystem sync "$path"
+                btrfs filesystem sync "$path"
             }
 
             btrfs_subvolume_delete() {
-               local path="$1"
+                local path="$1"
                 if [[ -e "$path" ]]; then
                     debug "Attempting to delete subvolume: $path"
                     if ! btrfs subvolume delete "$path" --commit-after 2>/dev/null; then
@@ -369,25 +306,11 @@ in {
                     ls -la "$path" 2>/dev/null || true
                     btrfs subvolume list -o "$path" 2>/dev/null || true
                 fi
-
-            }
-
-            btrfs_subvolume_snapshot() {
-                local source="$1"
-                local target="$2"
-                local readonly="''${3:-false}"
-                
-                
-                local cmd=(btrfs subvolume snapshot)
-                if [[ "$readonly" == "true" ]]; then
-                    cmd+=(-r)
-                fi
-                cmd+=("$source" "$target")
             }
 
             btrfs_subvolume_rw() {
                 local path="$1"
-                trace btrfs property set -ts "$path" ro false
+                btrfs property set -ts "$path" ro false
             }
 
             extract_persistent_files() {
@@ -443,26 +366,20 @@ in {
                                 fi
                             fi
                             
-                            # Copy with attributes - Option 2: Use cp with explicit ownership preservation (more reliable)
-                            if ! cp -a --preserve=all "$source_path/." "$target_path/" 2>/dev/null; then
-                                warning "Failed to copy: $source_path -> $target_path" >&2
-                            else
-                                # Use existing cp method for other paths
-                                if [[ -d "$source_path" ]]; then
-                                    # It's a directory - copy contents
-                                    if ! cp -a --preserve=all "$source_path/." "$target_path/" 2>/dev/null; then
-                                        warning "Failed to copy directory: $source_path -> $target_path" >&2
-                                    else
-                                        chown --reference="$source_path" "$target_path" 2>/dev/null || true
-                                        debug "Copied directory: $source_path -> $target_path" >&2
-                                    fi
+                            # Copy with all attributes preserved
+                            if [[ -d "$source_path" ]]; then
+                                # It's a directory - copy contents
+                                if cp -a --preserve=all "$source_path/." "$target_path/" 2>/dev/null; then
+                                    debug "Copied directory: $source_path -> $target_path" >&2
                                 else
-                                    # It's a file - copy the file itself
-                                    if ! cp -a --preserve=all "$source_path" "$target_path" 2>/dev/null; then
-                                        warning "Failed to copy file: $source_path -> $target_path" >&2
-                                    else
-                                        debug "Copied file: $source_path -> $target_path" >&2
-                                    fi
+                                    warning "Failed to copy directory: $source_path -> $target_path" >&2
+                                fi
+                            else
+                                # It's a file - copy the file itself
+                                if cp -a --preserve=all "$source_path" "$target_path" 2>/dev/null; then
+                                    debug "Copied file: $source_path -> $target_path" >&2
+                                else
+                                    warning "Failed to copy file: $source_path -> $target_path" >&2
                                 fi
                             fi
                         else
@@ -538,7 +455,7 @@ in {
                 debug "Subvolume contents cleared successfully"
             }
 
-            apply_persistent_files_via_send_receive() {
+            copy_persistent_files() {
                 local persistent_subvol="$1"
                 local target_subvolume="$2"
 
@@ -618,7 +535,7 @@ in {
                     # Check if subvolume exists before trying to mount
                     if btrfs subvolume show "$mount_point/$subvolume_name" >/dev/null 2>&1; then
                         debug "Subvolume $subvolume_name exists, mounting..."
-                        if ! trace mount -t btrfs -o "subvol=$subvolume_name,user_subvol_rm_allowed" "$disk" "$subvol_mount" nocheck; then
+                        if ! mount -t btrfs -o "subvol=$subvolume_name,user_subvol_rm_allowed" "$disk" "$subvol_mount" 2>/dev/null; then
                             warning "Failed to mount subvolume $subvolume_name, continuing..."
                         else
                             debug "Successfully mounted $subvolume_name"
@@ -634,7 +551,7 @@ in {
 
             unmount_subvolumes() {
                 local mount_point="$1"
-                trace umount -R "$mount_point" nocheck
+                umount -R "$mount_point" 2>/dev/null || true
                 rm -rf "$mount_point"
             }
 
@@ -699,8 +616,6 @@ in {
                     debug "Subvolume path: $subvolume"
                     debug "Snapshots directory: $snapshots_dir"
                     
-                    local previous_snapshot="$snapshots_dir/PREVIOUS"
-                    local penultimate_snapshot="$snapshots_dir/PENULTIMATE"
                     local fresh_snapshot="$snapshots_dir/FRESH"
                     
                     debug "Creating snapshots directory: $snapshots_dir"
@@ -723,18 +638,6 @@ in {
                     persistent_subvol=$(extract_persistent_files "$subvolume_mount_point" "$paths_to_keep" "$subvolume" "$temp_dir")
                     debug "extract_persistent_files returned: $persistent_subvol"
                     
-                    # Rotate snapshots (keep history for debugging)
-                    # log "Rotating snapshots"
-                    # require_test "-d" "$subvolume"
-                    # if [[ -e "$previous_snapshot" ]]; then
-                    #     debug "Previous snapshot exists, rotating to penultimate"
-                    #     btrfs_subvolume_snapshot "$previous_snapshot" "$penultimate_snapshot"
-                    # else
-                    #     debug "No previous snapshot found, skipping rotation"
-                    # fi
-                    # debug "Creating new previous snapshot from current subvolume"
-                    # btrfs_subvolume_snapshot "$subvolume" "$previous_snapshot" true
-                    
                     # Create completely fresh empty subvolume
                     log "Creating fresh empty subvolume"
                     debug "Deleting any existing fresh snapshot at: $fresh_snapshot"
@@ -748,7 +651,7 @@ in {
                     
                     # Apply persistent files to the fresh subvolume
                     log "Applying persistent files to fresh subvolume"
-                    apply_persistent_files_via_send_receive "$persistent_subvol" "$fresh_snapshot"
+                    copy_persistent_files "$persistent_subvol" "$fresh_snapshot"
                     
                     # Clear contents of current subvolume instead of deleting it
                     log "Clearing contents of subvolume while preserving structure"
@@ -756,7 +659,7 @@ in {
                     
                     # Copy fresh contents back
                     log "Copying fresh contents to cleared subvolume"
-                    apply_persistent_files_via_send_receive "$fresh_snapshot" "$subvolume"
+                    copy_persistent_files "$fresh_snapshot" "$subvolume"
                     
                     # Clean up the fresh snapshot (we don't need to keep it)
                     btrfs_subvolume_delete "$fresh_snapshot"
