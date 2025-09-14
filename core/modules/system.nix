@@ -31,7 +31,7 @@ in {
         gc = {
           automatic = true;
           dates = "weekly";
-          options = "--delete-older-than 30d";
+          options = "--delete-older-than 7d";
         };
       };
     }
@@ -55,10 +55,7 @@ in {
       programs.nm-applet = { enable = true; };
 
       # Services
-      services.dbus.packages = with pkgs; [
-        pkgs.gnome-keyring
-        pkgs.xdg-desktop-portal
-      ];
+      services.dbus.packages = with pkgs; [ gnome-keyring xdg-desktop-portal ];
       services.blueman.enable = true;
       services.upower.enable = true;
       services.acpid.enable = true;
