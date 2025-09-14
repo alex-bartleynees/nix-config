@@ -115,6 +115,7 @@ in {
           find = "${pkgs.findutils}/bin/find";
           file = "${pkgs.file}/bin/file";
           awk = "${pkgs.gawk}/bin/awk";
+          rsync = "${pkgs.rsync}/bin/rsync";
         };
         services.immutability = {
           description =
@@ -435,7 +436,7 @@ in {
                             mkdir -p "$(dirname "$target_path")"
                             
                             # Copy with attributes
-                            if ! cp -a "$source_path" "$target_path" 2>/dev/null; then
+                            if ! rsync -rlptgoD --numeric-ids "$source_path" "$target_path" 2>/dev/null; then
                                 warning "Failed to copy: $source_path -> $target_path" >&2
                             else
                                 debug "Copied: $source_path -> $target_path" >&2
@@ -536,8 +537,7 @@ in {
                 debug "Copying from $persistent_subvol to $target_subvolume"
                 
                 if [[ -d "$persistent_subvol" && -d "$target_subvolume" ]]; then
-                    # Use rsync-like behavior with cp
-                    if trace cp -a "$persistent_subvol/." "$target_subvolume/"; then
+                    if rsync -rlptgoD --numeric-ids "$persistent_subvol/." "$target_subvolume/"; then
                         log "Successfully copied persistent files"
                     else
                         error "Failed to copy persistent files"
