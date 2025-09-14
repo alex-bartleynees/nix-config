@@ -240,9 +240,9 @@ in {
                     return 0
                 fi
                 
-                # Skip snapshot-related paths to avoid deleting snapshots
+                # Skip snapshot-related paths to avoid deleting snapshots themselves
                 local basename_path=$(basename "$path")
-                if [[ "$basename_path" == "@snapshots" || "$basename_path" == ".snapshots" || "$path" == *"@snapshots"* || "$path" == *".snapshots"* ]]; then
+                if [[ "$basename_path" == "@snapshots" || "$basename_path" == ".snapshots" ]]; then
                     debug "Skipping snapshot directory: $path"
                     return 0
                 fi
@@ -284,8 +284,9 @@ in {
                             local subvol_path
                             subvol_path=$(echo "$line" | awk '{for(i=9;i<=NF;i++) printf "%s%s", $i, (i<NF?" ":"");}')
                             if [[ -n "$subvol_path" ]]; then
-                                # Skip snapshot-related child subvolumes
-                                if [[ "$subvol_path" == *"@snapshots"* || "$subvol_path" == *".snapshots"* ]]; then
+                                # Skip snapshot-related child subvolumes (but allow FRESH subdirectories)
+                                local subvol_basename=$(basename "$subvol_path")
+                                if [[ "$subvol_basename" == "@snapshots" || "$subvol_basename" == ".snapshots" ]]; then
                                     debug "Skipping snapshot child subvolume: $subvol_path"
                                     continue
                                 fi
@@ -355,28 +356,40 @@ in {
                         local target_path="$persistent_subvol/$rel_path"
                         
                         if [[ -e "$source_path" ]]; then
-                            # Create parent directories and fix their ownership
-                            local parent_dir="$(dirname "$target_path")"
-                            if [[ ! -d "$parent_dir" ]]; then
-                                mkdir -p "$parent_dir"
-                                # Fix ownership of parent directory to match source parent
-                                local src_parent="$(dirname "$source_path")"
-                                if [[ -d "$src_parent" ]]; then
-                                    chown --reference="$src_parent" "$parent_dir" 2>/dev/null || true
+                            # Create parent directories with correct ownership
+                            local current_path="$persistent_subvol"
+                            local remaining_path="$rel_path"
+                            
+                            # Build path piece by piece, setting ownership for each level
+                            while [[ "$remaining_path" == */* ]]; do
+                                local next_part="''${remaining_path%%/*}"
+                                current_path="$current_path/$next_part"
+                                remaining_path="''${remaining_path#*/}"
+                                
+                                if [[ ! -d "$current_path" ]]; then
+                                    mkdir "$current_path"
+                                    # Set ownership to match the corresponding source directory
+                                    local source_parent="$source_subvolume/''${current_path#$persistent_subvol/}"
+                                    if [[ -d "$source_parent" ]]; then
+                                        local src_uid src_gid
+                                        src_uid=$(stat -c %u "$source_parent")
+                                        src_gid=$(stat -c %g "$source_parent")
+                                        chown "$src_uid:$src_gid" "$current_path"
+                                    fi
                                 fi
-                            fi
+                            done
                             
                             # Copy with all attributes preserved
                             if [[ -d "$source_path" ]]; then
                                 # It's a directory - copy contents
-                                if cp -a --preserve=all "$source_path/." "$target_path/" 2>/dev/null; then
+                                if cp -a --preserve=all --reflink=auto "$source_path/." "$target_path/" 2>/dev/null; then
                                     debug "Copied directory: $source_path -> $target_path" >&2
                                 else
                                     warning "Failed to copy directory: $source_path -> $target_path" >&2
                                 fi
                             else
                                 # It's a file - copy the file itself
-                                if cp -a --preserve=all "$source_path" "$target_path" 2>/dev/null; then
+                                if cp -a --preserve=all --reflink=auto "$source_path" "$target_path" 2>/dev/null; then
                                     debug "Copied file: $source_path -> $target_path" >&2
                                 else
                                     warning "Failed to copy file: $source_path -> $target_path" >&2
@@ -478,7 +491,7 @@ in {
                 debug "Copying from $persistent_subvol to $target_subvolume"
                 
                 if [[ -d "$persistent_subvol" && -d "$target_subvolume" ]]; then
-                    if cp -a --preserve=all "$persistent_subvol/." "$target_subvolume/"; then
+                    if cp -a --preserve=all --reflink=auto "$persistent_subvol/." "$target_subvolume/"; then
                         log "Successfully copied persistent files"
                     else
                         error "Failed to copy persistent files"
