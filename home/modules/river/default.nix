@@ -15,7 +15,7 @@ in {
     blueman
     networkmanagerapplet
     udiskie
-    rofi-wayland
+    rofi
     hyprlock
     waybar
     wlr-randr

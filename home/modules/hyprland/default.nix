@@ -17,7 +17,7 @@ in {
     blueman
     networkmanagerapplet
     udiskie
-    rofi-wayland
+    rofi
   ];
 
   xdg.configFile."uwsm/env".source =
@@ -127,11 +127,14 @@ in {
         sensitivity = 0;
       };
 
-      # Gestures configuration
-      gestures = {
-        workspace_swipe = true;
-        workspace_swipe_fingers = 3;
-      };
+      gesture = [
+        "3, right, workspace, +1"
+        "3, left, workspace, -1"
+        "3, up, fullscreen"
+        "3, down, close"
+        "4, right, workspace, +1"
+        "4, left, workspace, -1"
+      ];
 
       # Environment variables
       env = [ "XCURSOR_SIZE,24" "HYPRCURSOR_SIZE,24" ];

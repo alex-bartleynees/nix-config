@@ -16,7 +16,7 @@ in {
     blueman
     networkmanagerapplet
     udiskie
-    rofi-wayland
+    rofi
     autotiling-rs
   ];
 
