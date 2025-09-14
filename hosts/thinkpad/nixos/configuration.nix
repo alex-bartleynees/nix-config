@@ -32,7 +32,7 @@
 
   # Enable impermanence with BTRFS reset on boot
   impermanence = {
-    enable = false;
+    enable = true;
     subvolumes = {
       "@" = { mountpoint = "/"; };
       "@home" = { mountpoint = "/home"; };
@@ -66,7 +66,6 @@
 
       # Development tools
       "/home/alexbn/.config/JetBrains" # Rider settings and projects
-      "/home/alexbn/.local/share/JetBrains" # Rider data
       "/home/alexbn/.dotnet" # .NET user secrets and tools
       "/home/alexbn/.nuget" # NuGet package cache
 
@@ -75,7 +74,7 @@
       "/home/alexbn/.mozilla" # Firefox profiles and data
 
       # Applications with important user data
-      "/home/alexbn/.local/share/obsidian" # Obsidian vaults and settings
+      #"/home/alexbn/.local/share/obsidian" # Obsidian vaults and settings
       "/home/alexbn/Documents" # User documents
       "/home/alexbn/workspaces"
 

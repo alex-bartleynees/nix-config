@@ -318,16 +318,10 @@ in {
                 local subvolume_mount_point="$1"
                 local paths_to_keep="$2"
                 local source_subvolume="$3"
-                local temp_dir="$4"
+                local fresh_snapshot="$4"
                 
-                local persistent_subvol="$temp_dir/persistent_files"
-                
-                # Create a minimal subvolume with just the persistent files
-                if ! btrfs subvolume create "$persistent_subvol" >/dev/null 2>&1; then
-                    error "Failed to create persistent subvolume: $persistent_subvol" >&2
-                    return 1
-                fi
-                debug "Created persistent subvolume: $persistent_subvol" >&2
+                # Fresh snapshot should already be created by caller
+                debug "Using fresh snapshot for extraction: $fresh_snapshot" >&2
                 
                 # Convert paths_to_keep string to array
                 local -a paths_array
@@ -353,11 +347,11 @@ in {
                         local rel_path="''${path_to_keep#$subvolume_mount_point}"
                         rel_path="''${rel_path#/}"
                         local source_path="$source_subvolume/$rel_path"
-                        local target_path="$persistent_subvol/$rel_path"
+                        local target_path="$fresh_snapshot/$rel_path"
                         
                         if [[ -e "$source_path" ]]; then
                             # Create parent directories with correct ownership
-                            local current_path="$persistent_subvol"
+                            local current_path="$fresh_snapshot"
                             local remaining_path="$rel_path"
                             
                             # Build path piece by piece, setting ownership for each level
@@ -369,7 +363,7 @@ in {
                                 if [[ ! -d "$current_path" ]]; then
                                     mkdir "$current_path"
                                     # Set ownership to match the corresponding source directory
-                                    local source_parent="$source_subvolume/''${current_path#$persistent_subvol/}"
+                                    local source_parent="$source_subvolume/''${current_path#$fresh_snapshot/}"
                                     if [[ -d "$source_parent" ]]; then
                                         local src_uid src_gid
                                         src_uid=$(stat -c %u "$source_parent")
@@ -401,7 +395,7 @@ in {
                     fi
                 done
                 
-                echo "$persistent_subvol"
+                echo "$fresh_snapshot"
             }
 
             clear_subvolume_contents() {
@@ -416,20 +410,15 @@ in {
                     return 1
                 fi
                 
-                # Convert paths_to_keep to array for easier processing
                 local -a paths_array
                 IFS=' ' read -ra paths_array <<< "$paths_to_keep"
                 
-                # Critical directories/files to always preserve (regardless of paths_to_keep)
+                # Critical directories/files to always preserve 
                 local -a critical_paths=(
                     "nix"
                     ".snapshots"
                     "@snapshots"
                     "boot"
-                    "sys"
-                    "proc"
-                    "dev"
-                    "run"
                 )
                 
                 debug "Critical paths to preserve: ''${critical_paths[*]}"
@@ -488,7 +477,6 @@ in {
                 
                 # Skip the complex send/receive and just use direct copy for now
                 log "Using direct file copy to transfer persistent files"
-                debug "Copying from $persistent_subvol to $target_subvolume"
                 
                 if [[ -d "$persistent_subvol" && -d "$target_subvolume" ]]; then
                     if cp -a --preserve=all --reflink=auto "$persistent_subvol/." "$target_subvolume/"; then
@@ -512,18 +500,9 @@ in {
                 shift 3
                 local subvolume_names=("$@")
                 
-                debug "Mounting subvolumes from disk $disk to $mount_point"
-                debug "Snapshots subvolume: $snapshots_subvolume"
-                debug "Subvolume names: ''${subvolume_names[*]}"
-                
                 require_test "-b" "$disk"
                 mkdir -p "$mount_point"
-                debug "Created mount point: $mount_point"
                 
-                debug "Mounting root subvolume (subvolid=5)"
-                debug "Mount command: mount -t btrfs -o subvolid=5,user_subvol_rm_allowed $disk $mount_point"
-                
-                # Try mount with explicit error handling
                 if ! mount -t btrfs -o "subvolid=5,user_subvol_rm_allowed" "$disk" "$mount_point" 2>&1; then
                     error "Failed to mount root subvolume"
                     error "Checking disk status:"
@@ -533,7 +512,6 @@ in {
                 fi
                 debug "Root subvolume mounted successfully"
                 
-                debug "Listing available subvolumes:"
                 btrfs subvolume list "$mount_point" || warning "Could not list subvolumes"
                 
                 # Mount all subvolumes including snapshots
@@ -604,69 +582,37 @@ in {
                 paths_to_keep="''${paths_to_keep% }"  # Remove trailing space
                 debug "Sorted paths to keep: $paths_to_keep"
                 
-                log "Starting btrfs send/receive impermanence reset for: ''${subvolume_names[*]}"
+                log "Starting impermanence reset for: ''${subvolume_names[*]}"
                 log "Preserving paths: $paths_to_keep"
                 
                 # Set up cleanup trap
-                debug "Setting up cleanup trap"
                 trap cleanup EXIT ERR
                 
-                debug "About to call mount_subvolumes"
                 mount_subvolumes "$disk" "$MOUNT_POINT" "$snapshots_subvolume_name" "''${subvolume_names[@]}"
-                debug "mount_subvolumes completed successfully"
                 
                 for pair in "''${subvolume_pairs[@]}"; do
                     local subvolume_name="''${pair%%=*}"
                     local subvolume_mount_point="''${pair#*=}"
-                    debug "Processing pair: $pair"
-                    debug "Subvolume name: $subvolume_name"
-                    debug "Mount point: $subvolume_mount_point"
                     log "Processing subvolume: $subvolume_name"
                     
                     local subvolume="$MOUNT_POINT/$subvolume_name"
                     local snapshots_dir="$MOUNT_POINT/$snapshots_subvolume_name/$subvolume_name"
                     
-                    debug "Subvolume path: $subvolume"
-                    debug "Snapshots directory: $snapshots_dir"
-                    
                     local fresh_snapshot="$snapshots_dir/FRESH"
                     
-                    debug "Creating snapshots directory: $snapshots_dir"
                     mkdir -p "$snapshots_dir"
-                    debug "Snapshots directory created successfully"
                     
-                    # Create temporary directory for persistent file extraction
-                    local temp_dir
-                    debug "Creating temporary directory in $MOUNT_POINT"
-                    temp_dir=$(mktemp -d -p "$MOUNT_POINT")
-                    debug "Temporary directory created: $temp_dir"
-                    
-                    log "Extracting persistent files from current state"
-                    debug "Calling extract_persistent_files with:"
-                    debug "  - subvolume_mount_point: $subvolume_mount_point"
-                    debug "  - paths_to_keep: $paths_to_keep"
-                    debug "  - subvolume: $subvolume"
-                    debug "  - temp_dir: $temp_dir"
-                    local persistent_subvol
-                    persistent_subvol=$(extract_persistent_files "$subvolume_mount_point" "$paths_to_keep" "$subvolume" "$temp_dir")
-                    debug "extract_persistent_files returned: $persistent_subvol"
-                    
-                    # Create completely fresh empty subvolume
+                    # Create completely fresh empty subvolume first
                     log "Creating fresh empty subvolume"
-                    debug "Deleting any existing fresh snapshot at: $fresh_snapshot"
                     btrfs_subvolume_delete_recursively "$fresh_snapshot"
-                    debug "Creating fresh subvolume at: $fresh_snapshot"
-                    debug "Ensuring parent directory exists: $(dirname "$fresh_snapshot")"
                     mkdir -p "$(dirname "$fresh_snapshot")"
-                    debug "Directory created"
                     btrfs subvolume create "$fresh_snapshot"
-                    debug "Fresh created"
                     
-                    # Apply persistent files to the fresh subvolume
-                    log "Applying persistent files to fresh subvolume"
-                    copy_persistent_files "$persistent_subvol" "$fresh_snapshot"
+                    # Extract persistent files directly to the fresh subvolume
+                    log "Extracting persistent files directly to fresh subvolume"
+                    extract_persistent_files "$subvolume_mount_point" "$paths_to_keep" "$subvolume" "$fresh_snapshot"
                     
-                    # Clear contents of current subvolume instead of deleting it
+                    # Clear contents of current 
                     log "Clearing contents of subvolume while preserving structure"
                     clear_subvolume_contents "$subvolume" "$paths_to_keep"
                     
@@ -674,18 +620,13 @@ in {
                     log "Copying fresh contents to cleared subvolume"
                     copy_persistent_files "$fresh_snapshot" "$subvolume"
                     
-                    # Clean up the fresh snapshot (we don't need to keep it)
+                    # Clean up the fresh snapshot 
                     btrfs_subvolume_delete "$fresh_snapshot"
-                    
-                    # Clean up temporary directory
-                    rm -rf "$temp_dir"
                     
                     log "Completed processing $subvolume_name"
                 done
                 
-                debug "About to unmount subvolumes"
                 unmount_subvolumes "$MOUNT_POINT"
-                debug "Subvolumes unmounted successfully"
                 
                 log "Btrfs send/receive impermanence reset completed successfully"
                 echo "=== IMMUTABILITY SERVICE COMPLETED SUCCESSFULLY - $(date) ==="
