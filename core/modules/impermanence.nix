@@ -432,13 +432,23 @@ in {
                         local target_path="$persistent_subvol/$rel_path"
                         
                         if [[ -e "$source_path" ]]; then
-                            # Create parent directories
-                            mkdir -p "$(dirname "$target_path")"
+                            # Create parent directories and fix their ownership
+                            local parent_dir="$(dirname "$target_path")"
+                            if [[ ! -d "$parent_dir" ]]; then
+                                mkdir -p "$parent_dir"
+                                # Fix ownership of parent directory to match source parent
+                                local src_parent="$(dirname "$source_path")"
+                                if [[ -d "$src_parent" ]]; then
+                                    chown --reference="$src_parent" "$parent_dir" 2>/dev/null || true
+                                fi
+                            fi
                             
                             # Copy with attributes - Option 2: Use cp with explicit ownership preservation (more reliable)
                             if ! cp -a --preserve=all "$source_path/." "$target_path/" 2>/dev/null; then
                                 warning "Failed to copy: $source_path -> $target_path" >&2
                             else
+                                # Ensure target directory ownership matches source
+                                chown --reference="$source_path" "$target_path" 2>/dev/null || true
                                 debug "Copied: $source_path -> $target_path" >&2
                             fi
                         else
