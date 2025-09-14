@@ -32,7 +32,7 @@
 
   # Enable impermanence with BTRFS reset on boot
   impermanence = {
-    enable = true;
+    enable = false;
     subvolumes = {
       "@" = { mountpoint = "/"; };
       "@home" = { mountpoint = "/home"; };
