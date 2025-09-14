@@ -63,8 +63,10 @@
 
   displayManager = {
     enable = true;
-    autoLogin = true;
-    command = "${pkgs.uwsm}/bin/uwsm start ${pkgs.river-classic}/bin/river";
+    autoLogin = {
+      enable = true;  
+      command = "${pkgs.uwsm}/bin/uwsm start ${pkgs.river-classic}/bin/river";
+    };
   };
 
   system.nixos.tags = [ "river" ];
