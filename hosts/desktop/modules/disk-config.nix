@@ -8,7 +8,7 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "512M";
+              size = "2G";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -30,17 +30,41 @@
                 };
               };
             };
+            # Btrfs Root Partition
             root = {
-              size = "100%";
+              size = "100%"; # Use remaining space
               content = {
                 type = "luks";
                 name = "crypted";
                 settings = { allowDiscards = true; };
                 content = {
-                  type = "filesystem";
-                  format = "xfs";
-                  mountpoint = "/";
-                  mountOptions = [ "defaults" ];
+                  type = "btrfs";
+                  extraArgs = [ "-f" "-L" "nixos" ];
+                  subvolumes = {
+                    "@" = {
+                      mountpoint = "/"; # Root subvolume
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ]; # Compression for better performance
+                    };
+                    "@home" = {
+                      mountpoint = "/home";
+                      mountOptions = [ "compress=zstd" "noatime" ];
+                    };
+                    "@nix" = {
+                      mountpoint = "/nix"; # Nix subvolume
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                        "noacl"
+                      ]; # Optimize for Nix store
+                    };
+                    "@snapshots" = {
+                      mountpoint = "/.snapshots";
+                      mountOptions = [ "compress=zstd" "noatime" ];
+                    };
+                  };
                 };
               };
             };

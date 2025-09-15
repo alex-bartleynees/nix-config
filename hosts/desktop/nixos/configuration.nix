@@ -1,4 +1,6 @@
-{ config, pkgs, theme, ... }: {
+{ theme, ... }:
+let persistPaths = import ../shared/persist-paths.nix { };
+in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -48,6 +50,27 @@
   silentBoot.enable = true;
 
   zswap.enable = true;
+
+  snapshots.enable = true;
+
+  # Enable impermanence with BTRFS reset on boot
+  impermanence = {
+    enable = true;
+    subvolumes = {
+      "@" = { mountpoint = "/"; };
+      "@home" = { mountpoint = "/home"; };
+    };
+    persistPaths = persistPaths.commonPersistPaths ++ [
+      "/home/alexbn/.config/cosmic"
+      "/home/alexbn/.config/OpenRGB"
+      "/home/alexbn/.config/sunshine"
+      "/home/alexbn/local/share/Steam"
+      "/home/alexbn/.steam"
+      "/home/alexbn/.steampath"
+      "/home/alexbn/.steampid"
+    ];
+    resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
