@@ -43,7 +43,6 @@
 
     # Shell and terminal tools
     "/home/alexbn/.zsh_history"
-    "/home/alexbn/.bash_history"
     "/home/alexbn/.p10k.zsh" # Powerlevel10k configuration
     "/home/alexbn/.local/share/atuin" # Atuin shell history database
     "/home/alexbn/.local/share/zoxide" # Zoxide frecency database
