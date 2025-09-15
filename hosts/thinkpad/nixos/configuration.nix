@@ -1,6 +1,5 @@
 { pkgs, theme, ... }:
 let persistPaths = import ../shared/persist-paths.nix { };
-
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
