@@ -108,7 +108,7 @@ in {
         };
         services.immutability = {
           description =
-            "Factory resets BTRFS subvolumes that are marked for resetOnBoot. Intentionally preserved files are restored.";
+            "Factory resets BTRFS subvolumes. Intentionally preserved files are restored.";
           wantedBy = [ "initrd.target" ];
           requires = [ deviceDependency ];
           after =
@@ -410,6 +410,28 @@ in {
                 
                 debug "Critical paths to preserve: ''${critical_paths[*]}"
                 
+                # First handle systemd-created subvolumes in /var specifically
+                if [[ "$subvolume" == *"@var"* ]] || [[ "$subvolume" == */var ]] || [[ -d "$subvolume/var" ]]; then
+                    debug "Handling systemd subvolumes in var directory"
+                    local systemd_subvols=(
+                        "$subvolume/var/lib/portables"
+                        "$subvolume/var/lib/machines"
+                    )
+                    
+                    for systemd_subvol in "''${systemd_subvols[@]}"; do
+                        if [[ -e "$systemd_subvol" ]] && btrfs subvolume show "$systemd_subvol" >/dev/null 2>&1; then
+                            debug "Found systemd subvolume, deleting: $systemd_subvol"
+                            if ! btrfs subvolume delete "$systemd_subvol" --commit-after 2>/dev/null; then
+                                warning "Failed to delete systemd subvolume: $systemd_subvol"
+                                # Try to force delete if regular delete fails
+                                btrfs subvolume delete "$systemd_subvol" 2>/dev/null || warning "Force delete also failed for: $systemd_subvol"
+                            else
+                                debug "Successfully deleted systemd subvolume: $systemd_subvol"
+                            fi
+                        fi
+                    done
+                fi
+                
                 # Remove all contents except critical paths
                 find "$subvolume" -mindepth 1 -maxdepth 1 | while read -r item; do
                     local basename_item=$(basename "$item")
@@ -423,13 +445,21 @@ in {
                         fi
                     done
                     
-                    # Also preserve any btrfs subvolumes to avoid destroying snapshots
-                    if btrfs subvolume show "$item" >/dev/null 2>&1; then
-                        debug "Preserving subvolume: $item"
-                        should_preserve=true
-                    fi
-                    
-                    if [[ "$should_preserve" == true ]]; then
+                    # Check if this is a btrfs subvolume that needs special handling
+                    if [[ -d "$item" ]] && btrfs subvolume show "$item" >/dev/null 2>&1; then
+                        debug "Found btrfs subvolume during cleanup: $item"
+                        if [[ "$should_preserve" == true ]]; then
+                            debug "Preserving critical subvolume: $item"
+                        else
+                            debug "Deleting non-critical subvolume: $item"
+                            if ! btrfs subvolume delete "$item" --commit-after 2>/dev/null; then
+                                warning "Failed to delete subvolume $item, trying recursive deletion"
+                                btrfs_subvolume_delete_recursively "$item"
+                            else
+                                debug "Successfully deleted subvolume: $item"
+                            fi
+                        fi
+                    elif [[ "$should_preserve" == true ]]; then
                         debug "Preserving critical path: $item"
                     else
                         debug "Removing non-critical item: $item"
@@ -611,7 +641,7 @@ in {
                 
                 unmount_subvolumes "$MOUNT_POINT"
                 
-                log "Btrfs send/receive impermanence reset completed successfully"
+                log "Btrfs impermanence reset completed successfully"
                 echo "=== IMMUTABILITY SERVICE COMPLETED SUCCESSFULLY - $(date) ==="
             }
 
