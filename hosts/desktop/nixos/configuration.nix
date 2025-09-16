@@ -64,7 +64,7 @@ in {
       #"/home/alexbn/.config/cosmic"
       "/home/alexbn/.config/OpenRGB"
       "/home/alexbn/.config/sunshine"
-      "/home/alexbn/local/share/Steam"
+      "/home/alexbn/.local/share/Steam"
       "/home/alexbn/.steam"
       "/home/alexbn/.steampath"
       "/home/alexbn/.steampid"
