@@ -61,7 +61,7 @@ in {
       "@home" = { mountpoint = "/home"; };
     };
     persistPaths = persistPaths.commonPersistPaths ++ [
-      "/home/alexbn/.config/cosmic"
+      #"/home/alexbn/.config/cosmic"
       "/home/alexbn/.config/OpenRGB"
       "/home/alexbn/.config/sunshine"
       "/home/alexbn/local/share/Steam"
