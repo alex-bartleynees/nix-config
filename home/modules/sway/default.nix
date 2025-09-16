@@ -337,6 +337,7 @@ in {
         { command = "udiskie --tray"; }
         { command = "sway-audio-idle-inhibit"; }
         { command = "swww-daemon --format xrgb"; }
+        { command = "sleep 1 && swww img ${background}"}
         { command = "autotiling-rs"; }
         {
           command = "uwsm finalize SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME";
