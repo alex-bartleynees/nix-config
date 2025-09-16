@@ -1,4 +1,4 @@
-{ pkgs, config, lib, inputs, hostName, theme, ... }:
+{ pkgs, config, lib, hostName, theme, ... }:
 let
   colors = theme.themeColors;
   background = theme.wallpaper;
@@ -144,12 +144,8 @@ in {
         "systemctl --user restart hyprland-session.target"
         "systemctl --user restart waybar"
       ];
-      exec-once = [
-        "nm-applet"
-        "blueman-applet"
-        "udiskie --tray"
-        "swww-daemon --format xrgb"
-      ];
+      exec-once =
+        [ "nm-applet" "blueman-applet" "sleep 1 && swww img ${background}" ];
 
       # Key bindings
       bind = [
@@ -355,6 +351,40 @@ in {
       Type = "simple";
       ExecStart =
         "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
+    Install = { WantedBy = [ "hyprland-session.target" ]; };
+  };
+
+  # Swww systemd service for Hyprland
+  systemd.user.services.swww-hypr = {
+    Unit = {
+      Description = "Swww background image service";
+      PartOf = [ "hyprland-session.target" ];
+      After = [ "hyprland-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.swww}/bin/swww-daemon --format xrgb";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
+    Install = { WantedBy = [ "hyprland-session.target" ]; };
+  };
+
+  # Udiskie systemd service for Hyprland
+  systemd.user.services.udiskie-hypr = {
+    Unit = {
+      Description = "Udiskie";
+      PartOf = [ "hyprland-session.target" ];
+      After = [ "hyprland-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.udiskie}/bin/udiskie --tray";
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;

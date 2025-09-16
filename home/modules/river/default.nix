@@ -216,7 +216,6 @@ in {
       systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &
       nm-applet &
       blueman-applet &
-      swww-daemon --format xrgb &
 
       # Set wallpaper with swww after daemon starts
       sleep 1 && swww img "${background}" &
@@ -275,6 +274,23 @@ in {
       Type = "simple";
       ExecStart =
         "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
+    Install = { WantedBy = [ "river-session.target" ]; };
+  };
+
+  # Swww systemd service for River
+  systemd.user.services.swww-river = {
+    Unit = {
+      Description = "Swww background image service";
+      PartOf = [ "river-session.target" ];
+      After = [ "river-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.swww}/bin/swww-daemon --format xrgb";
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;

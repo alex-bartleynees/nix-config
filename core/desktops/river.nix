@@ -64,7 +64,7 @@
   displayManager = {
     enable = true;
     autoLogin = {
-      enable = true;  
+      enable = true;
       command = "${pkgs.uwsm}/bin/uwsm start ${pkgs.river-classic}/bin/river";
     };
   };
