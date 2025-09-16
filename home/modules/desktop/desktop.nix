@@ -1,4 +1,4 @@
-{ pkgs, inputs, hostName, theme, lib, ... }: {
+{ pkgs, ... }: {
   imports = [ ../vscode ../rider ../linux ];
   home.packages = with pkgs; [
     qbittorrent-enhanced

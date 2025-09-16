@@ -6,7 +6,7 @@ in {
   ];
 
   # Networking
-  networking.hostName = "nixos";
+  networking.hostName = "desktop";
 
   gaming = {
     enable = true; # Enable gaming setup
