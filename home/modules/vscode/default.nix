@@ -1,5 +1,4 @@
 { pkgs, lib, theme, ... }:
-
 let
   font = "JetBrains Mono";
   terminalFont = "JetBrains Mono";

@@ -1,6 +1,4 @@
-{ pkgs }:
-
-{
+{ pkgs }: {
   tokyo-night = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "tmux-tokyo-night";
     version = "1.10.0";

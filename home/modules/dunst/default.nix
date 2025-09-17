@@ -1,4 +1,4 @@
-{ pkgs, inputs, theme, lib, ... }: {
+{ theme, lib, ... }: {
   services.dunst = {
     enable = true;
     settings = {

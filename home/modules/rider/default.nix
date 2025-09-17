@@ -1,1 +1,1 @@
-{ pkgs, inputs, ... }: { home.packages = with pkgs; [ pkgs.jetbrains.rider ]; }
+{ pkgs, ... }: { home.packages = with pkgs; [ jetbrains.rider ]; }

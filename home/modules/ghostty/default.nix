@@ -1,4 +1,4 @@
-{ pkgs, lib, theme, ... }: {
+{ pkgs, theme, ... }: {
   home.packages = with pkgs; [ ghostty ];
   home.file = {
     ".config/ghostty/config".text = ''

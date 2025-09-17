@@ -1,4 +1,4 @@
-{ pkgs, inputs, theme, ... }: {
+{ pkgs, ... }: {
   home.packages = with pkgs;
     [
       (symlinkJoin {

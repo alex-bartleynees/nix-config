@@ -1,4 +1,4 @@
-{ pkgs, theme, ... }: {
+{ theme, ... }: {
   programs.brave = {
     enable = true;
     extensions = [

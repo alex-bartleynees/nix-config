@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+{ ... }: {
   imports = [ ../rider ];
 
   home.sessionVariables = {

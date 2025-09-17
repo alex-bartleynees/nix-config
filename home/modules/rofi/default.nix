@@ -1,4 +1,4 @@
-{ pkgs, inputs, theme, ... }: {
+{ pkgs, inputs, ... }: {
   home.packages = with pkgs; [ rofi ];
 
   home.file = {

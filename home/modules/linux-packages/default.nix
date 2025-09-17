@@ -1,4 +1,4 @@
-{ pkgs, inputs, hostName, theme, lib, ... }: {
+{ pkgs, lib, ... }: {
   imports =
     [ ../waybar ../rofi ../dunst ../obsidian ../ghostty ../brave ../alacritty ];
   home.packages = with pkgs; [
