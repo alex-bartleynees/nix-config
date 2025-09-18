@@ -1,6 +1,7 @@
 # Nix Configuration
 
 A comprehensive Nix flake configuration for managing system configurations across multiple hosts and platforms (NixOS, macOS, WSL).
+Currently a single user configuration.
 
 ## 🏗️ Project Structure
 
