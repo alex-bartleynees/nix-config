@@ -5,14 +5,16 @@ A comprehensive Nix flake configuration for managing system configurations acros
 ## 🏗️ Project Structure
 
 ```
-├── flake.nix              # Main Nix flake configuration
-├── core/                  # Core system modules
+├── flake.nix             # Main Nix flake configuration
+├── core/                 # Core system modules
 │   ├── desktops/         # Desktop environment configurations
 │   ├── modules/          # System modules (gaming, nvidia, docker, etc.)
 │   └── themes/           # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
-├── home/                  # Home Manager configurations
+├── home/                 # Home Manager configurations    
+│   └── hosts/            # Host specific applicaiton configurations
+│   └── desktops/         # Desktop specific application configurations
 │   └── modules/          # User application configurations
-├── hosts/                 # Host-specific configurations
+├── hosts/                # Host-specific configurations
 │   ├── desktop/          # Main desktop with DE specializations
 │   ├── macbook/          # macOS configuration
 │   ├── media/            # Media server configuration
