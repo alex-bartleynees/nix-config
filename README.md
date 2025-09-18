@@ -129,7 +129,7 @@ sudo nixos-rebuild switch --flake .#desktop --specialisation sway
 - **Cosmic**: System76's new desktop environment
 - **Sway**: Tiling Wayland compositor
 - **Hyprland**: Dynamic tiling compositor
-- **River*: Extremely efficient tiling window manager, great on laptops.
+- **River**: Extremely efficient tiling window manager, great on laptops.
 
 ### Applications
 
