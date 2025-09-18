@@ -14,6 +14,6 @@
     groupbar_locked_inactive = "#343F44"; # everforest bg1 - inactive state
   };
   codeTheme = "Everforest Dark";
-  ghosttyTheme = "Everforest Dark - Hard";
+  ghosttyTheme = "Everforest Dark   Hard";
   chromeThemeExtensionId = "dlcadbmcfambdjhecipbnolmjchgnode";
 }
