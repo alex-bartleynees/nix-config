@@ -24,6 +24,7 @@
     "/home/alexbn/.dotnet" # .NET user secrets and tools
     "/home/alexbn/.nuget" # NuGet package cache
     "/home/alexbn/.claude"
+    "/home/alexbn/.claude.json"
 
     # Browsers (profiles, bookmarks, extensions, passwords)
     "/home/alexbn/.config/BraveSoftware" # Brave browser data
@@ -33,6 +34,9 @@
     "/home/alexbn/.config/obsidian" # Obsidian vaults and settings
     "/home/alexbn/Documents" # User documents
     "/home/alexbn/workspaces"
+    "/home/alexbn/.config/teams-for-linux"
+    "/home/alexbn/.vscode"
+    "/home/alexbn/.local/share/vscode"
 
     # Config files
     "/home/alexbn/.config/nix-config"
