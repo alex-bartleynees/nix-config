@@ -8,7 +8,7 @@ A comprehensive Nix flake configuration for managing system configurations acros
 ├── flake.nix             # Main Nix flake configuration
 ├── core/                 # Core system modules
 │   ├── desktops/         # Desktop environment configurations
-│   ├── modules/          # System modules (gaming, nvidia, docker, etc.)
+│   ├── modules/          # System modules (gaming, nvidia, docker, etc.). Imported for all systems and can be enabled/disabled
 │   └── themes/           # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
 ├── home/                 # Home Manager configurations    
 │   └── hosts/            # Host specific applicaiton configurations
@@ -21,7 +21,7 @@ A comprehensive Nix flake configuration for managing system configurations acros
 │   ├── thinkpad/         # ThinkPad laptop configuration
 │   └── wsl/              # Windows Subsystem for Linux
 ├── secrets/              # SOPS encrypted secrets
-├── shared/               # Shared configurations across hosts
+├── shared/               # Shared configurations helpers across hosts
 └── users/                # User-specific configurations
 ```
 
