@@ -30,7 +30,7 @@ Currently a single user configuration.
 
 | Host       | Platform  | Description                                                    |
 | ---------- | --------- | -------------------------------------------------------------- |
-| `desktop`  | NixOS     | Main desktop with GNOME, KDE, Cosmic, and Sway specializations |
+| `desktop`  | NixOS     | Main desktop with Hyprland, GNOME, KDE, Cosmic, and Sway specializations |
 | `macbook`  | macOS     | MacBook configuration with nix-darwin                          |
 | `media`    | NixOS     | Media server with Samba and backup services                    |
 | `thinkpad` | NixOS     | ThinkPad laptop with TLP power management                      |
