@@ -12,7 +12,7 @@ Currently a single user configuration.
 │   ├── modules/          # System modules (gaming, nvidia, docker, etc.). Imported for all systems and can be enabled/disabled
 │   └── themes/           # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
 ├── home/                 # Home Manager configurations    
-│   └── hosts/            # Host specific applicaiton configurations
+│   └── hosts/            # Host specific application configurations
 │   └── desktops/         # Desktop specific application configurations
 │   └── modules/          # User application configurations
 ├── hosts/                # Host-specific configurations
