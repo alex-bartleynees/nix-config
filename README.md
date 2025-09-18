@@ -128,12 +128,13 @@ sudo nixos-rebuild switch --flake .#desktop --specialisation sway
 - **Cosmic**: System76's new desktop environment
 - **Sway**: Tiling Wayland compositor
 - **Hyprland**: Dynamic tiling compositor
+- **River*: Extremely efficient tiling window manager, great on laptops.
 
 ### Applications
 
 - Development: VSCode, JetBrains Rider, Neovim
 - Terminal: Alacritty, Ghostty, Tmux
-- Browser: Brave with custom policies
+- Browser: Brave with declarative extensions and themes
 - Media: Various media players and codecs
 
 ## 🔐 Secrets Management
@@ -150,14 +151,6 @@ This configuration uses [SOPS](https://github.com/Mic92/sops-nix) for secret man
 - **sops-nix**: Secret management
 - **disko**: Disk partitioning
 - **nixos-hardware**: Hardware-specific configurations
-
-## 🔄 Recent Changes
-
-The configuration has been refactored for better modularity:
-
-- **Core modules**: Extracted common functionality from host configurations
-- **Simplified hosts**: Reduced duplication by using shared core modules
-- **Better organization**: Clearer separation between system, user, and host-specific configs
 
 ## 📝 Development
 
