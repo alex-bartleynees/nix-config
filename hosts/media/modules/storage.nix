@@ -1,6 +1,4 @@
-{ config, pkgs, ... }:
-
-{
+{ pkgs, ... }: {
   # Install mergerfs package
   environment.systemPackages = with pkgs; [ mergerfs ];
 

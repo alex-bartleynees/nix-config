@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ ... }: {
   system.isWsl = true;
   # System identification
   networking.hostName = "nixos-wsl";

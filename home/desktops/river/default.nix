@@ -1,4 +1,4 @@
-{ pkgs, config, lib, inputs, hostName, theme, ... }:
+{ pkgs, config, lib, hostName, theme, ... }:
 let
   colors = theme.themeColors;
   background = theme.wallpaper;

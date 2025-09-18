@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ ... }: {
   time.timeZone = "Pacific/Auckland";
   i18n.defaultLocale = "en_GB.UTF-8";
   i18n.extraLocaleSettings = {

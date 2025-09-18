@@ -1,5 +1,5 @@
 { ... }: {
-  imports = [ ../rider ];
+  imports = [ ../../modules/rider ];
 
   home.sessionVariables = {
     ASPNETCORE_Kestrel__Certificates__Default__Path =
