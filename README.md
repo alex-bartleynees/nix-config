@@ -11,7 +11,7 @@ Currently a single user configuration.
 │   ├── desktops/         # Desktop environment configurations
 │   ├── modules/          # System modules (gaming, nvidia, docker, etc.). Imported for all systems and can be enabled/disabled
 │   └── themes/           # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
-├── home/                 # Home Manager configurations    
+├── home/                 # Home Manager configurations
 │   └── hosts/            # Host specific application configurations
 │   └── desktops/         # Desktop specific application configurations
 │   └── modules/          # User application configurations
@@ -28,13 +28,13 @@ Currently a single user configuration.
 
 ## 🖥️ Hosts
 
-| Host       | Platform  | Description                                                    |
-| ---------- | --------- | -------------------------------------------------------------- |
+| Host       | Platform  | Description                                                              |
+| ---------- | --------- | ------------------------------------------------------------------------ |
 | `desktop`  | NixOS     | Main desktop with Hyprland, GNOME, KDE, Cosmic, and Sway specializations |
-| `macbook`  | macOS     | MacBook configuration with nix-darwin                          |
-| `media`    | NixOS     | Media server with Samba and backup services                    |
-| `thinkpad` | NixOS     | ThinkPad laptop with TLP power management                      |
-| `wsl`      | NixOS-WSL | Windows Subsystem for Linux setup                              |
+| `macbook`  | macOS     | MacBook configuration with nix-darwin                                    |
+| `media`    | NixOS     | Media server with Samba and backup services                              |
+| `thinkpad` | NixOS     | ThinkPad laptop with TLP power management                                |
+| `wsl`      | NixOS-WSL | Windows Subsystem for Linux setup                                        |
 
 ## 🚀 Quick Start
 
@@ -168,6 +168,63 @@ impermanence = {
   };
 };
 ```
+
+## 💾 Disk Encryption with Disko
+
+This configuration uses [disko](https://github.com/nix-community/disko) for declarative disk partitioning with LUKS encryption support.
+
+### LUKS Encryption Setup
+
+Several hosts (desktop, thinkpad) use full disk encryption with LUKS:
+
+```nix
+# Example LUKS configuration
+content = {
+  type = "luks";
+  name = "crypted";
+  settings = { allowDiscards = true; };
+  content = {
+    type = "btrfs";
+    extraArgs = [ "-f" "-L" "nixos" ];
+    subvolumes = {
+      "@" = {
+        mountpoint = "/";
+        mountOptions = [ "compress=zstd" "noatime" ];
+      };
+      # Additional subvolumes...
+    };
+  };
+};
+```
+
+### Key Features
+
+- **Full disk encryption**: Root and swap partitions encrypted with LUKS
+- **TRIM support**: `allowDiscards = true` enables TRIM for SSDs
+- **Hibernate support**: Encrypted swap with `resumeDevice = true`
+- **Btrfs subvolumes**: Encrypted btrfs with compression and snapshots
+
+### Implementation Examples
+
+- **Desktop** (`hosts/desktop/modules/disk-config.nix`): NVMe with encrypted root and swap
+- **ThinkPad** (`hosts/thinkpad/modules/disk-config.nix`): Laptop-optimized
+- **Media Server** (`hosts/media/modules/disk-config.nix`): Unencrypted for simplicity
+
+### Setting Up New Encrypted Host
+
+1. Copy an existing encrypted disk config (e.g., from desktop or thinkpad)
+2. Adjust device paths (`/dev/nvme0n1`, `/dev/sda`, etc.)
+3. Modify partition sizes as needed
+4. Ensure boot partition is unencrypted (type: "filesystem", format: "vfat")
+5. Set unique LUKS container names (`name = "crypted"`)
+
+### Boot Process
+
+With LUKS encryption, the boot process requires:
+
+1. UEFI loads the unencrypted boot partition
+2. GRUB prompts for disk encryption password
+3. System unlocks encrypted partitions and continues boot
 
 ## 🔐 Secrets Management
 
