@@ -243,4 +243,4 @@ This configuration uses [SOPS](https://github.com/Mic92/sops-nix) for secret man
 
 ## 📝 Development
 
-This configuration uses Nix flakes for reproducible system management. Each host can import relevant core modules as needed, making the configuration highly modular and maintainable.
+This configuration uses Nix flakes for reproducible system management. Each host can enable relevant core modules as needed, making the configuration highly modular and maintainable.
