@@ -123,7 +123,7 @@
       zoxide
       tmuxinator
       claude-code
-      opencode
+      #opencode
       delta
       eza
       jq

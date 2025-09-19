@@ -177,6 +177,8 @@ in {
       "svelte.enable-ts-plugin" = true;
       "terminal.integrated.env.osx" = { };
       "password-store" = "gnome-libsecret";
+      "security.workspace.trust.enabled" = false;
+      "git.autofetch" = true;
     };
   };
 }

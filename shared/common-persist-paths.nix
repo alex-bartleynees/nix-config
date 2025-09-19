@@ -36,9 +36,8 @@
     "/home/alexbn/Documents" # User documents
     "/home/alexbn/workspaces"
     "/home/alexbn/.config/teams-for-linux"
-    "/home/alexbn/.vscode"
-    "/home/alexbn/.config/vscode"
-    "/home/alexbn/.local/share/vscode"
+    "/home/alexbn/.config/Code" # VSCode authentication, settings, and workspaces
+    "/home/alexbn/.vscode-server" # Remote SSH sessions
 
     # Config files
     "/home/alexbn/.config/nix-config"
