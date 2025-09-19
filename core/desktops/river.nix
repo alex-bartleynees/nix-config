@@ -56,10 +56,7 @@
     xdgOpenUsePortal = true;
   };
 
-  security.pam.services.gdm.enableGnomeKeyring = true;
   security.pam.services.hyprlock = { };
-  security.pam.services.login.enableGnomeKeyring = true;
-  security.pam.services.greetd.enableGnomeKeyring = true;
 
   displayManager = {
     enable = true;
