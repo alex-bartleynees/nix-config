@@ -37,6 +37,7 @@
     "/home/alexbn/workspaces"
     "/home/alexbn/.config/teams-for-linux"
     "/home/alexbn/.config/Code" # VSCode authentication, settings, and workspaces
+    "/home/alexbn/.vscode/argv.json" # VSCode command line arguments
     "/home/alexbn/.vscode-server" # Remote SSH sessions
 
     # Config files
@@ -54,7 +55,9 @@
     "/home/alexbn/.config/tmuxinator" # Tmuxinator project configs
     "/home/alexbn/.local/share/nvim" # Neovim plugins and data
     "/home/alexbn/.cache/nvim" # Neovim cache
+    "/home/alexbn/.local/state/nvim" # Neovim state
     "/home/alexbn/.local/share/direnv"
     "/home/alexbn/.local/state/lazygit"
+    "/home/alexbn/.config/github-copilot"
   ];
 }
