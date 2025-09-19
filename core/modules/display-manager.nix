@@ -26,6 +26,7 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       services.greetd = { enable = true; };
+      security.pam.services.greetd.enable = true;
       programs.regreet = {
         enable = true;
         cageArgs = [ "-s" "-m" "last" ];

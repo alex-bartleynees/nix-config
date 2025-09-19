@@ -22,4 +22,9 @@
   fonts.fontconfig.enable = true;
 
   stylix.targets.vscode.enable = false;
+
+  services.gnome-keyring = {
+    enable = true;
+    components = [ "secrets" ];
+  };
 }
