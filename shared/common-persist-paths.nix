@@ -17,6 +17,7 @@
 
     # User SSH keys
     "/home/alexbn/.ssh"
+    "/home/alexbn/.local/share/keyrings"
 
     # Development tools
     "/home/alexbn/.config/JetBrains" # Rider settings and projects
