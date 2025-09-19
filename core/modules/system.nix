@@ -65,7 +65,10 @@ in {
       };
       services.udisks2.enable = true;
       services.gnome.gnome-keyring.enable = true;
+
+      # Security
       security.pam.services.login.enableGnomeKeyring = true;
+      security.polkit.enable = true;
 
       # Allow users in wheel group to switch specialisations without sudo
       security.sudo.extraRules = [{
