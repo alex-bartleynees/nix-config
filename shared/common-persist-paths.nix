@@ -37,6 +37,7 @@
     "/home/alexbn/workspaces"
     "/home/alexbn/.config/teams-for-linux"
     "/home/alexbn/.vscode"
+    "/home/alexbn/.config/vscode"
     "/home/alexbn/.local/share/vscode"
 
     # Config files
