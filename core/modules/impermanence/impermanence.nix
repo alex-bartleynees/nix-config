@@ -24,8 +24,7 @@ let
   deviceDependency = "dev-mapper-${luksDeviceName}.device";
   snapshotsSubvolumeName = "@snapshots";
 
-  pathsToKeep =
-    ''"${lib.strings.concatStringsSep " " config.impermanence.persistPaths}"'';
+  pathsToKeep = lib.strings.concatStringsSep " " config.impermanence.persistPaths;
 
   # Use configured subvolumes instead of trying to extract from disko
   subvolumes = config.impermanence.subvolumes;
@@ -47,7 +46,7 @@ let
   (lib.mapAttrsToList (name: subvol: "${name}=${subvol.mountpoint}")
     resetSubvols);
 
-  subvolumeNameMountPointPairs = ''"${getResetSubvolumes}"'';
+  subvolumeNameMountPointPairs = getResetSubvolumes;
 
 in {
   # Define the impermanence options
@@ -119,8 +118,6 @@ in {
         extraBin = {
           immutability = "${immutability-rs}/bin/immutability";
           btrfs = "${pkgs.btrfs-progs}/bin/btrfs";
-          mount = "${pkgs.util-linux}/bin/mount";
-          umount = "${pkgs.util-linux}/bin/umount";
           cp = "${pkgs.coreutils}/bin/cp";
           chown = "${pkgs.coreutils}/bin/chown";
         };
