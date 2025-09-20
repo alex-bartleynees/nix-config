@@ -15,7 +15,7 @@
     ./silent-boot.nix
     ./samba-client.nix
     ./snapshots.nix
-    ./impermanence.nix
+    ./impermanence/impermanence.nix
   ];
 }
 
