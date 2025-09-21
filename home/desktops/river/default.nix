@@ -151,6 +151,10 @@ in {
           "Alt+Shift+Control 8" = "toggle-view-tags 128";
           "Alt+Shift+Control 9" = "toggle-view-tags 256";
 
+          # Scratchpad
+          "Alt+Control+Shift minus" = "set-view-tags 1048576";
+          "Alt+Control minus" = "toggle-focused-tags 1048576";
+
           # Media keys in normal mode
           "None XF86AudioRaiseVolume" =
             "spawn 'pactl set-sink-volume @DEFAULT_SINK@ +10%'";
@@ -193,6 +197,10 @@ in {
     };
 
     extraConfig = ''
+      # Scratchpad configuration
+      # Set spawn tagmask to ensure new windows do not have the scratchpad tag unless explicitly set
+      riverctl spawn-tagmask $((((1 << 32) - 1) ^ (1 << 20)))
+
       # Host-specific output configuration
       ${if hostName == "thinkpad" then ''
         riverctl output eDP-1 mode 1920x1080@60
