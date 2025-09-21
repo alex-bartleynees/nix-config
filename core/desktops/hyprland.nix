@@ -32,6 +32,8 @@
     XDG_SESSION_TYPE = "wayland";
   };
 
+  security.pam.services.hyprlock = { };
+
   displayManager = {
     enable = true;
     autoLogin = { enable = true; };
