@@ -41,6 +41,8 @@
         hide_cursor = true;
       };
 
+      animation = "fade, 0";
+
       background = lib.mkForce [{
         path = "${theme.wallpaper}";
         blur_passes = 3;
