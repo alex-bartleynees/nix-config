@@ -37,9 +37,7 @@
   programs.hyprlock = {
     enable = true;
     settings = {
-      general = {
-        hide_cursor = true;
-      };
+      general = { hide_cursor = true; };
 
       animation = "fade, 0";
 

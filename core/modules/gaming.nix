@@ -87,10 +87,8 @@ in {
             {
               name = "1440p Desktop";
               prep-cmd = [{
-                do =
-                  "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-6,2560x1440@120,0x0,1";
-                undo =
-                  "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-6,2560x1440@164.96,0x0,1";
+                do = "${pkgs.kanshi}/bin/kanshictl gaming";
+                undo = "${pkgs.kanshi}/bin/kanshictl coding";
               }];
               exclude-global-prep-cmd = "false";
               auto-detach = "true";
@@ -99,16 +97,12 @@ in {
               name = "Steam Big Picture";
               prep-cmd = [
                 {
-                  do =
-                    "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-6,2560x1440@164.96,0x0,1";
-                  undo =
-                    "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-6,2560x1440@164.96,0x0,1";
+                  do = "${pkgs.kanshi}/bin/kanshictl gaming";
+                  undo = "${pkgs.kanshi}/bin/kanshictl coding";
                 }
                 {
-                  do =
-                    "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-4,disable";
-                  undo =
-                    "${pkgs.hyprland}/bin/hyprctl keyword monitor DP-4,preferred,auto,1,transform,3";
+                  do = "${pkgs.kanshi}/bin/kanshictl gaming";
+                  undo = "${pkgs.kanshi}/bin/kanshictl coding";
                 }
               ];
               detached = [ "steam-run-url steam://open/bigpicture" ];
