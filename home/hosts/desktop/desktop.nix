@@ -26,6 +26,7 @@
               criteria = "DP-4";
               mode = "2560x1440@144";
               position = "2560,0";
+              transform = "270";
               status = "enable";
             }
           ];
@@ -45,6 +46,7 @@
               criteria = "DP-4";
               mode = "2560x1440@144";
               position = "2560,0";
+              transform = "270";
               status = "disable";
             }
           ];
