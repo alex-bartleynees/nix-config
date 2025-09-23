@@ -23,7 +23,7 @@ in {
   rgb = {
     enable = true; # Enable OpenRGB support
     motherboard = "amd"; # Motherboard type for OpenRGB
-    profile = "blue"; # OpenRGB profile to use on startup
+    profile = "default"; # OpenRGB profile to use on startup
   };
 
   tailscale = {
