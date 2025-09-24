@@ -1,6 +1,4 @@
-{ theme, ... }:
-let persistPaths = import ../../../shared/common-persist-paths.nix { };
-in {
+{ theme, myUsers, username, ... }: {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -60,15 +58,7 @@ in {
       "@" = { mountpoint = "/"; };
       "@home" = { mountpoint = "/home"; };
     };
-    persistPaths = persistPaths.commonPersistPaths ++ [
-      #"/home/alexbn/.config/cosmic"
-      "/home/alexbn/.config/OpenRGB"
-      "/home/alexbn/.config/sunshine"
-      "/home/alexbn/.local/share/Steam"
-      "/home/alexbn/.steam"
-      "/home/alexbn/.steampath"
-      "/home/alexbn/.steampid"
-    ];
+    persistPaths = myUsers.${username}.persistPaths;
     resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
   };
 

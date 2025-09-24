@@ -1,6 +1,4 @@
-{ pkgs, theme, ... }:
-let persistPaths = import ../../../shared/common-persist-paths.nix { };
-in {
+{ pkgs, theme, myUsers, username, ... }: {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -36,7 +34,7 @@ in {
       "@" = { mountpoint = "/"; };
       "@home" = { mountpoint = "/home"; };
     };
-    persistPaths = persistPaths.commonPersistPaths;
+    persistPaths = myUsers.${username}.persistPaths;
     resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
   };
 

@@ -1,4 +1,4 @@
-{ ... }: {
+{ username, ... }: {
   commonPersistPaths = [
     # System critical paths
     "/etc/sops"
@@ -16,48 +16,57 @@
     "/etc/NetworkManager/system-connections" # Wifi passwords and network configs
 
     # User SSH keys
-    "/home/alexbn/.ssh"
-    "/home/alexbn/.local/share/keyrings"
+    "/home/${username}/.ssh"
+    "/home/${username}/.local/share/keyrings"
 
     # Development tools
-    "/home/alexbn/.config/JetBrains" # Rider settings and projects
-    "/home/alexbn/.local/share/JetBrains"
-    "/home/alexbn/.dotnet" # .NET user secrets and tools
-    "/home/alexbn/.nuget" # NuGet package cache
-    "/home/alexbn/.claude"
-    "/home/alexbn/.claude.json"
+    "/home/${username}/.config/JetBrains" # Rider settings and projects
+    "/home/${username}/.local/share/JetBrains"
+    "/home/${username}/.dotnet" # .NET user secrets and tools
+    "/home/${username}/.nuget" # NuGet package cache
+    "/home/${username}/.claude"
+    "/home/${username}/.claude.json"
 
     # Browsers (profiles, bookmarks, extensions, passwords)
-    "/home/alexbn/.config/BraveSoftware" # Brave browser data
-    "/home/alexbn/.mozilla" # Firefox profiles and data
+    "/home/${username}/.config/BraveSoftware" # Brave browser data
+    "/home/${username}/.mozilla" # Firefox profiles and data
 
     # Applications with important user data
-    "/home/alexbn/.config/obsidian" # Obsidian vaults and settings
-    "/home/alexbn/Documents" # User documents
-    "/home/alexbn/workspaces"
-    "/home/alexbn/.config/teams-for-linux"
-    "/home/alexbn/.config/Code" # VSCode authentication, settings, and workspaces
-    "/home/alexbn/.vscode/argv.json" # VSCode command line arguments
-    "/home/alexbn/.vscode-server" # Remote SSH sessions
+    "/home/${username}/.config/obsidian" # Obsidian vaults and settings
+    "/home/${username}/Documents" # User documents
+    "/home/${username}/workspaces"
+    "/home/${username}/.config/teams-for-linux"
+    "/home/${username}/.config/Code" # VSCode authentication, settings, and workspaces
+    "/home/${username}/.vscode/argv.json" # VSCode command line arguments
+    "/home/${username}/.vscode-server" # Remote SSH sessions
 
     # Config files
-    "/home/alexbn/.config/nix-config"
-    "/home/alexbn/.config/nix-devenv"
-    "/home/alexbn/.config/nixos-secrets"
-    "/home/alexbn/.config/dotfiles"
-    "/home/alexbn/.config/sops"
+    "/home/${username}/.config/nix-config"
+    "/home/${username}/.config/nix-devenv"
+    "/home/${username}/.config/nixos-secrets"
+    "/home/${username}/.config/dotfiles"
+    "/home/${username}/.config/sops"
 
     # Shell and terminal tools
-    "/home/alexbn/.zsh_history"
-    "/home/alexbn/.p10k.zsh" # Powerlevel10k configuration
-    "/home/alexbn/.local/share/atuin" # Atuin shell history database
-    "/home/alexbn/.local/share/zoxide" # Zoxide frecency database
-    "/home/alexbn/.config/tmuxinator" # Tmuxinator project configs
-    "/home/alexbn/.local/share/nvim" # Neovim plugins and data
-    "/home/alexbn/.cache/nvim" # Neovim cache
-    "/home/alexbn/.local/state/nvim" # Neovim state
-    "/home/alexbn/.local/share/direnv"
-    "/home/alexbn/.local/state/lazygit"
-    "/home/alexbn/.config/github-copilot"
+    "/home/${username}/.zsh_history"
+    "/home/${username}/.p10k.zsh" # Powerlevel10k configuration
+    "/home/${username}/.local/share/atuin" # Atuin shell history database
+    "/home/${username}/.local/share/zoxide" # Zoxide frecency database
+    "/home/${username}/.config/tmuxinator" # Tmuxinator project configs
+    "/home/${username}/.local/share/nvim" # Neovim plugins and data
+    "/home/${username}/.cache/nvim" # Neovim cache
+    "/home/${username}/.local/state/nvim" # Neovim state
+    "/home/${username}/.local/share/direnv"
+    "/home/${username}/.local/state/lazygit"
+    "/home/${username}/.config/github-copilot"
+
+    "/home/${username}/.config/OpenRGB"
+
+    # Gaming
+    "/home/${username}/.config/sunshine"
+    "/home/${username}/.local/share/Steam"
+    "/home/${username}/.steam"
+    "/home/${username}/.steampath"
+    "/home/${username}/.steampid"
   ];
 }

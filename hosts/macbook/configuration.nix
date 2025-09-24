@@ -1,4 +1,4 @@
-{ self, pkgs, ... }: {
+{ self, pkgs, username, homeDirectory, ... }: {
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
   nix = {
@@ -22,9 +22,9 @@
 
   system.stateVersion = 5;
 
-  users.users.alexbn = {
+  users.users.${username} = {
     # workaround for https://github.com/nix-community/home-manager/issues/4026
-    home = "/Users/alexbn";
+    home = homeDirectory;
     shell = pkgs.zsh;
   };
 

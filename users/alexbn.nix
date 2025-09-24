@@ -1,9 +1,14 @@
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }:
+let
+  username = "alexbn";
+  commonPersistPaths =
+    import ../shared/common-persist-paths.nix { inherit username; };
+in {
   users = lib.mkIf pkgs.stdenv.isLinux {
-    users.alexbn = {
+    users.${username} = {
       isNormalUser = true;
       shell = pkgs.zsh;
-      description = "alexbn";
+      description = username;
       extraGroups =
         [ "networkmanager" "wheel" "docker" "i2c" "plugdev" "video" "render" ];
       packages = with pkgs; [ ];
@@ -13,13 +18,16 @@
     };
   };
 
-  myUsers.alexbn.git = {
-    userName = "Alex Bartley Nees";
-    userEmail = "alexbartleynees@gmail.com";
-    workEmail = "alexander.nees@valocityglobal.com";
+  myUsers.${username} = {
+    git = {
+      userName = "Alex Bartley Nees";
+      userEmail = "alexbartleynees@gmail.com";
+      workEmail = "alexander.nees@valocityglobal.com";
+    };
+    persistPaths = commonPersistPaths;
   };
 
-  home-manager.users.alexbn.home.file = {
+  home-manager.users.${username}.home.file = {
     ".ssh/id_ed25519.pub".text =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFKxSGAbg6Dw8DqxiPGikz9ZoXDBI6YvV80L5B1NsQ72 alexbartleynees@gmail.com";
     ".ssh/id_work.pub".text =

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, username, ... }:
 let cfg = config.virtualisation;
 in {
   options.virtualisation = {
@@ -6,7 +6,7 @@ in {
 
     user = lib.mkOption {
       type = lib.types.str;
-      default = "alexbn";
+      default = username;
       description = "User to add to the vboxusers group";
     };
   };

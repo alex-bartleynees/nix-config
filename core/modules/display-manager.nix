@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, username, ... }:
 let cfg = config.displayManager;
 in {
   options.displayManager = {
@@ -12,7 +12,7 @@ in {
       };
       user = lib.mkOption {
         type = lib.types.str;
-        default = "alexbn";
+        default = username;
         description = "The user to log in automatically";
       };
       command = lib.mkOption {
