@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ username, ... }: {
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;
     age.keyFile = "/etc/sops/age/keys.txt";
@@ -9,7 +9,7 @@
         mode = "0400";
         owner = "root";
       };
-      "passwords/alexbn" = {
+      "passwords/${username}" = {
         neededForUsers = true;
         mode = "0400";
         owner = "root";

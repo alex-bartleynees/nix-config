@@ -18,7 +18,7 @@ let
   # Theme setup
   theme = import ../core/themes/${themeName}.nix { inherit inputs pkgs; };
   themes = import ../core/themes {
-    inherit inputs;
+    inherit inputs username homeDirectory;
     lib = nixpkgs.lib;
   };
   themeSpecialisations = if enableThemeSpecialisations then

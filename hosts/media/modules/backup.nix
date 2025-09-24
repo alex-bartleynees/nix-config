@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, username, ... }:
 
 let
   backupScript = pkgs.writeShellApplication {
@@ -69,7 +69,7 @@ let
             # Define backup paths - adjust these for your setup
             backup_paths=(
                 # User homelab directory
-                "/home/alexbn/Documents/homelab"
+                "/home/${username}/Documents/homelab"
 
                 # Media directories 
                 "/mnt/jellyfin-pool/books"

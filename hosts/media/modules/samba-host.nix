@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, username, ... }:
 
 let
-  sambaUser = "alexbn";
+  sambaUser = username;
   shareName = "jellyfin-pool";
   mediaPath = "/mnt/jellyfin-pool";
 

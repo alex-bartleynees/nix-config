@@ -1,4 +1,4 @@
-{ ... }: {
+{ username, ... }: {
   system.isWsl = true;
   # System identification
   networking.hostName = "nixos-wsl";
@@ -10,7 +10,7 @@
     wslConf.interop.appendWindowsPath = true;
     wslConf.interop.enabled = true;
     wslConf.network.generateHosts = false;
-    defaultUser = "alexbn";
+    defaultUser = username;
     startMenuLaunchers = true;
     wslConf.boot.systemd = true;
 

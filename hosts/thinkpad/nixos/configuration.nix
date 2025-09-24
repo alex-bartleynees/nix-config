@@ -1,4 +1,4 @@
-{ pkgs, theme, myUsers, username, ... }: {
+{ config, pkgs, theme, username, ... }: {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
@@ -34,7 +34,7 @@
       "@" = { mountpoint = "/"; };
       "@home" = { mountpoint = "/home"; };
     };
-    persistPaths = myUsers.${username}.persistPaths;
+    persistPaths = config.myUsers.${username}.persistPaths;
     resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
   };
 

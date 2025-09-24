@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   username = "alexbn";
-  commonPersistPaths =
+  persistPaths =
     import ../shared/common-persist-paths.nix { inherit username; };
 in {
   users = lib.mkIf pkgs.stdenv.isLinux {
@@ -14,7 +14,7 @@ in {
       packages = with pkgs; [ ];
       initialHashedPassword =
         "$6$fj6v7DyFbiqBDSSi$3M6vGFcbI2rxhKwAU49FDhWeA6ZKZKMPRuTtWkZMkrECXko9goxJje94.drywOXZSV4Sv7GFecTX1c06qOxTV/";
-      hashedPasswordFile = config.sops.secrets."passwords/alexbn".path;
+      hashedPasswordFile = config.sops.secrets."passwords/${username}".path;
     };
   };
 
@@ -24,7 +24,7 @@ in {
       userEmail = "alexbartleynees@gmail.com";
       workEmail = "alexander.nees@valocityglobal.com";
     };
-    persistPaths = commonPersistPaths;
+    persistPaths = persistPaths.commonPersistPaths;
   };
 
   home-manager.users.${username}.home.file = {

@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, lib, username, homeDirectory, ... }:
 let
   # Get all theme files in this directory
   themeFiles = builtins.attrNames (lib.filterAttrs (name: type:
@@ -17,7 +17,7 @@ let
     lib.genAttrs (builtins.attrNames themes) (themeName:
       let
         shared = import ../../shared/nixos-default.nix {
-          inherit inputs desktop;
+          inherit inputs desktop username homeDirectory;
           theme = themes.${themeName};
         };
         baseConfig = shared.getImports {
