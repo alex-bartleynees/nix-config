@@ -12,7 +12,7 @@ in {
 
     profile = lib.mkOption {
       type = lib.types.str;
-      default = "blue";
+      default = "default";
       description = "OpenRGB profile to use on startup";
     };
   };
