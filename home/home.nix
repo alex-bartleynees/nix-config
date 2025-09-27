@@ -111,7 +111,6 @@
       bottom
       lazygit
       lazydocker
-      alacritty
       font-awesome
       icomoon-feather
       iosevka
