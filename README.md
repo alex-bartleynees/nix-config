@@ -237,7 +237,7 @@ content = {
 With LUKS encryption, the boot process requires:
 
 1. UEFI loads the unencrypted boot partition
-2. GRUB prompts for disk encryption password
+2. systemd-boot prompts for disk encryption password
 3. System unlocks encrypted partitions and continues boot
 
 ## 🔐 Secrets Management
