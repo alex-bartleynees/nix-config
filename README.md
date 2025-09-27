@@ -7,6 +7,7 @@ Currently a single user configuration.
 
 ```
 ├── flake.nix             # Main Nix flake configuration
+├── hosts.nix             # Host definitions and configurations
 ├── core/                 # Core system modules
 │   ├── desktops/         # Desktop environment configurations
 │   ├── modules/          # System modules (gaming, nvidia, docker, etc.). Imported for all systems and can be enabled/disabled
@@ -26,15 +27,28 @@ Currently a single user configuration.
 └── users/                # User-specific configurations
 ```
 
-## 🖥️ Hosts
+## 🖥️ Host Configuration
 
-| Host       | Platform  | Description                                                              |
-| ---------- | --------- | ------------------------------------------------------------------------ |
-| `desktop`  | NixOS     | Main desktop with Hyprland, GNOME, KDE, Cosmic, and Sway specializations |
-| `macbook`  | macOS     | MacBook configuration with nix-darwin                                    |
-| `media`    | NixOS     | Media server with Samba and backup services                              |
-| `thinkpad` | NixOS     | ThinkPad laptop with TLP power management                                |
-| `wsl`      | NixOS-WSL | Windows Subsystem for Linux setup                                        |
+### hosts.nix
+
+The `hosts.nix` file centralizes host definitions and their configurations. Each host is defined with:
+
+- **hostPath**: Path to the host-specific configuration directory
+- **desktop**: Default desktop environment for the host
+- **enableThemeSpecialisations**: Whether to enable theme switching specializations
+- **enableDesktopSpecialisations**: Whether to enable desktop environment specializations
+- **desktopSpecialisations**: List of additional desktop environments to include
+- **additionalModules**: Host-specific Nix modules (e.g., hardware modules, WSL)
+
+### Available Hosts
+
+| Host       | Platform  | Desktop   | Description                                                              |
+| ---------- | --------- | --------- | ------------------------------------------------------------------------ |
+| `desktop`  | NixOS     | Hyprland  | Main desktop with theme and DE specializations (Sway, River)            |
+| `macbook`  | macOS     | -         | MacBook configuration with nix-darwin                                    |
+| `media`    | NixOS     | GNOME     | Media server with Samba and backup services                             |
+| `thinkpad` | NixOS     | River     | ThinkPad laptop with TLP power management and theme specializations     |
+| `wsl`      | NixOS-WSL | None      | Windows Subsystem for Linux setup                                       |
 
 ## 🚀 Quick Start
 
