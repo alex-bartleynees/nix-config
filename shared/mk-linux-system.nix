@@ -59,6 +59,7 @@ let
   # Shared configuration
   shared = import ../shared/nixos-default.nix {
     inherit inputs theme desktop username homeDirectory;
+    lib = nixpkgs.lib;
   };
 
   # Host-specific modules

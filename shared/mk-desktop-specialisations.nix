@@ -4,7 +4,7 @@ let
   mkDesktopSpecialisation = desktop:
     let
       shared = import ./nixos-default.nix {
-        inherit inputs theme username homeDirectory desktop;
+        inherit inputs theme username homeDirectory desktop lib;
       };
       sharedImports = shared.getImports {
         additionalImports = baseImports ++ [{ _module.args.theme = theme; }];
