@@ -3,9 +3,6 @@
     ./hardware-configuration.nix
   ];
 
-  # Networking
-  networking.hostName = "desktop";
-
   gaming = {
     enable = true; # Enable gaming setup
     streaming.enable = true; # Enable game streaming with Sunshine

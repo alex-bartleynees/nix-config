@@ -3,9 +3,6 @@
     ./hardware-configuration.nix
   ];
 
-  # Networking
-  networking.hostName = "media";
-
   gaming = {
     enable = false;
     moonlight.enable = true; # Enable Moonlight for game streaming

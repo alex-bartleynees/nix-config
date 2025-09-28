@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hostName, ... }:
 let cfg = config.system;
 in {
   options.system = {
@@ -34,6 +34,9 @@ in {
           options = "--delete-older-than 7d";
         };
       };
+
+      # Networking
+      networking.hostName = hostName;
     }
 
     # Linux-specific settings (not WSL)

@@ -3,9 +3,6 @@
     ./hardware-configuration.nix
   ];
 
-  # Networking
-  networking.hostName = "thinkpad";
-
   tailscale = {
     enable = true; # Enable Tailscale support
   };

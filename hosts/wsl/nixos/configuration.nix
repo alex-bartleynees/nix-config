@@ -1,7 +1,6 @@
 { username, ... }: {
   system.isWsl = true;
   # System identification
-  networking.hostName = "nixos-wsl";
   system.stateVersion = "24.05";
 
   wsl = {

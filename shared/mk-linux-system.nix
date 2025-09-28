@@ -1,6 +1,6 @@
 { inputs }:
 { hostPath, system ? "x86_64-linux", desktop ? "hyprland", username ? "alexbn"
-, homeDirectory ? "/home/alexbn", themeName ? "tokyo-night"
+, homeDirectory ? "/home/alexbn", themeName ? "tokyo-night", hostName
 , enableThemeSpecialisations ? false, enableDesktopSpecialisations ? false
 , desktopSpecialisations ? [ ], additionalModules ? [ ]
 , additionalSpecialArgs ? { }, }:
@@ -77,7 +77,7 @@ in nixpkgs.lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit inputs username homeDirectory desktop;
+    inherit inputs username homeDirectory desktop hostName;
   } // additionalSpecialArgs;
 
   modules = shared.getImports {
