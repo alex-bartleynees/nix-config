@@ -6,18 +6,12 @@ let
   # Function to convert hex colors to rgb format for Hyprland
   hexToRgb = hex: "rgb(${builtins.substring 1 6 hex})";
 in {
-  imports = [ ../../modules/hypridle ];
+  imports = [
+    ../../modules/hypridle
+    ../../shared/wayland-desktop.nix
+  ];
   home.packages = with pkgs; [
     hyprpaper
-    swww
-    grim
-    slurp
-    wl-clipboard
-    brightnessctl
-    blueman
-    networkmanagerapplet
-    udiskie
-    rofi
   ];
 
   xdg.configFile."uwsm/env".source =

@@ -3,20 +3,12 @@ let
   colors = theme.themeColors;
   background = theme.wallpaper;
 in {
+  imports = [ ../../shared/wayland-desktop.nix ];
   home.packages = with pkgs; [
     swaybg
     swayidle
     swaylock
     sway-audio-idle-inhibit
-    swww
-    grim
-    slurp
-    wl-clipboard
-    brightnessctl
-    blueman
-    networkmanagerapplet
-    udiskie
-    rofi
     autotiling-rs
   ];
 

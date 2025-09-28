@@ -1,18 +1,15 @@
 { pkgs, ... }: {
-  imports = [ ../wayland.nix ];
+  imports = [
+    ../wayland.nix
+    ../wayland-packages.nix
+    ../wayland-system.nix
+  ];
   programs.hyprland = {
     enable = true;
     withUWSM = true;
     xwayland.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    adwaita-qt
-    gtk-engine-murrine
-    gtk_engines
-    gsettings-desktop-schemas
-    adwaita-icon-theme
-  ];
 
   xdg.portal = {
     enable = true;

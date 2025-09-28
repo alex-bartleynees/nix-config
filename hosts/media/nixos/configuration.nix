@@ -35,17 +35,6 @@
     style = "adwaita-dark";
   };
 
-  environment.systemPackages = with pkgs; [
-    gnome-keyring
-    libsecret
-    adwaita-qt
-    gtk-engine-murrine
-    gtk_engines
-    gsettings-desktop-schemas
-    adwaita-icon-theme
-    networkmanagerapplet
-    blueman
-  ];
 
   services.displayManager.gdm.enable = lib.mkForce false;
   zswap.enable = true;

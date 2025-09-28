@@ -1,22 +1,12 @@
 { pkgs, ... }: {
-  imports = [ ../wayland.nix ];
+  imports = [
+    ../wayland.nix
+    ../wayland-packages.nix
+    ../wayland-system.nix
+    ../wlroots.nix
+  ];
   environment.systemPackages = with pkgs; [
     river-classic
-    gnome-keyring
-    libsecret
-    xdg-desktop-portal
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-gtk
-    adwaita-qt
-    gtk-engine-murrine
-    gtk_engines
-    gsettings-desktop-schemas
-    adwaita-icon-theme
-    udiskie
-    networkmanagerapplet
-    blueman
-    pulseaudio
-    uwsm
   ];
 
   programs.river-classic = { enable = true; };

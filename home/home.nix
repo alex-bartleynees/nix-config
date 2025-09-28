@@ -135,7 +135,7 @@
       })
       wget
       git
-    ] ++ lib.optionals pkgs.stdenv.isLinux [ wl-clipboard wl-clipboard-x11 ];
+    ] ++ lib.optionals pkgs.stdenv.isLinux [ wl-clipboard-x11 ];
 
   programs.zoxide.options = [ "--cmd cd" ];
   programs.zoxide.enable = true;

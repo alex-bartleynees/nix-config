@@ -3,20 +3,10 @@ let
   colors = theme.themeColors;
   background = theme.wallpaper;
 in {
-  imports = [ ../../modules/hypridle ];
+  imports = [ ../../modules/hypridle ../../shared/wayland-desktop.nix ];
   home.packages = with pkgs; [
     river-classic
     river-bsp-layout
-    swww
-    grim
-    slurp
-    wl-clipboard
-    brightnessctl
-    blueman
-    networkmanagerapplet
-    udiskie
-    rofi
-    hyprlock
     waybar
     wlr-randr
   ];

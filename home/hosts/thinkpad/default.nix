@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   imports =
-    [ ../../modules/vscode ../../modules/rider ../../modules/linux-packages ];
+    [ ../../modules/vscode ../../modules/rider ../../shared/linux-desktop.nix ];
   home.packages = with pkgs; [ kanshi ];
 
   services.kanshi = {

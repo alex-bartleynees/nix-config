@@ -1,5 +1,9 @@
 { pkgs, ... }: {
-  imports = [ ../wayland.nix ];
+  imports = [
+    ../wayland.nix
+    ../wayland-packages.nix
+    ../wayland-system.nix
+  ];
   services.desktopManager = { gnome.enable = true; };
 
   services.displayManager = {

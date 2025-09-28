@@ -1,21 +1,9 @@
 { pkgs, ... }: {
-  imports = [ ../wayland.nix ];
-  environment.systemPackages = with pkgs; [
-    gnome-keyring
-    libsecret
-    xdg-desktop-portal
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-gtk
-    adwaita-qt
-    gtk-engine-murrine
-    gtk_engines
-    gsettings-desktop-schemas
-    adwaita-icon-theme
-    udiskie
-    networkmanagerapplet
-    blueman
-    pulseaudio
-    uwsm
+  imports = [
+    ../wayland.nix
+    ../wayland-packages.nix
+    ../wayland-system.nix
+    ../wlroots.nix
   ];
 
   programs.sway = {
