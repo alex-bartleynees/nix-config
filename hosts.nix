@@ -1,15 +1,13 @@
 { inputs }:
 let
-  users = [
-    {
-      username = "alexbn";
-      homeDirectory = "/home/alexbn";
-    }
-    {
-      username = "guest";
-      homeDirectory = "/home/guest";
-    }
-  ];
+  users = [{
+    username = "alexbn";
+    homeDirectory = "/home/alexbn";
+  }];
+  usersWithGuests = users ++ [{
+    username = "guest";
+    homeDirectory = "/home/guest";
+  }];
 in {
   desktop = {
     hostPath = ./hosts/desktop;
@@ -18,7 +16,7 @@ in {
     enableDesktopSpecialisations = true;
     desktopSpecialisations = [ "sway" "river" ];
     hostName = "desktop";
-    users = users;
+    users = usersWithGuests;
   };
 
   wsl = {

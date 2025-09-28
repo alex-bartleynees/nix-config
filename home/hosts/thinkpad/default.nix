@@ -1,7 +1,4 @@
 { pkgs, ... }: {
-  imports = [ ../../modules/vscode ../../modules/rider ];
-  home.packages = with pkgs; [ kanshi ];
-
   services.kanshi = {
     enable = true;
     systemdTarget = "river-session.target";

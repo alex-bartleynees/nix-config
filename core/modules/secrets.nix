@@ -1,8 +1,7 @@
 { users, lib, config, ... }:
 let
-  usersWithSecrets = lib.filter (user:
-    config.myUsers.${user.username}.needsPasswordSecret or false
-  ) users;
+  usersWithSecrets = lib.filter
+    (user: config.myUsers.${user.username}.needsPasswordSecret or false) users;
 
   userPasswordSecrets = lib.listToAttrs (map (user: {
     name = "passwords/${user.username}";

@@ -1,12 +1,4 @@
 { pkgs, ... }: {
-  imports = [ ../../modules/vscode ../../modules/rider ];
-  home.packages = with pkgs; [
-    qbittorrent-enhanced
-    yaak
-    azuredatastudio
-    teams-for-linux
-  ];
-
   services.kanshi = {
     enable = true;
 

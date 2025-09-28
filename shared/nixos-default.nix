@@ -23,8 +23,7 @@ let
       homeDirectory = user.homeDirectory;
       extraModules = [ ../home ];
       inherit theme;
-    }
-  ) users);
+    }) users);
 
 in {
   getImports = { additionalImports ? [ ] }:

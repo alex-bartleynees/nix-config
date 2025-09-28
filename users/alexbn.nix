@@ -26,6 +26,7 @@ in {
     };
     persistPaths = persistPaths.commonPersistPaths;
     needsPasswordSecret = true;
+    profiles = [ "work" "developer" ];
   };
 
   home-manager.users.${username}.home.file = {
