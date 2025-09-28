@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ../../modules/vscode ../../modules/rider ];
+  imports = [ ../../modules/vscode ../../modules/rider ../modules/tmux ];
   programs.git = lib.mkMerge [
     {
       enable = true;

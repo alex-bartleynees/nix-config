@@ -1,11 +1,16 @@
 { pkgs, lib, inputs, username, homeDirectory, hostName, theme, myUsers, desktop
-, ... }: {
+, ... }:
+let
+  profiles = lib.concatMap (profile: [ ./profiles/${profile}.nix ])
+    (lib.optional
+      (myUsers.${username} != null && myUsers.${username}.profiles != null)
+      myUsers.${username}.profiles);
+in {
 
-  imports = [ ./modules/tmux ]
-    ++ (if builtins.pathExists ./hosts/${hostName} then
-      [ ./hosts/${hostName} ]
-    else
-      [ ])
+  imports = profiles ++ (if builtins.pathExists ./hosts/${hostName} then
+    [ ./hosts/${hostName} ]
+  else
+    [ ])
     ++ (if desktop != null && builtins.pathExists ./desktops/${desktop} then
       [ ./desktops/${desktop} ]
     else

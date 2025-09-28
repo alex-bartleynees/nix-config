@@ -14,6 +14,10 @@
           type = lib.types.bool;
           default = false;
         };
+        profiles = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+        };
       };
     });
     default = { };
