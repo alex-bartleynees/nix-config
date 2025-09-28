@@ -1,4 +1,5 @@
 { pkgs, ... }: {
+  imports = [ ../wayland.nix ];
   services.desktopManager = { gnome.enable = true; };
 
   services.displayManager = {
@@ -22,10 +23,6 @@
   services.upower.enable = true;
   services.accounts-daemon.enable = true;
 
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    WLR_NO_HARDWARE_CURSORS = "1";
-  };
 
   system.nixos.tags = [ "gnome" ];
 

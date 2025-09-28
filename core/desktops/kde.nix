@@ -1,4 +1,5 @@
 { pkgs, ... }: {
+  imports = [ ../wayland.nix ];
   services.xserver = {
     enable = true;
     displayManager.sddm.enable = true;
@@ -15,11 +16,6 @@
     kdePackages.kdeplasma-addons
   ];
 
-  # Environment variables for Wayland
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    WLR_NO_HARDWARE_CURSORS = "1";
-  };
 
   system.nixos.tags = [ "kde" ];
 

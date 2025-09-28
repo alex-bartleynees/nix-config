@@ -47,19 +47,6 @@
     blueman
   ];
 
-  environment.sessionVariables = {
-    WLR_NO_HARDWARE_CURSORS = "1";
-    NIXOS_OZONE_WL = "1";
-    WLR_RENDERER = "vulkan";
-    XDG_SESSION_TYPE = "wayland";
-    GTK_THEME = "Adwaita:dark";
-    QT_STYLE_OVERRIDE = "adwaita-dark";
-    MOZ_USE_XINPUT2 = "1";
-    # Force dark mode for websites
-    GTK_USE_PORTAL = "1";
-    GSETTINGS_SCHEMA_DIR = "/run/current-system/sw/share/gsettings-schemas/";
-  };
-
   services.displayManager.gdm.enable = lib.mkForce false;
   zswap.enable = true;
 
