@@ -25,6 +25,7 @@ in {
       workEmail = "alexander.nees@valocityglobal.com";
     };
     persistPaths = persistPaths.commonPersistPaths;
+    needsPasswordSecret = true;
   };
 
   home-manager.users.${username}.home.file = {

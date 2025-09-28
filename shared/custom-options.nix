@@ -10,6 +10,10 @@
           type = lib.types.listOf lib.types.str;
           default = [ ];
         };
+        needsPasswordSecret = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
       };
     });
     default = { };
