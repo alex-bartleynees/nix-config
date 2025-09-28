@@ -2,9 +2,9 @@
 , ... }:
 let
   profiles = lib.concatMap (profile: [ ./profiles/${profile}.nix ])
-    (lib.optional
-      (myUsers.${username} != null && myUsers.${username}.profiles != null)
-      myUsers.${username}.profiles);
+    (if (myUsers.${username} != null && myUsers.${username}.profiles != null)
+     then myUsers.${username}.profiles
+     else []);
 in {
 
   imports = profiles ++ (if builtins.pathExists ./hosts/${hostName} then
