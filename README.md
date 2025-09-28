@@ -11,6 +11,7 @@ Currently a single user configuration.
 ├── core/                 # Core system modules
 │   ├── desktops/         # Desktop environment configurations
 │   ├── modules/          # System modules (gaming, nvidia, docker, etc.). Imported for all systems and can be enabled/disabled
+│   ├── profiles/         # Pre-configured system profiles with common module combinations
 │   └── themes/           # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
 ├── home/                 # Home Manager configurations
 │   └── hosts/            # Host specific application configurations
@@ -135,6 +136,19 @@ sudo nixos-rebuild switch --flake .#desktop --specialisation sway
 - **OpenRGB**: RGB lighting control
 - **Stylix**: System-wide theming
 - **Impermanence**: Custom BTRFS-based filesystem reset with selective persistence
+
+### System Profiles
+
+The configuration includes pre-configured profiles that combine common module combinations for different use cases:
+
+- **base**: Core services for all machines (Tailscale, Docker)
+- **linux-desktop**: Desktop system with theming, impermanence, and common desktop services
+- **gaming-workstation**: High-performance desktop with gaming, NVIDIA GPU, and RGB lighting support
+- **media-server**: Media server configuration with hardware acceleration and network routing
+
+Profiles inherit from each other to build functionality layers:
+- `gaming-workstation` → `linux-desktop` → `base`
+- `media-server` → `linux-desktop` → `base`
 
 ### Desktop Environments
 

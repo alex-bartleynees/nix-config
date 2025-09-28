@@ -1,6 +1,9 @@
 { username, ... }: {
+  # Use base profile for core services
+  profiles.base = true;
+
+  # WSL-specific configuration
   system.isWsl = true;
-  # System identification
   system.stateVersion = "24.05";
 
   wsl = {
@@ -16,11 +19,6 @@
     # Enable integration with Docker Desktop (needs to be installed)
     docker-desktop.enable = false;
   };
-
-  # Docker support
-  docker.enable = true;
-
-  tailscale.enable = true;
 
   systemd.tmpfiles.rules = [
     "L+ /etc/ssl/certs/mkcert-rootCA.pem - - - - /home/alexbn/.local/share/mkcert/rootCA.pem"

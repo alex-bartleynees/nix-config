@@ -1,39 +1,9 @@
-{ config, pkgs, theme, username, ... }: {
+{ pkgs, ... }: {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 
-  tailscale = {
-    enable = true; # Enable Tailscale support
-  };
-
-  docker = {
-    enable = true; # Enable Docker support
-  };
-
-  stylixTheming = {
-    enable = true;
-    image = theme.wallpaper;
-  };
-
-  sambaClient = { enable = true; };
-
-  silentBoot.enable = true;
-
-  zswap.enable = true;
-
-  snapshots.enable = true;
-
-  # Enable impermanence with BTRFS reset on boot
-  impermanence = {
-    enable = true;
-    subvolumes = {
-      "@" = { mountpoint = "/"; };
-      "@home" = { mountpoint = "/home"; };
-    };
-    persistPaths = config.myUsers.${username}.persistPaths;
-    resetSubvolumes = [ ]; # Reset all subvolumes except @snapshots
-  };
+  profiles.linux-desktop = true;
 
   # Lid close
   services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
