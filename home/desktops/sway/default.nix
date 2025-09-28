@@ -3,7 +3,7 @@ let
   colors = theme.themeColors;
   background = theme.wallpaper;
 in {
-  imports = [ ../../shared/wayland-desktop.nix ];
+  imports = [ ../common/linux-desktop.nix ];
   home.packages = with pkgs; [
     swaybg
     swayidle

@@ -3,7 +3,7 @@ let
   colors = theme.themeColors;
   background = theme.wallpaper;
 in {
-  imports = [ ../../modules/hypridle ../../shared/wayland-desktop.nix ];
+  imports = [ ../../modules/hypridle ../common/linux-desktop.nix ];
   home.packages = with pkgs; [
     river-classic
     river-bsp-layout

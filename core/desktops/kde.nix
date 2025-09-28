@@ -1,5 +1,4 @@
 { pkgs, ... }: {
-  imports = [ ../wayland.nix ];
   services.xserver = {
     enable = true;
     displayManager.sddm.enable = true;
@@ -15,7 +14,6 @@
     polonium
     kdePackages.kdeplasma-addons
   ];
-
 
   system.nixos.tags = [ "kde" ];
 

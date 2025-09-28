@@ -1,6 +1,13 @@
 { pkgs, lib, ... }: {
-  imports =
-    [ ../modules/waybar ../modules/rofi ../modules/dunst ../modules/obsidian ../modules/ghostty ../modules/brave ../modules/alacritty ];
+  imports = [
+    ../../modules/waybar
+    ../../modules/rofi
+    ../../modules/dunst
+    ../../modules/obsidian
+    ../../modules/ghostty
+    ../../modules/brave
+    ../../modules/alacritty
+  ];
   home.packages = with pkgs; [
     firefox
     vlc
@@ -11,6 +18,17 @@
     xfce.ristretto
     wdisplays
     popsicle
+
+    # Wallpaper and background management
+    swww
+
+    # Screenshot and clipboard utilities
+    grim
+    slurp
+    wl-clipboard
+
+    # Application launcher
+    rofi
   ];
 
   home.pointerCursor = {

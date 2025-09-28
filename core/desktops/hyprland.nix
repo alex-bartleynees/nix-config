@@ -1,15 +1,10 @@
 { pkgs, ... }: {
-  imports = [
-    ../wayland.nix
-    ../wayland-packages.nix
-    ../wayland-system.nix
-  ];
+  imports = [ ./common/wayland.nix ];
   programs.hyprland = {
     enable = true;
     withUWSM = true;
     xwayland.enable = true;
   };
-
 
   xdg.portal = {
     enable = true;

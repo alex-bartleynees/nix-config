@@ -1,13 +1,6 @@
 { pkgs, ... }: {
-  imports = [
-    ../wayland.nix
-    ../wayland-packages.nix
-    ../wayland-system.nix
-    ../wlroots.nix
-  ];
-  environment.systemPackages = with pkgs; [
-    river-classic
-  ];
+  imports = [ ./common/wayland.nix ./common/wlroots.nix ];
+  environment.systemPackages = with pkgs; [ river-classic ];
 
   programs.river-classic = { enable = true; };
 

@@ -1,9 +1,5 @@
 { pkgs, ... }: {
-  imports = [
-    ../wayland.nix
-    ../wayland-packages.nix
-    ../wayland-system.nix
-  ];
+  imports = [ ./common/wayland.nix ];
   services.desktopManager = { gnome.enable = true; };
 
   services.displayManager = {
@@ -26,7 +22,6 @@
 
   services.upower.enable = true;
   services.accounts-daemon.enable = true;
-
 
   system.nixos.tags = [ "gnome" ];
 

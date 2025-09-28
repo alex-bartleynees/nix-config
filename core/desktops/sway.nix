@@ -1,10 +1,5 @@
 { pkgs, ... }: {
-  imports = [
-    ../wayland.nix
-    ../wayland-packages.nix
-    ../wayland-system.nix
-    ../wlroots.nix
-  ];
+  imports = [ ./common/wayland.nix ./common/wlroots.nix ];
 
   programs.sway = {
     enable = true;

@@ -1,4 +1,4 @@
-{ ... }: {
+{ pkgs, ... }: {
   # Common Wayland session variables shared across desktop environments
   environment.sessionVariables = {
     # Enable Wayland support for Chromium/Electron apps
@@ -25,4 +25,28 @@
     # Set GSettings schema directory
     GSETTINGS_SCHEMA_DIR = "/run/current-system/sw/share/gsettings-schemas/";
   };
+
+  # Common system packages for Wayland desktop environments (universal)
+  environment.systemPackages = with pkgs; [
+    # Authentication and secrets
+    gnome-keyring
+    libsecret
+
+    # Universal XDG portals for Wayland
+    xdg-desktop-portal
+    xdg-desktop-portal-gtk
+
+    # System utilities
+    udiskie
+    networkmanagerapplet
+    blueman
+    pulseaudio
+
+    # Qt/GTK theming packages
+    adwaita-qt
+    gtk-engine-murrine
+    gtk_engines
+    gsettings-desktop-schemas
+    adwaita-icon-theme
+  ];
 }

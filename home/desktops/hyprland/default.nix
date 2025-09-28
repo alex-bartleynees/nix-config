@@ -6,13 +6,8 @@ let
   # Function to convert hex colors to rgb format for Hyprland
   hexToRgb = hex: "rgb(${builtins.substring 1 6 hex})";
 in {
-  imports = [
-    ../../modules/hypridle
-    ../../shared/wayland-desktop.nix
-  ];
-  home.packages = with pkgs; [
-    hyprpaper
-  ];
+  imports = [ ../../modules/hypridle ../common/linux-desktop.nix ];
+  home.packages = with pkgs; [ hyprpaper ];
 
   xdg.configFile."uwsm/env".source =
     "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
