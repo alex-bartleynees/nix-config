@@ -11,32 +11,36 @@
     else
       [ ]);
 
-  home.username = username;
-  home.homeDirectory = homeDirectory;
+  home.username = lib.mkDefault username;
+  home.homeDirectory = lib.mkDefault homeDirectory;
   home.stateVersion = "24.11";
 
   programs.home-manager.enable = true;
 
-  programs.git = {
-    enable = true;
-    userName = myUsers.${username}.git.userName;
-    userEmail = myUsers.${username}.git.userEmail;
-    extraConfig = {
-      init.defaultBranch = "main";
+  programs.git = lib.mkMerge [
+    {
+      enable = true;
+      extraConfig = {
+        init.defaultBranch = "main";
 
-      core = {
-        editor = "nvim";
-        whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
-        pager = "delta";
+        core = {
+          editor = "nvim";
+          whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+          pager = "delta";
+        };
+
+        diff = { tool = "vimdiff"; };
+
+        difftool = { prompt = false; };
+
+        pull = { rebase = true; };
       };
-
-      diff = { tool = "vimdiff"; };
-
-      difftool = { prompt = false; };
-
-      pull = { rebase = true; };
-    };
-  };
+    }
+    (lib.mkIf (myUsers.${username} ? git) {
+      userName = myUsers.${username}.git.userName;
+      userEmail = myUsers.${username}.git.userEmail;
+    })
+  ];
 
   programs.direnv = {
     enable = true;
@@ -52,9 +56,6 @@
       lg = "lazygit";
       ld = "lazydocker";
       ls = "eza --icons";
-      git-work = "git config user.email '${myUsers.${username}.git.workEmail}'";
-      git-personal =
-        "git config user.email '${myUsers.${username}.git.userEmail}'";
       git-whoami = "git config user.email";
       rebuild-desktop =
         "sudo nixos-rebuild switch --flake ~/.config/nix-config#desktop";
@@ -64,7 +65,11 @@
         "sudo nixos-rebuild switch --flake ~/.config/nix-config#wsl";
       rebuild-media =
         "sudo nixos-rebuild switch --flake ~/.config/nix-config#media";
-    };
+    } // (lib.optionalAttrs (myUsers.${username} ? git) {
+      git-work = "git config user.email '${myUsers.${username}.git.workEmail}'";
+      git-personal =
+        "git config user.email '${myUsers.${username}.git.userEmail}'";
+    });
     initContent = "source ~/.p10k.zsh";
     oh-my-zsh = {
       enable = true;

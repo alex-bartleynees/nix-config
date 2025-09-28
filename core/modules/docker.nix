@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let cfg = config.docker;
 in {
   options.docker = { enable = lib.mkEnableOption "Docker support"; };

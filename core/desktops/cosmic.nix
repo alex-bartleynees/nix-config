@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ ... }: {
   nix.settings = {
     substituters = [ "https://cosmic.cachix.org/" ];
     trusted-public-keys =

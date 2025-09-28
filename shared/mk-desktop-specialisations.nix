@@ -1,11 +1,10 @@
 { inputs, lib }:
-{ baseImports, theme, username, homeDirectory, desktops ? [ ] }:
+{ baseImports, theme, users, desktops ? [ ] }:
 let
   mkDesktopSpecialisation = desktop:
     let
-      shared = import ./nixos-default.nix {
-        inherit inputs theme username homeDirectory desktop lib;
-      };
+      shared =
+        import ./nixos-default.nix { inherit inputs theme users desktop lib; };
       sharedImports = shared.getImports {
         additionalImports = baseImports ++ [{ _module.args.theme = theme; }];
       };

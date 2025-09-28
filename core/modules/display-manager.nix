@@ -1,4 +1,4 @@
-{ config, lib, pkgs, username, ... }:
+{ config, lib, pkgs, users, ... }:
 let cfg = config.displayManager;
 in {
   options.displayManager = {
@@ -12,7 +12,7 @@ in {
       };
       user = lib.mkOption {
         type = lib.types.str;
-        default = username;
+        default = (builtins.head users).username;
         description = "The user to log in automatically";
       };
       command = lib.mkOption {
@@ -33,7 +33,7 @@ in {
       };
     })
 
-    (lib.mkIf (cfg.autoLogin.enable) {
+    (lib.mkIf (cfg.autoLogin.enable && (builtins.length users == 1)) {
       services.greetd.settings = {
         initial_session = {
           command = cfg.autoLogin.command;

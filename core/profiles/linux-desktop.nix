@@ -1,5 +1,9 @@
-{ config, lib, theme, username, ... }:
-lib.mkIf config.profiles.linux-desktop {
+{ config, lib, theme, users, ... }:
+let
+  allUserPersistPaths = lib.flatten
+    (lib.mapAttrsToList (username: userConfig: userConfig.persistPaths or [ ])
+      config.myUsers);
+in lib.mkIf config.profiles.linux-desktop {
   # Inherit base profile
   profiles.base = true;
 
@@ -23,7 +27,7 @@ lib.mkIf config.profiles.linux-desktop {
       "@" = { mountpoint = "/"; };
       "@home" = { mountpoint = "/home"; };
     };
-    persistPaths = config.myUsers.${username}.persistPaths;
+    persistPaths = allUserPersistPaths;
     resetSubvolumes = [ ];
   };
 }

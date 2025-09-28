@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let cfg = config.nvidia;
 in {
   options.nvidia = { enable = lib.mkEnableOption "NVIDIA GPU support"; };

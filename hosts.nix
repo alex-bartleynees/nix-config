@@ -1,4 +1,16 @@
-{ inputs }: {
+{ inputs }:
+let
+  users = [
+    {
+      username = "alexbn";
+      homeDirectory = "/home/alexbn";
+    }
+    {
+      username = "guest";
+      homeDirectory = "/home/guest";
+    }
+  ];
+in {
   desktop = {
     hostPath = ./hosts/desktop;
     desktop = "hyprland";
@@ -6,6 +18,7 @@
     enableDesktopSpecialisations = true;
     desktopSpecialisations = [ "sway" "river" ];
     hostName = "desktop";
+    users = users;
   };
 
   wsl = {
@@ -13,12 +26,14 @@
     desktop = "none";
     additionalModules = [ inputs.nixos-wsl.nixosModules.wsl ];
     hostName = "nixos-wsl";
+    users = users;
   };
 
   media = {
     hostPath = ./hosts/media;
     desktop = "gnome";
     hostName = "media";
+    users = users;
   };
 
   thinkpad = {
@@ -28,5 +43,6 @@
     enableThemeSpecialisations = true;
     additionalModules =
       [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t490 ];
+    users = users;
   };
 }

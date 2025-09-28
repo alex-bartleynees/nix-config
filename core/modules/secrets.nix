@@ -1,4 +1,14 @@
-{ username, ... }: {
+{ users, lib, ... }:
+let
+  userPasswordSecrets = lib.listToAttrs (map (user: {
+    name = "passwords/${user.username}";
+    value = {
+      neededForUsers = true;
+      mode = "0400";
+      owner = "root";
+    };
+  }) users);
+in {
   sops = {
     defaultSopsFile = ../../secrets/secrets.yaml;
     age.keyFile = "/etc/sops/age/keys.txt";
@@ -9,15 +19,10 @@
         mode = "0400";
         owner = "root";
       };
-      "passwords/${username}" = {
-        neededForUsers = true;
-        mode = "0400";
-        owner = "root";
-      };
 
       # Samba secrets
       "samba/password" = { };
       "samba/username" = { };
-    };
+    } // userPasswordSecrets;
   };
 }

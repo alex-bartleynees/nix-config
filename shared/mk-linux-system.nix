@@ -1,9 +1,8 @@
 { inputs }:
-{ hostPath, system ? "x86_64-linux", desktop ? "hyprland", username ? "alexbn"
-, homeDirectory ? "/home/alexbn", themeName ? "tokyo-night", hostName
-, enableThemeSpecialisations ? false, enableDesktopSpecialisations ? false
-, desktopSpecialisations ? [ ], additionalModules ? [ ]
-, additionalSpecialArgs ? { }, }:
+{ hostPath, system ? "x86_64-linux", desktop ? "hyprland", users
+, themeName ? "tokyo-night", hostName, enableThemeSpecialisations ? false
+, enableDesktopSpecialisations ? false, desktopSpecialisations ? [ ]
+, additionalModules ? [ ], additionalSpecialArgs ? { }, }:
 let
   inherit (inputs) nixpkgs;
 
@@ -19,7 +18,7 @@ let
   # Theme setup
   theme = import ../core/themes/${themeName}.nix { inherit inputs pkgs; };
   themes = import ../core/themes {
-    inherit inputs username homeDirectory;
+    inherit inputs users;
     lib = nixpkgs.lib;
   };
   themeSpecialisations = if enableThemeSpecialisations then
@@ -49,7 +48,7 @@ let
             [ "${hostPath}/modules" ]
           else
             [ ]);
-        inherit theme username homeDirectory;
+        inherit theme users;
         desktops = desktopSpecialisations;
       })
     ]
@@ -58,7 +57,7 @@ let
 
   # Shared configuration
   shared = import ../shared/nixos-default.nix {
-    inherit inputs theme desktop username homeDirectory;
+    inherit inputs theme desktop users;
     lib = nixpkgs.lib;
   };
 
@@ -77,7 +76,7 @@ in nixpkgs.lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit inputs username homeDirectory desktop hostName;
+    inherit inputs users desktop hostName;
   } // additionalSpecialArgs;
 
   modules = shared.getImports {

@@ -1,4 +1,4 @@
-{ username, ... }: {
+{ users, ... }: {
   # Use base profile for core services
   profiles.base = true;
 
@@ -12,7 +12,7 @@
     wslConf.interop.appendWindowsPath = true;
     wslConf.interop.enabled = true;
     wslConf.network.generateHosts = false;
-    defaultUser = username;
+    defaultUser = (builtins.head users).username;
     startMenuLaunchers = true;
     wslConf.boot.systemd = true;
 
