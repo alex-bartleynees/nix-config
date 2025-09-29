@@ -1,8 +1,7 @@
 { inputs, pkgs, lib, myUsers, username, theme, hostName, ... }: {
-  imports = [ ../modules/tmux ../modules/git ../modules/direnv ../modules/zsh ]
+  imports = [ ../modules/tmux ../modules/git ../modules/direnv ../modules/zsh ../modules/rider ]
     ++ lib.optionals (hostName == "desktop" || hostName == "thinkpad") [
       ../modules/vscode
-      ../modules/rider
     ];
 
   programs.neovim = {
