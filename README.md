@@ -14,9 +14,10 @@ Highly flexible multi-host and multi-user support.
 │   ├── profiles/         # Pre-configured system profiles with common module combinations
 │   └── themes/           # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
 ├── home/                 # Home Manager configurations
-│   └── hosts/            # Host specific application configurations
-│   └── desktops/         # Desktop specific application configurations
-│   └── modules/          # User application configurations
+│   ├── hosts/            # Host specific application configurations
+│   ├── desktops/         # Desktop specific application configurations
+│   ├── modules/          # User application configurations
+│   └── profiles/         # Reusable user environment profiles (developer, work)
 ├── hosts/                # Host-specific configurations
 │   ├── desktop/          # Main desktop with DE specializations
 │   ├── macbook/          # macOS configuration
@@ -165,6 +166,38 @@ Profiles inherit from each other to build functionality layers:
 - Terminal: Alacritty, Ghostty, Tmux
 - Browser: Brave with declarative extensions and themes
 - Media: Various media players and codecs
+
+### User Home Profiles
+
+The configuration includes a modular home profile system that allows users to compose their environment from reusable profile modules:
+
+#### Available Profiles
+
+- **developer**: Comprehensive development environment with:
+  - Git configuration with delta pager and sensible defaults
+  - Zsh with Oh My Zsh, Powerlevel10k theme, and useful plugins
+  - Development tools: Neovim, VSCode, JetBrains Rider, tmux
+  - Terminal utilities: ripgrep, fd, fzf, lazygit, lazydocker
+  - Shell aliases for common nix-rebuild operations
+  - Direnv and zoxide for enhanced directory navigation
+  - Atuin for shell history sync
+
+- **work**: Minimal work-focused additions:
+  - Microsoft Teams for Linux
+  - Additional work-specific applications
+
+#### Configuration
+
+Users define their profiles in their user configuration file:
+
+```nix
+myUsers.username = {
+  profiles = [ "developer" "work" ];
+  # other user config...
+};
+```
+
+Profiles are automatically imported by Home Manager and can be mixed and matched to create customized environments for different use cases.
 
 ## 🔄 Impermanence
 
