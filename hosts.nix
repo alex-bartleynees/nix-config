@@ -1,13 +1,8 @@
 { inputs }:
 let
-  users = [{
-    username = "alexbn";
-    homeDirectory = "/home/alexbn";
-  }];
-  usersWithGuests = users ++ [{
-    username = "guest";
-    homeDirectory = "/home/guest";
-  }];
+  systemUsers = import ./users/users.nix { };
+  users = systemUsers.users;
+  usersWithGuests = systemUsers.usersWithGuests;
 in {
   desktop = {
     hostPath = ./hosts/desktop;

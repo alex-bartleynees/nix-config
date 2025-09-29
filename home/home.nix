@@ -19,6 +19,8 @@ in {
 
   programs.home-manager.enable = true;
 
+  programs.zsh.enable = true;
+
   home.packages = with pkgs; [
     font-awesome
     icomoon-feather

@@ -26,6 +26,7 @@
     grim
     slurp
     wl-clipboard
+    wl-clipboard-x11
 
     # Application launcher
     rofi
