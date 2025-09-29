@@ -14,6 +14,7 @@ let
     inputs.stylix.nixosModules.stylix
     inputs.sops-nix.nixosModules.sops
     inputs.disko.nixosModules.disko
+    inputs.home-manager.nixosModules.home-manager
   ] ++ coreModules ++ profileModules ++ userModules;
 
   homeManagerImports = lib.flatten (map (user:
@@ -21,7 +22,7 @@ let
       inherit inputs desktop;
       username = user.username;
       homeDirectory = user.homeDirectory;
-      extraModules = [ ../home ];
+      extraModules = [ ../home/home.nix ];
       inherit theme;
     }) users);
 

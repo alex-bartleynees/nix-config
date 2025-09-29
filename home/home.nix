@@ -1,21 +1,18 @@
-{ pkgs, lib, inputs, username, homeDirectory, hostName, theme, myUsers, desktop
-, ... }:
+{ pkgs, lib, username, homeDirectory, hostName, theme, desktop, ... }:
 let
-  profiles = lib.concatMap (profile: [ ./profiles/${profile}.nix ])
-    (if (myUsers.${username} != null && myUsers.${username}.profiles != null)
-     then myUsers.${username}.profiles
-     else []);
-in {
-
-  imports = profiles ++ (if builtins.pathExists ./hosts/${hostName} then
+  hostImports = if builtins.pathExists ./hosts/${hostName} then
     [ ./hosts/${hostName} ]
   else
-    [ ])
-    ++ (if desktop != null && builtins.pathExists ./desktops/${desktop} then
+    [ ];
+  desktopImports =
+    if desktop != null && builtins.pathExists ./desktops/${desktop} then
       [ ./desktops/${desktop} ]
     else
-      [ ]);
+      [ ];
 
+  allImports = hostImports ++ desktopImports;
+in {
+  imports = allImports;
   home.username = lib.mkDefault username;
   home.homeDirectory = lib.mkDefault homeDirectory;
   home.stateVersion = "24.11";
