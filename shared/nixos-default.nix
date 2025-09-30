@@ -1,4 +1,4 @@
-{ lib, inputs, users, theme, desktop, additionalUserProfiles ? {} }:
+{ lib, inputs, users, theme, desktop, additionalUserProfiles ? { } }:
 let
   # Core modules
   importUtils = import ../shared/import-nix-files.nix { inherit lib; };

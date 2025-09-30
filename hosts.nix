@@ -10,7 +10,7 @@ in {
     themeName = "everforest";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
-    desktopSpecialisations = [ "sway" "river" ];
+    desktopSpecialisations = [ "sway" "river" "cosmic" ];
     hostName = "desktop";
     users = usersWithGuests;
     additionalUserProfiles = {

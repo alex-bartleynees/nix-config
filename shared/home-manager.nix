@@ -1,4 +1,5 @@
-{ inputs, username, homeDirectory, extraModules ? [ ], additionalUserProfiles ? {}, theme ? null, desktop }:
+{ inputs, username, homeDirectory, extraModules ? [ ]
+, additionalUserProfiles ? { }, theme ? null, desktop }:
 ({ lib, config, pkgs, ... }:
   let
     baseProfiles = if (config.myUsers ? ${username}
@@ -7,9 +8,10 @@
     else
       [ ];
 
-    additionalProfiles = if additionalUserProfiles ? ${username}
-      then additionalUserProfiles.${username}.profiles or []
-      else [];
+    additionalProfiles = if additionalUserProfiles ? ${username} then
+      additionalUserProfiles.${username}.profiles or [ ]
+    else
+      [ ];
 
     userProfiles = baseProfiles ++ additionalProfiles;
 

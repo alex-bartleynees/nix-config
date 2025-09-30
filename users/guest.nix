@@ -1,7 +1,8 @@
 { config, pkgs, lib, ... }:
 let
   username = "guest";
-  commonHomePaths = import ./persistence/common-home-persistence.nix { inherit username; };
+  commonHomePaths =
+    import ./persistence/common-home-persistence.nix { inherit username; };
 in {
   users = lib.mkIf pkgs.stdenv.isLinux {
     users.${username} = {
