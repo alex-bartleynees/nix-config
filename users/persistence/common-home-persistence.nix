@@ -15,6 +15,9 @@
     # Shell and terminal tools
     "/home/${username}/.zsh_history"
 
+    # Cosmic config
+    "/home/${username}/.config/cosmic"
+
     # Gaming
     "/home/${username}/.config/OpenRGB"
     "/home/${username}/.config/sunshine"
