@@ -1,4 +1,4 @@
-{ lib, inputs, users, theme, desktop }:
+{ lib, inputs, users, theme, desktop, additionalUserProfiles ? {} }:
 let
   # Core modules
   importUtils = import ../shared/import-nix-files.nix { inherit lib; };
@@ -19,7 +19,7 @@ let
 
   homeManagerImports = lib.flatten (map (user:
     import ./home-manager.nix {
-      inherit inputs desktop;
+      inherit inputs desktop additionalUserProfiles;
       username = user.username;
       homeDirectory = user.homeDirectory;
       extraModules = [ ../home/home.nix ];

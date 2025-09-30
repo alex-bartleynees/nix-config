@@ -2,7 +2,8 @@
 ({ hostPath, system ? "x86_64-linux", desktop ? "hyprland", users
   , themeName ? "tokyo-night", hostName, enableThemeSpecialisations ? false
   , enableDesktopSpecialisations ? false, desktopSpecialisations ? [ ]
-  , additionalModules ? [ ], additionalSpecialArgs ? { }, }:
+  , additionalModules ? [ ], additionalSpecialArgs ? { }
+  , additionalUserProfiles ? { } }:
   let
     inherit (inputs) nixpkgs;
 
@@ -57,7 +58,7 @@
 
     # Shared configuration
     shared = import ../shared/nixos-default.nix {
-      inherit inputs theme desktop users;
+      inherit inputs theme desktop users additionalUserProfiles;
       lib = nixpkgs.lib;
     };
 

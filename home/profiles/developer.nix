@@ -1,8 +1,5 @@
-{ inputs, pkgs, lib, myUsers, username, theme, hostName, ... }: {
-  imports = [ ../modules/tmux ../modules/git ../modules/direnv ../modules/zsh ../modules/rider ]
-    ++ lib.optionals (hostName == "desktop" || hostName == "thinkpad") [
-      ../modules/vscode
-    ];
+{ inputs, pkgs, theme, ... }: {
+  imports = [ ../modules/tmux ../modules/git ../modules/direnv ../modules/zsh ];
 
   programs.neovim = {
     enable = true;
@@ -38,8 +35,6 @@
     wget
     git
 
-    yaak
-    azuredatastudio
   ];
 
   programs.zoxide.options = [ "--cmd cd" ];

@@ -1,4 +1,1 @@
-{ pkgs, hostName, ... }: {
-  home.packages = with pkgs;
-    lib.optionals (hostName == "desktop") [ teams-for-linux ];
-}
+{ pkgs, ... }: { home.packages = with pkgs; [ teams-for-linux ]; }

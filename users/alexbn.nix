@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hostName, ... }:
 let
   username = "alexbn";
   persistPaths =
@@ -26,7 +26,7 @@ in {
     };
     persistPaths = persistPaths.commonPersistPaths;
     needsPasswordSecret = true;
-    profiles = [ "work" "developer" ];
+    profiles = [ "developer" ];
   };
 
   home-manager.users.${username}.home.file = {

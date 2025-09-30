@@ -1,11 +1,17 @@
-{ inputs, username, homeDirectory, extraModules ? [ ], theme ? null, desktop }:
+{ inputs, username, homeDirectory, extraModules ? [ ], additionalUserProfiles ? {}, theme ? null, desktop }:
 ({ lib, config, pkgs, ... }:
   let
-    userProfiles = if (config.myUsers ? ${username}
+    baseProfiles = if (config.myUsers ? ${username}
       && config.myUsers.${username} ? profiles) then
       config.myUsers.${username}.profiles
     else
       [ ];
+
+    additionalProfiles = if additionalUserProfiles ? ${username}
+      then additionalUserProfiles.${username}.profiles or []
+      else [];
+
+    userProfiles = baseProfiles ++ additionalProfiles;
 
     profilePaths = map (profile: ../home/profiles/${profile}.nix) userProfiles;
   in {

@@ -12,6 +12,10 @@ in {
     desktopSpecialisations = [ "sway" "river" ];
     hostName = "desktop";
     users = usersWithGuests;
+    additionalUserProfiles = {
+      alexbn.profiles =
+        [ "vscode-developer" "rider-developer" "backend-developer" "work" ];
+    };
   };
 
   wsl = {
@@ -20,6 +24,7 @@ in {
     additionalModules = [ inputs.nixos-wsl.nixosModules.wsl ];
     hostName = "nixos-wsl";
     users = users;
+    additionalUserProfiles = { alexbn.profiles = [ "rider-developer" ]; };
   };
 
   media = {
@@ -37,5 +42,8 @@ in {
     additionalModules =
       [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t490 ];
     users = users;
+    additionalUserProfiles = {
+      alexbn.profiles = [ "vscode-developer" "rider-developer" ];
+    };
   };
 }
