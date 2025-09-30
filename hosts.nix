@@ -7,6 +7,7 @@ in {
   desktop = {
     hostPath = ./hosts/desktop;
     desktop = "hyprland";
+    themeName = "everforest";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
     desktopSpecialisations = [ "sway" "river" ];
