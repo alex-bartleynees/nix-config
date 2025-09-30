@@ -1,8 +1,9 @@
-{ config, pkgs, lib, hostName, ... }:
+{ config, pkgs, lib, ... }:
 let
   username = "alexbn";
-  persistPaths =
-    import ../shared/common-persist-paths.nix { inherit username; };
+  commonHomePaths = import ./persistence/common-home-persistence.nix { inherit username; };
+  developerPaths = import ./persistence/developer-persist-paths.nix { inherit username; };
+  workPaths = import ./persistence/work-persistence.nix { inherit username; };
 in {
   users = lib.mkIf pkgs.stdenv.isLinux {
     users.${username} = {
@@ -24,7 +25,9 @@ in {
       userEmail = "alexbartleynees@gmail.com";
       workEmail = "alexander.nees@valocityglobal.com";
     };
-    persistPaths = persistPaths.commonPersistPaths;
+    persistPaths = commonHomePaths.commonHomePersistPaths
+                   ++ developerPaths.commonPersistPaths
+                   ++ workPaths.workPersistPaths;
     needsPasswordSecret = true;
     profiles = [ "developer" ];
   };

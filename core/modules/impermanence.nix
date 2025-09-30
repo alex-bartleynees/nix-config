@@ -1,12 +1,15 @@
 { config, lib, pkgs, ... }:
 let
-  # Find BTRFS filesystem by label 
+  # Find BTRFS filesystem by label
   device = "/dev/disk/by-label/nixos";
 
   # Use standard crypted device name since we're using nixos label
   luksDeviceName = "crypted";
   deviceDependency = "dev-mapper-${luksDeviceName}.device";
   snapshotsSubvolumeName = "@snapshots";
+
+  # Import root persistence paths
+  rootPaths = import ../../shared/root-persistence.nix { };
 
   pathsToKeep =
     ''"${lib.strings.concatStringsSep " " config.impermanence.persistPaths}"'';
@@ -41,13 +44,7 @@ in {
 
     persistPaths = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [
-        "/etc/sops"
-        "/etc/ssh" # SSH host keys
-        "/var/log" # System logs
-        "/var/lib/nixos" # NixOS state
-        "/var/lib/systemd/random-seed" # Random seed for reproducibility
-      ];
+      default = rootPaths.rootPersistPaths;
       description = "Paths to persist across impermanence resets";
     };
 

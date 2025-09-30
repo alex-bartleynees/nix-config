@@ -1,8 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   username = "guest";
-  persistPaths =
-    import ../shared/common-persist-paths.nix { inherit username; };
+  commonHomePaths = import ./persistence/common-home-persistence.nix { inherit username; };
 in {
   users = lib.mkIf pkgs.stdenv.isLinux {
     users.${username} = {
@@ -17,7 +16,7 @@ in {
   };
 
   myUsers.${username} = {
-    persistPaths = persistPaths.commonPersistPaths;
+    persistPaths = commonHomePaths.commonHomePersistPaths;
     needsPasswordSecret = false;
   };
 }
