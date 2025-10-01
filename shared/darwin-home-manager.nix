@@ -1,6 +1,12 @@
-{ inputs, username, homeDirectory, theme ? "catppuccin-mocha"
-, extraModules ? [ ] }:
-let inherit (inputs) mac-app-util;
+{ inputs, config, username, homeDirectory, extraModules ? [ ] }:
+let
+  inherit (inputs) mac-app-util;
+  theme = import ../core/themes/tokyo-night.nix {
+    inherit inputs;
+    pkgs = inputs.nixpkgs.legacyPackages.aarch64-darwin;
+  };
+  profiles = config.myUsers.${username}.profiles or [ ];
+  profilePaths = map (profile: ../home/profiles/${profile}.nix) profiles;
 in [
   mac-app-util.darwinModules.default
   inputs.home-manager.darwinModules.home-manager
@@ -11,13 +17,15 @@ in [
       inherit inputs username homeDirectory theme;
       inherit (config.networking) hostName;
       inherit (config) myUsers;
-      background = import ../shared/background.nix { inherit inputs; };
+      desktop = "macbook";
     };
     home-manager.sharedModules = [ mac-app-util.homeManagerModules.default ];
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
     users.users.${username} = { home = homeDirectory; };
-    home-manager.users.${username} = { imports = extraModules; };
+    home-manager.users.${username} = {
+      imports = extraModules ++ profilePaths;
+    };
     home-manager.backupFileExtension = "backup";
   })
 ]
