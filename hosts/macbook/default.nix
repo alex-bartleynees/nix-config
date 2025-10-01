@@ -9,8 +9,11 @@ in nix-darwin.lib.darwinSystem {
     ../../users/alexbn.nix
     ../../shared/custom-options.nix
     {
-      _module.args.self = {
-        self = inputs.self;
+      _module.args = {
+        self = {
+          self = inputs.self;
+          inherit username homeDirectory;
+        };
         inherit username homeDirectory;
       };
     }
