@@ -1,2 +1,2 @@
-{ ... }: { imports = [ ./voyager.nix ./disk-config.nix ]; }
+{ ... }: { imports = [ ./disk-config.nix ]; }
 

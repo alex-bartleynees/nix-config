@@ -18,4 +18,7 @@ lib.mkIf config.profiles.gaming-workstation {
     motherboard = "amd";
     profile = "default";
   };
+
+  # ZSA keyboard support
+  voyager.enable = true;
 }

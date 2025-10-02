@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./tlp-settings.nix ./disk-config.nix ]; }
+{ ... }: { imports = [ ./disk-config.nix ]; }
