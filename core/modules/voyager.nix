@@ -1,6 +1,5 @@
 { config, lib, pkgs, ... }:
-let
-  cfg = config.voyager;
+let cfg = config.voyager;
 in {
   options.voyager = {
     enable = lib.mkEnableOption "ZSA Voyager keyboard support";

@@ -3,8 +3,8 @@
     base = mkEnableOption "Base profile for all machines";
     linux-desktop =
       mkEnableOption "Linux desktop profile with GUI and persistence";
-    linux-laptop = mkEnableOption
-      "Linux laptop profile with power management optimizations";
+    linux-laptop =
+      mkEnableOption "Linux laptop profile with power management optimizations";
     gaming-workstation = mkEnableOption
       "Gaming workstation profile with high-end hardware support";
     media-server = mkEnableOption

@@ -1,6 +1,5 @@
 { config, lib, ... }:
-let
-  cfg = config.tlpSettings;
+let cfg = config.tlpSettings;
 in {
   options.tlpSettings = {
     enable = lib.mkEnableOption "TLP power management with optimized settings";
@@ -108,8 +107,9 @@ in {
     };
 
     extraSettings = lib.mkOption {
-      type = lib.types.attrsOf (lib.types.oneOf [ lib.types.str lib.types.int lib.types.bool ]);
-      default = {};
+      type = lib.types.attrsOf
+        (lib.types.oneOf [ lib.types.str lib.types.int lib.types.bool ]);
+      default = { };
       description = "Additional TLP settings";
     };
   };
@@ -171,7 +171,8 @@ in {
           CPU_SCALING_MIN_FREQ_ON_AC = 400000;
           CPU_SCALING_MAX_FREQ_ON_AC = 4600000;
           CPU_SCALING_MIN_FREQ_ON_BAT = 400000;
-          CPU_SCALING_MAX_FREQ_ON_BAT = lib.mkIf (cfg.cpu.maxFreqOnBat != null) cfg.cpu.maxFreqOnBat;
+          CPU_SCALING_MAX_FREQ_ON_BAT =
+            lib.mkIf (cfg.cpu.maxFreqOnBat != null) cfg.cpu.maxFreqOnBat;
 
           # Disk settings
           DISK_APM_LEVEL_ON_AC = "254 254";

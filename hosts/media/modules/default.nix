@@ -1,6 +1,1 @@
-{ ... }: {
-  imports = [
-    ./disk-config.nix
-    ./storage.nix
-  ];
-}
+{ ... }: { imports = [ ./disk-config.nix ./storage.nix ]; }

@@ -1,13 +1,12 @@
 { config, lib, pkgs, users, ... }:
-let
-  cfg = config.sambaHost;
+let cfg = config.sambaHost;
 in {
   options.sambaHost = {
     enable = lib.mkEnableOption "Samba server configuration";
 
     user = lib.mkOption {
       type = lib.types.str;
-      default = if users != [] then (builtins.head users).username else "samba";
+      default = (builtins.head users).username;
       description = "Username for Samba authentication";
     };
 
@@ -87,12 +86,12 @@ in {
 
           extraConfig = lib.mkOption {
             type = lib.types.attrsOf lib.types.str;
-            default = {};
+            default = { };
             description = "Additional share configuration";
           };
         };
       });
-      default = {};
+      default = { };
       description = "Samba shares configuration";
       example = lib.literalExpression ''
         {
@@ -129,7 +128,8 @@ in {
     performance = {
       socketOptions = lib.mkOption {
         type = lib.types.str;
-        default = "TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072";
+        default =
+          "TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072";
         description = "Socket options for performance";
       };
 
@@ -171,13 +171,13 @@ in {
     systemd = {
       dependencies = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = [];
+        default = [ ];
         description = "Additional systemd service dependencies";
       };
 
       mountRequirements = lib.mkOption {
         type = lib.types.listOf lib.types.str;
-        default = [];
+        default = [ ];
         description = "Required mount points before starting Samba";
       };
 
@@ -226,17 +226,18 @@ in {
           "max log size" = toString cfg.logging.maxLogSize;
           "log level" = toString cfg.logging.logLevel;
         };
-      } // lib.mapAttrs (shareName: shareConfig: {
-        "path" = shareConfig.path;
-        "comment" = shareConfig.comment;
-        "browseable" = lib.boolToString shareConfig.browseable;
-        "read only" = lib.boolToString shareConfig.readOnly;
-        "guest ok" = lib.boolToString shareConfig.guestOk;
-        "create mask" = shareConfig.createMask;
-        "directory mask" = shareConfig.directoryMask;
-        "force user" = shareConfig.forceUser or cfg.user;
-        "force group" = shareConfig.forceGroup;
-      } // shareConfig.extraConfig) cfg.shares;
+      } // lib.mapAttrs (shareName: shareConfig:
+        {
+          "path" = shareConfig.path;
+          "comment" = shareConfig.comment;
+          "browseable" = lib.boolToString shareConfig.browseable;
+          "read only" = lib.boolToString shareConfig.readOnly;
+          "guest ok" = lib.boolToString shareConfig.guestOk;
+          "create mask" = shareConfig.createMask;
+          "directory mask" = shareConfig.directoryMask;
+          "force user" = shareConfig.forceUser or cfg.user;
+          "force group" = shareConfig.forceGroup;
+        } // shareConfig.extraConfig) cfg.shares;
     };
 
     # Systemd service configuration
@@ -263,20 +264,20 @@ in {
 
     # Firewall configuration for Tailscale-only access
     networking.firewall = lib.mkIf cfg.security.tailscaleOnly {
-      allowedTCPPorts = [];
+      allowedTCPPorts = [ ];
 
       extraCommands = ''
         # Allow SMB only from configured hosts
-        ${lib.concatMapStringsSep "\n" (host:
-          "iptables -I INPUT -p tcp -s ${host} --dport 445 -j ACCEPT"
-        ) cfg.allowedHosts}
+        ${lib.concatMapStringsSep "\n"
+        (host: "iptables -I INPUT -p tcp -s ${host} --dport 445 -j ACCEPT")
+        cfg.allowedHosts}
       '';
 
       extraStopCommands = ''
         # Clean up rules on stop
         ${lib.concatMapStringsSep "\n" (host:
-          "iptables -D INPUT -p tcp -s ${host} --dport 445 -j ACCEPT 2>/dev/null || true"
-        ) cfg.allowedHosts}
+          "iptables -D INPUT -p tcp -s ${host} --dport 445 -j ACCEPT 2>/dev/null || true")
+        cfg.allowedHosts}
       '';
     };
 
@@ -300,8 +301,12 @@ in {
         if ! ${pkgs.samba}/bin/pdbedit -L 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q "^${cfg.user}:" 2>/dev/null; then
           echo "Adding ${cfg.user} to Samba users..."
           # Read password from sops secret file
-          if [ -f "${config.sops.secrets."${cfg.secrets.passwordPath}".path}" ]; then
-            PASSWORD=$(cat ${config.sops.secrets."${cfg.secrets.passwordPath}".path})
+          if [ -f "${
+            config.sops.secrets."${cfg.secrets.passwordPath}".path
+          }" ]; then
+            PASSWORD=$(cat ${
+              config.sops.secrets."${cfg.secrets.passwordPath}".path
+            })
             echo -e "$PASSWORD\n$PASSWORD" | ${pkgs.samba}/bin/smbpasswd -a ${cfg.user}
           else
             echo "Warning: Samba password secret not found"
@@ -331,9 +336,12 @@ in {
           echo "    Comment: ${shareConfig.comment}"
           echo "    Windows: \\\\$(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'TAILSCALE-IP')\\${shareName}"
           echo "    Linux: smb://$(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'TAILSCALE-IP')/${shareName}"
-        '') (lib.mapAttrsToList (name: config: config // { shareName = name; }) cfg.shares)}
+        '') (lib.mapAttrsToList (name: config: config // { shareName = name; })
+          cfg.shares)}
         echo ""
-        echo "Security: SMB access restricted to: ${lib.concatStringsSep ", " cfg.allowedHosts}"
+        echo "Security: SMB access restricted to: ${
+          lib.concatStringsSep ", " cfg.allowedHosts
+        }"
         echo ""
         echo "Test configuration with: ${samba}/bin/testparm -s"
       '')

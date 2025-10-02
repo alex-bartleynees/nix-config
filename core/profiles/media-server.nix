@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 lib.mkIf config.profiles.media-server {
   # Inherit linux-desktop profile
   profiles.linux-desktop = true;
@@ -79,9 +79,7 @@ lib.mkIf config.profiles.media-server {
         forceGroup = "users";
       };
     };
-    systemd = {
-      mountRequirements = [ "mnt-jellyfin\\x2dpool.mount" ];
-    };
+    systemd = { mountRequirements = [ "mnt-jellyfin\\x2dpool.mount" ]; };
   };
 
   # Cage kiosk configuration
