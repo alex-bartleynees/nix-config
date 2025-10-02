@@ -1,4 +1,4 @@
-{ self, pkgs, username, homeDirectory, ... }: {
+{ self, pkgs, users, ... }: {
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
   nix = {
@@ -22,11 +22,15 @@
 
   system.stateVersion = 5;
 
-  users.users.${username} = {
-    # workaround for https://github.com/nix-community/home-manager/issues/4026
-    home = homeDirectory;
-    shell = pkgs.zsh;
-  };
+  # Configure all users
+  users.users = builtins.listToAttrs (map (user: {
+    name = user.username;
+    value = {
+      # workaround for https://github.com/nix-community/home-manager/issues/4026
+      home = user.homeDirectory;
+      shell = pkgs.zsh;
+    };
+  }) users);
 
   services.tailscale.enable = true;
 

@@ -1,5 +1,5 @@
 { inputs, username, homeDirectory, extraModules ? [ ]
-, additionalUserProfiles ? { }, theme ? null, desktop }:
+, additionalUserProfiles ? { }, theme ? null, desktop, sharedModules ? [ ] }:
 ({ lib, config, pkgs, ... }:
   let
     baseProfiles = if (config.myUsers ? ${username}
@@ -27,6 +27,7 @@
       useUserPackages = true;
       users.${username} = { imports = extraModules ++ profilePaths; };
       backupFileExtension = "backup";
+      sharedModules = sharedModules;
     };
   })
 

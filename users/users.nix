@@ -8,4 +8,8 @@ let
     username = "guest";
     homeDirectory = "/home/guest";
   }];
-in { inherit users usersWithGuests; }
+  macUsers = [{
+    username = "alexbn";
+    homeDirectory = "/Users/alexbn";
+  }];
+in { inherit users usersWithGuests macUsers; }

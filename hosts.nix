@@ -3,6 +3,7 @@ let
   systemUsers = import ./users/users.nix { };
   users = systemUsers.users;
   usersWithGuests = systemUsers.usersWithGuests;
+  macUsers = systemUsers.macUsers;
 in {
   desktop = {
     hostPath = ./hosts/desktop;
@@ -46,5 +47,14 @@ in {
     additionalUserProfiles = {
       alexbn.profiles = [ "vscode-developer" "rider-developer" ];
     };
+  };
+
+  macbook = {
+    hostPath = ./hosts/macbook;
+    desktop = "none";
+    hostName = "macbook";
+    users = macUsers;
+    isDarwin = true;
+    system = "aarch64-darwin";
   };
 }

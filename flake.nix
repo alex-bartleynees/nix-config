@@ -54,14 +54,21 @@
     , mac-app-util, stylix, lazyvim, neovim, nixos-cosmic, cosmic-nixpkgs
     , sops-nix, disko, nixos-hardware, ... }:
     let
-      mkLinuxSystem = import ./shared/mk-linux-system.nix { inherit inputs; };
-      linuxHosts = import ./hosts.nix { inherit inputs; };
+      mkSystem = import ./shared/mk-system.nix { inherit inputs; };
+      allHosts = import ./hosts.nix { inherit inputs; };
+
+      # Filter hosts by platform
+      linuxHosts =
+        nixpkgs.lib.filterAttrs (name: config: !(config.isDarwin or false))
+        allHosts;
+      darwinHosts =
+        nixpkgs.lib.filterAttrs (name: config: config.isDarwin or false)
+        allHosts;
     in {
       nixosConfigurations =
-        nixpkgs.lib.mapAttrs (name: config: mkLinuxSystem config) linuxHosts;
+        nixpkgs.lib.mapAttrs (name: config: mkSystem config) linuxHosts;
 
-      darwinConfigurations = {
-        macbook = import ./hosts/macbook { inherit inputs; };
-      };
+      darwinConfigurations =
+        nixpkgs.lib.mapAttrs (name: config: mkSystem config) darwinHosts;
     };
 }
