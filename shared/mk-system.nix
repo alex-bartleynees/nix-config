@@ -16,11 +16,10 @@
       config = allowUnfreeConfig;
     };
 
-    # Configuration path - use different paths for Darwin vs NixOS
     configPath =
       if isDarwin then "macos/configuration.nix" else "nixos/configuration.nix";
 
-    # Theme setup - works for both Darwin and Linux
+    # Theme setup
     theme = import ../core/themes/${themeName}.nix { inherit inputs pkgs; };
     themes = if !isDarwin then
       import ../core/themes {
@@ -43,7 +42,7 @@
     else
       [ ];
 
-    # Desktop specialisations - only for non-Darwin systems
+    # Desktop specialisations 
     mkDesktopSpecialisations = if !isDarwin then
       import ./mk-desktop-specialisations.nix {
         inherit inputs;
@@ -67,7 +66,7 @@
       else
         [ ];
 
-    # Shared configuration - works for both Darwin and NixOS
+    # Shared configuration
     shared = import ../shared/nixos-default.nix {
       inherit inputs theme desktop users additionalUserProfiles isDarwin;
       lib = nixpkgs.lib;

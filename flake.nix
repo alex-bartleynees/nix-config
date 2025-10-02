@@ -57,7 +57,6 @@
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };
 
-      # Filter hosts by platform
       linuxHosts =
         nixpkgs.lib.filterAttrs (name: config: !(config.isDarwin or false))
         allHosts;

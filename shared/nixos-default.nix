@@ -1,7 +1,7 @@
 { lib, inputs, users, theme, desktop, additionalUserProfiles ? { }
 , isDarwin ? false }:
 let
-  # Core modules - only for NixOS, not Darwin
+  # Core modules 
   importUtils = import ../shared/import-nix-files.nix { inherit lib; };
   coreModules =
     if isDarwin then [ ] else importUtils.importAllNixFiles ../core/modules;
@@ -11,9 +11,7 @@ let
   # User modules
   userModules = map (user: ../users/${user.username}.nix) users;
 
-  baseImports = [
-    ./custom-options.nix
-  ] ++ (if isDarwin then [
+  baseImports = [ ./custom-options.nix ] ++ (if isDarwin then [
     inputs.mac-app-util.darwinModules.default
     inputs.home-manager.darwinModules.home-manager
     inputs.stylix.darwinModules.stylix
