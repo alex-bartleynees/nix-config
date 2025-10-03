@@ -13,7 +13,7 @@ let
   }) usersWithSecrets);
 in {
   sops = {
-    defaultSopsFile = ../../secrets/secrets.yaml;
+    defaultSopsFile = ../secrets/secrets.yaml;
     age.keyFile = "/etc/sops/age/keys.txt";
     secrets = {
       # User passwords

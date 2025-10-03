@@ -4,11 +4,11 @@ let
   # Core modules 
   importUtils = import ../shared/import-nix-files.nix { inherit lib; };
   coreModules =
-    if isDarwin then [ ] else importUtils.importAllNixFiles ../core/modules;
+    if isDarwin then [ ] else importUtils.importAllNixFiles ../modules;
   profileModules = if isDarwin then
-    [ ../core/profiles/_macbook.nix ]
+    [ ../profiles/_macbook.nix ]
   else
-    importUtils.importAllNixFiles ../core/profiles;
+    importUtils.importAllNixFiles ../profiles;
 
   # User modules
   userModules = map (user: ../users/${user.username}.nix) users;

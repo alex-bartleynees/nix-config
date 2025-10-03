@@ -12,7 +12,7 @@
       in {
         inheritParentConfig = false;
         configuration = {
-          imports = sharedImports ++ [ ../core/desktops/${desktop}.nix ];
+          imports = sharedImports ++ [ ../desktops/${desktop}.nix ];
         };
       };
 

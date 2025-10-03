@@ -34,9 +34,9 @@
     baseImports = hardwareConfig ++ diskConfig;
 
     # Theme setup
-    theme = import ../core/themes/${themeName}.nix { inherit inputs pkgs; };
+    theme = import ../themes/${themeName}.nix { inherit inputs pkgs; };
     themes = if !isDarwin then
-      import ../core/themes {
+      import ../themes {
         inherit inputs users;
         lib = nixpkgs.lib;
       }
@@ -79,11 +79,11 @@
     };
 
     # Desktop module
-    desktopConfig = if !isDarwin
-    && builtins.pathExists (../core/desktops + "/${desktop}.nix") then
-      [ ../core/desktops/${desktop}.nix ]
-    else
-      [ ];
+    desktopConfig =
+      if !isDarwin && builtins.pathExists (../desktops + "/${desktop}.nix") then
+        [ ../desktops/${desktop}.nix ]
+      else
+        [ ];
 
     # Base modules for the system
     baseModules = shared.getImports {

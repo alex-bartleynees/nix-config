@@ -16,7 +16,7 @@ let
   generateThemeSpecialisations = baseImports: desktop:
     lib.genAttrs (builtins.attrNames themes) (themeName:
       let
-        shared = import ../../shared/nixos-default.nix {
+        shared = import ../shared/nixos-default.nix {
           inherit inputs desktop users lib;
           theme = themes.${themeName};
         };
