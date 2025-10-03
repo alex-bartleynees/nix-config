@@ -235,7 +235,10 @@ in {
           "guest ok" = lib.boolToString shareConfig.guestOk;
           "create mask" = shareConfig.createMask;
           "directory mask" = shareConfig.directoryMask;
-          "force user" = if shareConfig.forceUser != null then shareConfig.forceUser else cfg.user;
+          "force user" = if shareConfig.forceUser != null then
+            shareConfig.forceUser
+          else
+            cfg.user;
           "force group" = shareConfig.forceGroup;
         } // shareConfig.extraConfig) cfg.shares;
     };
@@ -331,12 +334,13 @@ in {
         echo "Tailscale IP: $(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'Run: tailscale ip -4')"
         echo ""
         echo "Shares:"
-        ${lib.concatStringsSep "\n" (lib.mapAttrsToList (shareName: shareConfig: ''
-          echo "  ${shareName}: ${shareConfig.path}"
-          echo "    Comment: ${shareConfig.comment}"
-          echo "    Windows: \\\\$(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'TAILSCALE-IP')\\${shareName}"
-          echo "    Linux: smb://$(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'TAILSCALE-IP')/${shareName}"
-        '') cfg.shares)}
+        ${lib.concatStringsSep "\n" (lib.mapAttrsToList
+          (shareName: shareConfig: ''
+            echo "  ${shareName}: ${shareConfig.path}"
+            echo "    Comment: ${shareConfig.comment}"
+            echo "    Windows: \\\\$(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'TAILSCALE-IP')\\${shareName}"
+            echo "    Linux: smb://$(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'TAILSCALE-IP')/${shareName}"
+          '') cfg.shares)}
         echo ""
         echo "Security: SMB access restricted to: ${
           lib.concatStringsSep ", " cfg.allowedHosts
