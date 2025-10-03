@@ -74,6 +74,7 @@ in {
 
           forceUser = lib.mkOption {
             type = lib.types.nullOr lib.types.str;
+            default = null;
             description = "Force user for file operations";
           };
 
@@ -234,7 +235,7 @@ in {
           "guest ok" = lib.boolToString shareConfig.guestOk;
           "create mask" = shareConfig.createMask;
           "directory mask" = shareConfig.directoryMask;
-          "force user" = if shareConfig ? forceUser && shareConfig.forceUser != null then shareConfig.forceUser else cfg.user;
+          "force user" = if shareConfig.forceUser != null then shareConfig.forceUser else cfg.user;
           "force group" = shareConfig.forceGroup;
         } // shareConfig.extraConfig) cfg.shares;
     };
