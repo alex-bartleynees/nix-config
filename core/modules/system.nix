@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hostName, stateVersion, ... }:
+{ config, pkgs, lib, hostName, stateVersion, systemProfiles ? null, ... }:
 let cfg = config.system;
 in {
   options.system = {
@@ -10,6 +10,11 @@ in {
   };
 
   config = lib.mkMerge [
+    # Dynamic profile configuration
+    (lib.mkIf (systemProfiles != null) {
+      profiles = lib.genAttrs systemProfiles (profile: true);
+    })
+
     # Common settings for both Linux and WSL
     {
       # Programs

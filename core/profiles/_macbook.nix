@@ -1,4 +1,4 @@
-{ self, pkgs, users, ... }: {
+{ config, lib, pkgs, self, users, isDarwin ? false, ... }: {
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
   nix = {

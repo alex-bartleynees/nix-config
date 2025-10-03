@@ -11,6 +11,7 @@ in {
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
     desktopSpecialisations = [ "sway" "river" "cosmic" ];
+    systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
     users = usersWithGuests;
     additionalUserProfiles = {
@@ -21,17 +22,18 @@ in {
 
   wsl = {
     desktop = "none";
-    additionalModules = [ inputs.nixos-wsl.nixosModules.wsl ];
     hostName = "nixos-wsl";
     users = users;
     additionalUserProfiles = { alexbn.profiles = [ "rider-developer" ]; };
     stateVersion = "24.05";
+    systemProfiles = [ "wsl" ];
   };
 
   media = {
     desktop = "gnome";
     hostName = "media";
     users = users;
+    systemProfiles = [ "media-server" ];
   };
 
   thinkpad = {
@@ -44,6 +46,7 @@ in {
     additionalUserProfiles = {
       alexbn.profiles = [ "vscode-developer" "rider-developer" ];
     };
+    systemProfiles = [ "linux-laptop" ];
   };
 
   macbook = {
@@ -52,5 +55,6 @@ in {
     users = macUsers;
     isDarwin = true;
     system = "aarch64-darwin";
+    systemProfiles = [ "macbook" ];
   };
 }

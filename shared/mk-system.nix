@@ -1,9 +1,10 @@
 { inputs }:
-({ system ? "x86_64-linux", stateVersion ? "25.05", desktop ? "hyprland", users
-  , themeName ? "tokyo-night", hostName, enableThemeSpecialisations ? false
-  , enableDesktopSpecialisations ? false, desktopSpecialisations ? [ ]
-  , additionalModules ? [ ], additionalSpecialArgs ? { }
-  , additionalUserProfiles ? { }, isDarwin ? false }:
+({ system ? "x86_64-linux", stateVersion ? "25.05", systemProfiles
+  , desktop ? "hyprland", users, themeName ? "tokyo-night", hostName
+  , enableThemeSpecialisations ? false, enableDesktopSpecialisations ? false
+  , desktopSpecialisations ? [ ], additionalModules ? [ ]
+  , additionalSpecialArgs ? { }, additionalUserProfiles ? { }, isDarwin ? false
+  }:
   let
     inherit (inputs) nixpkgs nix-darwin;
 
@@ -30,13 +31,7 @@
     else
       [ ];
 
-    # Host configuration
-    hostConfig = if builtins.pathExists (../hosts + "/${hostName}.nix") then
-      [ ../hosts/${hostName}.nix ]
-    else
-      [ ];
-
-    baseImports = hostConfig ++ hardwareConfig ++ diskConfig;
+    baseImports = hardwareConfig ++ diskConfig;
 
     # Theme setup
     theme = import ../core/themes/${themeName}.nix { inherit inputs pkgs; };
@@ -99,7 +94,7 @@
 
     # Common special args
     commonSpecialArgs = {
-      inherit inputs users desktop hostName stateVersion;
+      inherit inputs users desktop hostName stateVersion systemProfiles;
       self = inputs.self;
     } // additionalSpecialArgs;
 

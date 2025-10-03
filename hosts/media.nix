@@ -1,1 +1,0 @@
-{ ... }: { profiles.media-server = true; }

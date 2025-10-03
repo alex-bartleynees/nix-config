@@ -1,1 +1,0 @@
-{ ... }: { profiles.gaming-workstation = true; }

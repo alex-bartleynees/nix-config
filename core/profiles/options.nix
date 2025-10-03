@@ -9,5 +9,7 @@
       "Gaming workstation profile with high-end hardware support";
     media-server = mkEnableOption
       "Media server profile optimized for streaming and headless operation";
+    wsl = mkEnableOption
+      "Windows Subsystem for Linux profile with WSL specific configurations";
   };
 }

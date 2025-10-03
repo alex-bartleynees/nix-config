@@ -5,8 +5,10 @@ let
   importUtils = import ../shared/import-nix-files.nix { inherit lib; };
   coreModules =
     if isDarwin then [ ] else importUtils.importAllNixFiles ../core/modules;
-  profileModules =
-    if isDarwin then [ ] else importUtils.importAllNixFiles ../core/profiles;
+  profileModules = if isDarwin then
+    [ ../core/profiles/_macbook.nix ]
+  else
+    importUtils.importAllNixFiles ../core/profiles;
 
   # User modules
   userModules = map (user: ../users/${user.username}.nix) users;
@@ -21,6 +23,7 @@ let
     inputs.sops-nix.nixosModules.sops
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
+    inputs.nixos-wsl.nixosModules.wsl
   ]) ++ coreModules ++ profileModules ++ userModules;
 
   homeManagerImports = map (user:
