@@ -234,7 +234,7 @@ in {
           "guest ok" = lib.boolToString shareConfig.guestOk;
           "create mask" = shareConfig.createMask;
           "directory mask" = shareConfig.directoryMask;
-          "force user" = shareConfig.forceUser or cfg.user;
+          "force user" = if shareConfig ? forceUser && shareConfig.forceUser != null then shareConfig.forceUser else cfg.user;
           "force group" = shareConfig.forceGroup;
         } // shareConfig.extraConfig) cfg.shares;
     };
