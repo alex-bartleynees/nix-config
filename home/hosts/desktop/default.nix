@@ -1,1 +1,0 @@
-{ ... }: { imports = [ ./desktop.nix ]; }

@@ -17,4 +17,5 @@
   codeTheme = "Tokyo Night";
   ghosttyTheme = "TokyoNight Night";
   chromeThemeExtensionId = "pgbjifpikialeahbdendkjioeafbmfkn";
+  obsidianTheme = "Tokyo Night";
 }

@@ -15,4 +15,5 @@
   };
   codeTheme = "Nord";
   chromeThemeExtensionId = "abehfkkfjlplnjadfcjiflnejblfmmpj";
+  obsidianTheme = "Obsidian Nord";
 }

@@ -7,25 +7,14 @@ Highly flexible multi-host and multi-user support.
 
 ```
 ├── flake.nix             # Main Nix flake configuration
-├── hosts.nix             # Host definitions and configurations
-├── core/                 # Core system modules
-│   ├── desktops/         # Desktop environment configurations
-│   ├── modules/          # System modules (gaming, nvidia, docker, etc.). Imported for all systems and can be enabled/disabled
-│   ├── profiles/         # Pre-configured system profiles with common module combinations
-│   └── themes/           # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
-├── home/                 # Home Manager configurations
-│   ├── hosts/            # Host specific application configurations
-│   ├── desktops/         # Desktop specific application configurations
-│   ├── modules/          # User application configurations
-│   └── profiles/         # Reusable user environment profiles (developer, work)
-├── hosts/                # Host-specific configurations
-│   ├── desktop/          # Main desktop with DE specializations
-│   ├── macbook/          # macOS configuration
-│   ├── media/            # Media server configuration
-│   ├── thinkpad/         # ThinkPad laptop configuration
-│   └── wsl/              # Windows Subsystem for Linux
+├── desktops/             # Desktop environment configurations and Home Manager desktop modules
+├── disk-config/          # Disk partitioning configurations for different hosts
+├── hardware/             # Hardware-specific configurations
+├── modules/              # Core system modules and Home Manager application modules
+├── profiles/             # System and Home Manager profiles with common module combinations
 ├── secrets/              # SOPS encrypted secrets
-├── shared/               # Shared configurations helpers across hosts
+├── shared/               # Shared configuration helpers across hosts
+├── themes/               # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
 └── users/                # User-specific configurations
 ```
 
@@ -33,20 +22,22 @@ Highly flexible multi-host and multi-user support.
 
 ### hosts.nix
 
-The `hosts.nix` file centralizes host definitions and their configurations. Each host is defined with:
+The `hosts.nix` file centralizes all host definitions and their configurations. Each host is defined declaratively with:
 
-- **hostPath**: Path to the host-specific configuration directory
 - **desktop**: Default desktop environment for the host
 - **enableThemeSpecialisations**: Whether to enable theme switching specializations
 - **enableDesktopSpecialisations**: Whether to enable desktop environment specializations
 - **desktopSpecialisations**: List of additional desktop environments to include
+- **systemProfiles**: List of system profiles to enable for the host
+- **users**: User configurations for the host
 - **additionalModules**: Host-specific Nix modules (e.g., hardware modules, WSL)
+
 
 ### Available Hosts
 
 | Host       | Platform  | Desktop   | Description                                                              |
 | ---------- | --------- | --------- | ------------------------------------------------------------------------ |
-| `desktop`  | NixOS     | Hyprland  | Main desktop with theme and DE specializations (Sway, River)            |
+| `desktop`  | NixOS     | Hyprland  | Main desktop with theme and DE specializations (Sway, River, Cosmic)   |
 | `macbook`  | macOS     | -         | MacBook configuration with nix-darwin                                    |
 | `media`    | NixOS     | GNOME     | Media server with Samba and backup services                             |
 | `thinkpad` | NixOS     | River     | ThinkPad laptop with TLP power management and theme specializations     |

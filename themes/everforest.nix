@@ -16,4 +16,5 @@
   codeTheme = "Everforest Dark";
   ghosttyTheme = "Everforest Dark   Hard";
   chromeThemeExtensionId = "dlcadbmcfambdjhecipbnolmjchgnode";
+  obsidianTheme = "Everforest";
 }

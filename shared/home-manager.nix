@@ -13,9 +13,12 @@
     else
       [ ];
 
+    importUtils = import ../shared/import-nix-files.nix { inherit lib; };
+    baseModules = importUtils.importHomeFiles ../modules;
+
     userProfiles = baseProfiles ++ additionalProfiles;
 
-    profilePaths = map (profile: ../home/profiles/${profile}.nix) userProfiles;
+    profilePaths = map (profile: ../profiles/hm-${profile}.nix) userProfiles;
   in {
     home-manager = {
       extraSpecialArgs = {
@@ -25,7 +28,9 @@
       };
       useGlobalPkgs = true;
       useUserPackages = true;
-      users.${username} = { imports = extraModules ++ profilePaths; };
+      users.${username} = {
+        imports = extraModules ++ profilePaths ++ baseModules;
+      };
       backupFileExtension = "backup";
       sharedModules = sharedModules;
     };

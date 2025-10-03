@@ -31,7 +31,7 @@ let
       inherit inputs desktop additionalUserProfiles;
       username = user.username;
       homeDirectory = user.homeDirectory;
-      extraModules = [ ../home/home.nix ];
+      extraModules = [ ../modules/hm-home.nix ];
       sharedModules = lib.optionals (isDarwin)
         [ inputs.mac-app-util.homeManagerModules.default ];
       inherit theme;
