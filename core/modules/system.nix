@@ -1,4 +1,4 @@
-{ config, pkgs, lib, hostName, ... }:
+{ config, pkgs, lib, hostName, stateVersion, ... }:
 let cfg = config.system;
 in {
   options.system = {
@@ -37,6 +37,8 @@ in {
 
       # Networking
       networking.hostName = hostName;
+
+      system.stateVersion = stateVersion;
     }
 
     # Linux-specific settings (not WSL)

@@ -1,5 +1,1 @@
-{ ... }: {
-  profiles.linux-laptop = true;
-
-  system.stateVersion = "25.05";
-}
+{ ... }: { profiles.linux-laptop = true; }

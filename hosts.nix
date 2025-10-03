@@ -25,6 +25,7 @@ in {
     hostName = "nixos-wsl";
     users = users;
     additionalUserProfiles = { alexbn.profiles = [ "rider-developer" ]; };
+    stateVersion = "24.05";
   };
 
   media = {

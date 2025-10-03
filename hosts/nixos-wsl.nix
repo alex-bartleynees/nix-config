@@ -4,7 +4,6 @@
 
   # WSL-specific configuration
   system.isWsl = true;
-  system.stateVersion = "24.05";
 
   wsl = {
     enable = true;

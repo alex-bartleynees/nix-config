@@ -1,5 +1,5 @@
 { inputs }:
-({ system ? "x86_64-linux", desktop ? "hyprland", users
+({ system ? "x86_64-linux", stateVersion ? "25.05", desktop ? "hyprland", users
   , themeName ? "tokyo-night", hostName, enableThemeSpecialisations ? false
   , enableDesktopSpecialisations ? false, desktopSpecialisations ? [ ]
   , additionalModules ? [ ], additionalSpecialArgs ? { }
@@ -99,7 +99,7 @@
 
     # Common special args
     commonSpecialArgs = {
-      inherit inputs users desktop hostName;
+      inherit inputs users desktop hostName stateVersion;
       self = inputs.self;
     } // additionalSpecialArgs;
 
