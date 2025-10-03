@@ -6,7 +6,8 @@ lib.mkIf config.profiles.linux-laptop {
   # TLP power management
   tlpSettings = {
     enable = true;
-    profile = "laptop";
+    profile = "thinkpad";
+    cpu.maxFreqOnBat = 2400000; # 2.4GHz max on battery
   };
 
   # Lid switch behavior
