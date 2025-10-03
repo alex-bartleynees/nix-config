@@ -331,13 +331,12 @@ in {
         echo "Tailscale IP: $(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'Run: tailscale ip -4')"
         echo ""
         echo "Shares:"
-        ${lib.concatMapStringsSep "\n" (shareName: shareConfig: ''
+        ${lib.concatStringsSep "\n" (lib.mapAttrsToList (shareName: shareConfig: ''
           echo "  ${shareName}: ${shareConfig.path}"
           echo "    Comment: ${shareConfig.comment}"
           echo "    Windows: \\\\$(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'TAILSCALE-IP')\\${shareName}"
           echo "    Linux: smb://$(${tailscale}/bin/tailscale ip -4 2>/dev/null || echo 'TAILSCALE-IP')/${shareName}"
-        '') (lib.mapAttrsToList (name: config: config // { shareName = name; })
-          cfg.shares)}
+        '') cfg.shares)}
         echo ""
         echo "Security: SMB access restricted to: ${
           lib.concatStringsSep ", " cfg.allowedHosts
