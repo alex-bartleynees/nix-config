@@ -6,7 +6,6 @@ let
   macUsers = systemUsers.macUsers;
 in {
   desktop = {
-    hostPath = ./hosts/desktop;
     desktop = "hyprland";
     themeName = "everforest";
     enableThemeSpecialisations = true;
@@ -21,7 +20,6 @@ in {
   };
 
   wsl = {
-    hostPath = ./hosts/wsl;
     desktop = "none";
     additionalModules = [ inputs.nixos-wsl.nixosModules.wsl ];
     hostName = "nixos-wsl";
@@ -30,14 +28,12 @@ in {
   };
 
   media = {
-    hostPath = ./hosts/media;
     desktop = "gnome";
     hostName = "media";
     users = users;
   };
 
   thinkpad = {
-    hostPath = ./hosts/thinkpad;
     desktop = "river";
     hostName = "thinkpad";
     enableThemeSpecialisations = true;
@@ -50,7 +46,6 @@ in {
   };
 
   macbook = {
-    hostPath = ./hosts/macbook;
     desktop = "none";
     hostName = "macbook";
     users = macUsers;

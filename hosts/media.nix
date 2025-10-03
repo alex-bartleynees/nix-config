@@ -1,8 +1,4 @@
 { ... }: {
-  imports = [ # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-  ];
-
   profiles.media-server = true;
 
   # This value determines the NixOS release from which the default

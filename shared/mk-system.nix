@@ -1,5 +1,5 @@
 { inputs }:
-({ hostPath, system ? "x86_64-linux", desktop ? "hyprland", users
+({ system ? "x86_64-linux", desktop ? "hyprland", users
   , themeName ? "tokyo-night", hostName, enableThemeSpecialisations ? false
   , enableDesktopSpecialisations ? false, desktopSpecialisations ? [ ]
   , additionalModules ? [ ], additionalSpecialArgs ? { }
@@ -16,8 +16,27 @@
       config = allowUnfreeConfig;
     };
 
-    configPath =
-      if isDarwin then "macos/configuration.nix" else "nixos/configuration.nix";
+    # Hardware configuration
+    hardwareConfig = if !isDarwin && builtins.pathExists
+    (../hardware + "/${hostName}-hardware-configuration.nix") then
+      [ ../hardware/${hostName}-hardware-configuration.nix ]
+    else
+      [ ];
+
+    # Disk configuration
+    diskConfig = if !isDarwin && builtins.pathExists
+    (../disk-config + "/${hostName}-disk-config.nix") then
+      [ ../disk-config/${hostName}-disk-config.nix ]
+    else
+      [ ];
+
+    # Host configuration
+    hostConfig = if builtins.pathExists (../hosts + "/${hostName}.nix") then
+      [ ../hosts/${hostName}.nix ]
+    else
+      [ ];
+
+    baseImports = hostConfig ++ hardwareConfig ++ diskConfig;
 
     # Theme setup
     theme = import ../core/themes/${themeName}.nix { inherit inputs pkgs; };
@@ -31,11 +50,7 @@
     themeSpecialisations = if enableThemeSpecialisations && !isDarwin then
       [
         (themes.mkThemeSpecialisations {
-          baseImports = [ "${hostPath}/${configPath}" ]
-            ++ (if builtins.pathExists "${hostPath}/modules" then
-              [ "${hostPath}/modules" ]
-            else
-              [ ]);
+          baseImports = baseImports;
           inherit desktop;
         })
       ]
@@ -54,11 +69,7 @@
       if enableDesktopSpecialisations && !isDarwin then
         [
           (mkDesktopSpecialisations {
-            baseImports = [ "${hostPath}/${configPath}" ]
-              ++ (if builtins.pathExists "${hostPath}/modules" then
-                [ "${hostPath}/modules" ]
-              else
-                [ ]);
+            baseImports = baseImports;
             inherit theme users;
             desktops = desktopSpecialisations;
           })
@@ -72,20 +83,16 @@
       lib = nixpkgs.lib;
     };
 
-    # Host-specific modules
-    hostModules = [ "${hostPath}/${configPath}" ]
-      ++ (if builtins.pathExists "${hostPath}/modules" then
-        [ "${hostPath}/modules" ]
-      else
-        [ ]) ++ (if desktop != "none" && !isDarwin
-        && builtins.pathExists (../core/desktops + "/${desktop}.nix") then
-          [ ../core/desktops/${desktop}.nix ]
-        else
-          [ ]);
+    # Desktop module
+    desktopConfig = if !isDarwin
+    && builtins.pathExists (../core/desktops + "/${desktop}.nix") then
+      [ ../core/desktops/${desktop}.nix ]
+    else
+      [ ];
 
     # Base modules for the system
     baseModules = shared.getImports {
-      additionalImports = hostModules ++ additionalModules
+      additionalImports = baseImports ++ desktopConfig ++ additionalModules
         ++ [{ _module.args.theme = theme; }] ++ themeSpecialisations
         ++ desktopSpecialisationModules;
     };
