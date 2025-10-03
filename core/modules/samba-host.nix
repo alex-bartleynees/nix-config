@@ -74,7 +74,6 @@ in {
 
           forceUser = lib.mkOption {
             type = lib.types.nullOr lib.types.str;
-            default = null;
             description = "Force user for file operations";
           };
 
