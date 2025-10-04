@@ -37,7 +37,7 @@
     theme = import ../themes/${themeName}.nix { inherit inputs pkgs; };
     themes = if !isDarwin then
       import ../themes {
-        inherit inputs users;
+        inherit inputs users additionalUserProfiles;
         lib = nixpkgs.lib;
       }
     else
@@ -65,7 +65,7 @@
         [
           (mkDesktopSpecialisations {
             baseImports = baseImports;
-            inherit theme users;
+            inherit theme users additionalUserProfiles;
             desktops = desktopSpecialisations;
           })
         ]
