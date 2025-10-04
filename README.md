@@ -8,8 +8,7 @@ Highly flexible multi-host and multi-user support.
 ```
 ├── flake.nix             # Main Nix flake configuration
 ├── desktops/             # Desktop environment configurations and Home Manager desktop modules
-├── disk-config/          # Disk partitioning configurations for different hosts
-├── hardware/             # Hardware-specific configurations
+├── machines/             # Machine-specific configurations, disk configs, and hardware profiles
 ├── modules/              # Core system modules and Home Manager application modules
 ├── profiles/             # System and Home Manager profiles with common module combinations
 ├── secrets/              # SOPS encrypted secrets
@@ -258,9 +257,9 @@ content = {
 
 ### Implementation Examples
 
-- **Desktop** (`hosts/desktop/modules/disk-config.nix`): NVMe with encrypted root and swap
-- **ThinkPad** (`hosts/thinkpad/modules/disk-config.nix`): Laptop-optimized
-- **Media Server** (`hosts/media/modules/disk-config.nix`): Unencrypted for simplicity
+- **Desktop** (`machines/disk-config/desktop-disk-config.nix`): NVMe with encrypted root and swap
+- **ThinkPad** (`machines/disk-config/thinkpad-disk-config.nix`): Laptop-optimized
+- **Media Server** (`machines/disk-config/media-disk-config.nix`): Unencrypted for simplicity
 
 ### Setting Up New Encrypted Host
 

@@ -19,15 +19,15 @@
 
     # Hardware configuration
     hardwareConfig = if !isDarwin && builtins.pathExists
-    (../hardware + "/${hostName}-hardware-configuration.nix") then
-      [ ../hardware/${hostName}-hardware-configuration.nix ]
+    (../machines/hardware + "/${hostName}-hardware-configuration.nix") then
+      [ ../machines/hardware/${hostName}-hardware-configuration.nix ]
     else
       [ ];
 
     # Disk configuration
     diskConfig = if !isDarwin && builtins.pathExists
-    (../disk-config + "/${hostName}-disk-config.nix") then
-      [ ../disk-config/${hostName}-disk-config.nix ]
+    (../machines/disk-config + "/${hostName}-disk-config.nix") then
+      [ ../machines/disk-config/${hostName}-disk-config.nix ]
     else
       [ ];
 

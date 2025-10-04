@@ -1,7 +1,7 @@
 { pkgs, lib, username, homeDirectory, hostName, theme, desktop, ... }:
 let
-  profileImports = if builtins.pathExists ../profiles/hm-${hostName}.nix then
-    [ ../profiles/hm-${hostName}.nix ]
+  hostImports = if builtins.pathExists ../machines/hm-${hostName}.nix then
+    [ ../machines/hm-${hostName}.nix ]
   else
     [ ];
   desktopImports =
@@ -10,7 +10,7 @@ let
     else
       [ ];
 
-  allImports = profileImports ++ desktopImports;
+  allImports = hostImports ++ desktopImports;
 in {
   imports = allImports;
   home.username = lib.mkDefault username;

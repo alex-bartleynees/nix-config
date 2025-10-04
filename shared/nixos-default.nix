@@ -6,7 +6,7 @@ let
   coreModules =
     if isDarwin then [ ] else importUtils.importAllNixFiles ../modules;
   profileModules = if isDarwin then
-    [ ../profiles/_macbook.nix ]
+    [ ../machines/macbook.nix ]
   else
     importUtils.importAllNixFiles ../profiles;
 
