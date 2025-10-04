@@ -1,7 +1,7 @@
 { pkgs, ... }: {
-  imports = [ ../../modules/vscode ];
-
   home.packages = with pkgs; [ aerospace tailscale ];
+
+  vscode.enable = true;
 
   ghostty = {
     enable = true;
