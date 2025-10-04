@@ -69,6 +69,7 @@
   fonts.fontconfig.enable = true;
 
   stylix.targets.vscode.enable = false;
+  stylix.targets.waybar.enable = false;
 
   services.gnome-keyring = {
     enable = true;
