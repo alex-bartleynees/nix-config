@@ -16,4 +16,5 @@
   codeTheme = "Nord";
   chromeThemeExtensionId = "abehfkkfjlplnjadfcjiflnejblfmmpj";
   obsidianTheme = "Obsidian Nord";
+  ghosttyTheme = "Nord";
 }
