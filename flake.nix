@@ -48,11 +48,13 @@
     lazyvim = { url = "github:alex-bartleynees/nix-devenv?dir=lazyvim"; };
 
     neovim = { url = "github:alex-bartleynees/nix-devenv?dir=neovim"; };
+
+    niri.url = "github:sodiboo/niri-flake";
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, nixos-wsl, nix-darwin
     , mac-app-util, stylix, lazyvim, neovim, nixos-cosmic, cosmic-nixpkgs
-    , sops-nix, disko, nixos-hardware, ... }:
+    , sops-nix, disko, nixos-hardware, niri, ... }:
     let
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };

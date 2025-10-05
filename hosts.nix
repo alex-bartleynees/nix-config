@@ -9,7 +9,7 @@ in {
     themeName = "everforest";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
-    desktopSpecialisations = [ "sway" "river" "cosmic" ];
+    desktopSpecialisations = [ "sway" "river" "cosmic" "niri" ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
     users = users;
