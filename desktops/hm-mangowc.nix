@@ -60,7 +60,7 @@ in {
       animation_duration_move=200
       animation_duration_open=150
       animation_duration_tag=150
-      animation_duration_close=400
+      animation_duration_close=250
       animation_curve_open=0.46,1.0,0.29,1
       animation_curve_move=0.46,1.0,0.29,1
       animation_curve_tag=0.46,1.0,0.29,1
