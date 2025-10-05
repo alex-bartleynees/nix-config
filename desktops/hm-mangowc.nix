@@ -148,14 +148,14 @@ in {
       scratchpad_width_ratio=0.8
       scratchpad_height_ratio=0.9
       borderpx=3
-      rootcolor=0x${builtins.substring 1 8 colors.groupbar_inactive}
-      bordercolor=0x${builtins.substring 1 8 colors.inactive_border}
-      focuscolor=0x${builtins.substring 1 8 colors.active_border}
-      maxmizescreencolor=0x${builtins.substring 1 8 colors.locked_active}
-      urgentcolor=0x${builtins.substring 1 8 colors.locked_inactive}
-      scratchpadcolor=0x${builtins.substring 1 8 colors.groupbar_active}
-      globalcolor=0x${builtins.substring 1 8 colors.groupbar_locked_active}
-      overlaycolor=0x${builtins.substring 1 8 colors.groupbar_locked_inactive}
+      rootcolor=0x${builtins.substring 1 6 colors.groupbar_inactive}FF
+      bordercolor=0x${builtins.substring 1 6 colors.inactive_border}FF
+      focuscolor=0x${builtins.substring 1 6 colors.active_border}FF
+      maxmizescreencolor=0x${builtins.substring 1 6 colors.locked_active}FF
+      urgentcolor=0x${builtins.substring 1 6 colors.locked_inactive}FF
+      scratchpadcolor=0x${builtins.substring 1 6 colors.groupbar_active}FF
+      globalcolor=0x${builtins.substring 1 6 colors.groupbar_locked_active}FF
+      overlaycolor=0x${builtins.substring 1 6 colors.groupbar_locked_inactive}FF
 
       # Monitor configuration
       ${if hostName == "thinkpad" then ''
