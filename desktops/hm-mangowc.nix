@@ -1,14 +1,8 @@
-{ pkgs, config, lib, hostName, theme, inputs, ... }:
+{ pkgs, config, hostName, theme, inputs, ... }:
 let
   colors = theme.themeColors;
   background = theme.wallpaper;
 
-  # Get full paths to binaries for runtime use
-  slurp = "${pkgs.slurp}/bin/slurp";
-  grim = "${pkgs.grim}/bin/grim";
-  wl-copy = "${pkgs.wl-clipboard}/bin/wl-copy";
-  awk = "${pkgs.gawk}/bin/awk";
-  notify-send = "${pkgs.libnotify}/bin/notify-send";
 in {
   imports = [ ./common/hm-linux-desktop.nix inputs.mango.hmModules.mango ];
 
@@ -54,8 +48,8 @@ in {
       layer_animations=1
       animation_type_open=zoom
       animation_type_close=slide
-      layer_animation_type_open=slide
-      layer_animation_type_close=slide
+      layer_animation_type_open=fade
+      layer_animation_type_close=fade
       animation_fade_in=1
       animation_fade_out=1
       tag_animation_direction=1
@@ -74,7 +68,7 @@ in {
 
       # Scroller Layout Setting
       scroller_structs=20
-      scroller_default_proportion=0.8
+      scroller_default_proportion=1
       scroller_focus_center=0
       scroller_prefer_center=1
       edge_scroller_pointer_focus=1
@@ -162,7 +156,7 @@ in {
         monitorrule=eDP-1,0.55,1,tile,0,1,0,0,1920,1080,60
       '' else ''
         monitorrule=DP-6,0.55,1,tile,0,1,0,0,2560,1440,165
-        monitorrule=DP-4,0.55,1,tile,3,1,2560,0,2560,1440,144
+        monitorrule=DP-4,0.55,1,vertical_tile,3,1,2560,0,2560,1440,144
       ''}
 
       # Environment variables
@@ -184,26 +178,25 @@ in {
       bind=CTRL+ALT,L,spawn,hyprlock
 
       # Screenshot
-      bind=ALT,P,spawn_shell,grim -g "$(slurp -d)" - | wl-copy
-      bind=NONE,Print,spawn,grim
-      bind=ALT+SHIFT,S,spawn_shell,grim -g "$(slurp -d)" - | wl-copy
+      bind=ALT,P,spawn_shell,grim -g "\$(slurp)" - | wl-copy
+      bind=none,Print,spawn,grim
+      bind=ALT+SHIFT,S,spawn_shell,grim -g "\$(slurp)" - | wl-copy
 
       # Volume control
-      bind=NONE,XF86AudioRaiseVolume,spawn,wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+
-      bind=NONE,XF86AudioLowerVolume,spawn,wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-
-      bind=NONE,XF86AudioMute,spawn,wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-      bind=NONE,XF86AudioMicMute,spawn,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+      bind=none,XF86AudioRaiseVolume,spawn,wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+
+      bind=none,XF86AudioLowerVolume,spawn,wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-
+      bind=none,XF86AudioMute,spawn,wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+      bind=none,XF86AudioMicMute,spawn,wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 
       # Brightness control
-      bind=NONE,XF86MonBrightnessUp,spawn,brightnessctl set +5%
-      bind=NONE,XF86MonBrightnessDown,spawn,brightnessctl set 5%-
+      bind=none,XF86MonBrightnessUp,spawn,brightnessctl set +5%
+      bind=none,XF86MonBrightnessDown,spawn,brightnessctl set 5%-
 
       # Window management
       bind=ALT,Q,killclient,
       bind=ALT,F,togglefullscreen,
-      bind=ALT,SPACE,togglefloating,
       bind=ALT,W,toggleoverview,
-      bind=ALT,O,toggleoverview,
+      bind=ALT,O,togglefloating,
 
       # Focus movement (Vi keys)
       bind=ALT,H,focusdir,left
@@ -255,6 +248,7 @@ in {
 
       # Layout management
       bind=ALT,R,switch_layout,
+      bind=ALT,S,setlayout,scroller
       bind=ALT+SHIFT,F,togglemaxmizescreen,
       bind=ALT,MINUS,setmfact,-5
       bind=ALT,PLUS,setmfact,+5
@@ -263,6 +257,11 @@ in {
       # Tab/group navigation
       bind=ALT,Tab,focusstack,next
       bind=ALT+SHIFT,Tab,focusstack,prev
+
+      # Scratchpad
+      bind=ALT+CTRL,I,minimized,
+      bind=ALT,Z,toggle_scratchpad,
+      bind=ALT+CTRL,O,restore_minimized,
 
       # System
       bind=ALT+SHIFT,E,quit,

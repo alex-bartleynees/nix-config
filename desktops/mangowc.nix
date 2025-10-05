@@ -1,8 +1,9 @@
-{ pkgs, inputs, ... }:
-let
-  mango = inputs.mango.packages.${pkgs.system}.mango;
-in {
-  imports = [ ./common/wayland.nix ./common/wlroots.nix inputs.mango.nixosModules.mango ];
+{ pkgs, inputs, ... }: {
+  imports = [
+    ./common/wayland.nix
+    ./common/wlroots.nix
+    inputs.mango.nixosModules.mango
+  ];
 
   programs.mango.enable = true;
 
@@ -26,7 +27,8 @@ in {
   };
 
   environment.sessionVariables = {
-    XDG_CURRENT_DESKTOP = "wlroots";
+    XCURSOR_SIZE = "24";
+    XDG_CURRENT_DESKTOP = "mango";
     XDG_SESSION_DESKTOP = "mango";
   };
 
