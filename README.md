@@ -149,6 +149,8 @@ Profiles inherit from each other to build functionality layers:
 - **Sway**: Tiling Wayland compositor
 - **Hyprland**: Dynamic tiling compositor
 - **River**: Extremely efficient tiling window manager, great on laptops.
+- **Niri**: Scrollable-tiling Wayland compositor
+- **Mango**: Wayland compositor with UWSM
 
 ### Applications
 

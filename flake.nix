@@ -50,11 +50,13 @@
     neovim = { url = "github:alex-bartleynees/nix-devenv?dir=neovim"; };
 
     niri.url = "github:sodiboo/niri-flake";
+
+    mango.url = "github:DreamMaoMao/mango";
   };
 
   outputs = inputs@{ self, nixpkgs, home-manager, nixos-wsl, nix-darwin
     , mac-app-util, stylix, lazyvim, neovim, nixos-cosmic, cosmic-nixpkgs
-    , sops-nix, disko, nixos-hardware, niri, ... }:
+    , sops-nix, disko, nixos-hardware, niri, mango, ... }:
     let
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };
