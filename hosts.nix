@@ -36,7 +36,7 @@ in {
   };
 
   thinkpad = {
-    desktop = "river";
+    desktop = "niri";
     hostName = "thinkpad";
     enableThemeSpecialisations = true;
     additionalModules =

@@ -57,7 +57,16 @@ in {
       ];
 
       default-column-width = { proportion = 1.0; };
+
+      # Transparent background so wallpaper stays stationary in backdrop
+      background-color = "transparent";
     };
+
+    # Layer rules for wallpaper backdrop
+    layer-rules = [{
+      matches = [{ namespace = "^swww-daemon$"; }];
+      place-within-backdrop = true;
+    }];
 
     hotkey-overlay.skip-at-startup = true;
 
@@ -77,9 +86,12 @@ in {
         "Mod+T".action = spawn "ghostty";
         "Mod+B".action = spawn "brave";
         "Mod+C".action = spawn "code";
-        "Mod+D".action = sh "rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi";
-        "Mod+Shift+P".action = sh "$HOME/.local/bin/powermenu powermenu-${theme.name}";
-        "Mod+Shift+T".action = sh "$HOME/.local/bin/themeselector powermenu-${theme.name}";
+        "Mod+D".action = sh
+          "rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi";
+        "Mod+Shift+P".action =
+          sh "$HOME/.local/bin/powermenu powermenu-${theme.name}";
+        "Mod+Shift+T".action =
+          sh "$HOME/.local/bin/themeselector powermenu-${theme.name}";
         "Mod+Shift+W".action = sh "$HOME/.local/bin/wallpaper ${theme.name}";
         "Mod+I".action = sh "$HOME/.local/bin/keybindings ${theme.name}";
 
@@ -171,17 +183,16 @@ in {
         "Mod+Shift+Minus".action = set-window-height "-10%";
         "Mod+Shift+Plus".action = set-window-height "+10%";
 
-        # Scratchpad
-        "Mod+Ctrl+Shift+Minus".action.move-window-to-workspace = "special";
-        "Mod+Ctrl+Minus".action.focus-workspace = "special";
-
         # Tab/group navigation
         "Mod+Tab".action = focus-window-down-or-column-right;
         "Mod+Shift+Tab".action = focus-window-up-or-column-left;
 
+        # Overview
+        "Mod+O".action = toggle-overview;
+
         # System
         "Mod+Shift+E".action = quit;
-        "Mod+Shift+C".action = sh "systemctl --user restart niri.service";
+        "Mod+Shift+C".action = sh "niri msg action load-config-file";
 
         # Mouse wheel scrolling for switching windows/workspaces
         "Mod+WheelScrollDown".action = focus-column-right;
@@ -202,6 +213,7 @@ in {
           x = 0;
           y = 0;
         };
+        scale = 1.0;
       };
     } else {
       "DP-6" = {
@@ -256,7 +268,6 @@ in {
         command =
           [ "sh" "-c" "sleep 1 && ${pkgs.swww}/bin/swww img ${background}" ];
       }
-      # { command = [ "systemctl" "--user" "restart" "waybar.service" ]; }
     ];
   };
 
