@@ -60,6 +60,12 @@ in {
 
       # Transparent background so wallpaper stays stationary in backdrop
       background-color = "transparent";
+
+      # Tab indicator configuration
+      tab-indicator = {
+        enable = true;
+        place-within-column = false;
+      };
     };
 
     # Layer rules for wallpaper backdrop
@@ -122,6 +128,7 @@ in {
         "Mod+Q".action = close-window;
         "Mod+F".action = fullscreen-window;
         "Mod+Shift+Space".action = toggle-window-floating;
+        "Mod+W".action = toggle-column-tabbed-display;
 
         # Focus movement (Vi keys)
         "Mod+H".action = focus-column-left;
