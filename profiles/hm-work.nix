@@ -1,1 +1,7 @@
-{ pkgs, ... }: { home.packages = with pkgs; [ teams-for-linux ]; }
+{ pkgs, ... }: {
+  home.packages = with pkgs; [
+    teams-for-linux
+    openfortivpn
+    openfortivpn-webview
+  ];
+}
