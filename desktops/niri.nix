@@ -4,11 +4,27 @@
   programs.niri.enable = true;
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
-  environment.systemPackages = with pkgs; [ xwayland-satellite-unstable ];
+  environment.systemPackages = with pkgs; [ xwayland-satellite-unstable uwsm ];
+
+  programs.uwsm = {
+    enable = true;
+    waylandCompositors.niri = {
+      binPath = "/run/current-system/sw/bin/niri";
+      prettyName = "Niri";
+      comment = "Niri compositor with UWSM";
+    };
+  };
 
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-gnome ];
+    config = {
+      niri = {
+        default = [ "gnome" "gtk" ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+      };
+    };
+    xdgOpenUsePortal = true;
   };
 
   environment.sessionVariables = {
@@ -23,7 +39,7 @@
     enable = true;
     autoLogin = {
       enable = true;
-      command = "${pkgs.niri-unstable}/bin/niri-session";
+      command = "${pkgs.uwsm}/bin/uwsm start ${pkgs.niri-unstable}/bin/niri";
     };
   };
 

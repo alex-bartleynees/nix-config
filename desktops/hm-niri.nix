@@ -82,6 +82,7 @@ in {
     environment = {
       XCURSOR_SIZE = "24";
       NIXOS_OZONE_WL = "1";
+      NIRI_DISABLE_SYSTEM_MANAGER_NOTIFY = "1";
     };
 
     # Key bindings
@@ -268,6 +269,23 @@ in {
     ];
 
     spawn-at-startup = [
+      {
+        command = [
+          "dbus-update-activation-environment"
+          "--systemd"
+          "WAYLAND_DISPLAY"
+          "XDG_CURRENT_DESKTOP"
+        ];
+      }
+      {
+        command = [
+          "systemctl"
+          "--user"
+          "import-environment"
+          "WAYLAND_DISPLAY"
+          "XDG_CURRENT_DESKTOP"
+        ];
+      }
       { command = [ "nm-applet" ]; }
       { command = [ "blueman-applet" ]; }
       { command = [ "${pkgs.swww}/bin/swww-daemon" "--format" "xrgb" ]; }
@@ -275,16 +293,30 @@ in {
         command =
           [ "sh" "-c" "sleep 1 && ${pkgs.swww}/bin/swww img ${background}" ];
       }
+      {
+        command = [
+          "uwsm"
+          "finalize"
+          "SWAYSOCK"
+          "I3SOCK"
+          "XCURSOR_SIZE"
+          "XCURSOR_THEME"
+        ];
+      }
     ];
   };
+
+  # XDG configuration for Niri/UWSM compatibility
+  xdg.configFile."uwsm/env".source =
+    "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
   # Waybar systemd service for niri
   systemd.user.services.waybar-niri = {
     Unit = {
       Description = "Highly customizable Wayland bar for niri";
       Documentation = "https://github.com/Alexays/Waybar/wiki";
-      PartOf = [ "niri.service" ];
-      After = [ "niri.service" ];
+      PartOf = [ "wayland-session@niri.target" ];
+      After = [ "wayland-session@niri.target" ];
     };
     Service = {
       Type = "simple";
@@ -294,15 +326,15 @@ in {
       RestartSec = 1;
       TimeoutStopSec = 10;
     };
-    Install = { WantedBy = [ "niri.service" ]; };
+    Install = { WantedBy = [ "wayland-session@niri.target" ]; };
   };
 
   # Udiskie systemd service for niri
   systemd.user.services.udiskie-niri = {
     Unit = {
       Description = "Udiskie";
-      PartOf = [ "niri.service" ];
-      After = [ "niri.service" ];
+      PartOf = [ "wayland-session@niri.target" ];
+      After = [ "wayland-session@niri.target" ];
     };
     Service = {
       Type = "simple";
@@ -311,6 +343,6 @@ in {
       RestartSec = 1;
       TimeoutStopSec = 10;
     };
-    Install = { WantedBy = [ "niri.service" ]; };
+    Install = { WantedBy = [ "wayland-session@niri.target" ]; };
   };
 }
