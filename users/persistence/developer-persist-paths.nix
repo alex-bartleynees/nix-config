@@ -13,6 +13,7 @@
     "/home/${username}/.config/Code" # VSCode authentication, settings, and workspaces
     "/home/${username}/.vscode/argv.json" # VSCode command line arguments
     "/home/${username}/.vscode-server" # Remote SSH sessions
+    "/home/${username}/azuredatastudio"
 
     # Config files
     "/home/${username}/.config/nix-config"
