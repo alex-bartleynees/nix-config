@@ -18,6 +18,8 @@
 
   programs.xwayland.enable = true;
 
+  qt = { enable = true; };
+
   xdg.portal = {
     enable = true;
     wlr.enable = true;
