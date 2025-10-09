@@ -2,6 +2,7 @@
   imports = [ ./common/wayland.nix inputs.niri.nixosModules.niri ];
 
   programs.niri.enable = true;
+  programs.niri.package = pkgs.niri-unstable;
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
   environment.systemPackages = with pkgs; [ xwayland-satellite-unstable uwsm ];

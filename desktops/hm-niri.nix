@@ -199,7 +199,7 @@ in {
         "Mod+O".action = toggle-overview;
 
         # System
-        "Mod+Shift+E".action = quit;
+        "Mod+Shift+E".action.quit = { skip-confirmation = true; };
         "Mod+Shift+C".action = sh "niri msg action load-config-file";
 
         # Mouse wheel scrolling for switching windows/workspaces
@@ -301,6 +301,7 @@ in {
           "I3SOCK"
           "XCURSOR_SIZE"
           "XCURSOR_THEME"
+          "NIRI_SOCKET"
         ];
       }
     ];
