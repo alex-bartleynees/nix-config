@@ -16,6 +16,8 @@ in {
     users = usersWithWork;
     additionalUserProfiles = {
       alexbn.profiles =
+        [ "vscode-developer" "rider-developer" "backend-developer" ];
+      alexbn-work.profiles =
         [ "vscode-developer" "rider-developer" "backend-developer" "work" ];
     };
   };

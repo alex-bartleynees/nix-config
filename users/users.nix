@@ -16,4 +16,4 @@ let
     username = "alexbn";
     homeDirectory = "/Users/alexbn";
   }];
-in { inherit users usersWithGuests macUsers; }
+in { inherit users usersWithGuests usersWithWork macUsers; }
