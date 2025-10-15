@@ -8,6 +8,10 @@ let
     username = "guest";
     homeDirectory = "/home/guest";
   }];
+  usersWithWork = users ++ [{
+    username = "alexbn-work";
+    homeDirectory = "/home/alexbn-work";
+  }];
   macUsers = [{
     username = "alexbn";
     homeDirectory = "/Users/alexbn";
