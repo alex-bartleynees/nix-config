@@ -9,5 +9,13 @@ in {
       enableOnBoot = true;
       autoPrune.enable = true;
     };
+
+    networking.firewall = {
+      trustedInterfaces = [ "docker0" ];
+      extraCommands = ''
+        iptables -A INPUT -s 172.17.0.0/16 -j ACCEPT
+        iptables -A INPUT -s 172.18.0.0/16 -j ACCEPT
+      '';
+    };
   };
 }
