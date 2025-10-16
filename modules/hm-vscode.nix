@@ -29,12 +29,12 @@ in {
         github.github-vscode-theme
         golang.go
         hashicorp.terraform
-        matthewpi.caddyfile-support
-        prisma.prisma
-        phoenixframework.phoenix
+        #matthewpi.caddyfile-support
+        #prisma.prisma
+        #phoenixframework.phoenix
         #rust-lang.rust-analyzer
         tamasfe.even-better-toml
-        thenuprojectcontributors.vscode-nushell-lang
+        #thenuprojectcontributors.vscode-nushell-lang
         #unifiedjs.vscode-mdx 
         formulahendry.auto-rename-tag
         catppuccin.catppuccin-vsc
@@ -65,10 +65,10 @@ in {
         arcticicestudio.nord-visual-studio-code
       ]) ++ [
         # Extensions not in Nixpkgs
-        (ext "andrejunges" "Handlebars" "0.4.1"
-          "sha256-Rwhr9X3sjDm6u/KRYE2ucCJSlZwsgUJbH/fdq2WZ034=")
-        (ext "antfu" "theme-vitesse" "0.8.3"
-          "sha256-KkpJgJBcnMeQ1G97QS/E6GY4/p9ebZRaA5pUXPd9JB0=")
+        # (ext "andrejunges" "Handlebars" "0.4.1"
+        #   "sha256-Rwhr9X3sjDm6u/KRYE2ucCJSlZwsgUJbH/fdq2WZ034=")
+        # (ext "antfu" "theme-vitesse" "0.8.3"
+        #   "sha256-KkpJgJBcnMeQ1G97QS/E6GY4/p9ebZRaA5pUXPd9JB0=")
         # (ext "astro-build" "astro-vscode" "2.8.5"
         #   "sha256-mP+MKHDirgemcexSCof/Be7YN2FTXwOnGQHnmtKLgtM=")
         # (ext "oven" "bun-vscode" "0.0.12"
@@ -77,14 +77,6 @@ in {
           "sha256-vz2kU36B1xkLci2QwLpl/SBEhfSWltIDJ1r7SorHcr8=")
         (ext "enkia" "tokyo-night" "1.0.6"
           "sha256-VWdUAU6SC7/dNDIOJmSGuIeffbwmcfeGhuSDmUE7Dig=")
-        (ext "gleam" "gleam" "2.10.0"
-          "sha256-Xlgtfo0d6gjYsfggNYHjUjsFB1y6/KPJeM3ZgEEBxXk=")
-        (ext "Guyutongxue" "lalrpop-syntax-highlight" "0.0.5"
-          "sha256-VJBvR9pM0NPYi/RUoVQcL1tt2PZCKohwX8Dd1nz0UGY=")
-        (ext "hashicorp" "hcl" "0.3.2"
-          "sha256-cxF3knYY29PvT3rkRS8SGxMn9vzt56wwBXpk2PqO0mo=")
-        (ext "JakeBecker" "elixir-ls" "0.17.10"
-          "sha256-4/B70DyNlImz60PSTSL5CKihlOJen/tR1/dXGc3s1ZY=")
         (ext "jeff-hykin" "better-nix-syntax" "1.0.7"
           "sha256-vqfhUIjFBf9JvmxB4QFrZH4KMhxamuYjs5n9VyW/BiI=")
         (ext "markusylisiurunen" "githubdarkmode" "0.1.6"
@@ -93,8 +85,6 @@ in {
           "sha256-9sFcfTMeLBGw2ET1snqQ6Uk//D/vcD9AVsZfnUNrWNg=")
         (ext "ms-vscode" "vscode-typescript-next" "5.4.20231127"
           "sha256-UVuYggzeWyQTmQxXdM4sT78FUOtYGKD4SzREntotU5g=")
-        (ext "nefrob" "vscode-just-syntax" "0.3.0"
-          "sha256-WBoqH9TNco9lyjOJfP54DynjmYZmPUY+YrZ1rQlC518=")
         (ext "PKief" "material-icon-theme" "4.32.0"
           "sha256-6I9/nWv449PgO1tHJbLy/wxzG6BQF6X550l3Qx0IWpw=")
         (ext "adrianwilczynski" "user-secrets" "2.0.1"
@@ -105,7 +95,7 @@ in {
           "sha256-FC4DuteWflPwlYFxgDHubNC3zPsA2X2zus6PMGmyOQs=")
         (ext "kreativ-software" "csharpextensions" "1.7.3"
           "sha256-qv2BbcT07cogjlLVFOKj0masRRU28krbQ5LWcFrcgQw=")
-        (ext "wallabyjs" "console-ninja" "1.0.376"
+        (ext "wallabyjs" "console-ninja" "1.0.486"
           "sha256-Gg7PHaP1smey6KyQu7rAzFa+rW6LBSqdqnqYVDsUE/c=")
         (ext "ms-playwright" "playwright" "1.1.12"
           "sha256-B6RYsDp1UKZmBRT/GdTPqxGOyCz2wJYKAqYqSLsez+w=")
