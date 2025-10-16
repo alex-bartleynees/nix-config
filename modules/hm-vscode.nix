@@ -22,7 +22,7 @@ in {
         bbenoist.nix
         jnoortheen.nix-ide
         bradlc.vscode-tailwindcss
-        denoland.vscode-deno
+        #denoland.vscode-deno
         editorconfig.editorconfig
         esbenp.prettier-vscode
         github.vscode-github-actions
@@ -35,7 +35,7 @@ in {
         #rust-lang.rust-analyzer
         tamasfe.even-better-toml
         thenuprojectcontributors.vscode-nushell-lang
-        unifiedjs.vscode-mdx
+        #unifiedjs.vscode-mdx 
         formulahendry.auto-rename-tag
         catppuccin.catppuccin-vsc
         zhuangtongfa.material-theme
@@ -60,7 +60,7 @@ in {
         # ms-python.python
         # ms-python.pylint
         # ms-python.debugpy
-        svelte.svelte-vscode
+        #svelte.svelte-vscode 
         vscodevim.vim
         arcticicestudio.nord-visual-studio-code
       ]) ++ [
@@ -69,10 +69,10 @@ in {
           "sha256-Rwhr9X3sjDm6u/KRYE2ucCJSlZwsgUJbH/fdq2WZ034=")
         (ext "antfu" "theme-vitesse" "0.8.3"
           "sha256-KkpJgJBcnMeQ1G97QS/E6GY4/p9ebZRaA5pUXPd9JB0=")
-        (ext "astro-build" "astro-vscode" "2.8.5"
-          "sha256-mP+MKHDirgemcexSCof/Be7YN2FTXwOnGQHnmtKLgtM=")
-        (ext "oven" "bun-vscode" "0.0.12"
-          "sha256-8+Fqabbwup6Jzm5m8GlWbxTqumqXtWAw5s3VaDht9Us=")
+        # (ext "astro-build" "astro-vscode" "2.8.5"
+        #   "sha256-mP+MKHDirgemcexSCof/Be7YN2FTXwOnGQHnmtKLgtM=")
+        # (ext "oven" "bun-vscode" "0.0.12"
+        #   "sha256-8+Fqabbwup6Jzm5m8GlWbxTqumqXtWAw5s3VaDht9Us=")
         (ext "b4dM4n" "nixpkgs-fmt" "0.0.1"
           "sha256-vz2kU36B1xkLci2QwLpl/SBEhfSWltIDJ1r7SorHcr8=")
         (ext "enkia" "tokyo-night" "1.0.6"
