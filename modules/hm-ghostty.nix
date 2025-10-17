@@ -41,6 +41,7 @@ in {
       background-opacity=${toString cfg.backgroundOpacity}
       window-decoration=${if cfg.windowDecoration then "true" else "false"}
       theme=${cfg.theme}
+      keybind=global:alt+backquote=toggle_quick_terminal
       ${cfg.extraConfig}
     '';
   };
