@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs,  ... }: {
   imports = [
     ./common/wayland.nix
     ./common/wlroots.nix
@@ -24,12 +24,18 @@
     enable = true;
     wlr.enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
-    config.common.default = [ "wlr" ];
+    config = {
+      mango = {
+        default = [ "wlr" "gtk" ];
+        "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+      };
+    };
     xdgOpenUsePortal = true;
   };
 
   environment.sessionVariables = {
     XCURSOR_SIZE = "24";
+    XCURSOR_THEME = "Adwaita";
     XDG_CURRENT_DESKTOP = "mango";
     XDG_SESSION_DESKTOP = "mango";
   };

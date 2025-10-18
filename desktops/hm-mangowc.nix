@@ -108,8 +108,8 @@ in {
       view_current_to_back=1
       enable_floating_snap=1
       snap_distance=50
-      cursor_size=24
-      cursor_theme=Bibata-Modern-Ice
+      cursor_size=${toString config.home.pointerCursor.size}
+      cursor_theme=${config.home.pointerCursor.name}
       cursor_hide_timeout=0
       drag_tile_to_tile=0
       single_scratchpad=1
@@ -160,7 +160,8 @@ in {
       ''}
 
       # Environment variables
-      env=XCURSOR_SIZE,24
+      env=XCURSOR_SIZE,${toString config.home.pointerCursor.size}
+      env=XCURSOR_THEME,${config.home.pointerCursor.name}
       env=NIXOS_OZONE_WL,1
 
       # Key bindings - using Alt as modifier (matching other configs)
@@ -308,7 +309,7 @@ in {
       wl-paste --type text --watch cliphist store &
 
       # Desktop portal (for obs and screen sharing)
-      dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=wlroots
+      dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     '';
   };
 
