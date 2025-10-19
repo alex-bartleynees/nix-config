@@ -87,8 +87,8 @@ in {
             {
               name = "1440p Desktop";
               prep-cmd = [{
-                do = "${pkgs.kanshi}/bin/kanshictl gaming";
-                undo = "${pkgs.kanshi}/bin/kanshictl coding";
+                do = "${pkgs.kanshi}/bin/kanshictl switch gaming";
+                undo = "${pkgs.kanshi}/bin/kanshictl switch coding";
               }];
               exclude-global-prep-cmd = "false";
               auto-detach = "true";
@@ -97,12 +97,12 @@ in {
               name = "Steam Big Picture";
               prep-cmd = [
                 {
-                  do = "${pkgs.kanshi}/bin/kanshictl gaming";
-                  undo = "${pkgs.kanshi}/bin/kanshictl coding";
+                  do = "${pkgs.kanshi}/bin/kanshictl switch gaming";
+                  undo = "${pkgs.kanshi}/bin/kanshictl switch coding";
                 }
                 {
-                  do = "${pkgs.kanshi}/bin/kanshictl gaming";
-                  undo = "${pkgs.kanshi}/bin/kanshictl coding";
+                  do = "${pkgs.kanshi}/bin/kanshictl switch gaming";
+                  undo = "${pkgs.kanshi}/bin/kanshictl switch coding";
                 }
               ];
               detached = [ "steam-run-url steam://open/bigpicture" ];
