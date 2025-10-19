@@ -67,7 +67,7 @@ in {
       animation_curve_close=0.08,0.92,0,1
 
       # Scroller Layout Setting
-      scroller_structs=20
+      scroller_structs=10
       scroller_default_proportion=1
       scroller_focus_center=0
       scroller_prefer_center=1
