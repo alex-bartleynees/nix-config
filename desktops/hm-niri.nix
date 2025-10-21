@@ -108,7 +108,7 @@ in {
         # Screenshot
         "Mod+P".action = sh ''grim -g "$(slurp -d)" - | wl-copy'';
         "Print".action.screenshot-screen = [ ];
-        "Mod+Shift+S".action = screenshot;
+        #"Mod+Shift+S".action = screenshot;
         "Mod+Print".action.screenshot-window = [ ];
 
         # Volume control
