@@ -6,11 +6,11 @@ let
   macUsers = systemUsers.macUsers;
 in {
   desktop = {
-    desktop = "hyprland";
+    desktop = "mangowc";
     themeName = "everforest";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
-    desktopSpecialisations = [ "sway" "niri" "mangowc" ];
+    desktopSpecialisations = [ "niri" "hyprland" ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
     users = usersWithWork;
