@@ -92,7 +92,7 @@ in {
       overviewgappo=30
 
       # Misc
-      adaptive_sync=0
+      adaptive_sync=1
       xwayland_persistence=0
       syncobj_enable=1
       no_border_when_single=0
