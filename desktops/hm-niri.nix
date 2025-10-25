@@ -234,6 +234,7 @@ in {
           x = 0;
           y = 0;
         };
+        variable-refresh-rate = true;
       };
       "DP-4" = {
         mode = {
@@ -246,6 +247,7 @@ in {
           x = 2560;
           y = 0;
         };
+        variable-refresh-rate = false;
       };
     };
 

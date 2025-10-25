@@ -156,7 +156,7 @@ in {
         monitorrule=eDP-1,0.55,1,tile,0,1,0,0,1920,1080,60
       '' else ''
         monitorrule=DP-6,0.55,1,tile,0,1,0,0,2560,1440,165
-        monitorrule=DP-4,0.55,1,vertical_tile,3,1,2560,0,2560,1440,144
+        monitorrule=DP-4,0.55,0,vertical_tile,3,1,2560,0,2560,1440,144
       ''}
 
       # Environment variables
@@ -291,8 +291,8 @@ in {
       windowrule=isfullscreen:1,appid:^steam_app_.*$
     '';
     autostart_sh = ''
-      # UWSM finalize for proper session management
-      uwsm finalize SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME &
+      # UWSM finalize for proper session management - export all critical Wayland variables
+      uwsm finalize SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME WAYLAND_DISPLAY XDG_CURRENT_DESKTOP &
 
       # Network manager applet
       nm-applet &
@@ -310,6 +310,7 @@ in {
 
       # Desktop portal (for obs and screen sharing)
       dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+      systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     '';
   };
 

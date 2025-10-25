@@ -34,8 +34,8 @@ in {
           "eDP-1,1920x1080@60,0x0,1" # Built-in laptop display
         ]
       else [
-        "DP-6,2560x1440@165,0x0,1" # Main monitor
-        "DP-4,2560x1440@144,2560x0,1,transform,3" # Secondary monitor rotated 270°
+        "DP-6,2560x1440@165,0x0,1,vrr,1" # Main monitor with VRR enabled
+        "DP-4,2560x1440@144,2560x0,1,transform,3,vrr,0" # Secondary monitor rotated 270° with VRR disabled
       ];
 
       # Variables
@@ -324,6 +324,7 @@ in {
         disable_hyprland_logo = true;
         enable_swallow = true;
         swallow_regex = "^(ghostty|kitty|alacritty)$";
+        vrr = 1;
       };
 
       # Cursor settings for NVIDIA
