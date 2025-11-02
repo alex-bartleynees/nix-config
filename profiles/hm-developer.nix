@@ -27,7 +27,7 @@
     inputs.neovim.packages.${system}.default
     claude-code
     #opencode
-    (vim_configurable.customize {
+    (vim-full.customize {
       name = "vim";
       vimrcConfig.customRC = ''
         source $VIMRUNTIME/defaults.vim
