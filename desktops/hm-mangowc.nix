@@ -250,9 +250,10 @@ in {
       # Layout management
       bind=ALT,R,switch_layout,
       bind=ALT,S,setlayout,scroller
+      bind=ALT,E,switch_proportion_preset,
       bind=ALT+SHIFT,F,togglemaxmizescreen,
-      bind=ALT,MINUS,setmfact,-5
-      bind=ALT,PLUS,setmfact,+5
+      bind=ALT,comma,setmfact,-5
+      bind=ALT,period,setmfact,+5
       bind=ALT,Return,zoom,
 
       # Tab/group navigation
