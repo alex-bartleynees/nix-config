@@ -49,7 +49,7 @@ in {
     programs.git = lib.mkMerge [
       {
         enable = true;
-        extraConfig = {
+        settings = {
           init.defaultBranch = cfg.defaultBranch;
 
           core = {
@@ -65,8 +65,10 @@ in {
         });
       }
       (lib.mkIf (cfg.enableUserConfig && myUsers.${username} ? git) {
-        userName = myUsers.${username}.git.userName;
-        userEmail = myUsers.${username}.git.userEmail;
+        settings.user = {
+          name = myUsers.${username}.git.userName;
+          email = myUsers.${username}.git.userEmail;
+        };
       })
     ];
 

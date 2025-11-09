@@ -23,8 +23,8 @@
     tmux
     lazygit
     lazydocker
-    inputs.lazyvim.packages.${system}.default
-    inputs.neovim.packages.${system}.default
+    inputs.lazyvim.packages.${pkgs.stdenv.hostPlatform.system}.default
+    inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
     claude-code
     #opencode
     (vim-full.customize {
