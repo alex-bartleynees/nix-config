@@ -156,7 +156,7 @@ in {
         monitorrule=eDP-1,0.55,1,tile,0,1,0,0,1920,1080,60
       '' else ''
         monitorrule=DP-6,0.55,1,tile,0,1,0,0,2560,1440,165
-        monitorrule=DP-4,0.55,0,vertical_tile,3,1,2560,0,2560,1440,144
+        monitorrule=DP-4,0.55,1,vertical_tile,1,1,2560,0,2560,1440,144
       ''}
 
       # Environment variables
