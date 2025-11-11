@@ -96,7 +96,7 @@ in {
         (ext "kreativ-software" "csharpextensions" "1.7.3"
           "sha256-qv2BbcT07cogjlLVFOKj0masRRU28krbQ5LWcFrcgQw=")
         (ext "wallabyjs" "console-ninja" "1.0.488"
-          "sha256-THkveyPUykHc+xmA6Yth/KcONH316HYmxXjlOqkxNSY=")
+          "sha256-iRxYbhcJNYMZxkP8w9r9W3IZAQtSrjgVPLRTe7Nrlss=")
         (ext "ms-playwright" "playwright" "1.1.12"
           "sha256-B6RYsDp1UKZmBRT/GdTPqxGOyCz2wJYKAqYqSLsez+w=")
         (ext "monokai" "theme-monokai-pro-vscode" "2.0.5"
