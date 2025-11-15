@@ -223,6 +223,18 @@ in {
       bind=ALT+SHIFT,Up,exchange_client,up
       bind=ALT+SHIFT,Right,exchange_client,right
 
+      # Move windows between monitors (Vi keys)
+      bind=ALT+SUPER,H,tagmon,left,1
+      bind=ALT+SUPER,J,tagmon,down,1
+      bind=ALT+SUPER,K,tagmon,up,1
+      bind=ALT+SUPER,L,tagmon,right,1
+
+      # Move windows between monitors (Arrow keys)
+      bind=ALT+SUPER,Left,tagmon,left,1
+      bind=ALT+SUPER,Down,tagmon,down,1
+      bind=ALT+SUPER,Up,tagmon,up,1
+      bind=ALT+SUPER,Right,tagmon,right,1
+
       # Workspace switching (tags in Mango)
       bind=ALT,1,view,1
       bind=ALT,2,view,2
