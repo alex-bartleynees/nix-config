@@ -25,6 +25,9 @@ lib.mkIf config.profiles.gaming-workstation {
   # ZSA keyboard support
   voyager.enable = true;
 
+  # Virtualization support
+  virtualisation.enable = true;
+
   # Disable wake-up for Logitech USB Receiver (C548)
   services.udev.extraRules = ''
     # Disable wake-up for Logitech USB Receiver (C548)

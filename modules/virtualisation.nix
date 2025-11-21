@@ -1,4 +1,4 @@
-{ config, lib, users, ... }:
+{ config, lib, users, pkgs, ... }:
 let cfg = config.virtualisation;
 in {
   options.virtualisation = {
@@ -19,5 +19,8 @@ in {
     boot.kernelModules = [ "vboxdrv" "vboxnetadp" "vboxnetflt" ];
     # Add your user to vboxusers group
     users.extraGroups.vboxusers.members = [ cfg.user ];
+
+    environment.systemPackages = with pkgs; [ vagrant virtualbox ];
   };
+
 }
