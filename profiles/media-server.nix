@@ -39,7 +39,7 @@ lib.mkIf config.profiles.media-server {
       prefixLength = 24;
     }];
     defaultGateway = "192.168.0.1";
-    nameservers = [ "192.168.0.1" "8.8.8.8" ];
+    nameservers = [ "192.168.0.169" "8.8.8.8" ];
   };
 
   # Enhanced Tailscale for routing
