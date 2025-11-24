@@ -32,6 +32,16 @@ lib.mkIf config.profiles.media-server {
   # Media server specific configurations
   services.displayManager.gdm.enable = lib.mkForce false;
 
+  # Static IP configuration for media server
+  networking = {
+    interfaces.enp4s0.ipv4.addresses = [{
+      address = "192.168.0.169";
+      prefixLength = 24;
+    }];
+    defaultGateway = "192.168.0.1";
+    nameservers = [ "192.168.0.1" "8.8.8.8" ];
+  };
+
   # Enhanced Tailscale for routing
   tailscale.routingFeatures = "both";
 
