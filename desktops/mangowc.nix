@@ -26,7 +26,7 @@
     extraPortals = [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-wlr ];
     config = {
       mango = {
-        default = [ "wlr" "gtk" ];
+        default = [ "gtk" ];
         "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
       };
     };
