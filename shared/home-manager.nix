@@ -29,6 +29,7 @@
       useGlobalPkgs = true;
       useUserPackages = true;
       users.${username} = {
+        disabledModules = [ "${inputs.stylix}/modules/vicinae/hm.nix" ];
         imports = extraModules ++ profilePaths ++ baseModules;
       };
       backupFileExtension = "backup";
