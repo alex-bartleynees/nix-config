@@ -20,6 +20,23 @@ lib.mkIf config.profiles.wsl {
     docker-desktop.enable = false;
   };
 
+  # Enable GPG agent with pinentry
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryPackage = pkgs.pinentry-curses; # or pinentry-tty
+    enableSSHSupport = true; # optional, but useful
+  };
+
+  # Install pass and credential helpers system-wide
+  environment.systemPackages = with pkgs; [
+    pass
+    gnupg
+    docker-credential-helpers
+  ];
+
+  # Ensure proper environment variables
+  environment.variables = { GPG_TTY = "$(tty)"; };
+
   systemd.tmpfiles.rules = [
     "L+ /etc/ssl/certs/mkcert-rootCA.pem - - - - /home/alexbn/.local/share/mkcert/rootCA.pem"
     "L+ /etc/ssl/certs/aspnet-fullchain.pem - - - - /mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem"

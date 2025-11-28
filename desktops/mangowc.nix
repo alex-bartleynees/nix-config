@@ -1,4 +1,4 @@
-{ pkgs, inputs,  ... }: {
+{ pkgs, inputs, ... }: {
   imports = [
     ./common/wayland.nix
     ./common/wlroots.nix
