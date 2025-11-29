@@ -34,7 +34,7 @@ in {
           "eDP-1,1920x1080@60,0x0,1" # Built-in laptop display
         ]
       else [
-        "DP-6,2560x1440@165,0x0,1,vrr,1" # Main monitor with VRR enabled
+        "DP-6,3840x2160@160,0x0,1.5,vrr,1" # Main 4K monitor with 1.5x scaling and VRR enabled
         "DP-4,2560x1440@144,2560x0,1,transform,3,vrr,0" # Secondary monitor rotated 270° with VRR disabled
       ];
 

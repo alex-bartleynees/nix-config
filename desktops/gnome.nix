@@ -42,20 +42,20 @@
             <layoutmode>physical</layoutmode>
             <logicalmonitor>
               <x>0</x>
-              <y>347</y>
-              <scale>1</scale>
+              <y>0</y>
+              <scale>1.5</scale>
               <primary>yes</primary>
               <monitor>
                 <monitorspec>
                   <connector>DP-6</connector>
-                  <vendor>GSM</vendor>
-                  <product>LG ULTRAGEAR</product>
-                  <serial>312NTRL3F958</serial>
+                  <vendor>AOC</vendor>
+                  <product>U27G4</product>
+                  <serial>10GR2HA001383</serial>
                 </monitorspec>
                 <mode>
-                  <width>2560</width>
-                  <height>1440</height>
-                  <rate>164.958</rate>
+                  <width>3840</width>
+                  <height>2160</height>
+                  <rate>160.001</rate>
                 </mode>
               </monitor>
             </logicalmonitor>

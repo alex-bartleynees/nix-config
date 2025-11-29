@@ -219,8 +219,9 @@ in {
         };
       } else {
         "DP-6" = {
-          mode = "2560x1440@164.958Hz";
+          mode = "3840x2160@160Hz";
           position = "0,0";
+          scale = "1.5";
           background = "${background} fill";
           adaptive_sync = "on";
         };

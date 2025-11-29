@@ -9,7 +9,7 @@
           outputs = [
             {
               criteria = "DP-6";
-              mode = "2560x1440@165";
+              mode = "3840x2160@160";
               position = "0,0";
               status = "enable";
             }
@@ -29,7 +29,7 @@
           outputs = [
             {
               criteria = "DP-6";
-              mode = "2560x1440@165";
+              mode = "3840x2160@160";
               position = "0,0";
               status = "enable";
             }

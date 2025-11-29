@@ -226,14 +226,15 @@ in {
     } else {
       "DP-6" = {
         mode = {
-          width = 2560;
-          height = 1440;
-          refresh = 165.0;
+          width = 3840;
+          height = 2160;
+          refresh = 160.0;
         };
         position = {
           x = 0;
           y = 0;
         };
+        scale = 1.5;
         variable-refresh-rate = true;
       };
       "DP-4" = {

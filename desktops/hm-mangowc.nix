@@ -151,12 +151,12 @@ in {
       globalcolor=0x${builtins.substring 1 6 colors.groupbar_locked_active}FF
       overlaycolor=0x${builtins.substring 1 6 colors.groupbar_locked_inactive}FF
 
-      # Monitor configuration
+      # Monitor configuration with compositor-level 1.5x scaling
       ${if hostName == "thinkpad" then ''
         monitorrule=eDP-1,0.55,1,tile,0,1,0,0,1920,1080,60
       '' else ''
-        monitorrule=DP-6,0.55,1,tile,0,1,0,0,2560,1440,165
-        monitorrule=DP-4,0.55,1,vertical_tile,1,1,2560,0,2560,1440,144
+        monitorrule=DP-6,0.55,1,tile,0,1.5,0,0,3840,2160,160
+        monitorrule=DP-4,0.55,1,vertical_tile,3,1,2560,0,2560,1440,144
       ''}
 
       # Environment variables
