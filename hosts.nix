@@ -2,7 +2,6 @@
 let
   systemUsers = import ./users/users.nix { };
   users = systemUsers.users;
-  usersWithWork = systemUsers.usersWithWork;
   macUsers = systemUsers.macUsers;
 in {
   desktop = {
@@ -13,7 +12,7 @@ in {
     desktopSpecialisations = [ "niri" "mangowc" ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
-    users = usersWithWork;
+    users = users;
     additionalUserProfiles = {
       alexbn.profiles =
         [ "vscode-developer" "rider-developer" "backend-developer" ];
