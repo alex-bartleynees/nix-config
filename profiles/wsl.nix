@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, users, ... }:
+{ config, lib, pkgs, self, users, inputs, ... }:
 lib.mkIf config.profiles.wsl {
   # Use base profile for core services
   profiles.base = true;
@@ -20,6 +20,27 @@ lib.mkIf config.profiles.wsl {
     docker-desktop.enable = false;
   };
 
+  # Enable wsl vpn kit - directory and files will be created by tmpfiles
+
+  systemd.services.wsl-vpnkit = {
+    enable = true;
+    description = "wsl-vpnkit";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      Type = "idle";
+      Restart = "always";
+      RestartSec = 10;
+      KillMode = "mixed";
+      Environment = [
+        "VMEXEC_PATH=/etc/wsl-vpnkit/wsl-vm"
+        "GVPROXY_PATH=/etc/wsl-vpnkit/wsl-gvproxy.exe"
+      ];
+      ExecStart = "/etc/wsl-vpnkit/wsl-vpnkit";
+    };
+  };
+
   # Enable GPG agent with pinentry
   programs.gnupg.agent = {
     enable = true;
@@ -32,12 +53,24 @@ lib.mkIf config.profiles.wsl {
     pass
     gnupg
     docker-credential-helpers
+
+    #Packages for vpn kit
+    iproute2
+    iptables
+    iputils
+    dnsutils
   ];
 
   # Ensure proper environment variables
   environment.variables = { GPG_TTY = "$(tty)"; };
 
   systemd.tmpfiles.rules = [
+    # Create wsl-vpnkit directory and symlink files
+    "d /etc/wsl-vpnkit 0755 root root -"
+    "L+ /etc/wsl-vpnkit/wsl-vpnkit - - - - ${inputs.wsl-vpnkit}/app/wsl-vpnkit"
+    "L+ /etc/wsl-vpnkit/wsl-vm - - - - ${inputs.wsl-vpnkit}/app/wsl-vm"
+    "L+ /etc/wsl-vpnkit/wsl-gvproxy.exe - - - - ${inputs.wsl-vpnkit}/app/wsl-gvproxy.exe"
+    # SSL certificates
     "L+ /etc/ssl/certs/mkcert-rootCA.pem - - - - /home/alexbn/.local/share/mkcert/rootCA.pem"
     "L+ /etc/ssl/certs/aspnet-fullchain.pem - - - - /mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem"
   ];

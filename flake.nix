@@ -13,6 +13,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    wsl-vpnkit = {
+      url = "https://github.com/sakai135/wsl-vpnkit/releases/download/v0.4.1/wsl-vpnkit.tar.gz?narHash=sha256-VXOG5AvI2snlicoGkqcgs2QTYCD9e7/i1lL7gXbAoLY%3D";
+      flake = false;
+    };
+
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -54,9 +59,9 @@
     mango.url = "github:DreamMaoMao/mango";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixos-wsl, nix-darwin
-    , mac-app-util, stylix, lazyvim, neovim, nixos-cosmic, cosmic-nixpkgs
-    , sops-nix, disko, nixos-hardware, niri, mango, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, nixos-wsl, wsl-vpnkit
+    , nix-darwin, mac-app-util, stylix, lazyvim, neovim, nixos-cosmic
+    , cosmic-nixpkgs, sops-nix, disko, nixos-hardware, niri, mango, ... }:
     let
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };
