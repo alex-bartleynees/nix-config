@@ -3,6 +3,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -60,9 +62,10 @@
     mango.url = "github:DreamMaoMao/mango";
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nixos-wsl, wsl-vpnkit
-    , nix-darwin, mac-app-util, stylix, lazyvim, neovim, nixos-cosmic
-    , cosmic-nixpkgs, sops-nix, disko, nixos-hardware, niri, mango, ... }:
+  outputs = inputs@{ self, nixpkgs, determinate, home-manager, nixos-wsl
+    , wsl-vpnkit, nix-darwin, mac-app-util, stylix, lazyvim, neovim
+    , nixos-cosmic, cosmic-nixpkgs, sops-nix, disko, nixos-hardware, niri, mango
+    , ... }:
     let
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };

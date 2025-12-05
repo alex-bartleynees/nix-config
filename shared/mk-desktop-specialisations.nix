@@ -1,5 +1,5 @@
 { inputs, lib }:
-({ baseImports, theme, users, desktops ? [ ], additionalUserProfiles ? [ ] }:
+({ baseImports, theme, users, desktops ? [ ], additionalUserProfiles ? [ ], }:
   let
     mkDesktopSpecialisation = desktop:
       let
@@ -17,4 +17,3 @@
       };
 
   in { specialisation = lib.genAttrs desktops mkDesktopSpecialisation; })
-

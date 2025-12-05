@@ -45,4 +45,3 @@
   system.nixos.tags = [ "river" ];
 
 }
-

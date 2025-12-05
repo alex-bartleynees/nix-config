@@ -36,7 +36,7 @@ in {
   inherit generateThemeSpecialisations;
 
   # Helper function to create theme specializations for a host
-  mkThemeSpecialisations = { baseImports, desktop ? "hyprland" }: {
+  mkThemeSpecialisations = { baseImports, desktop ? "hyprland", }: {
     specialisation = generateThemeSpecialisations baseImports desktop;
   };
 }

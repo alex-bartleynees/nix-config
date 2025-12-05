@@ -33,4 +33,3 @@ in {
   home.sessionVariables = { BACKGROUND = theme.wallpaper; };
 
 }
-

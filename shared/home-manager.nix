@@ -1,5 +1,5 @@
 { inputs, username, homeDirectory, extraModules ? [ ]
-, additionalUserProfiles ? { }, theme ? null, desktop, sharedModules ? [ ] }:
+, additionalUserProfiles ? { }, theme ? null, desktop, sharedModules ? [ ], }:
 ({ lib, config, pkgs, ... }:
   let
     baseProfiles = if (config.myUsers ? ${username}
@@ -36,4 +36,3 @@
       sharedModules = sharedModules;
     };
   })
-

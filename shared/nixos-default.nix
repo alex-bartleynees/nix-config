@@ -1,7 +1,7 @@
 { lib, inputs, users, theme, desktop, additionalUserProfiles ? { }
-, isDarwin ? false }:
+, isDarwin ? false, }:
 let
-  # Core modules 
+  # Core modules
   importUtils = import ../shared/import-nix-files.nix { inherit lib; };
   coreModules =
     if isDarwin then [ ] else importUtils.importAllNixFiles ../modules;
@@ -19,6 +19,7 @@ let
     inputs.stylix.darwinModules.stylix
   ] else [
     ./locale.nix
+    inputs.determinate.nixosModules.default
     inputs.stylix.nixosModules.stylix
     inputs.sops-nix.nixosModules.sops
     inputs.disko.nixosModules.disko
@@ -38,6 +39,6 @@ let
     }) users;
 
 in {
-  getImports = { additionalImports ? [ ] }:
+  getImports = { additionalImports ? [ ], }:
     baseImports ++ homeManagerImports ++ additionalImports;
 }

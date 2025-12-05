@@ -35,7 +35,7 @@ in {
         #rust-lang.rust-analyzer
         tamasfe.even-better-toml
         #thenuprojectcontributors.vscode-nushell-lang
-        #unifiedjs.vscode-mdx 
+        #unifiedjs.vscode-mdx
         formulahendry.auto-rename-tag
         catppuccin.catppuccin-vsc
         zhuangtongfa.material-theme

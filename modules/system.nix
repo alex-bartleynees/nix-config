@@ -32,10 +32,14 @@ in {
         settings = {
           auto-optimise-store = true;
           experimental-features = [ "nix-command" "flakes" ];
-          substituters = [ "https://niri.cachix.org" ];
+          substituters =
+            [ "https://install.determinate.systems" "https://niri.cachix.org" ];
           trusted-public-keys = [
+            "cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM="
             "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
           ];
+          # Determinate Nix features
+          eval-cores = 0; # Use all available cores for parallel evaluation
         };
         gc = {
           automatic = true;

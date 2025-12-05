@@ -303,4 +303,3 @@ in {
     Install = { WantedBy = [ "river-session.target" ]; };
   };
 }
-

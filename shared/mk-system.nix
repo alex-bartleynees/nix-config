@@ -3,7 +3,7 @@
   , desktop ? "hyprland", users, themeName ? "tokyo-night", hostName
   , enableThemeSpecialisations ? false, enableDesktopSpecialisations ? false
   , desktopSpecialisations ? [ ], additionalModules ? [ ]
-  , additionalSpecialArgs ? { }, additionalUserProfiles ? { }, isDarwin ? false
+  , additionalSpecialArgs ? { }, additionalUserProfiles ? { }, isDarwin ? false,
   }:
   let
     inherit (inputs) nixpkgs nix-darwin;
@@ -52,7 +52,7 @@
     else
       [ ];
 
-    # Desktop specialisations 
+    # Desktop specialisations
     mkDesktopSpecialisations = if !isDarwin then
       import ./mk-desktop-specialisations.nix {
         inherit inputs;
@@ -110,4 +110,3 @@
       specialArgs = commonSpecialArgs;
       modules = baseModules;
     })
-
