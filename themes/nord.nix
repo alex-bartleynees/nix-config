@@ -17,4 +17,5 @@
   chromeThemeExtensionId = "abehfkkfjlplnjadfcjiflnejblfmmpj";
   obsidianTheme = "Obsidian Nord";
   ghosttyTheme = "Nord";
+  zellijTheme = "nord";
 }

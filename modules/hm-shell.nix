@@ -44,6 +44,18 @@ in {
       description = "Enable tmux configuration.";
     };
 
+    enableZellij = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable Zellij configuration.";
+    };
+
+    zellijTheme = lib.mkOption {
+      type = lib.types.str;
+      default = "tokyo-night-dark";
+      description = "Theme name for Zellij.";
+    };
+
     enableShellTools = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -70,6 +82,7 @@ in {
       lg = "lazygit";
       ld = "lazydocker";
       ls = "eza --icons";
+      z = "zellij attach --create";
       git-whoami = "git config user.email";
       rebuild-desktop =
         "sudo nixos-rebuild switch --flake ~/.config/nix-config#desktop";
@@ -207,6 +220,136 @@ in {
         bind-key -T copy-mode-vi 'C-\' select-pane -l
       '';
     });
+
+    programs.zellij = lib.mkIf cfg.enableZellij {
+      enable = true;
+      enableZshIntegration = false;
+      enableBashIntegration = false;
+      enableFishIntegration = false;
+    };
+
+    # Zellij configuration with tmux-like keybindings
+    home.file.".config/zellij/config.kdl" = lib.mkIf cfg.enableZellij {
+      text = ''
+        // Zellij configuration with tmux-like keybindings
+
+        // Theme
+        theme "${cfg.zellijTheme}"
+
+        // Default shell
+        default_shell "${cfg.defaultShell}"
+
+        // Default layout
+        default_layout "compact"
+
+        // Mouse support
+        mouse_mode true
+
+        // Pane frames
+        pane_frames false
+
+        // Simplified UI
+        simplified_ui false
+
+        // Copy on select
+        copy_on_select true
+
+        // Disable startup tips
+        show_startup_tips false
+
+        keybinds {
+          // tmux-like prefix: Ctrl+b
+          shared_except "locked" {
+            // Unbind default Ctrl+g
+            unbind "Ctrl g"
+          }
+
+          // Normal mode (no prefix)
+          normal {
+            // Use Ctrl+b as prefix to enter tmux mode
+            bind "Ctrl b" { SwitchToMode "tmux"; }
+          }
+
+          // Tmux mode (after Ctrl+b prefix)
+          tmux {
+            // Split panes (tmux-like)
+            bind "|" { NewPane "Right"; SwitchToMode "Normal"; }
+            bind "-" { NewPane "Down"; SwitchToMode "Normal"; }
+            bind "\"" { NewPane "Down"; SwitchToMode "Normal"; }
+            bind "%" { NewPane "Right"; SwitchToMode "Normal"; }
+
+            // Window (tab) management
+            bind "c" { NewTab; SwitchToMode "Normal"; }
+            bind "n" { GoToNextTab; SwitchToMode "Normal"; }
+            bind "p" { GoToPreviousTab; SwitchToMode "Normal"; }
+            bind "," { SwitchToMode "RenameTab"; }
+            bind "x" { CloseFocus; SwitchToMode "Normal"; }
+
+            // Pane navigation (vim-style)
+            bind "h" { MoveFocus "Left"; SwitchToMode "Normal"; }
+            bind "j" { MoveFocus "Down"; SwitchToMode "Normal"; }
+            bind "k" { MoveFocus "Up"; SwitchToMode "Normal"; }
+            bind "l" { MoveFocus "Right"; SwitchToMode "Normal"; }
+
+            // Pane resizing
+            bind "Left" { Resize "Increase Left"; }
+            bind "Right" { Resize "Increase Right"; }
+            bind "Up" { Resize "Increase Up"; }
+            bind "Down" { Resize "Increase Down"; }
+
+            // Switch to resize mode
+            bind "r" { SwitchToMode "Resize"; }
+
+            // Session management
+            bind "d" { Detach; }
+            bind "s" { SwitchToMode "Session"; }
+
+            // Pane mode (for swapping, etc)
+            bind "space" { SwitchToMode "Pane"; }
+
+            // Scroll mode
+            bind "[" { SwitchToMode "Scroll"; }
+
+            // Go to specific tab
+            bind "0" { GoToTab 10; SwitchToMode "Normal"; }
+            bind "1" { GoToTab 1; SwitchToMode "Normal"; }
+            bind "2" { GoToTab 2; SwitchToMode "Normal"; }
+            bind "3" { GoToTab 3; SwitchToMode "Normal"; }
+            bind "4" { GoToTab 4; SwitchToMode "Normal"; }
+            bind "5" { GoToTab 5; SwitchToMode "Normal"; }
+            bind "6" { GoToTab 6; SwitchToMode "Normal"; }
+            bind "7" { GoToTab 7; SwitchToMode "Normal"; }
+            bind "8" { GoToTab 8; SwitchToMode "Normal"; }
+            bind "9" { GoToTab 9; SwitchToMode "Normal"; }
+
+            // Back to normal mode
+            bind "Esc" { SwitchToMode "Normal"; }
+            bind "Enter" { SwitchToMode "Normal"; }
+          }
+
+          // Enhance normal mode with Alt+Arrow for pane navigation (like tmux config)
+          shared_except "locked" "renametab" "renamepane" {
+            bind "Alt Left" { MoveFocus "Left"; }
+            bind "Alt Right" { MoveFocus "Right"; }
+            bind "Alt Up" { MoveFocus "Up"; }
+            bind "Alt Down" { MoveFocus "Down"; }
+
+            // Vim-style navigation with Ctrl (for vim awareness)
+            bind "Ctrl h" { MoveFocus "Left"; }
+            bind "Ctrl j" { MoveFocus "Down"; }
+            bind "Ctrl k" { MoveFocus "Up"; }
+            bind "Ctrl l" { MoveFocus "Right"; }
+          }
+
+          // Scroll mode (similar to tmux copy mode)
+          scroll {
+            bind "e" { EditScrollback; SwitchToMode "Normal"; }
+            bind "Esc" { SwitchToMode "Normal"; }
+            bind "q" { SwitchToMode "Normal"; }
+          }
+        }
+      '';
+    };
 
     # Shell tools and utilities
     home.packages = lib.mkIf cfg.enableShellTools

@@ -12,6 +12,8 @@
     enableFish = true;
     enableNushell = true;
     enableTmux = true;
+    enableZellij = true;
+    zellijTheme = theme.zellijTheme or "tokyo-night-dark";
   };
 
   git = { enable = true; };

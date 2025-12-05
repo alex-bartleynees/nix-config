@@ -17,4 +17,5 @@
   ghosttyTheme = "Catppuccin Mocha";
   chromeThemeExtensionId = "bkkmolkhemgaeaeggcmfbghljjjoofoh";
   obsidianTheme = "Catppuccin";
+  zellijTheme = "catppuccin-macchiato";
 }
