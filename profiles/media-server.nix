@@ -40,6 +40,11 @@ lib.mkIf config.profiles.media-server {
     }];
     defaultGateway = "192.168.0.1";
     nameservers = [ "192.168.0.1" "8.8.8.8" ];
+
+    # Allow traffic from home assistant docker container to host
+    firewall.extraCommands = ''
+      iptables -A INPUT -s 172.32.0.0/16 -p tcp --dport 8123 -j ACCEPT
+    '';
   };
 
   # Enhanced Tailscale for routing

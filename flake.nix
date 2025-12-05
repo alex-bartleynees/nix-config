@@ -14,7 +14,8 @@
     };
 
     wsl-vpnkit = {
-      url = "https://github.com/sakai135/wsl-vpnkit/releases/download/v0.4.1/wsl-vpnkit.tar.gz?narHash=sha256-VXOG5AvI2snlicoGkqcgs2QTYCD9e7/i1lL7gXbAoLY%3D";
+      url =
+        "https://github.com/sakai135/wsl-vpnkit/releases/download/v0.4.1/wsl-vpnkit.tar.gz?narHash=sha256-VXOG5AvI2snlicoGkqcgs2QTYCD9e7/i1lL7gXbAoLY%3D";
       flake = false;
     };
 
