@@ -48,7 +48,10 @@ lib.mkIf config.profiles.media-server {
   };
 
   # Enhanced Tailscale for routing
-  tailscale.routingFeatures = "both";
+  tailscale = {
+    routingFeatures = "server";
+    configureUdpGro = true;
+  };
 
   sambaClient.enable = lib.mkForce false;
 
