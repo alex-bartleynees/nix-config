@@ -327,14 +327,15 @@ in {
             bind "Enter" { SwitchToMode "Normal"; }
           }
 
-          // Enhance normal mode with Alt+Arrow for pane navigation (like tmux config)
+          // Ctrl-based pane navigation (no Alt to avoid Hyprland conflicts)
           shared_except "locked" "renametab" "renamepane" {
-            bind "Alt Left" { MoveFocus "Left"; }
-            bind "Alt Right" { MoveFocus "Right"; }
-            bind "Alt Up" { MoveFocus "Up"; }
-            bind "Alt Down" { MoveFocus "Down"; }
+            // Arrow keys with Ctrl
+            bind "Ctrl Left" { MoveFocus "Left"; }
+            bind "Ctrl Right" { MoveFocus "Right"; }
+            bind "Ctrl Up" { MoveFocus "Up"; }
+            bind "Ctrl Down" { MoveFocus "Down"; }
 
-            // Vim-style navigation with Ctrl (for vim awareness)
+            // Vim-style navigation with Ctrl
             bind "Ctrl h" { MoveFocus "Left"; }
             bind "Ctrl j" { MoveFocus "Down"; }
             bind "Ctrl k" { MoveFocus "Up"; }
