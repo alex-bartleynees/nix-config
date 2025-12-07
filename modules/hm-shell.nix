@@ -175,7 +175,10 @@ in {
         pkgs.tmuxPlugins.sensible
         {
           plugin = customPlugins.tokyo-night;
-          extraConfig = ''set -g @plugin "fabioluciano/tmux-tokyo-night"'';
+          extraConfig = ''
+            set -g @plugin "fabioluciano/tmux-tokyo-night"
+            set -g @theme_plugins 'datetime'
+          '';
         }
       ];
       extraConfig = ''
