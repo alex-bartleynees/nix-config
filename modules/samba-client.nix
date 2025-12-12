@@ -22,7 +22,7 @@ in {
 
     # Auto-mount Samba share
     fileSystems."/mnt/media" = {
-      device = "//100.67.128.39/jellyfin-pool";
+      device = "//100.89.61.64/jellyfin-pool";
       fsType = "cifs";
       options = let
         automount_opts =

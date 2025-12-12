@@ -46,6 +46,12 @@ in {
         dedicatedServer.openFirewall = true;
         localNetworkGameTransfers.openFirewall = true;
       };
+
+      environment.systemPackages = [
+        (pkgs.lutris.override {
+          extraPkgs = pkgs: [ pkgs.gamescope pkgs.gamemode ];
+        })
+      ];
     })
 
     # Game streaming config

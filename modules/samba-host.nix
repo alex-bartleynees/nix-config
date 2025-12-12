@@ -24,7 +24,7 @@ in {
 
     allowedHosts = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "100.64.0.0/10" "127.0.0.1" ];
+      default = [ "100.89.0.0/10" "127.0.0.1" ];
       description = "List of allowed IP addresses/networks";
     };
 
