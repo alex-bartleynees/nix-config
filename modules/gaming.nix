@@ -47,10 +47,17 @@ in {
         localNetworkGameTransfers.openFirewall = true;
       };
 
+      programs.gamemode = {
+        enable = true;
+        enableRenice = true;
+      };
+
       environment.systemPackages = [
-        (pkgs.lutris.override {
-          extraPkgs = pkgs: [ pkgs.gamescope pkgs.gamemode ];
-        })
+        pkgs.heroic
+        pkgs.gamescope
+        pkgs.gamemode
+        pkgs.wineWowPackages.stable
+        pkgs.winetricks
       ];
     })
 

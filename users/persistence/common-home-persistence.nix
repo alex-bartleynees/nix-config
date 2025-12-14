@@ -25,5 +25,8 @@
     "/home/${username}/.steam"
     "/home/${username}/.steampath"
     "/home/${username}/.steampid"
+    "/home/${username}/.config/heroic"
+    "/home/${username}/.local/share/heroic"
+    "/home/${username}/Games"
   ];
 }
