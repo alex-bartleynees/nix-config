@@ -18,7 +18,7 @@ in {
 
       resolution = lib.mkOption {
         type = lib.types.str;
-        default = "2560x1440@120";
+        default = "3840x2160@120";
         description = "Resolution for game streaming";
       };
 
@@ -98,7 +98,7 @@ in {
           };
           apps = [
             {
-              name = "1440p Desktop";
+              name = "4k Desktop";
               prep-cmd = [{
                 do = "${pkgs.kanshi}/bin/kanshictl switch gaming";
                 undo = "${pkgs.kanshi}/bin/kanshictl switch coding";
@@ -123,6 +123,16 @@ in {
               auto-detach = "true";
               image-path = "steam.png";
             }
+            {
+              name = "Heroic Launcher";
+              prep-cmd = [{
+                do = "${pkgs.kanshi}/bin/kanshictl switch gaming";
+                undo = "${pkgs.kanshi}/bin/kanshictl switch coding";
+              }];
+              detached = [ "heroic-run" ];
+              exclude-global-prep-cmd = "false";
+              auto-detach = "true";
+            }
           ];
         };
       };
@@ -132,6 +142,13 @@ in {
           name = "steam-run-url";
           text = ''
             echo "$1" > "/run/user/$(id --user)/steam-run-url.fifo"
+          '';
+          runtimeInputs = [ pkgs.coreutils ];
+        })
+        (pkgs.writeShellApplication {
+          name = "heroic-run";
+          text = ''
+            echo "launch" > "/run/user/$(id --user)/heroic-run.fifo"
           '';
           runtimeInputs = [ pkgs.coreutils ];
         })
@@ -166,12 +183,49 @@ in {
         path = [ pkgs.steam ];
       };
 
-      # Helper script to easily launch Steam
+      #Heroic launch service (bypasses Sunshine security wrapper issues)
+      systemd.user.services.heroic-run-service = {
+        enable = true;
+        description = "Listen and starts heroic launcher";
+        wantedBy = [ "graphical-session.target" ];
+        partOf = [ "graphical-session.target" ];
+        wants = [ "graphical-session.target" ];
+        after = [ "graphical-session.target" ];
+        serviceConfig.Restart = "on-failure";
+        script = toString
+          (pkgs.writers.writePython3 "heroic-run-service" { } ''
+            import os
+            from pathlib import Path
+            import subprocess
+
+            pipe_path = Path(f'/run/user/{os.getuid()}/heroic-run.fifo')
+            try:
+                pipe_path.parent.mkdir(parents=True, exist_ok=True)
+                pipe_path.unlink(missing_ok=True)
+                os.mkfifo(pipe_path, 0o600)
+                while True:
+                    with pipe_path.open(encoding='utf-8') as pipe:
+                        pipe.read().strip()
+                        subprocess.Popen(['heroic'])
+            finally:
+                pipe_path.unlink(missing_ok=True)
+          '');
+        path = [ pkgs.heroic ];
+      };
+
+      # Helper scripts to easily launch Steam and Heroic
       environment.systemPackages = [
         (pkgs.writeShellApplication {
           name = "steam-run-url";
           text = ''
             echo "$1" > "/run/user/$(id --user)/steam-run-url.fifo"
+          '';
+          runtimeInputs = [ pkgs.coreutils ];
+        })
+        (pkgs.writeShellApplication {
+          name = "heroic-run";
+          text = ''
+            echo "launch" > "/run/user/$(id --user)/heroic-run.fifo"
           '';
           runtimeInputs = [ pkgs.coreutils ];
         })

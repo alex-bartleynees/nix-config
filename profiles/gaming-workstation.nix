@@ -8,7 +8,7 @@ lib.mkIf config.profiles.gaming-workstation {
     enable = true;
     streaming.enable = true;
     streaming.gpu = "nvidia"; # GPU to use for game streaming
-    streaming.resolution = "2560x1440@164.96"; # Resolution for game streaming
+    streaming.resolution = "3840x2160@164.96"; # Resolution for game streaming
     streaming.monitor = 1; # Monitor to use for game streaming
   };
 
