@@ -61,7 +61,12 @@ in {
       boot.loader.efi.canTouchEfiVariables = true;
       boot.loader.systemd-boot.consoleMode = "max";
 
-      boot = { kernelPackages = pkgs.linuxKernel.packages.linux_zen; };
+      boot = {
+        kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+
+        # Increase inotify watch limit for IDEs (IntelliJ, VSCode, etc.)
+        kernel.sysctl = { "fs.inotify.max_user_watches" = 1048576; };
+      };
 
       # Hardware
       hardware.graphics = { enable = true; };

@@ -53,8 +53,6 @@
       flake = false;
     };
 
-    lazyvim = { url = "github:alex-bartleynees/nix-devenv?dir=lazyvim"; };
-
     neovim = { url = "github:alex-bartleynees/nix-devenv?dir=neovim"; };
 
     niri.url = "github:sodiboo/niri-flake";
@@ -63,9 +61,8 @@
   };
 
   outputs = inputs@{ self, nixpkgs, determinate, home-manager, nixos-wsl
-    , wsl-vpnkit, nix-darwin, mac-app-util, stylix, lazyvim, neovim
-    , nixos-cosmic, cosmic-nixpkgs, sops-nix, disko, nixos-hardware, niri, mango
-    , ... }:
+    , wsl-vpnkit, nix-darwin, mac-app-util, stylix, neovim, nixos-cosmic
+    , cosmic-nixpkgs, sops-nix, disko, nixos-hardware, niri, mango, ... }:
     let
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };

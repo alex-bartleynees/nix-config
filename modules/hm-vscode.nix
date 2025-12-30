@@ -63,6 +63,7 @@ in {
         svelte.svelte-vscode
         vscodevim.vim
         arcticicestudio.nord-visual-studio-code
+        biomejs.biome
       ]) ++ [
         # Extensions not in Nixpkgs
         # (ext "andrejunges" "Handlebars" "0.4.1"

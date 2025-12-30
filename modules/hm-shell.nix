@@ -77,7 +77,6 @@ in {
 
   config = lib.mkIf cfg.enable (let
     commonAliases = {
-      lv = "lazyvim";
       tx = "tmuxinator";
       lg = "lazygit";
       ld = "lazydocker";

@@ -14,6 +14,8 @@
     "/home/${username}/.vscode/argv.json" # VSCode command line arguments
     "/home/${username}/.vscode-server" # Remote SSH sessions
     "/home/${username}/azuredatastudio"
+    "/home/${username}/.config/yaak" # Yaak API client settings and collections
+    "/home/${username}/.local/share/yaak" # Yaak API client data
 
     # Config files
     "/home/${username}/.config/nix-config"

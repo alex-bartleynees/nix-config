@@ -8,7 +8,8 @@ in {
       default = "client";
       description = "Tailscale routing features";
     };
-    configureUdpGro = lib.mkEnableOption "UDP GRO configuration for improved routing performance";
+    configureUdpGro = lib.mkEnableOption
+      "UDP GRO configuration for improved routing performance";
   };
 
   config = lib.mkIf cfg.enable {

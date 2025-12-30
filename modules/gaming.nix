@@ -192,24 +192,23 @@ in {
         wants = [ "graphical-session.target" ];
         after = [ "graphical-session.target" ];
         serviceConfig.Restart = "on-failure";
-        script = toString
-          (pkgs.writers.writePython3 "heroic-run-service" { } ''
-            import os
-            from pathlib import Path
-            import subprocess
+        script = toString (pkgs.writers.writePython3 "heroic-run-service" { } ''
+          import os
+          from pathlib import Path
+          import subprocess
 
-            pipe_path = Path(f'/run/user/{os.getuid()}/heroic-run.fifo')
-            try:
-                pipe_path.parent.mkdir(parents=True, exist_ok=True)
-                pipe_path.unlink(missing_ok=True)
-                os.mkfifo(pipe_path, 0o600)
-                while True:
-                    with pipe_path.open(encoding='utf-8') as pipe:
-                        pipe.read().strip()
-                        subprocess.Popen(['heroic'])
-            finally:
-                pipe_path.unlink(missing_ok=True)
-          '');
+          pipe_path = Path(f'/run/user/{os.getuid()}/heroic-run.fifo')
+          try:
+              pipe_path.parent.mkdir(parents=True, exist_ok=True)
+              pipe_path.unlink(missing_ok=True)
+              os.mkfifo(pipe_path, 0o600)
+              while True:
+                  with pipe_path.open(encoding='utf-8') as pipe:
+                      pipe.read().strip()
+                      subprocess.Popen(['heroic'])
+          finally:
+              pipe_path.unlink(missing_ok=True)
+        '');
         path = [ pkgs.heroic ];
       };
 

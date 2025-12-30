@@ -25,7 +25,6 @@
     tmux
     lazygit
     lazydocker
-    inputs.lazyvim.packages.${pkgs.stdenv.hostPlatform.system}.default
     inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
     claude-code
     #opencode
@@ -51,11 +50,6 @@
 
     ".config/nvim/lua/alex/plugins/colorscheme.lua" = {
       source = "${inputs.dotfiles}/themes/${theme.name}/nvim/colorscheme.lua";
-    };
-
-    ".config/lazyvim" = {
-      source = "${inputs.dotfiles}/configs/lazyvim";
-      recursive = true;
     };
   };
 
