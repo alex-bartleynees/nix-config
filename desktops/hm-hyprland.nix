@@ -296,26 +296,26 @@ in {
       ];
 
       # Window rules for Steam gaming
-      windowrulev2 = [
-        "idleinhibit focus, class:^(steam)$"
-        "idleinhibit focus, class:^(steamwebhelper)$"
-        "idleinhibit focus, class:^(steam_app_.*)$"
-        "idleinhibit focus, title:^(Steam Big Picture Mode)$"
-        "idleinhibit focus, class:^(gamescope)$"
+      windowrule = [
+        "idle_inhibit focus, match:class ^(steam)$"
+        "idle_inhibit focus, match:class ^(steamwebhelper)$"
+        "idle_inhibit focus, match:class ^(steam_app_.*)$"
+        "idle_inhibit focus, match:title ^(Steam Big Picture Mode)$"
+        "idle_inhibit focus, match:class ^(gamescope)$"
 
         # Steam main window
-        #"float, class:^(steam)$"
-        #"monitor DP-6, class:^(steam)$"
+        #"float on, match:class ^(steam)$"
+        #"monitor DP-6, match:class ^(steam)$"
 
         # Steam Big Picture Mode
-        #"float, class:^(steam)$, title:^(Steam Big Picture Mode)$"
-        #"monitor DP-6, class:^(steam)$, title:^(Steam Big Picture Mode)$"
+        #"float on, match:class ^(steam)$ match:title ^(Steam Big Picture Mode)$"
+        #"monitor DP-6, match:class ^(steam)$ match:title ^(Steam Big Picture Mode)$"
 
-        #Steam games - force proper display settings
-        "fullscreen, class:^(steam_app_.*)$"
-        "monitor DP-6, class:^(steam_app_.*)$"
-        "workspace 1, class:^(steam_app_.*)$"
-        "immediate, class:^(steam_app_.*)$"
+        # Steam games - force proper display settings
+        "fullscreen on, match:class ^(steam_app_.*)$"
+        "monitor DP-6, match:class ^(steam_app_.*)$"
+        "workspace 1, match:class ^(steam_app_.*)$"
+        "immediate on, match:class ^(steam_app_.*)$"
       ];
 
       # Misc settings
