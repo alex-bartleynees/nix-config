@@ -41,10 +41,32 @@ lib.mkIf config.profiles.media-server {
     defaultGateway = "192.168.0.1";
     nameservers = [ "192.168.0.1" "8.8.8.8" ];
 
-    # Allow traffic from home assistant docker container to host
-    firewall.extraCommands = ''
-      iptables -A INPUT -s 172.32.0.0/16 -p tcp --dport 8123 -j ACCEPT
-    '';
+    # Firewall configuration for Docker networking
+    firewall = {
+      enable = true;
+
+      extraCommands = ''
+        # Allow traffic from home assistant docker container to host
+        iptables -A INPUT -s 172.32.0.0/16 -p tcp --dport 8123 -j ACCEPT
+
+        # Allow local network HTTP/HTTPS (Traefik)
+        iptables -A DOCKER-USER -s 192.168.0.0/24 -p tcp --dport 443 -j ACCEPT
+        iptables -A DOCKER-USER -s 192.168.0.0/24 -p tcp --dport 80 -j ACCEPT
+
+        # Allow DNS from local network (home devices need this!)
+        iptables -A DOCKER-USER -s 192.168.0.0/24 -p tcp --dport 53 -j ACCEPT
+        iptables -A DOCKER-USER -s 192.168.0.0/24 -p udp --dport 53 -j ACCEPT
+
+        # Allow localhost
+        iptables -A DOCKER-USER -i lo -j ACCEPT
+
+        # Allow Tailscale network (VPS connects via this!)
+        iptables -A DOCKER-USER -s 100.64.0.0/10 -j ACCEPT
+
+        # CRITICAL: Return to Docker for further processing
+        iptables -A DOCKER-USER -j RETURN
+      '';
+    };
   };
 
   # Enhanced Tailscale for routing
