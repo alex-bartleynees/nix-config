@@ -46,6 +46,9 @@ lib.mkIf config.profiles.media-server {
       enable = true;
 
       extraCommands = ''
+        # Allow established/related connections (needed for exit node)
+        iptables -A DOCKER-USER -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
         # Allow traffic from home assistant docker container to host
         iptables -A INPUT -s 172.32.0.0/16 -p tcp --dport 8123 -j ACCEPT
 
