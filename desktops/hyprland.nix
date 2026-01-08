@@ -20,6 +20,8 @@
     XDG_SESSION_DESKTOP = "Hyprland";
   };
 
+  environment.systemPackages = with pkgs; [ hyprutils ];
+
   security.pam.services.hyprlock = { };
 
   displayManager = {

@@ -27,7 +27,9 @@
     lazydocker
     inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
     claude-code
-    #opencode
+    opencode
+    restic-browser
+    dbeaver-bin
     (vim-full.customize {
       name = "vim";
       vimrcConfig.customRC = ''
