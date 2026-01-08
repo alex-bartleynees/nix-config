@@ -104,6 +104,10 @@ lib.mkIf config.profiles.media-server {
       "**/node_modules/**"
       "**/target/**"
     ];
+    systemd.timeouts = {
+      start = "60m";  # Increase timeout for large backups
+      stop = "5m";    # More time to cleanup on stop
+    };
   };
 
   # Samba host configuration
