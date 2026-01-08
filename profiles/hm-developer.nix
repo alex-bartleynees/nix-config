@@ -28,7 +28,16 @@
     inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
     claude-code
     opencode
-    restic-browser
+    restic
+    (pkgs.symlinkJoin {
+      name = "restic-browser-wrapped";
+      paths = [ pkgs.restic-browser ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/Restic-Browser \
+          --set WEBKIT_DISABLE_DMABUF_RENDERER 1
+      '';
+    })
     dbeaver-bin
     (vim-full.customize {
       name = "vim";
