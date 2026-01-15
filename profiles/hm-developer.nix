@@ -35,13 +35,18 @@
       mkdir -p "$HOME/.claude/plugins"
       mkdir -p "$HOME/workspaces"
       touch "$HOME/.claude.json"
+      touch "$HOME/.gitconfig"
 
       # Run claude with landrun sandbox
       exec ${pkgs.landrun}/bin/landrun \
         --best-effort \
         --rox /nix/store,/usr,/run/current-system \
-        --ro /etc \
+        --ro /dev \
+        --rw /dev/null \
+        --ro /etc,/sys,/proc \
+        --ro "$HOME/.gitconfig" \
         --rw "$HOME/.config/claude-code,$HOME/.cache/claude,$HOME/.claude.json,$HOME/.claude" \
+        --rwx "$HOME/.config/nix-config" \
         --rwx "$HOME/workspaces" \
         --rwx /tmp \
         --connect-tcp 443 \
@@ -62,13 +67,18 @@
       mkdir -p "$HOME/.cache/opencode"
       mkdir -p "$HOME/.local/share/opencode/log"
       mkdir -p "$HOME/workspaces"
+      touch "$HOME/.gitconfig"
 
       # Run opencode with landrun sandbox
       exec ${pkgs.landrun}/bin/landrun \
         --best-effort \
-        --rox /nix/store,/usr,/run/current-system,/dev \
+        --rox /nix/store,/usr,/run/current-system \
+        --ro /dev \
+        --rw /dev/null \
         --ro /etc,/sys,/proc \
+        --ro "$HOME/.gitconfig" \
         --rw "$HOME/.config/opencode,$HOME/.cache/opencode,$HOME/.local/share/opencode" \
+        --rwx "$HOME/.config/nix-config" \
         --rwx "$HOME/workspaces" \
         --rwx /tmp \
         --connect-tcp 443 \
