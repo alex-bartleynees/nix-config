@@ -38,6 +38,7 @@
 
       # Run claude with landrun sandbox
       exec ${pkgs.landrun}/bin/landrun \
+        --best-effort \
         --rox /nix/store,/usr,/run/current-system \
         --ro /etc \
         --rw "$HOME/.config/claude-code,$HOME/.cache/claude,$HOME/.claude.json,$HOME/.claude" \
