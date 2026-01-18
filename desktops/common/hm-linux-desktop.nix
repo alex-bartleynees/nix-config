@@ -38,11 +38,11 @@
   home.packages = with pkgs; [
     firefox
     vlc
-    xfce.thunar
+    thunar
     pavucontrol
     pulsemixer
-    xfce.tumbler
-    xfce.ristretto
+    tumbler
+    ristretto
     wdisplays
     popsicle
 

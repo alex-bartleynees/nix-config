@@ -27,11 +27,17 @@
     lazydocker
     inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
 
-    # Sandboxed claude-code with landrun
+    # Unrestricted login helper for OAuth
+    (pkgs.writeShellScriptBin "claude-login" ''
+      exec ${pkgs.claude-code}/bin/claude /login
+    '')
+
+    # Sandboxed claude-code with landrun (no bind-tcp needed after auth)
     (pkgs.writeShellScriptBin "claude" ''
       # Create config directories if they don't exist
       mkdir -p "$HOME/.config/claude-code"
       mkdir -p "$HOME/.cache/claude"
+      mkdir -p "$HOME/.local/state/claude-code"
       mkdir -p "$HOME/.claude/plugins"
       mkdir -p "$HOME/workspaces"
       touch "$HOME/.claude.json"
@@ -41,11 +47,10 @@
       exec ${pkgs.landrun}/bin/landrun \
         --best-effort \
         --rox /nix/store,/usr,/run/current-system \
-        --ro /dev \
-        --rw /dev/null \
-        --ro /etc,/sys,/proc \
+        --ro /dev,/etc,/sys,/proc \
+        --rw /dev/null,/dev/stdin,/dev/stdout,/dev/stderr,/dev/tty \
         --ro "$HOME/.gitconfig" \
-        --rw "$HOME/.config/claude-code,$HOME/.cache/claude,$HOME/.claude.json,$HOME/.claude" \
+        --rw "$HOME/.config/claude-code,$HOME/.cache/claude,$HOME/.local/state/claude-code,$HOME/.claude.json,$HOME/.claude" \
         --rwx "$HOME/.config/nix-config" \
         --rwx "$HOME/workspaces" \
         --rwx /tmp \
@@ -54,42 +59,48 @@
         --env PATH \
         --env XDG_CONFIG_HOME \
         --env XDG_CACHE_HOME \
+        --env XDG_STATE_HOME \
         --env USER \
         --env TERM \
+        --env LANG \
+        --env LC_ALL \
         -- \
         ${pkgs.claude-code}/bin/claude "$@"
     '')
 
     # Sandboxed opencode with landrun
     (pkgs.writeShellScriptBin "opencode" ''
-      # Create config directories if they don't exist
-      mkdir -p "$HOME/.config/opencode"
-      mkdir -p "$HOME/.cache/opencode"
-      mkdir -p "$HOME/.local/share/opencode/log"
-      mkdir -p "$HOME/workspaces"
-      touch "$HOME/.gitconfig"
-
-      # Run opencode with landrun sandbox
-      exec ${pkgs.landrun}/bin/landrun \
-        --best-effort \
-        --rox /nix/store,/usr,/run/current-system \
-        --ro /dev \
-        --rw /dev/null \
-        --ro /etc,/sys,/proc \
-        --ro "$HOME/.gitconfig" \
-        --rw "$HOME/.config/opencode,$HOME/.cache/opencode,$HOME/.local/share/opencode" \
-        --rwx "$HOME/.config/nix-config" \
-        --rwx "$HOME/workspaces" \
-        --rwx /tmp \
-        --connect-tcp 443 \
-        --env HOME \
-        --env PATH \
-        --env XDG_CONFIG_HOME \
-        --env XDG_CACHE_HOME \
-        --env USER \
-        --env TERM \
-        -- \
-        ${pkgs.opencode}/bin/opencode "$@"
+            # Create config directories if they don't exist
+             mkdir -p "$HOME/.config/opencode"
+             mkdir -p "$HOME/.cache/opencode"
+             mkdir -p "$HOME/.local/share/opencode/log"
+             mkdir -p "$HOME/.local/state/opencode"
+             mkdir -p "$HOME/workspaces"
+             touch "$HOME/.gitconfig"
+             
+             # Run opencode with landrun sandbox
+             exec ${pkgs.landrun}/bin/landrun \
+               --best-effort \
+               --rox /nix/store,/usr,/run/current-system \
+               --ro /dev,/etc,/sys,/proc \
+               --rw /dev/null,/dev/stdin,/dev/stdout,/dev/stderr,/dev/tty \
+               --ro "$HOME/.gitconfig" \
+               --rw "$HOME/.config/opencode,$HOME/.cache/opencode,$HOME/.local/share/opencode,$HOME/.local/state/opencode" \
+               --rwx "$HOME/.config/nix-config" \
+               --rwx "$HOME/workspaces" \
+               --rwx /tmp \
+               --connect-tcp 443 \
+               --env HOME \
+               --env PATH \
+               --env XDG_CONFIG_HOME \
+               --env XDG_CACHE_HOME \
+               --env XDG_STATE_HOME \
+               --env USER \
+               --env TERM \
+               --env LANG \
+               --env LC_ALL \
+               -- \
+               ${pkgs.opencode}/bin/opencode "$@"
     '')
 
     restic

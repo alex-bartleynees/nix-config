@@ -17,6 +17,9 @@
     "/home/${username}/.config/app.yaak.desktop" # Yaak API client settings and collections
     "/home/${username}/.local/share/app.yaak.desktop" # Yaak API client data
     "/home/${username}/.local/share/yaak-app" # Yaak additional app data
+    "/home/${username}/.config/restic-browser" # Restic Browser configuration
+    "/home/${username}/.local/share/restic-browser" # Restic Browser data
+    "/home/${username}/.local/share/DBeaverData" # DBeaver workspace and configuration
 
     # Config files
     "/home/${username}/.config/nix-config"

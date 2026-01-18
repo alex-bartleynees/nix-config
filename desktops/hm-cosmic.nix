@@ -23,8 +23,8 @@
     vlc
     pavucontrol
     pulsemixer
-    xfce.tumbler
-    xfce.ristretto
+    tumbler
+    ristretto
     popsicle
   ];
 
