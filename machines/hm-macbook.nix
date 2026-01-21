@@ -41,7 +41,7 @@
       outer.right =      4
 
       [mode.main.binding]
-      alt-enter = '''exec-and-forget open -n "/Applications/Ghostty.app"'''
+      alt-enter = 'exec-and-forget open -n "/Applications/Ghostty.app"'
 
 
       # i3 wraps focus by default
