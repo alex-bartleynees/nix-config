@@ -10,7 +10,7 @@
 
     # Applications with important user data
     "/home/${username}/Documents" # User documents
-    "/home/${username}/.config/obsidian" # Obsidian vaults and settings
+    "/home/${username}/.config/obsidian"
 
     # Shell and terminal tools
     "/home/${username}/.zsh_history"

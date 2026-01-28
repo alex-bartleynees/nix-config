@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, lib, homeDirectory, ... }:
 let cfg = config.obsidian;
 in {
   options.obsidian = {
@@ -6,6 +6,12 @@ in {
       type = lib.types.bool;
       default = false;
       description = "Enable Obsidian configuration.";
+    };
+
+    vaultPath = lib.mkOption {
+      type = lib.types.str;
+      default = "${homeDirectory}/Documents/obsidian-vault";
+      description = "Absolute path to the Obsidian vault.";
     };
 
     theme = lib.mkOption {
@@ -16,11 +22,14 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    home.activation.ensureObsidianDir = lib.hm.dag.entryBefore [ "obsidian" ] ''
+      mkdir -p "${homeDirectory}/.config/obsidian"
+    '';
+
     programs.obsidian = {
       enable = true;
-      vaults.obsidian-vault = {
+      vaults."${lib.removePrefix "${homeDirectory}/" cfg.vaultPath}" = {
         enable = true;
-        target = "Documents/obsidian-vault";
         settings = { appearance = { cssTheme = cfg.theme; }; };
       };
     };
