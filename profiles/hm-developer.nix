@@ -20,6 +20,8 @@
 
   direnv = { enable = true; };
 
+  distrobox = { enable = pkgs.stdenv.isLinux; };
+
   home.packages = with pkgs;
     [
       fastfetch
@@ -132,7 +134,7 @@
       })
       wget
       git
-    ] ++ pkgs.lib.optionals pkgs.stdenv.isLinux [ distrobox ];
+    ];
 
   programs.yazi.enable = true;
 
