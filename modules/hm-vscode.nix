@@ -43,6 +43,7 @@ in {
         ms-vscode-remote.remote-ssh-edit
         ms-vscode-remote.vscode-remote-extensionpack
         ms-vscode-remote.remote-wsl
+        ms-vscode-remote.remote-containers
         ms-dotnettools.vscode-dotnet-runtime
         ms-dotnettools.csharp
         ms-dotnettools.csdevkit
@@ -54,7 +55,6 @@ in {
         csharpier.csharpier-vscode
         github.copilot
         github.copilot-chat
-        ms-dotnettools.vscodeintellicode-csharp
         christian-kohler.npm-intellisense
         ms-kubernetes-tools.vscode-kubernetes-tools
         # ms-python.python
@@ -104,19 +104,17 @@ in {
           "sha256-H79KlUwhgAHBnGucKq8TJ1olDl0dRrq+ullGgRV27pc=")
         (ext "donjayamanne" "python-extension-pack" "1.7.0"
           "sha256-ewOw6nMVzNSYddLcCBGKVNvllztFwhEtncE2RFeFcOc=")
-        (ext "saoudrizwan" "claude-dev" "3.11.1"
-          "sha256-W9XuAp2l+PQG3URQTMoqwBMIGKwI6VumppjuTrPSmuk=")
         (ext "Sourcegraph" "amp" "0.0.1748016644"
           "sha256-avI4SiNHSgHZMqGrZjC7vaBhocO2kU4Dqoejpwt1cRk=")
-        (ext "sainnhe" "everforest" "0.3.0"
-          "sha256-nZirzVvM160ZTpBLTimL2X35sIGy5j2LQOok7a2Yc7U=")
+        (ext "AndreiLucaci" "everforest-pro" "1.0.2"
+          "sha256-GV9AophhHqnJwtn/uYo3Ah2ptN6qw9GtiGnbKCrLKRk=")
       ];
 
       profiles.default.keybindings = [
         {
           "key" = "ctrl+e";
           "command" = "workbench.action.toggleSidebarVisibility";
-        }
+          }
         {
           "key" = "ctrl+shift+f";
           "command" = "workbench.action.quickTextSearch";
