@@ -14,11 +14,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: false
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Check flake
-        run: nix flake check --no-build
+        run: nix flake check --all-systems
 
   build-nixos:
     needs: check
@@ -35,6 +37,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: false
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
@@ -53,6 +57,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: false
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
