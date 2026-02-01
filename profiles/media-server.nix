@@ -19,15 +19,7 @@ lib.mkIf config.profiles.media-server {
     profile = "default";
   };
 
-  # Enable impermanence only for root filesystem
-  impermanence = {
-    enable = true;
-    resetSubvolumes = [ "@" ]; # Only reset root subvolume, preserve @home
-    subvolumes = {
-      "@" = { mountpoint = "/"; };
-      "@home" = { mountpoint = "/home"; };
-    };
-  };
+  impermanence.enable = lib.mkForce false;
 
   # Media server specific configurations
   services.displayManager.gdm.enable = lib.mkForce false;
@@ -135,4 +127,7 @@ lib.mkIf config.profiles.media-server {
     application = "${pkgs.moonlight-qt}/bin/moonlight";
     cageArgs = [ "-s" ];
   };
+
+  # Technitium DNS server
+  technitiumDns.enable = true;
 }
