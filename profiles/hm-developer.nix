@@ -32,35 +32,34 @@
     enableSandbox = pkgs.stdenv.isLinux;
   };
 
-  home.packages = with pkgs;
-    [
-      fastfetch
-      tmux
-      lazygit
-      lazydocker
-      inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
+  home.packages = with pkgs; [
+    fastfetch
+    tmux
+    lazygit
+    lazydocker
+    inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
 
-      restic
-      (pkgs.symlinkJoin {
-        name = "restic-browser-wrapped";
-        paths = [ pkgs.restic-browser ];
-        buildInputs = [ pkgs.makeWrapper ];
-        postBuild = ''
-          wrapProgram $out/bin/Restic-Browser \
-            --set WEBKIT_DISABLE_DMABUF_RENDERER 1
-        '';
-      })
-      dbeaver-bin
-      (vim-full.customize {
-        name = "vim";
-        vimrcConfig.customRC = ''
-          source $VIMRUNTIME/defaults.vim
-          set clipboard=unnamedplus
-        '';
-      })
-      wget
-      git
-    ];
+    restic
+    (pkgs.symlinkJoin {
+      name = "restic-browser-wrapped";
+      paths = [ pkgs.restic-browser ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/Restic-Browser \
+          --set WEBKIT_DISABLE_DMABUF_RENDERER 1
+      '';
+    })
+    dbeaver-bin
+    (vim-full.customize {
+      name = "vim";
+      vimrcConfig.customRC = ''
+        source $VIMRUNTIME/defaults.vim
+        set clipboard=unnamedplus
+      '';
+    })
+    wget
+    git
+  ];
 
   programs.yazi.enable = true;
 

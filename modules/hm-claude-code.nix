@@ -12,7 +12,8 @@ in {
 
     workspaceDirs = lib.mkOption {
       type = lib.types.listOf lib.types.str;
-      default = [ "$HOME/workspaces" "$HOME/.config/nix-config" ];
+      default =
+        [ "$HOME/workspaces" "$HOME/.config/nix-config" "$HOME/Documents" ];
       description = "Directories to grant read-write-execute access to.";
     };
   };
@@ -49,8 +50,10 @@ in {
             --rw /dev/null,/dev/stdin,/dev/stdout,/dev/stderr,/dev/tty \
             --ro "$HOME/.gitconfig" \
             --rw "$HOME/.config/claude-code,$HOME/.cache/claude,$HOME/.local/state/claude-code,$HOME/.claude.json,$HOME/.claude" \
-            ${lib.concatMapStringsSep " " (dir: ''--rwx "${dir}"'')
-            cfg.workspaceDirs} \
+            ${
+              lib.concatMapStringsSep " " (dir: ''--rwx "${dir}"'')
+              cfg.workspaceDirs
+            } \
             --rwx /tmp \
             --connect-tcp 443 \
             --env HOME \

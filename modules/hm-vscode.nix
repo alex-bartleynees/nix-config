@@ -114,7 +114,7 @@ in {
         {
           "key" = "ctrl+e";
           "command" = "workbench.action.toggleSidebarVisibility";
-          }
+        }
         {
           "key" = "ctrl+shift+f";
           "command" = "workbench.action.quickTextSearch";

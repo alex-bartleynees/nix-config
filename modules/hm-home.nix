@@ -1,18 +1,12 @@
 { pkgs, lib, username, homeDirectory, hostName, theme, desktop, ... }:
 let
-  hostImports = if builtins.pathExists ../machines/hm-${hostName}.nix then
-    [ ../machines/hm-${hostName}.nix ]
-  else
-    [ ];
   desktopImports =
     if desktop != null && builtins.pathExists ../desktops/hm-${desktop}.nix then
       [ ../desktops/hm-${desktop}.nix ]
     else
       [ ];
-
-  allImports = hostImports ++ desktopImports;
 in {
-  imports = allImports;
+  imports = desktopImports;
   home.username = lib.mkDefault username;
   home.homeDirectory = lib.mkDefault homeDirectory;
   home.stateVersion = "24.11";

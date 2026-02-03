@@ -14,10 +14,19 @@ in {
     hostName = "desktop";
     users = users;
     additionalUserProfiles = {
-      alexbn.profiles =
-        [ "vscode-developer" "rider-developer" "backend-developer" ];
-      alexbn-work.profiles =
-        [ "vscode-developer" "rider-developer" "backend-developer" "work" ];
+      alexbn.profiles = [
+        "vscode-developer"
+        "rider-developer"
+        "backend-developer"
+        "host-desktop"
+      ];
+      alexbn-work.profiles = [
+        "vscode-developer"
+        "rider-developer"
+        "backend-developer"
+        "work"
+        "host-desktop"
+      ];
     };
   };
 
@@ -25,7 +34,9 @@ in {
     desktop = "none";
     hostName = "nixos-wsl";
     users = users;
-    additionalUserProfiles = { alexbn.profiles = [ "rider-developer" ]; };
+    additionalUserProfiles = {
+      alexbn.profiles = [ "rider-developer" "host-wsl" ];
+    };
     stateVersion = "24.05";
     systemProfiles = [ "wsl" ];
   };
@@ -45,7 +56,8 @@ in {
       [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t490 ];
     users = users;
     additionalUserProfiles = {
-      alexbn.profiles = [ "vscode-developer" "rider-developer" ];
+      alexbn.profiles =
+        [ "vscode-developer" "rider-developer" "host-thinkpad" ];
     };
     systemProfiles = [ "linux-laptop" ];
   };
@@ -57,5 +69,6 @@ in {
     isDarwin = true;
     system = "aarch64-darwin";
     systemProfiles = [ "macbook" ];
+    additionalUserProfiles = { alexbn.profiles = [ "host-macbook" ]; };
   };
 }

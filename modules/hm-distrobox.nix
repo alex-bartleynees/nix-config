@@ -8,9 +8,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.distrobox = {
       enable = true;
-      settings = {
-        container_manager = "docker";
-      };
+      settings = { container_manager = "docker"; };
     };
   };
 }
