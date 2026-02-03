@@ -1,6 +1,7 @@
 { inputs }:
 ({ system ? "aarch64-darwin", stateVersion ? "25.05", systemProfiles, desktop
-  , users, themeName ? "tokyo-night", hostName, additionalUserProfiles ? { }, }:
+  , users, themeName ? "tokyo-night", hostName, additionalUserProfiles ? { }, isDarwin
+  ? true, }:
   let
     inherit (inputs) nixpkgs nix-darwin;
 
