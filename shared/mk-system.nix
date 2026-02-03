@@ -3,10 +3,9 @@
   , desktop ? "hyprland", users, themeName ? "tokyo-night", hostName
   , enableThemeSpecialisations ? false, enableDesktopSpecialisations ? false
   , desktopSpecialisations ? [ ], additionalModules ? [ ]
-  , additionalSpecialArgs ? { }, additionalUserProfiles ? { }, isDarwin ? false,
-  }:
+  , additionalSpecialArgs ? { }, additionalUserProfiles ? { }, }:
   let
-    inherit (inputs) nixpkgs nix-darwin;
+    inherit (inputs) nixpkgs;
 
     # Constants
     allowUnfreeConfig = { allowUnfree = true; };
@@ -18,14 +17,14 @@
     };
 
     # Hardware configuration
-    hardwareConfig = if !isDarwin && builtins.pathExists
+    hardwareConfig = if builtins.pathExists
     (../machines/hardware + "/${hostName}-hardware-configuration.nix") then
       [ ../machines/hardware/${hostName}-hardware-configuration.nix ]
     else
       [ ];
 
     # Disk configuration
-    diskConfig = if !isDarwin && builtins.pathExists
+    diskConfig = if builtins.pathExists
     (../machines/disk-config + "/${hostName}-disk-config.nix") then
       [ ../machines/disk-config/${hostName}-disk-config.nix ]
     else
@@ -35,14 +34,12 @@
 
     # Theme setup
     theme = import ../themes/${themeName}.nix { inherit inputs pkgs; };
-    themes = if !isDarwin then
-      import ../themes {
-        inherit inputs users additionalUserProfiles;
-        lib = nixpkgs.lib;
-      }
-    else
-      null;
-    themeSpecialisations = if enableThemeSpecialisations && !isDarwin then
+    themes = import ../themes {
+      inherit inputs users additionalUserProfiles;
+      lib = nixpkgs.lib;
+    };
+
+    themeSpecialisations = if enableThemeSpecialisations then
       [
         (themes.mkThemeSpecialisations {
           baseImports = baseImports;
@@ -53,34 +50,31 @@
       [ ];
 
     # Desktop specialisations
-    mkDesktopSpecialisations = if !isDarwin then
-      import ./mk-desktop-specialisations.nix {
-        inherit inputs;
-        lib = nixpkgs.lib;
-      }
+    mkDesktopSpecialisations = import ./mk-desktop-specialisations.nix {
+      inherit inputs;
+      lib = nixpkgs.lib;
+    };
+
+    desktopSpecialisationModules = if enableDesktopSpecialisations then
+      [
+        (mkDesktopSpecialisations {
+          baseImports = baseImports;
+          inherit theme users additionalUserProfiles;
+          desktops = desktopSpecialisations;
+        })
+      ]
     else
-      null;
-    desktopSpecialisationModules =
-      if enableDesktopSpecialisations && !isDarwin then
-        [
-          (mkDesktopSpecialisations {
-            baseImports = baseImports;
-            inherit theme users additionalUserProfiles;
-            desktops = desktopSpecialisations;
-          })
-        ]
-      else
-        [ ];
+      [ ];
 
     # Shared configuration
     shared = import ../shared/nixos-default.nix {
-      inherit inputs theme desktop users additionalUserProfiles isDarwin;
+      inherit inputs theme desktop users additionalUserProfiles;
       lib = nixpkgs.lib;
     };
 
     # Desktop module
     desktopConfig =
-      if !isDarwin && builtins.pathExists (../desktops + "/${desktop}.nix") then
+      if builtins.pathExists (../desktops + "/${desktop}.nix") then
         [ ../desktops/${desktop}.nix ]
       else
         [ ];
@@ -98,15 +92,8 @@
       self = inputs.self;
     } // additionalSpecialArgs;
 
-  in if isDarwin then
-    nix-darwin.lib.darwinSystem {
-      inherit system;
-      specialArgs = commonSpecialArgs;
-      modules = baseModules;
-    }
-  else
-    nixpkgs.lib.nixosSystem {
-      inherit system;
-      specialArgs = commonSpecialArgs;
-      modules = baseModules;
-    })
+  in nixpkgs.lib.nixosSystem {
+    inherit system;
+    specialArgs = commonSpecialArgs;
+    modules = baseModules;
+  })

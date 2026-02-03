@@ -1,23 +1,15 @@
-{ lib, inputs, users, theme, desktop, additionalUserProfiles ? { }
-, isDarwin ? false, }:
+{ lib, inputs, users, theme, desktop, additionalUserProfiles ? { }, }:
 let
   # Core modules
   importUtils = import ../shared/import-nix-files.nix { inherit lib; };
-  coreModules =
-    if isDarwin then [ ] else importUtils.importAllNixFiles ../modules;
-  profileModules = if isDarwin then
-    [ ../machines/macbook.nix ]
-  else
-    importUtils.importAllNixFiles ../profiles;
+  coreModules = importUtils.importAllNixFiles ../modules;
+  profileModules = importUtils.importAllNixFiles ../profiles;
 
   # User modules
   userModules = map (user: ../users/${user.username}.nix) users;
 
-  baseImports = [ ./custom-options.nix ] ++ (if isDarwin then [
-    inputs.mac-app-util.darwinModules.default
-    inputs.home-manager.darwinModules.home-manager
-    inputs.stylix.darwinModules.stylix
-  ] else [
+  baseImports = [
+    ./custom-options.nix
     ./locale.nix
     inputs.determinate.nixosModules.default
     inputs.stylix.nixosModules.stylix
@@ -25,7 +17,7 @@ let
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
     inputs.nixos-wsl.nixosModules.wsl
-  ]) ++ coreModules ++ profileModules ++ userModules;
+  ] ++ coreModules ++ profileModules ++ userModules;
 
   homeManagerImports = map (user:
     import ./home-manager.nix {
@@ -33,8 +25,6 @@ let
       username = user.username;
       homeDirectory = user.homeDirectory;
       extraModules = [ ../modules/hm-home.nix ];
-      sharedModules = lib.optionals (isDarwin)
-        [ inputs.mac-app-util.homeManagerModules.default ];
       inherit theme;
     }) users;
 

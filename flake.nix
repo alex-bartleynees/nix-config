@@ -65,6 +65,7 @@
     , cosmic-nixpkgs, sops-nix, disko, nixos-hardware, niri, mango, ... }:
     let
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
+      mkDarwinSystem = import ./shared/mk-darwin-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };
 
       linuxHosts =
@@ -78,6 +79,6 @@
         nixpkgs.lib.mapAttrs (name: config: mkSystem config) linuxHosts;
 
       darwinConfigurations =
-        nixpkgs.lib.mapAttrs (name: config: mkSystem config) darwinHosts;
+        nixpkgs.lib.mapAttrs (name: config: mkDarwinSystem config) darwinHosts;
     };
 }

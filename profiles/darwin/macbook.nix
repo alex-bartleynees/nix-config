@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, users, isDarwin ? false, ... }: {
+{ pkgs, self, users, ... }: {
   programs.zsh.enable = true;
   nixpkgs.config.allowUnfree = true;
   nix = {
@@ -11,7 +11,7 @@
         Hour = 3;
         Minute = 15;
       };
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 7d";
     };
   };
 
