@@ -1,4 +1,4 @@
-{ lib, inputs, users, theme, desktop, hostName, additionalUserProfiles ? { }
+{ inputs, users, theme, desktop, hostName, additionalUserProfiles ? { }
 , isDarwin ? true, }:
 let
   # Core modules
