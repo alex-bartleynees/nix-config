@@ -8,7 +8,7 @@ Highly flexible multi-host and multi-user support.
 ```
 ├── flake.nix             # Main Nix flake configuration
 ├── desktops/             # Desktop environment configurations and Home Manager desktop modules
-├── machines/             # Machine-specific configurations, disk configs, and hardware profiles
+├── hardware/             # Disk configs, and hardware profiles
 ├── modules/              # Core system modules and Home Manager application modules
 ├── profiles/             # System and Home Manager profiles with common module combinations
 ├── secrets/              # SOPS encrypted secrets
@@ -31,16 +31,15 @@ The `hosts.nix` file centralizes all host definitions and their configurations. 
 - **users**: User configurations for the host
 - **additionalModules**: Host-specific Nix modules (e.g., hardware modules, WSL)
 
-
 ### Available Hosts
 
-| Host       | Platform  | Desktop   | Description                                                              |
-| ---------- | --------- | --------- | ------------------------------------------------------------------------ |
-| `desktop`  | NixOS     | Hyprland  | Main desktop with theme and DE specializations (Sway, River, Cosmic)   |
-| `macbook`  | macOS     | -         | MacBook configuration with nix-darwin                                    |
-| `media`    | NixOS     | GNOME     | Media server with Samba and backup services                             |
-| `thinkpad` | NixOS     | River     | ThinkPad laptop with TLP power management and theme specializations     |
-| `wsl`      | NixOS-WSL | None      | Windows Subsystem for Linux setup                                       |
+| Host       | Platform  | Desktop  | Description                                                          |
+| ---------- | --------- | -------- | -------------------------------------------------------------------- |
+| `desktop`  | NixOS     | Hyprland | Main desktop with theme and DE specializations (Sway, River, Cosmic) |
+| `macbook`  | macOS     | -        | MacBook configuration with nix-darwin                                |
+| `media`    | NixOS     | GNOME    | Media server with Samba and backup services                          |
+| `thinkpad` | NixOS     | River    | ThinkPad laptop with TLP power management and theme specializations  |
+| `wsl`      | NixOS-WSL | None     | Windows Subsystem for Linux setup                                    |
 
 ## 🚀 Quick Start
 
@@ -138,6 +137,7 @@ The configuration includes pre-configured profiles that combine common module co
 - **media-server**: Media server configuration with hardware acceleration and network routing
 
 Profiles inherit from each other to build functionality layers:
+
 - `gaming-workstation` → `linux-desktop` → `base`
 - `media-server` → `linux-desktop` → `base`
 

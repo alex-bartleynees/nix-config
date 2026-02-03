@@ -18,15 +18,15 @@
 
     # Hardware configuration
     hardwareConfig = if builtins.pathExists
-    (../machines/hardware + "/${hostName}-hardware-configuration.nix") then
-      [ ../machines/hardware/${hostName}-hardware-configuration.nix ]
+    (../hardware + "/${hostName}-hardware-configuration.nix") then
+      [ ../hardware/${hostName}-hardware-configuration.nix ]
     else
       [ ];
 
     # Disk configuration
     diskConfig = if builtins.pathExists
-    (../machines/disk-config + "/${hostName}-disk-config.nix") then
-      [ ../machines/disk-config/${hostName}-disk-config.nix ]
+    (../hardware/disk-config + "/${hostName}-disk-config.nix") then
+      [ ../hardware/disk-config/${hostName}-disk-config.nix ]
     else
       [ ];
 
