@@ -155,6 +155,7 @@ in {
         "$mod SHIFT, T, exec, $HOME/.local/bin/themeselector powermenu-${theme.name}"
         "$mod SHIFT, W, exec, $HOME/.local/bin/wallpaper ${theme.name}"
         "$mod, I, exec, $HOME/.local/bin/keybindings ${theme.name}"
+        "$mod SPACE, exec, vicinae toggle"
         "$mod, F, fullscreen"
         "$mod SHIFT, SPACE, togglefloating"
         #"$mod, A, focusparent"
@@ -382,6 +383,24 @@ in {
     Service = {
       Type = "simple";
       ExecStart = "${pkgs.udiskie}/bin/udiskie --tray";
+      Restart = "on-failure";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+    };
+    Install = { WantedBy = [ "hyprland-session.target" ]; };
+  };
+
+  # Vicinae systemd service for Hyprland
+  systemd.user.services.vicinae = {
+    Unit = {
+      Description = "Vicinae application launcher server";
+      Documentation = "https://github.com/tim-harding/vicinae";
+      PartOf = [ "hyprland-session.target" ];
+      After = [ "hyprland-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.vicinae}/bin/vicinae server";
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;

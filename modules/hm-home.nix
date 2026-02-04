@@ -1,4 +1,4 @@
-{ pkgs, lib, username, homeDirectory, hostName, theme, desktop, ... }:
+{ pkgs, lib, username, homeDirectory, theme, desktop, ... }:
 let
   desktopImports =
     if desktop != null && builtins.pathExists ../desktops/hm-${desktop}.nix then
