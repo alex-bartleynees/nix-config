@@ -26,9 +26,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-cosmic.url = "github:lilyinstarlight/nixos-cosmic";
-    cosmic-nixpkgs.follows = "nixos-cosmic/nixpkgs";
-
     mac-app-util = { url = "github:hraban/mac-app-util"; };
 
     stylix = {
@@ -61,8 +58,8 @@
   };
 
   outputs = inputs@{ self, nixpkgs, determinate, home-manager, nixos-wsl
-    , wsl-vpnkit, nix-darwin, mac-app-util, stylix, neovim, nixos-cosmic
-    , cosmic-nixpkgs, sops-nix, disko, nixos-hardware, niri, mango, ... }:
+    , wsl-vpnkit, nix-darwin, mac-app-util, stylix, neovim, sops-nix, disko
+    , nixos-hardware, niri, mango, ... }:
     let
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
       mkDarwinSystem = import ./shared/mk-darwin-system.nix { inherit inputs; };

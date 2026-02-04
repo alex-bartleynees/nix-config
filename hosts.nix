@@ -9,7 +9,7 @@ in {
     themeName = "everforest";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
-    desktopSpecialisations = [ "niri" "mangowc" ];
+    desktopSpecialisations = [ "niri" "mangowc" "cosmic" ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
     users = users;
