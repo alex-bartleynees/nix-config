@@ -41,6 +41,35 @@ lib.mkIf config.profiles.wsl {
     };
   };
 
+  # Programs
+  programs.nix-ld = {
+    enable = true;
+    package = pkgs.nix-ld;
+  };
+
+  # Qt theming for WSL
+  qt = {
+    enable = true;
+    platformTheme = "gnome";
+    style = "adwaita-dark";
+  };
+
+  # VSCode remote workaround
+  systemd.user = {
+    paths.vscode-remote-workaround = {
+      wantedBy = [ "default.target" ];
+      pathConfig.PathChanged = "%h/.vscode-server/bin";
+    };
+    services.vscode-remote-workaround.script = ''
+      for i in ~/.vscode-server/bin/*; do
+        if [ -e $i/node ]; then
+          echo "Fixing vscode-server in $i..."
+          ln -sf ${pkgs.nodejs_22}/bin/node $i/node
+        fi
+      done
+    '';
+  };
+
   # Enable GPG agent with pinentry
   programs.gnupg.agent = {
     enable = true;
@@ -53,6 +82,15 @@ lib.mkIf config.profiles.wsl {
     pass
     gnupg
     docker-credential-helpers
+
+    adwaita-qt
+    gtk-engine-murrine
+    gtk_engines
+    gsettings-desktop-schemas
+    adwaita-icon-theme
+    openssl
+    zlib
+    stdenv.cc.cc.lib
 
     #Packages for vpn kit
     iproute2

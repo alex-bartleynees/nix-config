@@ -72,7 +72,6 @@ in {
       hardware.graphics = { enable = true; };
       hardware.bluetooth.enable = true;
       hardware.bluetooth.powerOnBoot = true;
-      hardware.xpadneo.enable = true;
 
       # Programs
       programs.nm-applet = { enable = true; };
@@ -118,53 +117,6 @@ in {
         initialHashedPassword =
           "$6$n2D1ZBpbcavgoyMs$lwoQv71z3pGUStla4XV7jWGJnFEfU16aODX0F1JbhuUrvqn1JsjEQ7QMKB8qvItrmH5R0qEax/AIOAygpJdRW.";
         hashedPasswordFile = config.sops.secrets."passwords/root".path;
-      };
-    })
-
-    # WSL-specific settings
-    (lib.mkIf cfg.isWsl {
-      # Programs
-      programs.nix-ld = {
-        enable = true;
-        package = pkgs.nix-ld;
-      };
-
-      # Services
-      services = { openssh.enable = true; };
-
-      # WSL-specific packages
-      environment.systemPackages = with pkgs; [
-        adwaita-qt
-        gtk-engine-murrine
-        gtk_engines
-        gsettings-desktop-schemas
-        adwaita-icon-theme
-        openssl
-        zlib
-        stdenv.cc.cc.lib
-      ];
-
-      # Qt theming for WSL
-      qt = {
-        enable = true;
-        platformTheme = "gnome";
-        style = "adwaita-dark";
-      };
-
-      # VSCode remote workaround
-      systemd.user = {
-        paths.vscode-remote-workaround = {
-          wantedBy = [ "default.target" ];
-          pathConfig.PathChanged = "%h/.vscode-server/bin";
-        };
-        services.vscode-remote-workaround.script = ''
-          for i in ~/.vscode-server/bin/*; do
-            if [ -e $i/node ]; then
-              echo "Fixing vscode-server in $i..."
-              ln -sf ${pkgs.nodejs_22}/bin/node $i/node
-            fi
-          done
-        '';
       };
     })
   ];

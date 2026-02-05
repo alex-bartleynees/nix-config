@@ -258,5 +258,10 @@ in {
         ];
       };
     })
+
+    (lib.mkIf (cfg.enable || cfg.moonlight.enable) {
+      # Common gaming settings
+      hardware.xpadneo.enable = true;
+    })
   ];
 }
