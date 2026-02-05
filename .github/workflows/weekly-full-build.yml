@@ -1,0 +1,48 @@
+name: Weekly Full Build
+
+on:
+  schedule:
+    - cron: "0 6 * * 0" # Weekly on Sunday at 6am UTC (2h after flake update)
+  workflow_dispatch:
+
+jobs:
+  full-build-nixos:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - desktop
+          - wsl
+          - media
+          - thinkpad
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: false
+
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Full build ${{ matrix.host }}
+        run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+  full-build-darwin:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - macbook
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          flakehub: false
+
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Full build ${{ matrix.host }}
+        run: nix build .#darwinConfigurations.${{ matrix.host }}.config.system.build.toplevel
