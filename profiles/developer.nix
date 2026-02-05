@@ -1,3 +1,4 @@
+# homeModule: true
 { inputs, pkgs, theme, ... }: {
 
   programs.neovim = {

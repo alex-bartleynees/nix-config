@@ -1,3 +1,4 @@
+# homeModule: true
 { config, pkgs, lib, inputs, ... }:
 let cfg = config.rofi;
 in {

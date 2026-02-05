@@ -18,7 +18,7 @@
 
     userProfiles = baseProfiles ++ additionalProfiles;
 
-    profilePaths = map (profile: ../profiles/hm-${profile}.nix) userProfiles;
+    profilePaths = map (profile: ../profiles/${profile}.nix) userProfiles;
   in {
     home-manager = {
       extraSpecialArgs = {

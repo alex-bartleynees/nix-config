@@ -1,3 +1,4 @@
+# homeModule: true
 { pkgs, lib, username, homeDirectory, theme, desktop, ... }:
 let
   desktopImports =

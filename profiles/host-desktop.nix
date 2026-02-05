@@ -1,3 +1,4 @@
+# homeModule: true
 { pkgs, ... }: {
   services.kanshi = {
     enable = true;

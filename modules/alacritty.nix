@@ -1,3 +1,4 @@
+# homeModule: true
 { config, pkgs, lib, ... }:
 let
   cfg = config.alacritty;

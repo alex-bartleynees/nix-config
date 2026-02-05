@@ -1,3 +1,4 @@
+# homeModule: true
 { config, lib, pkgs, theme, ... }:
 let
   cfg = config.vscode;

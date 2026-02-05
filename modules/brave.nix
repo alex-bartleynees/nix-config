@@ -1,3 +1,4 @@
+# homeModule: true
 { config, lib, ... }:
 let cfg = config.brave;
 in {

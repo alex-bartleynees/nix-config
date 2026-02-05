@@ -1,3 +1,4 @@
+# homeModule: true
 { config, lib, homeDirectory, ... }:
 let cfg = config.obsidian;
 in {

@@ -1,3 +1,4 @@
+# homeModule: true
 { config, pkgs, lib, myUsers, username, ... }:
 let cfg = config.shell;
 in {

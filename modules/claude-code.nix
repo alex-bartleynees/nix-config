@@ -1,3 +1,4 @@
+# homeModule: true
 { config, lib, pkgs, ... }:
 let cfg = config.claude-code;
 in {

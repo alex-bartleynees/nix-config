@@ -1,3 +1,4 @@
+# homeModule: true
 { ... }: {
   home.sessionVariables = {
     ASPNETCORE_Kestrel__Certificates__Default__Path =

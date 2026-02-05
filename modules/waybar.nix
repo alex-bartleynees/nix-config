@@ -1,3 +1,4 @@
+# homeModule: true
 { config, pkgs, lib, inputs, theme, ... }:
 let cfg = config.waybar;
 in {
