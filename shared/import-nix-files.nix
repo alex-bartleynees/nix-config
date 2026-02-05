@@ -11,8 +11,10 @@ let
   # Check if a file is a combined module (has both nixosConfig and homeConfig attributes)
   isCombinedModule = path:
     let content = builtins.readFile path;
-    in (lib.hasInfix "nixosConfig =" content || lib.hasInfix "nixosConfig=" content)
-    && (lib.hasInfix "homeConfig =" content || lib.hasInfix "homeConfig=" content);
+    in (lib.hasInfix "nixosConfig =" content
+      || lib.hasInfix "nixosConfig=" content)
+    && (lib.hasInfix "homeConfig =" content
+      || lib.hasInfix "homeConfig=" content);
 
   # Check if a file should be treated as a home module
   isHomeModule = path: name: hasHomeMarker path;
@@ -28,7 +30,10 @@ let
   # Extract homeConfig attribute from combined module
   extractHomeAttr = path:
     let module = import path;
-    in if builtins.isAttrs module && module ? homeConfig then module.homeConfig else module;
+    in if builtins.isAttrs module && module ? homeConfig then
+      module.homeConfig
+    else
+      module;
 
 in {
   importAllNixFiles = dir:

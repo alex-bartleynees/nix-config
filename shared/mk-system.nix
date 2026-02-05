@@ -72,10 +72,16 @@
       lib = nixpkgs.lib;
     };
 
-    # Desktop module
+    # Desktop module - extract nixosConfig from combined module if it exists
     desktopConfig =
       if builtins.pathExists (../desktops + "/${desktop}.nix") then
-        [ ../desktops/${desktop}.nix ]
+        let
+          module = import (../desktops + "/${desktop}.nix");
+          extractedModule = if builtins.isAttrs module && module ? nixosConfig then
+            module.nixosConfig
+          else
+            module;
+        in [ extractedModule ]
       else
         [ ];
 

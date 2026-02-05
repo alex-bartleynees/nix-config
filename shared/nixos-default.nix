@@ -24,7 +24,7 @@ let
       inherit inputs desktop additionalUserProfiles;
       username = user.username;
       homeDirectory = user.homeDirectory;
-      extraModules = [ ../modules/hm-home.nix ];
+      extraModules = [ ../modules/home.nix ];
       inherit theme;
     }) users;
 

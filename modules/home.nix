@@ -1,9 +1,19 @@
 # homeModule: true
 { pkgs, lib, username, homeDirectory, theme, desktop, ... }:
 let
+  # Extract homeConfig from combined desktop module if it exists
   desktopImports =
-    if desktop != null && builtins.pathExists ../desktops/hm-${desktop}.nix then
-      [ ../desktops/hm-${desktop}.nix ]
+    if desktop != null && builtins.pathExists (../desktops + "/${desktop}.nix") then
+      let
+        module = import (../desktops + "/${desktop}.nix");
+        extractedModule = if builtins.isAttrs module && module ? homeConfig then
+          module.homeConfig
+        else
+          module;
+      in [ extractedModule ]
+    else if desktop != null && builtins.pathExists (../desktops + "/hm-${desktop}.nix") then
+      # Fallback to hm-prefixed files if they exist
+      [ (../desktops + "/hm-${desktop}.nix") ]
     else
       [ ];
 in {

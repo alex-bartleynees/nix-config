@@ -1,6 +1,15 @@
 { inputs, lib }:
 ({ baseImports, theme, users, desktops ? [ ], additionalUserProfiles ? [ ], }:
   let
+    # Extract nixosConfig from combined module if it exists
+    extractSystemConfig = desktop:
+      let
+        module = import ../desktops/${desktop}.nix;
+      in if builtins.isAttrs module && module ? nixosConfig then
+        module.nixosConfig
+      else
+        module;
+
     mkDesktopSpecialisation = desktop:
       let
         shared = import ./nixos-default.nix {
@@ -12,7 +21,7 @@
       in {
         inheritParentConfig = false;
         configuration = {
-          imports = sharedImports ++ [ ../desktops/${desktop}.nix ];
+          imports = sharedImports ++ [ (extractSystemConfig desktop) ];
         };
       };
 
