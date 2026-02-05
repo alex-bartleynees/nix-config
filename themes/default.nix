@@ -12,6 +12,9 @@ let
       pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
     });
 
+  # Module extractors
+  extractors = import ../shared/module-extractors.nix;
+
   # Generate specializations for each theme
   generateThemeSpecialisations = baseImports: desktop:
     lib.genAttrs (builtins.attrNames themes) (themeName:
@@ -27,7 +30,7 @@ let
       in {
         inheritParentConfig = false;
         configuration = {
-          imports = baseConfig ++ [ ../desktops/${desktop}.nix ];
+          imports = baseConfig ++ [ (extractors.extractSystemConfig desktop) ];
         };
       });
 

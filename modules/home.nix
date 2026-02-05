@@ -1,23 +1,15 @@
 # homeModule: true
 { pkgs, lib, username, homeDirectory, theme, desktop, ... }:
 let
+  # Module extractors
+  extractors = import ../shared/module-extractors.nix;
+
   # Extract homeConfig from combined desktop module if it exists
-  desktopImports =
-    if desktop != null && builtins.pathExists (../desktops + "/${desktop}.nix") then
-      let
-        module = import (../desktops + "/${desktop}.nix");
-        extractedModule = if builtins.isAttrs module && module ? homeConfig then
-          module.homeConfig
-        else
-          # If no homeConfig, return empty module instead of the whole module
-          # This prevents NixOS-only modules from leaking into Home Manager
-          { ... }: { };
-      in [ extractedModule ]
-    else if desktop != null && builtins.pathExists (../desktops + "/hm-${desktop}.nix") then
-      # Fallback to hm-prefixed files if they exist
-      [ (../desktops + "/hm-${desktop}.nix") ]
-    else
-      [ ];
+  desktopImports = if desktop != null
+  && builtins.pathExists (../desktops + "/${desktop}.nix") then
+    [ (extractors.extractHomeConfig desktop) ]
+  else
+    [ ];
 in {
   imports = desktopImports;
   home.username = lib.mkDefault username;

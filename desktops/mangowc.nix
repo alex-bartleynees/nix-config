@@ -61,7 +61,7 @@
       colors = theme.themeColors;
       background = theme.wallpaper;
     in {
-      imports = [ ./common/hm-linux-desktop.nix inputs.mango.hmModules.mango ];
+      imports = [ ./common/linux-desktop.nix inputs.mango.hmModules.mango ];
 
       # Enable hypridle with theme wallpaper
       hypridle = {

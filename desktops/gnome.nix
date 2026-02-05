@@ -89,7 +89,8 @@
     ];
   };
 
-  homeConfig = { ... }: {
-    # GNOME manages its own configuration, no Home Manager config needed
-  };
+  homeConfig = { ... }:
+    {
+      # GNOME manages its own configuration, no Home Manager config needed
+    };
 }

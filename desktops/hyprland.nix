@@ -41,7 +41,7 @@
       # Function to convert hex colors to rgb format for Hyprland
       hexToRgb = hex: "rgb(${builtins.substring 1 6 hex})";
     in {
-      imports = [ ./common/hm-linux-desktop.nix ];
+      imports = [ ./common/linux-desktop.nix ];
 
       # Enable hypridle with theme wallpaper
       hypridle = {

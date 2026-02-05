@@ -60,7 +60,7 @@
       colors = theme.themeColors;
       background = theme.wallpaper;
     in {
-      imports = [ ./common/hm-linux-desktop.nix ];
+      imports = [ ./common/linux-desktop.nix ];
       home.packages = with pkgs; [
         swaybg
         swayidle
