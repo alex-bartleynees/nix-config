@@ -1,5 +1,5 @@
 {
-  system = { pkgs, inputs, ... }: {
+  nixosConfig = { pkgs, inputs, ... }: {
     imports = [
       ./common/wayland.nix
       ./common/wlroots.nix
@@ -56,7 +56,7 @@
     system.nixos.tags = [ "mangowc" ];
   };
 
-  home = { pkgs, config, hostName, theme, inputs, ... }:
+  homeConfig = { pkgs, config, hostName, theme, inputs, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;

@@ -1,5 +1,5 @@
 {
-  system = { pkgs, inputs, ... }: {
+  nixosConfig = { pkgs, inputs, ... }: {
     imports = [ ./common/wayland.nix inputs.niri.nixosModules.niri ];
 
     programs.niri.enable = true;
@@ -54,7 +54,7 @@
     system.nixos.tags = [ "niri" ];
   };
 
-  home = { pkgs, config, lib, hostName, theme, inputs, ... }:
+  homeConfig = { pkgs, config, lib, hostName, theme, inputs, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;

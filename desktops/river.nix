@@ -1,5 +1,5 @@
 {
-  system = { pkgs, ... }: {
+  nixosConfig = { pkgs, ... }: {
     imports = [ ./common/wayland.nix ./common/wlroots.nix ];
     environment.systemPackages = with pkgs; [ river-classic ];
 
@@ -47,7 +47,7 @@
     system.nixos.tags = [ "river" ];
   };
 
-  home = { pkgs, config, lib, hostName, theme, ... }:
+  homeConfig = { pkgs, config, lib, hostName, theme, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;

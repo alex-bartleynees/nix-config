@@ -1,5 +1,5 @@
 {
-  system = { pkgs, ... }: {
+  nixosConfig = { pkgs, ... }: {
     imports = [ ./common/wayland.nix ./common/wlroots.nix ];
 
     programs.sway = {
@@ -55,7 +55,7 @@
     system.nixos.tags = [ "sway" ];
   };
 
-  home = { pkgs, config, lib, hostName, theme, ... }:
+  homeConfig = { pkgs, config, lib, hostName, theme, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;

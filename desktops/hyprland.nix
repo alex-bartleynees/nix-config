@@ -1,5 +1,5 @@
 {
-  system = { pkgs, ... }: {
+  nixosConfig = { pkgs, ... }: {
     imports = [ ./common/wayland.nix ];
     programs.hyprland = {
       enable = true;
@@ -33,7 +33,7 @@
     system.nixos.tags = [ "hyprland" ];
   };
 
-  home = { pkgs, config, lib, hostName, theme, ... }:
+  homeConfig = { pkgs, config, lib, hostName, theme, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;
