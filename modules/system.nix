@@ -1,6 +1,4 @@
-{ config, pkgs, lib, hostName, stateVersion, systemProfiles ? null, ... }:
-let cfg = config.system;
-in {
+{ lib, hostName, stateVersion, systemProfiles ? null, ... }: {
   options.system = {
     isWsl = lib.mkOption {
       type = lib.types.bool;
@@ -15,7 +13,7 @@ in {
       profiles = lib.genAttrs systemProfiles (profile: true);
     })
 
-    # Common settings for both Linux and WSL
+    # System wide settings 
     {
       # Programs
       programs.zsh.enable = true;
@@ -27,7 +25,6 @@ in {
         implementation = "broker";
       };
 
-      # System wide settings
       nix = {
         settings = {
           auto-optimise-store = true;
@@ -53,71 +50,5 @@ in {
 
       system.stateVersion = stateVersion;
     }
-
-    # Linux-specific settings (not WSL)
-    (lib.mkIf (!cfg.isWsl) {
-      # Bootloader
-      boot.loader.systemd-boot.enable = true;
-      boot.loader.efi.canTouchEfiVariables = true;
-      boot.loader.systemd-boot.consoleMode = "max";
-
-      boot = {
-        kernelPackages = pkgs.linuxKernel.packages.linux_zen;
-
-        # Increase inotify watch limit for IDEs (IntelliJ, VSCode, etc.)
-        kernel.sysctl = { "fs.inotify.max_user_watches" = 1048576; };
-      };
-
-      # Hardware
-      hardware.graphics = { enable = true; };
-      hardware.bluetooth.enable = true;
-      hardware.bluetooth.powerOnBoot = true;
-
-      # Programs
-      programs.nm-applet = { enable = true; };
-
-      # Services
-      services.dbus.packages = with pkgs; [ gnome-keyring xdg-desktop-portal ];
-      services.blueman.enable = true;
-      services.upower.enable = true;
-      services.acpid.enable = true;
-      services.xserver.xkb = {
-        layout = "nz";
-        variant = "";
-      };
-      services.udisks2.enable = true;
-      services.gnome.gnome-keyring.enable = true;
-
-      # Security
-      security.pam.services.login.enableGnomeKeyring = true;
-      security.polkit.enable = true;
-
-      # Allow users in wheel group to switch specialisations without sudo
-      security.sudo.extraRules = [{
-        groups = [ "wheel" ];
-        commands = [{
-          command = "/nix/store/*/specialisation/*/bin/switch-to-configuration";
-          options = [ "NOPASSWD" ];
-        }];
-      }];
-
-      # Networking
-      networking.nameservers = [ "8.8.8.8" "1.1.1.1" ];
-      networking.networkmanager.enable = true;
-
-      # Audio
-      services.pipewire = {
-        enable = true;
-        pulse.enable = true;
-      };
-
-      # Root user
-      users.mutableUsers = false;
-      users.users.root = {
-        initialHashedPassword =
-          "$6$n2D1ZBpbcavgoyMs$lwoQv71z3pGUStla4XV7jWGJnFEfU16aODX0F1JbhuUrvqn1JsjEQ7QMKB8qvItrmH5R0qEax/AIOAygpJdRW.";
-        hashedPasswordFile = config.sops.secrets."passwords/root".path;
-      };
-    })
   ];
 }
