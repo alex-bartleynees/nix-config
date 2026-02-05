@@ -1,89 +1,95 @@
-{ pkgs, ... }: {
-  imports = [ ./common/wayland.nix ];
-  services.desktopManager = { gnome.enable = true; };
+{
+  nixosConfig = { pkgs, ... }: {
+    imports = [ ./common/wayland.nix ];
+    services.desktopManager = { gnome.enable = true; };
 
-  services.displayManager = {
-    gdm.enable = true;
-    gdm.wayland = true;
-  };
+    services.displayManager = {
+      gdm.enable = true;
+      gdm.wayland = true;
+    };
 
-  services.gnome = {
-    core-apps.enable = true;
-    gnome-keyring.enable = true;
-  };
+    services.gnome = {
+      core-apps.enable = true;
+      gnome-keyring.enable = true;
+    };
 
-  programs.dconf.enable = true;
+    programs.dconf.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    gnome-tweaks
-    dconf-editor
-    gnome-shell-extensions
-  ];
+    environment.systemPackages = with pkgs; [
+      gnome-tweaks
+      dconf-editor
+      gnome-shell-extensions
+    ];
 
-  services.upower.enable = true;
-  services.accounts-daemon.enable = true;
+    services.upower.enable = true;
+    services.accounts-daemon.enable = true;
 
-  system.nixos.tags = [ "gnome" ];
+    system.nixos.tags = [ "gnome" ];
 
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-gnome
+    xdg.portal = {
+      enable = true;
+      wlr.enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal-gnome
+      ];
+    };
+
+    systemd.tmpfiles.rules = [
+      "L+ /run/gdm/.config/monitors.xml - - - - ${
+        pkgs.writeText "gdm-monitors.xml" ''
+            <monitors version="2">
+            <configuration>
+              <layoutmode>physical</layoutmode>
+              <logicalmonitor>
+                <x>0</x>
+                <y>0</y>
+                <scale>1.5</scale>
+                <primary>yes</primary>
+                <monitor>
+                  <monitorspec>
+                    <connector>DP-6</connector>
+                    <vendor>AOC</vendor>
+                    <product>U27G4</product>
+                    <serial>10GR2HA001383</serial>
+                  </monitorspec>
+                  <mode>
+                    <width>3840</width>
+                    <height>2160</height>
+                    <rate>160.001</rate>
+                  </mode>
+                </monitor>
+              </logicalmonitor>
+              <logicalmonitor>
+                <x>2560</x>
+                <y>0</y>
+                <scale>1</scale>
+                <transform>
+                  <rotation>right</rotation>
+                  <flipped>no</flipped>
+                </transform>
+                <monitor>
+                  <monitorspec>
+                    <connector>DP-4</connector>
+                    <vendor>GSM</vendor>
+                    <product>27GL850</product>
+                    <serial>006NTDVG0786</serial>
+                  </monitorspec>
+                  <mode>
+                    <width>2560</width>
+                    <height>1440</height>
+                    <rate>144.000</rate>
+                  </mode>
+                </monitor>
+              </logicalmonitor>
+            </configuration>
+          </monitors>
+        ''
+      }"
     ];
   };
 
-  systemd.tmpfiles.rules = [
-    "L+ /run/gdm/.config/monitors.xml - - - - ${
-      pkgs.writeText "gdm-monitors.xml" ''
-          <monitors version="2">
-          <configuration>
-            <layoutmode>physical</layoutmode>
-            <logicalmonitor>
-              <x>0</x>
-              <y>0</y>
-              <scale>1.5</scale>
-              <primary>yes</primary>
-              <monitor>
-                <monitorspec>
-                  <connector>DP-6</connector>
-                  <vendor>AOC</vendor>
-                  <product>U27G4</product>
-                  <serial>10GR2HA001383</serial>
-                </monitorspec>
-                <mode>
-                  <width>3840</width>
-                  <height>2160</height>
-                  <rate>160.001</rate>
-                </mode>
-              </monitor>
-            </logicalmonitor>
-            <logicalmonitor>
-              <x>2560</x>
-              <y>0</y>
-              <scale>1</scale>
-              <transform>
-                <rotation>right</rotation>
-                <flipped>no</flipped>
-              </transform>
-              <monitor>
-                <monitorspec>
-                  <connector>DP-4</connector>
-                  <vendor>GSM</vendor>
-                  <product>27GL850</product>
-                  <serial>006NTDVG0786</serial>
-                </monitorspec>
-                <mode>
-                  <width>2560</width>
-                  <height>1440</height>
-                  <rate>144.000</rate>
-                </mode>
-              </monitor>
-            </logicalmonitor>
-          </configuration>
-        </monitors>
-      ''
-    }"
-  ];
+  homeConfig = { ... }: {
+    # GNOME manages its own configuration, no Home Manager config needed
+  };
 }

@@ -9,7 +9,9 @@ let
         extractedModule = if builtins.isAttrs module && module ? homeConfig then
           module.homeConfig
         else
-          module;
+          # If no homeConfig, return empty module instead of the whole module
+          # This prevents NixOS-only modules from leaking into Home Manager
+          { ... }: { };
       in [ extractedModule ]
     else if desktop != null && builtins.pathExists (../desktops + "/hm-${desktop}.nix") then
       # Fallback to hm-prefixed files if they exist
