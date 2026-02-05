@@ -7,15 +7,61 @@ Highly flexible multi-host and multi-user support.
 
 ```
 ├── flake.nix             # Main Nix flake configuration
-├── desktops/             # Desktop environment configurations and Home Manager desktop modules
+├── desktops/             # Desktop environment configurations (combined NixOS + Home Manager modules)
+│   └── common/           # Shared desktop modules (wayland, wlroots, linux-desktop)
 ├── hardware/             # Disk configs, and hardware profiles
 ├── modules/              # Core system modules and Home Manager application modules
 ├── profiles/             # System and Home Manager profiles with common module combinations
 ├── secrets/              # SOPS encrypted secrets
-├── shared/               # Shared configuration helpers across hosts
+├── shared/               # Shared configuration helpers and module extractors
 ├── themes/               # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
 └── users/                # User-specific configurations
 ```
+
+### Combined Module Architecture
+
+Desktop environment files use a combined module structure that keeps both NixOS system and Home Manager configuration in a single file:
+
+```nix
+{
+  nixosConfig = { pkgs, ... }: {
+    # NixOS system configuration (services, packages, etc.)
+  };
+
+  homeConfig = { pkgs, config, lib, theme, ... }: {
+    # Home Manager configuration (user applications, dotfiles, etc.)
+  };
+}
+```
+
+The `shared/module-extractors.nix` automatically extracts the appropriate section depending on the context:
+- **System configurations** and **specializations** extract `nixosConfig`
+- **Home Manager** extracts `homeConfig`
+
+This architecture eliminates duplication and ensures desktop configurations stay synchronized between system and user levels.
+
+### Module Type Markers
+
+The configuration uses magic comments to identify module types:
+
+**Home Manager-only Modules:**
+```nix
+# homeModule: true
+{ pkgs, lib, ... }:
+{
+  # Home Manager configuration only
+}
+```
+
+Modules with the `# homeModule: true` comment in the first 5 lines are automatically:
+- Imported only into Home Manager configurations (not NixOS system)
+- Detected by `shared/import-nix-files.nix` via the `importHomeFiles` function
+
+**Combined Modules:**
+Desktop environment files in `desktops/` use the combined module structure (shown above) which is detected by checking for both `nixosConfig` and `homeConfig` attributes. The `shared/module-extractors.nix` handles the extraction logic.
+
+**System-only Modules:**
+Regular NixOS modules without special markers are imported only into system configurations via `importAllNixFiles`.
 
 ## 🖥️ Host Configuration
 
