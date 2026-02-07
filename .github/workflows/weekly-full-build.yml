@@ -19,14 +19,45 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Free up disk space
+        run: |
+          echo "Before cleanup:"
+          df -h
+
+          # Remove unnecessary pre-installed software
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
+          # Remove Docker images
+          docker rmi $(docker image ls -aq) || true
+
+          # Remove large packages
+          sudo apt-get remove -y '^aspnetcore-.*' '^dotnet-.*' '^llvm-.*' 'php.*' '^mongodb-.*' '^mysql-.*' azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri || true
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+
+          echo "After cleanup:"
+          df -h
+
       - uses: DeterminateSystems/nix-installer-action@main
         with:
           flakehub: false
+          extra-conf: |
+            # Aggressive garbage collection to free space during build
+            min-free = 1073741824
+            max-free = 3221225472
 
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Full build ${{ matrix.host }}
-        run: nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+        run: |
+          nix build .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+
+          # Clean up after build to free space for other matrix jobs
+          nix-collect-garbage -d
 
   full-build-darwin:
     runs-on: macos-latest
