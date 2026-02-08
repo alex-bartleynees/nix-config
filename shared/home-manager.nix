@@ -18,24 +18,13 @@
 
     userProfiles = baseProfiles ++ additionalProfiles;
 
-    # Validate profiles exist and are home modules
+    # Validate profiles exist
     validateProfile = profile:
-      let
-        profilePath = ../profiles/${profile}.nix;
-        profileExists = builtins.pathExists profilePath;
-        profileContent =
-          if profileExists then builtins.readFile profilePath else "";
-        # Check if the file contains the homeModule marker in the first line
-        isHomeModule = profileExists
-          && (lib.hasPrefix "# homeModule: true" profileContent);
+      let profilePath = ../profiles/home-profiles/${profile}.nix;
       in {
-        inherit profile profilePath profileExists isHomeModule;
-        error = if !profileExists then
+        inherit profile profilePath;
+        error = if !builtins.pathExists profilePath then
           "Profile '${profile}' does not exist at ${toString profilePath}"
-        else if !isHomeModule then
-          "Profile '${profile}' is not a home module (missing '# homeModule: true' marker at ${
-            toString profilePath
-          })"
         else
           null;
       };
@@ -47,7 +36,7 @@
     validationErrors =
       lib.concatMapStringsSep "\n" (p: "  - ${p.error}") invalidProfiles;
 
-    profilePaths = map (profile: ../profiles/${profile}.nix) userProfiles;
+    profilePaths = map (profile: ../profiles/home-profiles/${profile}.nix) userProfiles;
   in {
     assertions = [{
       assertion = invalidProfiles == [ ];
