@@ -13,14 +13,12 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Virtualisation
-    virtualisation.virtualbox.host.enable = true;
-    virtualisation.virtualbox.host.enableExtensionPack = true;
-    # Enable kernel modules and VirtualBox service
-    boot.kernelModules = [ "vboxdrv" "vboxnetadp" "vboxnetflt" ];
-    # Add your user to vboxusers group
-    users.extraGroups.vboxusers.members = [ cfg.user ];
+    virtualisation.libvirtd.enable = true;
+    programs.virt-manager.enable = true;
+    users.users.${cfg.user}.extraGroups = [ "libvirtd" ];
+    networking.firewall.trustedInterfaces = [ "virbr0" ];
 
-    environment.systemPackages = with pkgs; [ vagrant virtualbox ];
+    environment.systemPackages = with pkgs; [ vagrant dnsmasq ];
   };
 
 }
