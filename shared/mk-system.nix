@@ -94,7 +94,7 @@
     } // additionalSpecialArgs;
 
   in nixpkgs.lib.nixosSystem {
-    inherit system;
+    inherit system pkgs;
     specialArgs = commonSpecialArgs;
     modules = baseModules;
   })

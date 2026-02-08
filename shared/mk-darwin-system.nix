@@ -31,7 +31,7 @@
       self = inputs.self;
     };
   in nix-darwin.lib.darwinSystem {
-    inherit system;
+    inherit system pkgs;
     specialArgs = commonSpecialArgs;
     modules = baseModules;
   })
