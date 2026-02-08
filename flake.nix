@@ -57,10 +57,9 @@
     mango.url = "github:DreamMaoMao/mango";
   };
 
-  outputs = inputs@{ self, nixpkgs, determinate, home-manager, nixos-wsl
-    , wsl-vpnkit, nix-darwin, mac-app-util, stylix, neovim, sops-nix, disko
-    , nixos-hardware, niri, mango, ... }:
+  outputs = inputs:
     let
+      inherit (inputs) nixpkgs;
       mkSystem = import ./shared/mk-system.nix { inherit inputs; };
       mkDarwinSystem = import ./shared/mk-darwin-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };
