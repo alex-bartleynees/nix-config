@@ -1,4 +1,4 @@
-{ config, lib, pkgs, self, users, inputs, ... }:
+{ config, lib, pkgs, users, inputs, ... }:
 lib.mkIf config.profiles.wsl {
   # Use base profile for core services
   profiles.base = true;

@@ -3,7 +3,7 @@
   , desktop ? "hyprland", users, themeName ? "tokyo-night", hostName
   , enableThemeSpecialisations ? false, enableDesktopSpecialisations ? false
   , desktopSpecialisations ? [ ], additionalModules ? [ ]
-  , additionalSpecialArgs ? { }, additionalUserProfiles ? { }, }:
+  , additionalUserProfiles ? { }, }:
   let
     inherit (inputs) nixpkgs;
 
@@ -91,7 +91,7 @@
     commonSpecialArgs = {
       inherit inputs users desktop hostName stateVersion systemProfiles;
       self = inputs.self;
-    } // additionalSpecialArgs;
+    };
 
   in nixpkgs.lib.nixosSystem {
     inherit system pkgs;

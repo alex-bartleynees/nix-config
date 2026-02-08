@@ -67,7 +67,6 @@
         wallpaper = background;
       };
 
-      nixpkgs.overlays = [ inputs.niri.overlays.niri ];
       programs.niri.package = pkgs.niri-unstable;
 
       stylix.targets.niri.enable = false;
