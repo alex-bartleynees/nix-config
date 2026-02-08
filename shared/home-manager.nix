@@ -36,7 +36,8 @@
     validationErrors =
       lib.concatMapStringsSep "\n" (p: "  - ${p.error}") invalidProfiles;
 
-    profilePaths = map (profile: ../profiles/home-profiles/${profile}.nix) userProfiles;
+    profilePaths =
+      map (profile: ../profiles/home-profiles/${profile}.nix) userProfiles;
   in {
     assertions = [{
       assertion = invalidProfiles == [ ];

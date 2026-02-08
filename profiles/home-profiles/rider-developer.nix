@@ -1,3 +1,1 @@
-{ ... }: {
-  rider.enable = true;
-}
+{ ... }: { rider.enable = true; }

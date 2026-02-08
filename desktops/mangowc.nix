@@ -56,7 +56,7 @@
     system.nixos.tags = [ "mangowc" ];
   };
 
-  homeConfig = { pkgs, config, hostName, theme, inputs, ... }:
+  homeConfig = { pkgs, lib, config, hostName, theme, inputs, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;
@@ -136,10 +136,9 @@
           new_is_master=1
           smartgaps=0
           default_mfact=0.55
-          default_smfact=0.55
           default_nmaster=1
           center_master_overspread=0
-          center_when_single_slave=1
+          center_when_single_stack=1
 
           # Overview Setting
           hotarea_size=10
@@ -161,7 +160,6 @@
           focus_cross_monitor=1
           exchange_cross_monitor=1
           scratchpad_cross_monitor=1
-          focus_cross_tag=0
           view_current_to_back=1
           enable_floating_snap=1
           snap_distance=50
@@ -202,7 +200,7 @@
           rootcolor=0x${builtins.substring 1 6 colors.groupbar_inactive}FF
           bordercolor=0x${builtins.substring 1 6 colors.inactive_border}FF
           focuscolor=0x${builtins.substring 1 6 colors.active_border}FF
-          maxmizescreencolor=0x${builtins.substring 1 6 colors.locked_active}FF
+          maximizescreencolor=0x${builtins.substring 1 6 colors.locked_active}FF
           urgentcolor=0x${builtins.substring 1 6 colors.locked_inactive}FF
           scratchpadcolor=0x${builtins.substring 1 6 colors.groupbar_active}FF
           globalcolor=0x${
@@ -212,13 +210,23 @@
             builtins.substring 1 6 colors.groupbar_locked_inactive
           }FF
 
-          # Monitor configuration with compositor-level 1.5x scaling
+          # Monitor configuration
           ${if hostName == "thinkpad" then ''
-            monitorrule=eDP-1,0.55,1,tile,0,1,0,0,1920,1080,60
+            monitorrule=name:eDP-1,width:1920,height:1080,refresh:60,x:0,y:0,scale:1,vrr:0,rr:0
           '' else ''
-            monitorrule=DP-6,0.55,1,tile,0,1.5,0,0,3840,2160,160
-            monitorrule=DP-4,0.55,1,vertical_tile,3,1,2560,0,2560,1440,144
+            monitorrule=name:DP-6,width:3840,height:2160,refresh:160,x:0,y:0,scale:1.5,vrr:0,rr:0
+            monitorrule=name:DP-4,width:2560,height:1440,refresh:144,x:2560,y:0,scale:1,vrr:0,rr:3
           ''}
+
+          # Tag layout rules
+          ${lib.optionalString (hostName != "thinkpad")
+          (lib.concatMapStringsSep "\n" (id:
+            "tagrule=id:${
+              toString id
+            },monitor_name:DP-4,layout_name:vertical_tile") (lib.range 0 9))}
+
+          # Autostart
+          exec-once=~/.config/mango/autostart.sh
 
           # Environment variables
           env=XCURSOR_SIZE,${toString config.home.pointerCursor.size}
@@ -227,6 +235,7 @@
 
           # Key bindings - using Alt as modifier (matching other configs)
           # Application shortcuts
+          bind=ALT,SPACE,spawn,vicinae toggle
           bind=ALT,T,spawn,ghostty
           bind=ALT,B,spawn,brave
           bind=ALT,C,spawn,code
@@ -324,7 +333,7 @@
           bind=ALT,R,switch_layout,
           bind=ALT,S,setlayout,scroller
           bind=ALT,E,switch_proportion_preset,
-          bind=ALT+SHIFT,F,togglemaxmizescreen,
+          bind=ALT+SHIFT,F,togglemaximizescreen,
           bind=ALT,comma,setmfact,-5
           bind=ALT,period,setmfact,+5
           bind=ALT,Return,zoom,
@@ -345,7 +354,7 @@
           # Mouse bindings
           mousebind=ALT,btn_left,moveresize,curmove
           mousebind=ALT,btn_right,moveresize,curresize
-          mousebind=NONE,btn_middle,togglemaxmizescreen,0
+          mousebind=NONE,btn_middle,togglemaximizescreen,0
 
           # Gestures
           gesturebind=none,left,3,focusdir,left
@@ -386,6 +395,24 @@
           dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
           systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
         '';
+      };
+
+      # Vicinae application launcher service
+      systemd.user.services.vicinae = {
+        Unit = {
+          Description = "Vicinae application launcher server";
+          Documentation = "https://github.com/tim-harding/vicinae";
+          PartOf = [ "graphical-session.target" ];
+          After = [ "graphical-session.target" ];
+        };
+        Service = {
+          Type = "simple";
+          ExecStart = "${pkgs.vicinae}/bin/vicinae server";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+        Install = { WantedBy = [ "graphical-session.target" ]; };
       };
 
       # Waybar systemd service for mango

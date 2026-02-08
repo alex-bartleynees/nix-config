@@ -1,3 +1,1 @@
-{ ... }: {
-  vscode.enable = true;
-}
+{ ... }: { vscode.enable = true; }

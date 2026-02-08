@@ -1,3 +1,1 @@
-{ pkgs, ... }: {
-  home.packages = with pkgs; [ yaak azuredatastudio ];
-}
+{ pkgs, ... }: { home.packages = with pkgs; [ yaak azuredatastudio ]; }
