@@ -26,6 +26,9 @@
 
     system.nixos.tags = [ "gnome" ];
 
+    # GNOME manages Qt theming natively
+    stylix.targets.qt.enable = false;
+
     xdg.portal = {
       enable = true;
       wlr.enable = true;
