@@ -65,6 +65,8 @@ in {
         vscodevim.vim
         arcticicestudio.nord-visual-studio-code
         biomejs.biome
+        jdinhlife.gruvbox
+        mvllow.rose-pine
       ]) ++ [
         # Extensions not in Nixpkgs
         # (ext "andrejunges" "Handlebars" "0.4.1"
@@ -109,6 +111,10 @@ in {
           "sha256-avI4SiNHSgHZMqGrZjC7vaBhocO2kU4Dqoejpwt1cRk=")
         (ext "AndreiLucaci" "everforest-pro" "1.0.2"
           "sha256-GV9AophhHqnJwtn/uYo3Ah2ptN6qw9GtiGnbKCrLKRk=")
+        (ext "NyoomEngineering" "oxocarbon-vscode" "1.2.0"
+          "sha256-ubpnirC/MOe76gxmgE8vubcCwinkAeMXEzK0fvixk1U=")
+        (ext "qufiwefefwoyn" "kanagawa" "1.5.1"
+          "sha256-AGGioXcK/fjPaFaWk2jqLxovUNR59gwpotcSpGNbj1c=")
       ];
 
       profiles.default.keybindings = [
