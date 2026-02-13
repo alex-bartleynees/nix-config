@@ -41,6 +41,9 @@ lib.mkIf config.profiles.wsl {
     };
   };
 
+  # Enable openssh server
+  services.openssh = { enable = true; };
+
   # Programs
   programs.nix-ld = {
     enable = true;
