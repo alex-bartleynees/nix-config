@@ -56,7 +56,7 @@ in {
         pkgs.heroic
         pkgs.gamescope
         pkgs.gamemode
-        pkgs.wineWowPackages.stable
+        pkgs.wineWow64Packages.stable
         pkgs.winetricks
       ];
     })
