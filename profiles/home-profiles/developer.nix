@@ -61,7 +61,10 @@
     git
   ];
 
-  programs.yazi.enable = true;
+  programs.yazi = {
+    enable = true;
+    shellWrapperName = "y";
+  };
 
   home.file = {
     ".config/nvim" = {

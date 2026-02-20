@@ -6,7 +6,7 @@ let
 in {
   desktop = {
     desktop = "hyprland";
-    themeName = "oxocarbon";
+    themeName = "gruvbox";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
     desktopSpecialisations = [ ];
