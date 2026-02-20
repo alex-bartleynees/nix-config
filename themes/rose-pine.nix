@@ -17,5 +17,5 @@
   ghosttyTheme = "Rose Pine";
   chromeThemeExtensionId = "noimedcjdohhokijigpfcbjcfcaaahej";
   obsidianTheme = "Rose Pine";
-  zellijTheme = "dracula"; 
+  zellijTheme = "dracula";
 }

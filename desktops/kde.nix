@@ -22,7 +22,7 @@
     xdg.portal = {
       enable = true;
       wlr.enable = true;
-      extraPortals = with pkgs; [ xdg-desktop-portal-kde ];
+      extraPortals = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
     };
 
     services.pipewire = {
@@ -33,8 +33,23 @@
     };
   };
 
-  homeConfig = { ... }:
-    {
-      # KDE manages its own configuration, no Home Manager config needed
+  homeConfig = { theme, ... }: {
+    ghostty = {
+      enable = true;
+      theme = theme.ghosttyTheme or theme.name;
+      windowDecoration = true;
     };
+
+    obsidian = {
+      enable = true;
+      theme = theme.obsidianTheme or "Default";
+    };
+
+    brave = {
+      enable = true;
+      themeExtensionId = theme.chromeThemeExtensionId;
+    };
+
+    stylix.targets.vscode.enable = false;
+  };
 }

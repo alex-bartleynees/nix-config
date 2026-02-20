@@ -18,6 +18,17 @@
     # Cosmic config
     "/home/${username}/.config/cosmic"
 
+    # KDE/Plasma
+    "/home/${username}/.config/kwinrc"
+    "/home/${username}/.config/kglobalshortcutsrc"
+    "/home/${username}/.config/plasmarc"
+    "/home/${username}/.config/plasma-workspace"
+    "/home/${username}/.config/kde*"
+    "/home/${username}/.config/kwinoutputconfig.json"
+    "/home/${username}/.local/share/plasma"
+    "/home/${username}/.local/share/konsole"
+    "/home/${username}/.local/share/konversation"
+
     # Gaming
     "/home/${username}/.config/OpenRGB"
     "/home/${username}/.config/sunshine"

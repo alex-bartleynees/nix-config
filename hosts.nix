@@ -9,7 +9,7 @@ in {
     themeName = "oxocarbon";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
-    desktopSpecialisations = [ "mangowc" ];
+    desktopSpecialisations = [ ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
     users = users;
