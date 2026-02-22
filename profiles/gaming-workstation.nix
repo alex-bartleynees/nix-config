@@ -17,8 +17,7 @@ lib.mkIf config.profiles.gaming-workstation {
     enable = true;
     prime = {
       enable = true;
-      mode =
-        "sync"; # Use sync mode for better gaming performance (always-on NVIDIA)
+      mode = "offload"; # On-demand NVIDIA, powers down when idle to save power
       amdgpuBusId = "PCI:17:0:0"; # AMD Radeon Graphics (integrated with 9700X)
       nvidiaBusId = "PCI:1:0:0"; # NVIDIA RTX 4070
     };
