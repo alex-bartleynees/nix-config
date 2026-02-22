@@ -214,8 +214,8 @@
           ${if hostName == "thinkpad" then ''
             monitorrule=name:eDP-1,width:1920,height:1080,refresh:60,x:0,y:0,scale:1,vrr:0,rr:0
           '' else ''
-            monitorrule=name:DP-6,width:3840,height:2160,refresh:160,x:0,y:0,scale:1.5,vrr:0,rr:0
-            monitorrule=name:DP-4,width:2560,height:1440,refresh:144,x:2560,y:0,scale:1,vrr:0,rr:3
+            monitorrule=name:DP-2,width:3840,height:2160,refresh:160,x:0,y:0,scale:1.5,vrr:0,rr:0
+            monitorrule=name:HDMI-A-1,width:2560,height:1440,refresh:100,x:2560,y:0,scale:1,vrr:0,rr:3
           ''}
 
           # Tag layout rules
@@ -223,7 +223,8 @@
           (lib.concatMapStringsSep "\n" (id:
             "tagrule=id:${
               toString id
-            },monitor_name:DP-4,layout_name:vertical_tile") (lib.range 0 9))}
+            },monitor_name:HDMI-A-1,layout_name:vertical_tile")
+            (lib.range 0 9))}
 
           # Autostart
           exec-once=~/.config/mango/autostart.sh

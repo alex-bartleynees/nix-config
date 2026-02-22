@@ -280,7 +280,7 @@
             scale = 1.0;
           };
         } else {
-          "DP-6" = {
+          "DP-2" = {
             mode = {
               width = 3840;
               height = 2160;
@@ -293,11 +293,11 @@
             scale = 1.5;
             variable-refresh-rate = true;
           };
-          "DP-4" = {
+          "HDMI-A-1" = {
             mode = {
               width = 2560;
               height = 1440;
-              refresh = 144.0;
+              refresh = 100.0;
             };
             transform.rotation = 270;
             position = {

@@ -69,8 +69,8 @@
               "eDP-1,1920x1080@60,0x0,1" # Built-in laptop display
             ]
           else [
-            "DP-6,3840x2160@160,0x0,1.5,vrr,1" # Main 4K monitor with 1.5x scaling and VRR enabled
-            "DP-4,2560x1440@144,2560x0,1,transform,3,vrr,0" # Secondary monitor rotated 270° with VRR disabled
+            "DP-2,3840x2160@160,0x0,1.5,vrr,1" # Main 4K monitor with 1.5x scaling and VRR enabled
+            "HDMI-A-1,2560x1440@100,2560x0,1,transform,3,vrr,1" # Secondary monitor rotated 270° with VRR enabled
           ];
 
           # Variables
@@ -269,9 +269,9 @@
             # Lock and display control
             "CTRL $mod, L, exec, $lock"
             "$mod CTRL, W, exec, hyprctl dispatch dpms on"
-            ''$mod CTRL, M, exec, hyprctl keyword monitor "DP-4,disable"''
+            ''$mod CTRL, M, exec, hyprctl keyword monitor "HDMI-A-1,disable"''
             ''
-              $mod CTRL SHIFT, M, exec, hyprctl keyword monitor "DP-4,2560x1440@144,2560x0,1,transform,3"''
+              $mod CTRL SHIFT, M, exec, hyprctl keyword monitor "HDMI-A-1,2560x1440@100,2560x0,1,transform,3"''
 
             # Resize mode
             "$mod, R, submap, resize"
@@ -325,16 +325,16 @@
             "9, monitor:eDP-1"
             "10, monitor:eDP-1"
           ] else [
-            "1, monitor:DP-6"
-            "2, monitor:DP-6"
-            "3, monitor:DP-6"
-            "4, monitor:DP-6"
-            "5, monitor:DP-6"
-            "6, monitor:DP-4"
-            "7, monitor:DP-4"
-            "8, monitor:DP-4"
-            "9, monitor:DP-4"
-            "10, monitor:DP-4"
+            "1, monitor:DP-2"
+            "2, monitor:DP-2"
+            "3, monitor:DP-2"
+            "4, monitor:DP-2"
+            "5, monitor:DP-2"
+            "6, monitor:HDMI-A-1"
+            "7, monitor:HDMI-A-1"
+            "8, monitor:HDMI-A-1"
+            "9, monitor:HDMI-A-1"
+            "10, monitor:HDMI-A-1"
           ];
 
           # Window rules for Steam gaming
@@ -355,7 +355,7 @@
 
             # Steam games - force proper display settings
             "fullscreen on, match:class ^(steam_app_.*)$"
-            "monitor DP-6, match:class ^(steam_app_.*)$"
+            "monitor DP-2, match:class ^(steam_app_.*)$"
             "workspace 1, match:class ^(steam_app_.*)$"
             "immediate on, match:class ^(steam_app_.*)$"
           ];

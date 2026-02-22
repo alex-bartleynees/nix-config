@@ -216,7 +216,7 @@
               "Control+${modifier}+w" = if hostName == "thinkpad" then
                 ''exec swaymsg "output eDP-1 dpms on"''
               else
-                ''exec swaymsg "output DP-6 dpms on; output DP-4 dpms on"'';
+                ''exec swaymsg "output DP-2 dpms on; output HDMI-A-1 dpms on"'';
             };
 
           # Modes
@@ -277,15 +277,15 @@
               background = "${background} fill";
             };
           } else {
-            "DP-6" = {
+            "DP-2" = {
               mode = "3840x2160@160Hz";
               position = "0,0";
               scale = "1.5";
               background = "${background} fill";
               adaptive_sync = "on";
             };
-            "DP-4" = {
-              mode = "2560x1440@144Hz";
+            "HDMI-A-1" = {
+              mode = "2560x1440@100Hz";
               position = "2560,0";
               transform = "90";
               background = "${background} fill";
@@ -338,43 +338,43 @@
           ] else [
             {
               workspace = "1";
-              output = "DP-6";
+              output = "DP-2";
             }
             {
               workspace = "2";
-              output = "DP-6";
+              output = "DP-2";
             }
             {
               workspace = "3";
-              output = "DP-6";
+              output = "DP-2";
             }
             {
               workspace = "4";
-              output = "DP-6";
+              output = "DP-2";
             }
             {
               workspace = "5";
-              output = "DP-6";
+              output = "DP-2";
             }
             {
               workspace = "6";
-              output = "DP-4";
+              output = "HDMI-A-1";
             }
             {
               workspace = "7";
-              output = "DP-4";
+              output = "HDMI-A-1";
             }
             {
               workspace = "8";
-              output = "DP-4";
+              output = "HDMI-A-1";
             }
             {
               workspace = "9";
-              output = "DP-4";
+              output = "HDMI-A-1";
             }
             {
               workspace = "10";
-              output = "DP-4";
+              output = "HDMI-A-1";
             }
           ];
 
@@ -416,11 +416,12 @@
               ''swaymsg "output eDP-1 dpms off"''
             else
               ''
-                swaymsg "output DP-6 dpms off"; swaymsg "output DP-4 dpms off"'';
+                swaymsg "output DP-2 dpms off"; swaymsg "output HDMI-A-1 dpms off"'';
             resumeCommand = if hostName == "thinkpad" then
               ''swaymsg "output eDP-1 dpms on"''
             else
-              ''swaymsg "output DP-6 dpms on"; swaymsg "output DP-4 dpms on"'';
+              ''
+                swaymsg "output DP-2 dpms on"; swaymsg "output HDMI-A-1 dpms on"'';
           }
           {
             timeout = 1800; # 30 minutes - suspend first
@@ -441,7 +442,8 @@
             command = if hostName == "thinkpad" then
               ''swaymsg "output eDP-1 dpms on"''
             else
-              ''swaymsg "output DP-6 dpms on"; swaymsg "output DP-4 dpms on"'';
+              ''
+                swaymsg "output DP-2 dpms on"; swaymsg "output HDMI-A-1 dpms on"'';
           }
         ];
       };

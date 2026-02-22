@@ -254,7 +254,7 @@
             riverctl output eDP-1 mode 1920x1080@60
             riverctl output eDP-1 position 0,0
           '' else ''
-            wlr-randr --output DP-6 --mode 3840x2160@160 --scale 1.5 --pos 0,0 --output DP-4 --mode 2560x1440@144 --transform 270 --pos 2560,0 &
+            wlr-randr --output DP-2 --mode 3840x2160@160 --scale 1.5 --pos 0,0 --output HDMI-A-1 --mode 2560x1440@100 --transform 270 --pos 2560,0 &
           ''}
 
           # Server Side Decorations (SSD) rules for border visibility

@@ -58,7 +58,8 @@ in {
         modesetting.enable = true;
         powerManagement.enable = true;
         # Finegrained power management only works with PRIME offload mode
-        powerManagement.finegrained = cfg.prime.enable && cfg.prime.mode == "offload";
+        powerManagement.finegrained = cfg.prime.enable && cfg.prime.mode
+          == "offload";
         open = true;
         nvidiaSettings = true;
         package = config.boot.kernelPackages.nvidiaPackages.stable;

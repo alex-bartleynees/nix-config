@@ -51,7 +51,7 @@
                 <primary>yes</primary>
                 <monitor>
                   <monitorspec>
-                    <connector>DP-6</connector>
+                    <connector>DP-2</connector>
                     <vendor>AOC</vendor>
                     <product>U27G4</product>
                     <serial>10GR2HA001383</serial>
@@ -73,7 +73,7 @@
                 </transform>
                 <monitor>
                   <monitorspec>
-                    <connector>DP-4</connector>
+                    <connector>HDMI-A-1</connector>
                     <vendor>GSM</vendor>
                     <product>27GL850</product>
                     <serial>006NTDVG0786</serial>
