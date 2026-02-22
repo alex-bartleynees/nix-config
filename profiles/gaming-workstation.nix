@@ -12,8 +12,17 @@ lib.mkIf config.profiles.gaming-workstation {
     streaming.monitor = 1; # Monitor to use for game streaming
   };
 
-  # Nvidia GPU support
-  nvidia.enable = true;
+  # Nvidia GPU support with PRIME (AMD 9700X integrated + RTX 4070)
+  nvidia = {
+    enable = true;
+    prime = {
+      enable = true;
+      mode =
+        "sync"; # Use sync mode for better gaming performance (always-on NVIDIA)
+      amdgpuBusId = "PCI:17:0:0"; # AMD Radeon Graphics (integrated with 9700X)
+      nvidiaBusId = "PCI:1:0:0"; # NVIDIA RTX 4070
+    };
+  };
 
   # RGB lighting support
   rgb = {

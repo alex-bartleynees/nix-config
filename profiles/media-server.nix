@@ -10,7 +10,10 @@ lib.mkIf config.profiles.media-server {
   };
 
   # Hardware support for GPU acceleration
-  nvidia.enable = true;
+  nvidia = {
+    enable = true;
+    prime.enable = false;
+  };
 
   # RGB lighting support
   rgb = {
