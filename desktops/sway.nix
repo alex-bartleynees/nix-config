@@ -432,20 +432,14 @@
             command = "${pkgs.systemd}/bin/systemctl hibernate";
           }
         ];
-        events = [
-          {
-            event = "before-sleep";
-            command = "${config.home.homeDirectory}/.config/sway/lock.sh";
-          }
-          {
-            event = "after-resume";
-            command = if hostName == "thinkpad" then
-              ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms on"''
-            else
-              ''
-                ${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
-          }
-        ];
+        events = {
+          before-sleep = "${config.home.homeDirectory}/.config/sway/lock.sh";
+          after-resume = if hostName == "thinkpad" then
+            ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms on"''
+          else
+            ''
+              ${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
+        };
       };
 
       # Lock script
