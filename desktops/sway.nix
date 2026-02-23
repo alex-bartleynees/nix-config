@@ -408,42 +408,42 @@
         timeouts = [
           {
             timeout = 300;
-            command = "loginctl lock-session";
+            command = "${config.home.homeDirectory}/.config/sway/lock.sh";
           }
           {
             timeout = 600;
             command = if hostName == "thinkpad" then
-              ''swaymsg "output eDP-1 dpms off"''
+              ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms off"''
             else
               ''
-                swaymsg "output DP-2 dpms off"; swaymsg "output HDMI-A-1 dpms off"'';
+                ${pkgs.sway}/bin/swaymsg "output DP-2 dpms off"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms off"'';
             resumeCommand = if hostName == "thinkpad" then
-              ''swaymsg "output eDP-1 dpms on"''
+              ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms on"''
             else
               ''
-                swaymsg "output DP-2 dpms on"; swaymsg "output HDMI-A-1 dpms on"'';
+                ${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
           }
           {
             timeout = 1800; # 30 minutes - suspend first
-            command = "systemctl suspend";
+            command = "${pkgs.systemd}/bin/systemctl suspend";
           }
           {
             timeout = 5400; # 90 minutes total - hibernate if still asleep
-            command = "systemctl hibernate";
+            command = "${pkgs.systemd}/bin/systemctl hibernate";
           }
         ];
         events = [
           {
             event = "before-sleep";
-            command = "loginctl lock-session";
+            command = "${config.home.homeDirectory}/.config/sway/lock.sh";
           }
           {
             event = "after-resume";
             command = if hostName == "thinkpad" then
-              ''swaymsg "output eDP-1 dpms on"''
+              ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms on"''
             else
               ''
-                swaymsg "output DP-2 dpms on"; swaymsg "output HDMI-A-1 dpms on"'';
+                ${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
           }
         ];
       };
@@ -451,19 +451,19 @@
       # Lock script
       home.file.".config/sway/lock.sh" = {
         text = ''
-          #!/bin/sh
-          export SWAYSOCK=/run/user/1000/sway-ipc.$(id -u).$(pgrep -x sway).sock
+          #!${pkgs.bash}/bin/bash
+          export SWAYSOCK=/run/user/1000/sway-ipc.$(${pkgs.coreutils}/bin/id -u).$(${pkgs.procps}/bin/pgrep -x sway).sock
           export WAYLAND_DISPLAY=wayland-1
           set -e
 
           # Turn off screen blanking
-          swaymsg "output * dpms on"
+          ${pkgs.sway}/bin/swaymsg "output * dpms on"
 
           # Run swaylock
-          swaylock -i ${background}
+          ${pkgs.swaylock}/bin/swaylock -i ${background}
 
           # Re-enable DPMS settings after unlocking
-          swaymsg "output * dpms on"
+          ${pkgs.sway}/bin/swaymsg "output * dpms on"
         '';
         executable = true;
       };

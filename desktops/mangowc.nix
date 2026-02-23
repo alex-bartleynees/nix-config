@@ -148,13 +148,12 @@
           overviewgappo=30
 
           # Misc
-          adaptive_sync=0
+          #adaptive_sync=1
           xwayland_persistence=0
           syncobj_enable=1
           no_border_when_single=0
           axis_bind_apply_timeout=100
           focus_on_activate=1
-          inhibit_regardless_of_visibility=0
           sloppyfocus=1
           warpcursor=1
           focus_cross_monitor=1
