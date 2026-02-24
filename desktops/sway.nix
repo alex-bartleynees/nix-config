@@ -450,14 +450,10 @@
           export WAYLAND_DISPLAY=wayland-1
           set -e
 
-          # Turn off screen blanking
           ${pkgs.sway}/bin/swaymsg "output * dpms on"
 
-          # Run swaylock
-          ${pkgs.swaylock}/bin/swaylock -i ${background}
-
-          # Re-enable DPMS settings after unlocking
-          ${pkgs.sway}/bin/swaymsg "output * dpms on"
+          # Run swaylock in fork mode (-f) so it doesn't block suspend
+          ${pkgs.swaylock}/bin/swaylock -f -i ${background}
         '';
         executable = true;
       };
