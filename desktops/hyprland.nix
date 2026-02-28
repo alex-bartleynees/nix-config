@@ -121,6 +121,17 @@
             preserve_split = true;
           };
 
+          # Scrolling layout
+          scrolling = {
+            fullscreen_on_one_column = true;
+            column_width = 0.5;
+            focus_fit_method = 0;
+            follow_focus = true;
+            follow_min_visible = 0.4;
+            explicit_column_widths = "0.333, 0.5, 0.667, 1.0";
+            direction = "right";
+          };
+
           # Group styling
           group = {
             "col.border_active" = lib.mkForce (hexToRgb colors.active_border);
@@ -253,6 +264,25 @@
             "$mod, S, exec, hyprctl keyword general:layout master"
             "$mod, W, togglegroup"
             "$mod, E, exec, hyprctl keyword general:layout dwindle"
+            "$mod, A, exec, hyprctl keyword general:layout scrolling"
+            "$mod, M, exec, hyprctl keyword general:layout monocle"
+
+            # Scrolling layout controls
+            "$mod, period, layoutmsg, move +col"
+            "$mod, comma, layoutmsg, move -col"
+            "$mod SHIFT, period, layoutmsg, swapcol r"
+            "$mod SHIFT, comma, layoutmsg, swapcol l"
+            "$mod, equal, layoutmsg, colresize +0.1"
+            "$mod, minus, layoutmsg, colresize -0.1"
+            "$mod SHIFT, equal, layoutmsg, colresize +conf"
+            "$mod SHIFT, minus, layoutmsg, colresize -conf"
+            "$mod, Y, layoutmsg, fit active"
+            "$mod SHIFT, Y, layoutmsg, togglefit"
+            "$mod, O, layoutmsg, promote"
+
+            # Monocle layout controls
+            "$mod, N, layoutmsg, cyclenext"
+            "$mod SHIFT, N, layoutmsg, cycleprev"
 
             # Togglegroup navigation
             "$mod, TAB, changegroupactive, f"
@@ -330,11 +360,11 @@
             "3, monitor:DP-2"
             "4, monitor:DP-2"
             "5, monitor:DP-2"
-            "6, monitor:HDMI-A-1"
-            "7, monitor:HDMI-A-1"
-            "8, monitor:HDMI-A-1"
-            "9, monitor:HDMI-A-1"
-            "10, monitor:HDMI-A-1"
+            "6, monitor:HDMI-A-1, layoutopt:direction:down"
+            "7, monitor:HDMI-A-1, layoutopt:direction:down"
+            "8, monitor:HDMI-A-1, layoutopt:direction:down"
+            "9, monitor:HDMI-A-1, layoutopt:direction:down"
+            "10, monitor:HDMI-A-1, layoutopt:direction:down"
           ];
 
           # Window rules for Steam gaming
