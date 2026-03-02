@@ -124,7 +124,7 @@
           # Scrolling layout
           scrolling = {
             fullscreen_on_one_column = true;
-            column_width = 0.5;
+            column_width = 1;
             focus_fit_method = 0;
             follow_focus = true;
             follow_min_visible = 0.4;
