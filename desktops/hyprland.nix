@@ -305,6 +305,10 @@
 
             # Resize mode
             "$mod, R, submap, resize"
+
+            # Horizontal scroll to move focus (direction-aware for scrolling layout)
+            ", mouse_right, layoutmsg, move +col"
+            ", mouse_left, layoutmsg, move -col"
           ];
 
           # Resize submap
