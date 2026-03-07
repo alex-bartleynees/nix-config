@@ -7,7 +7,7 @@ in {
     virtualisation.docker = {
       enable = true;
       enableOnBoot = true;
-      autoPrune.enable = true;
+      autoPrune.enable = false;
     };
 
     networking.firewall = {
