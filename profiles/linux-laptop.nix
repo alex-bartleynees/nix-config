@@ -16,10 +16,10 @@ lib.mkIf config.profiles.linux-laptop {
   services.logind.settings.Login.HandleLidSwitchDocked = "ignore";
 
   # Hibernation settings
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=30m
-    SuspendState=mem
-  '';
+  systemd.sleep.settings.Sleep = {
+    HibernateDelaySec = "30m";
+    SuspendState = "mem";
+  };
 
   # Power button behavior
   services.logind.settings.Login.HandlePowerKey = "hibernate";
