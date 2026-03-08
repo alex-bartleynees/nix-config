@@ -29,7 +29,7 @@ in {
     persistPaths = commonHomePaths.commonHomePersistPaths
       ++ developerPaths.commonPersistPaths;
     needsPasswordSecret = true;
-    profiles = [ "developer" "reader" ];
+    profiles = [ "developer" ];
   };
 
   home-manager.users.${username}.home.file = {

@@ -19,6 +19,7 @@ in {
         "rider-developer"
         "backend-developer"
         "host-desktop"
+        "reader"
       ];
       alexbn-work.profiles = [
         "vscode-developer"
@@ -57,7 +58,7 @@ in {
     users = users;
     additionalUserProfiles = {
       alexbn.profiles =
-        [ "vscode-developer" "rider-developer" "host-thinkpad" ];
+        [ "vscode-developer" "rider-developer" "host-thinkpad" "reader" ];
     };
     systemProfiles = [ "linux-laptop" ];
   };
