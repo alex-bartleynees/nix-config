@@ -92,6 +92,6 @@ in lib.mkIf config.profiles.linux-desktop {
       "@home" = { mountpoint = "/home"; };
     };
     persistPaths = rootPaths.rootPersistPaths ++ allUserPersistPaths;
-    resetSubvolumes = [ ];
+    resetSubvolumes = [ "@" ];
   };
 }
