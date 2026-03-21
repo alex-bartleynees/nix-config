@@ -7,7 +7,7 @@ lib.mkIf config.profiles.gaming-workstation {
   gaming = {
     enable = true;
     streaming.enable = true;
-    streaming.gpu = "nvidia"; # GPU to use for game streaming
+    streaming.gpu = "amd"; # AMD iGPU drives monitors; NVENC can't import cross-GPU DMA-BUF
     streaming.resolution = "3840x2160@164.96"; # Resolution for game streaming
     streaming.monitor = 1; # Monitor to use for game streaming
   };

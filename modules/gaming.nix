@@ -78,7 +78,9 @@ in {
           else
             "libx264";
           adapter_name =
-            if cfg.streaming.gpu == "nvidia" then "/dev/dri/card2" else null;
+            if cfg.streaming.gpu == "nvidia" then "/dev/dri/card1"
+            else if cfg.streaming.gpu == "amd" then "/dev/dri/card2"
+            else null;
           capture = "kms";
           output_name = cfg.streaming.monitor;
         };
