@@ -6,7 +6,7 @@
   ghostty = {
     enable = true;
     theme = "Dracula+";
-    windowDecoration= true;
+    windowDecoration = true;
   };
 
   brave = { enable = true; };

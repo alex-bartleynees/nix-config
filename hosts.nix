@@ -43,7 +43,7 @@ in {
   };
 
   media = {
-    desktop = "gnome";
+    desktop = "hyprland";
     hostName = "media";
     users = users;
     systemProfiles = [ "media-server" ];

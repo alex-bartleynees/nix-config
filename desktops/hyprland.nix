@@ -63,15 +63,7 @@
         systemd.variables = [ "--all" ];
 
         settings = {
-          # Monitor configuration per host
-          monitor = if hostName == "thinkpad" then
-            [
-              "eDP-1,1920x1080@60,0x0,1" # Built-in laptop display
-            ]
-          else [
-            "DP-2,3840x2160@160,0x0,1.5,vrr,1" # Main 4K monitor with 1.5x scaling and VRR enabled
-            "HDMI-A-1,2560x1440@100,2560x0,1,transform,3,vrr,1" # Secondary monitor rotated 270° with VRR enabled
-          ];
+          monitor = [ ",preferred,auto,1" ];
 
           # Variables
           "$mod" = "ALT";

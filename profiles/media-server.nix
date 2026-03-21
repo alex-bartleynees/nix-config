@@ -1,5 +1,6 @@
-{ config, lib, pkgs, ... }:
-lib.mkIf config.profiles.media-server {
+{ config, lib, pkgs, users, ... }:
+let primaryUser = (builtins.head users).username;
+in lib.mkIf config.profiles.media-server {
   # Inherit linux-desktop profile
   profiles.linux-desktop = true;
 
@@ -24,8 +25,16 @@ lib.mkIf config.profiles.media-server {
 
   impermanence.enable = lib.mkForce false;
 
-  # Media server specific configurations
-  services.displayManager.gdm.enable = lib.mkForce false;
+  # Prevent the system from ever sleeping or suspending
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets."hybrid-sleep".enable = false;
+
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = primaryUser;
+  };
 
   # Static IP configuration for media server
   networking = {
@@ -124,11 +133,26 @@ lib.mkIf config.profiles.media-server {
     systemd = { mountRequirements = [ "mnt-jellyfin\\x2dpool.mount" ]; };
   };
 
-  # Cage kiosk configuration
-  cage = {
-    enable = true;
-    application = "${pkgs.moonlight-qt}/bin/moonlight";
-    cageArgs = [ "-s" ];
+  home-manager.users.${primaryUser} = {
+    # Disable hypridle — media server must never lock, suspend, or hibernate
+    hypridle.enable = lib.mkForce false;
+
+    wayland.windowManager.hyprland.settings.windowrule =
+      [ "fullscreen on, match:class ^(com.moonlight_stream.Moonlight)$" ];
+
+    systemd.user.services.moonlight = {
+      Unit = {
+        Description = "Moonlight game streaming client";
+        After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.moonlight-qt}/bin/moonlight";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+      Install = { WantedBy = [ "graphical-session.target" ]; };
+    };
   };
 
   # Technitium DNS server
