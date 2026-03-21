@@ -80,6 +80,15 @@ in {
       environment.sessionVariables = {
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         GBM_BACKEND = "nvidia-drm";
+        WLR_NO_HARDWARE_CURSORS = "1";
+        EGL_PLATFORM = "wayland";
+      };
+
+      systemd.services.greetd.environment = {
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        GBM_BACKEND = "nvidia-drm";
+        WLR_NO_HARDWARE_CURSORS = "1";
+        EGL_PLATFORM = "wayland";
       };
     })
 

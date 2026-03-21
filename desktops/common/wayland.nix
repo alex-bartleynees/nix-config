@@ -4,9 +4,6 @@
     # Enable Wayland support for Chromium/Electron apps
     NIXOS_OZONE_WL = "1";
 
-    # Disable hardware cursors (fixes cursor issues on some hardware)
-    WLR_NO_HARDWARE_CURSORS = "1";
-
     # Use Vulkan renderer for better performance
     WLR_RENDERER = "vulkan";
 
