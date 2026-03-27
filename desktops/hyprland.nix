@@ -201,7 +201,6 @@
             "$mod, SPACE, exec, vicinae toggle"
             "$mod, F, fullscreen"
             "$mod SHIFT, SPACE, togglefloating"
-            #"$mod, A, focusparent"
             ''$mod, P, exec, grim -g "$(slurp -d)" - | wl-copy''
 
             # Focus movement (Vi keys)
@@ -303,23 +302,6 @@
             ", mouse_left, layoutmsg, move -col"
           ];
 
-          # Resize submap
-          # submap = [
-          #   "resize"
-          #   "bind = , J, resizeactive, -10 0"
-          #   "bind = , K, resizeactive, 0 -10"
-          #   "bind = , L, resizeactive, 0 10"
-          #   "bind = , SEMICOLON, resizeactive, 10 0"
-          #   "bind = , LEFT, resizeactive, -10 0"
-          #   "bind = , DOWN, resizeactive, 0 10"
-          #   "bind = , UP, resizeactive, 0 -10"
-          #   "bind = , RIGHT, resizeactive, 10 0"
-          #   "bind = , RETURN, submap, reset"
-          #   "bind = , ESCAPE, submap, reset"
-          #   "bind = $mod, R, submap, reset"
-          #   "submap = reset"
-          # ];
-
           # Function keys
           bindel = [
             ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+"
@@ -338,30 +320,6 @@
           bindm =
             [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
 
-          # Workspace rules per host
-          workspace = if hostName == "thinkpad" then [
-            "1, monitor:eDP-1"
-            "2, monitor:eDP-1"
-            "3, monitor:eDP-1"
-            "4, monitor:eDP-1"
-            "5, monitor:eDP-1"
-            "6, monitor:eDP-1"
-            "7, monitor:eDP-1"
-            "8, monitor:eDP-1"
-            "9, monitor:eDP-1"
-            "10, monitor:eDP-1"
-          ] else [
-            "1, monitor:DP-2"
-            "2, monitor:DP-2"
-            "3, monitor:DP-2"
-            "4, monitor:DP-2"
-            "5, monitor:DP-2"
-            "6, monitor:HDMI-A-1, layoutopt:direction:down"
-            "7, monitor:HDMI-A-1, layoutopt:direction:down"
-            "8, monitor:HDMI-A-1, layoutopt:direction:down"
-            "9, monitor:HDMI-A-1, layoutopt:direction:down"
-            "10, monitor:HDMI-A-1, layoutopt:direction:down"
-          ];
 
           # Window rules for Steam gaming
           windowrule = [
@@ -371,17 +329,8 @@
             "idle_inhibit focus, match:title ^(Steam Big Picture Mode)$"
             "idle_inhibit focus, match:class ^(gamescope)$"
 
-            # Steam main window
-            #"float on, match:class ^(steam)$"
-            #"monitor DP-6, match:class ^(steam)$"
-
-            # Steam Big Picture Mode
-            #"float on, match:class ^(steam)$ match:title ^(Steam Big Picture Mode)$"
-            #"monitor DP-6, match:class ^(steam)$ match:title ^(Steam Big Picture Mode)$"
-
             # Steam games - force proper display settings
             "fullscreen on, match:class ^(steam_app_.*)$"
-            "monitor DP-2, match:class ^(steam_app_.*)$"
             "workspace 1, match:class ^(steam_app_.*)$"
             "immediate on, match:class ^(steam_app_.*)$"
           ];
@@ -474,24 +423,5 @@
         };
         Install = { WantedBy = [ "hyprland-session.target" ]; };
       };
-
-      # Hyprpaper configuration - commented out in favor of swww
-      # services.hyprpaper = {
-      #   enable = true;
-      #   settings = {
-      #     ipc = "on";
-      #     splash = false;
-      #     splash_offset = 2.0;
-
-      #     preload = [ "${background}" ];
-
-      #     wallpaper = if hostName == "thinkpad" then
-      #       [ "eDP-1,${background}" ]
-      #     else [
-      #       "DP-6,${background}"
-      #       "DP-4,${background}"
-      #     ];
-      #   };
-      # };
     };
 }
