@@ -137,10 +137,6 @@ in lib.mkIf config.profiles.media-server {
     # Disable hypridle — media server must never lock, suspend, or hibernate
     hypridle.enable = lib.mkForce false;
 
-    wayland.windowManager.hyprland.settings.monitor = lib.mkForce [
-      ",2560x1440@120,0x0,1,vrr,1"
-    ];
-
     wayland.windowManager.hyprland.settings.windowrule =
       [ "fullscreen on, match:class ^(com.moonlight_stream.Moonlight)$" ];
 

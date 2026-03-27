@@ -47,6 +47,7 @@ in {
     hostName = "media";
     users = users;
     systemProfiles = [ "media-server" ];
+    additionalUserProfiles = { alexbn.profiles = [ "host-media" ]; };
   };
 
   thinkpad = {
