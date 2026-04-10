@@ -383,9 +383,9 @@
           # Bluetooth applet
           blueman-applet &
 
-          # Wallpaper with swww
-          ${pkgs.swww}/bin/swww-daemon --format xrgb &
-          sleep 1 && ${pkgs.swww}/bin/swww img ${background} &
+          # Wallpaper with awww
+          ${pkgs.awww}/bin/awww-daemon --format xrgb &
+          sleep 1 && ${pkgs.awww}/bin/awww img ${background} &
 
           # Clipboard manager
           wl-clip-persist --clipboard regular --reconnect-tries 0 &

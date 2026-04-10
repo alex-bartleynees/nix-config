@@ -125,7 +125,7 @@
 
         # Layer rules for wallpaper backdrop
         layer-rules = [{
-          matches = [{ namespace = "^swww-daemon$"; }];
+          matches = [{ namespace = "^awww-daemon$"; }];
           place-within-backdrop = true;
         }];
 
@@ -347,12 +347,12 @@
           }
           { command = [ "nm-applet" ]; }
           { command = [ "blueman-applet" ]; }
-          { command = [ "${pkgs.swww}/bin/swww-daemon" "--format" "xrgb" ]; }
+          { command = [ "${pkgs.awww}/bin/awww-daemon" "--format" "xrgb" ]; }
           {
             command = [
               "sh"
               "-c"
-              "sleep 1 && ${pkgs.swww}/bin/swww img ${background}"
+              "sleep 1 && ${pkgs.awww}/bin/awww img ${background}"
             ];
           }
           {

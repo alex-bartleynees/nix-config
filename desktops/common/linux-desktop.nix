@@ -47,7 +47,7 @@
     popsicle
 
     # Wallpaper and background management
-    swww
+    awww
 
     # Screenshot and clipboard utilities
     grim

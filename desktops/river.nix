@@ -273,8 +273,8 @@
           nm-applet &
           blueman-applet &
 
-          # Set wallpaper with swww after daemon starts
-          sleep 1 && swww img "${background}" &
+          # Set wallpaper with awww after daemon starts
+          sleep 1 && awww img "${background}" &
 
           # UWSM finalize for proper session management
           uwsm finalize SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME &
@@ -337,16 +337,16 @@
         Install = { WantedBy = [ "river-session.target" ]; };
       };
 
-      # Swww systemd service for River
-      systemd.user.services.swww-river = {
+      # awww systemd service for River
+      systemd.user.services.awww-river = {
         Unit = {
-          Description = "Swww background image service";
+          Description = "awww background image service";
           PartOf = [ "river-session.target" ];
           After = [ "river-session.target" ];
         };
         Service = {
           Type = "simple";
-          ExecStart = "${pkgs.swww}/bin/swww-daemon --format xrgb";
+          ExecStart = "${pkgs.awww}/bin/awww-daemon --format xrgb";
           Restart = "on-failure";
           RestartSec = 1;
           TimeoutStopSec = 10;

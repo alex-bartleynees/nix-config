@@ -183,7 +183,7 @@
           exec-once = [
             "nm-applet"
             "blueman-applet"
-            "sleep 1 && swww img ${background}"
+            "sleep 1 && awww img ${background}"
           ];
 
           # Key bindings
@@ -320,7 +320,6 @@
           bindm =
             [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
 
-
           # Window rules for Steam gaming
           windowrule = [
             "idle_inhibit focus, match:class ^(steam)$"
@@ -372,16 +371,16 @@
         Install = { WantedBy = [ "hyprland-session.target" ]; };
       };
 
-      # Swww systemd service for Hyprland
-      systemd.user.services.swww-hypr = {
+      # awww systemd service for Hyprland
+      systemd.user.services.awww-hypr = {
         Unit = {
-          Description = "Swww background image service";
+          Description = "awww background image service";
           PartOf = [ "hyprland-session.target" ];
           After = [ "hyprland-session.target" ];
         };
         Service = {
           Type = "simple";
-          ExecStart = "${pkgs.swww}/bin/swww-daemon --format xrgb";
+          ExecStart = "${pkgs.awww}/bin/awww-daemon --format xrgb";
           Restart = "on-failure";
           RestartSec = 1;
           TimeoutStopSec = 10;

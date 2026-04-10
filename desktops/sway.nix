@@ -388,8 +388,8 @@
             { command = "blueman-applet"; }
             { command = "udiskie --tray"; }
             { command = "sway-audio-idle-inhibit"; }
-            { command = "swww-daemon --format xrgb"; }
-            { command = "sleep 1 && swww img ${background}"; }
+            { command = "awww-daemon --format xrgb"; }
+            { command = "sleep 1 && awww img ${background}"; }
             { command = "autotiling-rs"; }
             {
               command =
