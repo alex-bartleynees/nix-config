@@ -20,6 +20,8 @@ in {
 
   programs.zsh.enable = true;
 
+  gtk.gtk4.theme = null;
+
   home.packages = with pkgs; [
     font-awesome
     icomoon-feather

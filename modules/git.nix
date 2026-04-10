@@ -50,6 +50,7 @@ in {
     programs.git = lib.mkMerge [
       {
         enable = true;
+        signing.format = null;
         settings = {
           init.defaultBranch = cfg.defaultBranch;
 
