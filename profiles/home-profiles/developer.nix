@@ -61,6 +61,8 @@
     })
     wget
     git
+    roslyn-ls
+    lsof
   ];
 
   programs.yazi = {
@@ -74,7 +76,7 @@
       recursive = true;
     };
 
-    ".config/nvim/lua/alex/plugins/colorscheme.lua" = {
+    ".config/nvim/plugin/colorscheme.lua" = {
       source = "${inputs.dotfiles}/themes/${theme.name}/nvim/colorscheme.lua";
     };
   };
