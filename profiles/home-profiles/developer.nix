@@ -1,10 +1,13 @@
-{ inputs, pkgs, theme, ... }: {
+{
+  inputs,
+  pkgs,
+  theme,
+  ...
+}:
+{
 
-  programs.neovim = {
+  neovim = {
     enable = true;
-    defaultEditor = true;
-    withRuby = false;
-    withPython3 = false;
   };
 
   shell = {
@@ -18,11 +21,17 @@
     zellijTheme = theme.zellijTheme or "tokyo-night-dark";
   };
 
-  git = { enable = true; };
+  git = {
+    enable = true;
+  };
 
-  direnv = { enable = true; };
+  direnv = {
+    enable = true;
+  };
 
-  distrobox = { enable = pkgs.stdenv.isLinux; };
+  distrobox = {
+    enable = pkgs.stdenv.isLinux;
+  };
 
   claude-code = {
     enable = true;
@@ -39,8 +48,6 @@
     tmux
     lazygit
     lazydocker
-    inputs.neovim.packages.${pkgs.stdenv.hostPlatform.system}.default
-
     restic
     (pkgs.symlinkJoin {
       name = "restic-browser-wrapped";
@@ -61,8 +68,6 @@
     })
     wget
     git
-    roslyn-ls
-    lsof
   ];
 
   programs.yazi = {
@@ -81,5 +86,4 @@
     };
   };
 
-  home.sessionVariables = { EDITOR = "nvim"; };
 }

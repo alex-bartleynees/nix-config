@@ -50,8 +50,6 @@
       flake = false;
     };
 
-    neovim = { url = "github:alex-bartleynees/nix-devenv?dir=neovim"; };
-
     niri.url = "github:sodiboo/niri-flake";
 
     mango.url = "github:DreamMaoMao/mango";
