@@ -64,7 +64,6 @@ in
 
         # Utilities
         nodejs
-        lsof
       ];
     };
   };
