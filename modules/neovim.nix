@@ -48,6 +48,7 @@ in
         dockerfile-language-server
         yaml-language-server
         roslyn-ls
+        fsautocomplete
 
         # Formatters
         prettier
@@ -56,6 +57,7 @@ in
         black
         stylua
         isort
+        fantomas
 
         # Linters
         ruff
