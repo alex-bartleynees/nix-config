@@ -68,6 +68,7 @@
     })
     wget
     git
+    gh
   ];
 
   programs.yazi = {
