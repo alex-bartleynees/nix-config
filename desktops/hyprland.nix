@@ -109,7 +109,6 @@
 
           # Dwindle layout
           dwindle = {
-            pseudotile = true;
             preserve_split = true;
           };
 

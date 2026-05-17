@@ -28,9 +28,10 @@ in {
     (lib.mkIf cfg.enable {
       services.greetd = { enable = true; };
       security.pam.services.greetd.enable = true;
+      services.accounts-daemon.enable = true;
       programs.regreet = {
         enable = true;
-        cageArgs = [ "-s" "-m" "last" ];
+        cageArgs = [ "-s" "-d" "-m" "last" ];
       };
     })
 
