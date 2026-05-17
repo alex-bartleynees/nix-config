@@ -1,14 +1,7 @@
 # homeModule: true
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
-let
-  cfg = config.neovim;
-in
-{
+{ config, pkgs, lib, ... }:
+let cfg = config.neovim;
+in {
   options.neovim = {
     enable = lib.mkEnableOption "neovim with nix-managed LSPs and formatters";
   };

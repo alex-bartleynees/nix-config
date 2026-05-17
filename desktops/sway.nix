@@ -424,12 +424,8 @@
                 ${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
           }
           {
-            timeout = 1800; # 30 minutes - suspend first
+            timeout = 1800; # 30 minutes
             command = "${pkgs.systemd}/bin/systemctl suspend";
-          }
-          {
-            timeout = 5400; # 90 minutes total - hibernate if still asleep
-            command = "${pkgs.systemd}/bin/systemctl hibernate";
           }
         ];
         events = {

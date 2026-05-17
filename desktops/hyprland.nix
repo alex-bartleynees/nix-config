@@ -30,6 +30,16 @@
       autoLogin = { enable = true; };
     };
 
+    systemd.services.hyprlock-suspend-workaround = {
+      description = "Delay sleep to allow hyprlock to render";
+      before = [ "sleep.target" ];
+      wantedBy = [ "sleep.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.coreutils}/bin/sleep 2";
+      };
+    };
+
     system.nixos.tags = [ "hyprland" ];
   };
 
@@ -108,9 +118,7 @@
           };
 
           # Dwindle layout
-          dwindle = {
-            preserve_split = true;
-          };
+          dwindle = { preserve_split = true; };
 
           # Scrolling layout
           scrolling = {

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 lib.mkIf config.profiles.gaming-workstation {
   # Inherit linux-desktop profile
   profiles.linux-desktop = true;
@@ -7,7 +7,8 @@ lib.mkIf config.profiles.gaming-workstation {
   gaming = {
     enable = true;
     streaming.enable = true;
-    streaming.gpu = "amd"; # AMD iGPU drives monitors; NVENC can't import cross-GPU DMA-BUF
+    streaming.gpu =
+      "amd"; # AMD iGPU drives monitors; NVENC can't import cross-GPU DMA-BUF
     streaming.resolution = "3840x2160@164.96"; # Resolution for game streaming
     streaming.monitor = 1; # Monitor to use for game streaming
   };
@@ -35,6 +36,20 @@ lib.mkIf config.profiles.gaming-workstation {
 
   # Virtualization support
   virtualisation.enable = true;
+
+  # Enable Wake-on-WLAN for WiFi (wlp7s0 / phy0)
+  systemd.services.wowlan = {
+    description = "Enable Wake on WLAN";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    script = ''
+      ${pkgs.iw}/bin/iw phy phy0 wowlan enable magic-packet
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+  };
 
   # Disable wake-up for Logitech USB Receiver (C548)
   services.udev.extraRules = ''

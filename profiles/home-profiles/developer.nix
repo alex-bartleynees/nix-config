@@ -1,14 +1,6 @@
-{
-  inputs,
-  pkgs,
-  theme,
-  ...
-}:
-{
+{ inputs, pkgs, theme, ... }: {
 
-  neovim = {
-    enable = true;
-  };
+  neovim = { enable = true; };
 
   shell = {
     enable = true;
@@ -21,17 +13,11 @@
     zellijTheme = theme.zellijTheme or "tokyo-night-dark";
   };
 
-  git = {
-    enable = true;
-  };
+  git = { enable = true; };
 
-  direnv = {
-    enable = true;
-  };
+  direnv = { enable = true; };
 
-  distrobox = {
-    enable = pkgs.stdenv.isLinux;
-  };
+  distrobox = { enable = pkgs.stdenv.isLinux; };
 
   claude-code = {
     enable = true;

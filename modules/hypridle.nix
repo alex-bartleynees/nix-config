@@ -27,12 +27,6 @@ in {
       description = "Timeout in seconds before suspending the system.";
     };
 
-    hibernateTimeout = lib.mkOption {
-      type = lib.types.int;
-      default = 5400;
-      description = "Timeout in seconds before hibernating the system.";
-    };
-
     wallpaper = lib.mkOption {
       type = lib.types.str;
       default = "";
@@ -50,7 +44,7 @@ in {
         general = {
           lock_cmd = "pidof hyprlock || hyprlock";
           before_sleep_cmd = "loginctl lock-session";
-          after_sleep_cmd = "sleep 1 && hyprctl dispatch dpms on";
+          after_sleep_cmd = "sleep 2 && hyprctl dispatch dpms on";
         };
 
         listener = [
@@ -66,10 +60,6 @@ in {
           {
             timeout = cfg.suspendTimeout;
             on-timeout = "systemctl suspend";
-          }
-          {
-            timeout = cfg.hibernateTimeout;
-            on-timeout = "systemctl hibernate";
           }
         ];
       };
