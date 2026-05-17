@@ -63,6 +63,7 @@ in {
 
   wsl = {
     desktop = "none";
+    themeName = "gruvbox";
     hostName = "nixos-wsl";
     users = users;
     additionalUserProfiles = {
