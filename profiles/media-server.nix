@@ -4,6 +4,8 @@ in lib.mkIf config.profiles.media-server {
   # Inherit linux-desktop profile
   profiles.linux-desktop = true;
 
+  environment.systemPackages = [ pkgs.wakeonlan ];
+
   # Gaming configuration for streaming clients
   gaming = {
     enable = false;
