@@ -23,7 +23,7 @@
 
     environment.systemPackages = with pkgs; [ hyprutils ];
 
-    security.pam.services.hyprlock = { };
+    security.pam.services.hyprlock = { enableGnomeKeyring = true; };
 
     displayManager = {
       enable = true;
