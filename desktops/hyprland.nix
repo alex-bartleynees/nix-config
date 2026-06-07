@@ -297,9 +297,9 @@
             # Lock and display control
             "CTRL $mod, L, exec, $lock"
             "$mod CTRL, W, exec, hyprctl dispatch dpms on"
-            ''$mod CTRL, M, exec, hyprctl keyword monitor "HDMI-A-1,disable"''
+            ''$mod CTRL, M, exec, hyprctl keyword monitor "desc:LG Electronics 27GL850 006NTDVG0786,disable"''
             ''
-              $mod CTRL SHIFT, M, exec, hyprctl keyword monitor "HDMI-A-1,2560x1440@100,2560x0,1,transform,3"''
+              $mod CTRL SHIFT, M, exec, hyprctl keyword monitor "desc:LG Electronics 27GL850 006NTDVG0786,2560x1440@100,2560x0,1,transform,3"''
 
             # Resize mode
             "$mod, R, submap, resize"

@@ -28,6 +28,7 @@ in {
     (lib.mkIf cfg.enable {
       services.greetd = { enable = true; };
       security.pam.services.greetd.enable = true;
+      security.pam.services.greetd.enableGnomeKeyring = true;
       services.accounts-daemon.enable = true;
       programs.regreet = {
         enable = true;

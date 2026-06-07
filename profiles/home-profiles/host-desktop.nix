@@ -1,23 +1,23 @@
 { pkgs, lib, ... }: {
   wayland.windowManager.hyprland.settings.monitor = lib.mkForce [
-    "DP-2,3840x2160@160,0x0,1.5,vrr,1"
-    "HDMI-A-1,2560x1440@100,2560x0,1,transform,3,vrr,1"
+    "desc:AOC U27G4 10GR2HA001383,3840x2160@160,0x0,1.5,vrr,1"
+    "desc:LG Electronics 27GL850 006NTDVG0786,2560x1440@100,2560x0,1,transform,3,vrr,1"
   ];
 
   wayland.windowManager.hyprland.settings.windowrule =
-    [ "monitor DP-2, match:class ^(steam_app_.*)$" ];
+    [ "monitor desc:AOC U27G4 10GR2HA001383, match:class ^(steam_app_.*)$" ];
 
   wayland.windowManager.hyprland.settings.workspace = [
-    "1, monitor:DP-2"
-    "2, monitor:DP-2"
-    "3, monitor:DP-2"
-    "4, monitor:DP-2"
-    "5, monitor:DP-2"
-    "6, monitor:HDMI-A-1, layoutopt:direction:down"
-    "7, monitor:HDMI-A-1, layoutopt:direction:down"
-    "8, monitor:HDMI-A-1, layoutopt:direction:down"
-    "9, monitor:HDMI-A-1, layoutopt:direction:down"
-    "10, monitor:HDMI-A-1, layoutopt:direction:down"
+    "1, monitor:desc:AOC U27G4 10GR2HA001383, default:true"
+    "2, monitor:desc:AOC U27G4 10GR2HA001383"
+    "3, monitor:desc:AOC U27G4 10GR2HA001383"
+    "4, monitor:desc:AOC U27G4 10GR2HA001383"
+    "5, monitor:desc:AOC U27G4 10GR2HA001383"
+    "6, monitor:desc:LG Electronics 27GL850 006NTDVG0786, layoutopt:direction:down, default:true"
+    "7, monitor:desc:LG Electronics 27GL850 006NTDVG0786, layoutopt:direction:down"
+    "8, monitor:desc:LG Electronics 27GL850 006NTDVG0786, layoutopt:direction:down"
+    "9, monitor:desc:LG Electronics 27GL850 006NTDVG0786, layoutopt:direction:down"
+    "10, monitor:desc:LG Electronics 27GL850 006NTDVG0786, layoutopt:direction:down"
   ];
 
   services.kanshi = {
@@ -29,13 +29,13 @@
           name = "coding";
           outputs = [
             {
-              criteria = "DP-2";
+              criteria = "AOC U27G4 10GR2HA001383";
               mode = "3840x2160@160";
               position = "0,0";
               status = "enable";
             }
             {
-              criteria = "HDMI-A-1";
+              criteria = "LG Electronics 27GL850 006NTDVG0786";
               mode = "2560x1440@100";
               position = "2560,0";
               transform = "270";
@@ -49,13 +49,13 @@
           name = "gaming";
           outputs = [
             {
-              criteria = "DP-2";
+              criteria = "AOC U27G4 10GR2HA001383";
               mode = "3840x2160@160";
               position = "0,0";
               status = "enable";
             }
             {
-              criteria = "HDMI-A-1";
+              criteria = "LG Electronics 27GL850 006NTDVG0786";
               mode = "2560x1440@100";
               position = "2560,0";
               transform = "270";

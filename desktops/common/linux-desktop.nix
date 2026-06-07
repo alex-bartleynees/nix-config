@@ -76,6 +76,7 @@
     enable = true;
     components = [ "secrets" ];
   };
+  stylix.targets.qt.enable = false;
 
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     Unit = {
