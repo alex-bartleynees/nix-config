@@ -159,4 +159,12 @@ in lib.mkIf config.profiles.media-server {
 
   # Technitium DNS server
   technitiumDns.enable = true;
+
+  # Monitoring and telemetry
+  monitoring = {
+    enable = true;
+    prometheus.enable = true;
+    grafana.httpAddr = "100.89.61.64";
+    grafana.openFirewall = true;
+  };
 }

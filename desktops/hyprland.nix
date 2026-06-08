@@ -30,16 +30,6 @@
       autoLogin = { enable = true; };
     };
 
-    systemd.services.hyprlock-suspend-workaround = {
-      description = "Delay sleep to allow hyprlock to render";
-      before = [ "sleep.target" ];
-      wantedBy = [ "sleep.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.coreutils}/bin/sleep 2";
-      };
-    };
-
     system.nixos.tags = [ "hyprland" ];
   };
 
@@ -297,7 +287,8 @@
             # Lock and display control
             "CTRL $mod, L, exec, $lock"
             "$mod CTRL, W, exec, hyprctl dispatch dpms on"
-            ''$mod CTRL, M, exec, hyprctl keyword monitor "desc:LG Electronics 27GL850 006NTDVG0786,disable"''
+            ''
+              $mod CTRL, M, exec, hyprctl keyword monitor "desc:LG Electronics 27GL850 006NTDVG0786,disable"''
             ''
               $mod CTRL SHIFT, M, exec, hyprctl keyword monitor "desc:LG Electronics 27GL850 006NTDVG0786,2560x1440@100,2560x0,1,transform,3"''
 

@@ -26,6 +26,9 @@ in {
       # Samba secrets
       "samba/password" = { };
       "samba/username" = { };
+
+      # Grafana secrets
+      "grafana/secret_key" = { owner = "grafana"; };
     } // userPasswordSecrets;
   };
 }

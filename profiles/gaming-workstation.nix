@@ -37,6 +37,9 @@ lib.mkIf config.profiles.gaming-workstation {
   # Virtualization support
   virtualisation.enable = true;
 
+  # Monitoring and telemetry
+  monitoring.enable = true;
+
   # Enable Wake-on-WLAN for WiFi (wlp7s0 / phy0)
   systemd.services.wowlan = {
     description = "Enable Wake on WLAN";
