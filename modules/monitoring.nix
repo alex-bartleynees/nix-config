@@ -78,6 +78,8 @@ in {
         };
 
         query_range.cache_results = true;
+
+        query_scheduler.use_scheduler_ring = false;
       };
     };
 
@@ -123,7 +125,12 @@ in {
             url = "http://localhost:${toString cfg.loki.port}/loki/api/v1/push"
           }
         }
+
+        logging {
+          level = "warn"
+        }
       '';
+      extraFlags = [ "--disable-reporting" ];
     };
 
     users.users.alloy = {
@@ -133,7 +140,8 @@ in {
     };
     users.groups.alloy = { };
 
-    impermanence.persistPaths = [ "/var/lib/loki" "/var/lib/alloy" "/var/lib/grafana" ]
+    impermanence.persistPaths =
+      [ "/var/lib/loki" "/var/lib/alloy" "/var/lib/grafana" ]
       ++ lib.optionals cfg.prometheus.enable [ "/var/lib/prometheus2" ];
 
     services.grafana = {
@@ -181,7 +189,6 @@ in {
         enabledCollectors = [ "systemd" ];
       };
     };
-
 
     networking.firewall.allowedTCPPorts =
       lib.mkIf cfg.grafana.openFirewall [ cfg.grafana.port ];

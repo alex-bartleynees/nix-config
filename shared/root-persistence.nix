@@ -14,5 +14,6 @@
     "/var/lib/colord" # Color management profiles
     "/var/lib/docker" # Docker images, containers, volumes, networks
     "/etc/NetworkManager/system-connections" # Wifi passwords and network configs
+    "/root/.config/OpenRGB" # OpenRGB daemon zone/device config (service runs as root)
   ];
 }

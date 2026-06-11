@@ -403,6 +403,23 @@
         Install = { WantedBy = [ "hyprland-session.target" ]; };
       };
 
+      # Re-enable displays after resume (fixes grey screen with multi-monitor PRIME setups)
+      systemd.user.services.hyprland-dpms-resume = {
+        Unit = {
+          Description = "Re-enable Hyprland displays after resume";
+          After = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+        };
+        Service = {
+          Type = "oneshot";
+          ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
+          ExecStart = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+        };
+        Install = {
+          WantedBy =
+            [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+        };
+      };
+
       # Vicinae systemd service for Hyprland
       systemd.user.services.vicinae = {
         Unit = {

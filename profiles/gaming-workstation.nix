@@ -40,6 +40,13 @@ lib.mkIf config.profiles.gaming-workstation {
   # Monitoring and telemetry
   monitoring.enable = true;
 
+  # Rebind xHCI controller on resume to prevent USB reinit causing compositor crash
+  powerManagement.resumeCommands = ''
+    echo 0000:0e:00.0 > /sys/bus/pci/drivers/xhci_hcd/unbind
+    sleep 0.5
+    echo 0000:0e:00.0 > /sys/bus/pci/drivers/xhci_hcd/bind
+  '';
+
   # Enable Wake-on-WLAN for WiFi (wlp7s0 / phy0)
   systemd.services.wowlan = {
     description = "Enable Wake on WLAN";
