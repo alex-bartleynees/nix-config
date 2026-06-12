@@ -27,8 +27,10 @@ in {
       "samba/password" = { };
       "samba/username" = { };
 
+    } // userPasswordSecrets
+    // lib.optionalAttrs config.monitoring.enable {
       # Grafana secrets
       "grafana/secret_key" = { owner = "grafana"; };
-    } // userPasswordSecrets;
+    };
   };
 }
