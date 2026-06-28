@@ -383,10 +383,6 @@
           # Bluetooth applet
           blueman-applet &
 
-          # Wallpaper with awww
-          ${pkgs.awww}/bin/awww-daemon --format xrgb &
-          sleep 1 && ${pkgs.awww}/bin/awww img ${background} &
-
           # Clipboard manager
           wl-clip-persist --clipboard regular --reconnect-tries 0 &
           wl-paste --type text --watch cliphist store &
@@ -399,40 +395,13 @@
 
       vicinae.enable = true;
 
-      # Waybar systemd service for mango
-      systemd.user.services.waybar-mango = {
-        Unit = {
-          Description = "Highly customizable Wayland bar for mango";
-          Documentation = "https://github.com/Alexays/Waybar/wiki";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart =
-            "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "graphical-session.target" ]; };
-      };
+      waybar.sessionTarget = "graphical-session.target";
 
-      # Udiskie systemd service for mango
-      systemd.user.services.udiskie-mango = {
-        Unit = {
-          Description = "Udiskie";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.udiskie}/bin/udiskie --tray";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "graphical-session.target" ]; };
+      udiskie.enable = true;
+
+      awww = {
+        enable = true;
+        wallpaper = background;
       };
     };
 }

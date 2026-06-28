@@ -63,9 +63,21 @@
       home.packages = with pkgs; [
         river-classic
         river-bsp-layout
-        waybar
         wlr-randr
       ];
+
+      waybar.sessionTarget = "river-session.target";
+
+      udiskie = {
+        enable = true;
+        sessionTarget = "river-session.target";
+      };
+
+      awww = {
+        enable = true;
+        sessionTarget = "river-session.target";
+        wallpaper = background;
+      };
 
       wayland.windowManager.river = {
         enable = true;
@@ -273,9 +285,6 @@
           nm-applet &
           blueman-applet &
 
-          # Set wallpaper with awww after daemon starts
-          sleep 1 && awww img "${background}" &
-
           # UWSM finalize for proper session management
           uwsm finalize SWAYSOCK I3SOCK XCURSOR_SIZE XCURSOR_THEME &
 
@@ -301,57 +310,5 @@
       xdg.configFile."uwsm/env".source =
         "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
-      # Udiskie systemd service for River
-      systemd.user.services.udiskie-river = {
-        Unit = {
-          Description = "Udiskie";
-          PartOf = [ "river-session.target" ];
-          After = [ "river-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.udiskie}/bin/udiskie --tray";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "river-session.target" ]; };
-      };
-
-      # Waybar systemd service for River
-      systemd.user.services.waybar-river = {
-        Unit = {
-          Description = "Highly customizable Wayland bar for River";
-          Documentation = "https://github.com/Alexays/Waybar/wiki";
-          PartOf = [ "river-session.target" ];
-          After = [ "river-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart =
-            "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "river-session.target" ]; };
-      };
-
-      # awww systemd service for River
-      systemd.user.services.awww-river = {
-        Unit = {
-          Description = "awww background image service";
-          PartOf = [ "river-session.target" ];
-          After = [ "river-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.awww}/bin/awww-daemon --format xrgb";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "river-session.target" ]; };
-      };
     };
 }

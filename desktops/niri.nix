@@ -67,6 +67,19 @@
         wallpaper = background;
       };
 
+      waybar.sessionTarget = "wayland-session@niri.target";
+
+      udiskie = {
+        enable = true;
+        sessionTarget = "wayland-session@niri.target";
+      };
+
+      awww = {
+        enable = true;
+        sessionTarget = "wayland-session@niri.target";
+        wallpaper = background;
+      };
+
       programs.niri.package = pkgs.niri-unstable;
 
       stylix.targets.niri.enable = false;
@@ -347,14 +360,6 @@
           }
           { command = [ "nm-applet" ]; }
           { command = [ "blueman-applet" ]; }
-          { command = [ "${pkgs.awww}/bin/awww-daemon" "--format" "xrgb" ]; }
-          {
-            command = [
-              "sh"
-              "-c"
-              "sleep 1 && ${pkgs.awww}/bin/awww img ${background}"
-            ];
-          }
           {
             command = [
               "uwsm"
@@ -373,40 +378,5 @@
       xdg.configFile."uwsm/env".source =
         "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
-      # Waybar systemd service for niri
-      systemd.user.services.waybar-niri = {
-        Unit = {
-          Description = "Highly customizable Wayland bar for niri";
-          Documentation = "https://github.com/Alexays/Waybar/wiki";
-          PartOf = [ "wayland-session@niri.target" ];
-          After = [ "wayland-session@niri.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart =
-            "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "wayland-session@niri.target" ]; };
-      };
-
-      # Udiskie systemd service for niri
-      systemd.user.services.udiskie-niri = {
-        Unit = {
-          Description = "Udiskie";
-          PartOf = [ "wayland-session@niri.target" ];
-          After = [ "wayland-session@niri.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.udiskie}/bin/udiskie --tray";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "wayland-session@niri.target" ]; };
-      };
     };
 }

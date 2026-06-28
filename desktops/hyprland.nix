@@ -48,6 +48,19 @@
         displayOnCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
       };
 
+      waybar.sessionTarget = "hyprland-session.target";
+
+      udiskie = {
+        enable = true;
+        sessionTarget = "hyprland-session.target";
+      };
+
+      awww = {
+        enable = true;
+        sessionTarget = "hyprland-session.target";
+        wallpaper = background;
+      };
+
       home.packages = with pkgs; [ hyprpaper ];
 
       xdg.configFile."uwsm/env".source =
@@ -179,7 +192,6 @@
           exec-once = [
             "nm-applet"
             "blueman-applet"
-            "sleep 1 && awww img ${background}"
           ];
 
           # Key bindings
@@ -346,60 +358,6 @@
           # XWayland settings
           xwayland = { force_zero_scaling = true; };
         };
-      };
-
-      # Waybar systemd service
-      systemd.user.services.waybar = {
-        Unit = {
-          Description =
-            "Highly customizable Wayland bar for Sway and Wlroots based compositors";
-          Documentation = "https://github.com/Alexays/Waybar/wiki";
-          PartOf = [ "hyprland-session.target" ];
-          After = [ "hyprland-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart =
-            "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "hyprland-session.target" ]; };
-      };
-
-      # awww systemd service for Hyprland
-      systemd.user.services.awww-hypr = {
-        Unit = {
-          Description = "awww background image service";
-          PartOf = [ "hyprland-session.target" ];
-          After = [ "hyprland-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.awww}/bin/awww-daemon --format xrgb";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "hyprland-session.target" ]; };
-      };
-
-      # Udiskie systemd service for Hyprland
-      systemd.user.services.udiskie-hypr = {
-        Unit = {
-          Description = "Udiskie";
-          PartOf = [ "hyprland-session.target" ];
-          After = [ "hyprland-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.udiskie}/bin/udiskie --tray";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "hyprland-session.target" ]; };
       };
 
       vicinae = {

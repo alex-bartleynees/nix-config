@@ -382,10 +382,7 @@
             }
             { command = "nm-applet"; }
             { command = "blueman-applet"; }
-            { command = "udiskie --tray"; }
             { command = "sway-audio-idle-inhibit"; }
-            { command = "awww-daemon --format xrgb"; }
-            { command = "sleep 1 && awww img ${background}"; }
             { command = "autotiling-rs"; }
             {
               command =
@@ -416,23 +413,17 @@
         '';
       };
 
-      # Waybar systemd service
-      systemd.user.services.waybar-sway = {
-        Unit = {
-          Description = "Highly customizable Wayland bar for Sway";
-          Documentation = "https://github.com/Alexays/Waybar/wiki";
-          PartOf = [ "sway-session.target" ];
-          After = [ "sway-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart =
-            "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "sway-session.target" ]; };
+      waybar.sessionTarget = "sway-session.target";
+
+      udiskie = {
+        enable = true;
+        sessionTarget = "sway-session.target";
+      };
+
+      awww = {
+        enable = true;
+        sessionTarget = "sway-session.target";
+        wallpaper = background;
       };
 
       # XDG configuration for UWSM

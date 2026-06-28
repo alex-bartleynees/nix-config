@@ -15,6 +15,12 @@ in {
       description = "Desktop environment for waybar configuration.";
     };
 
+    sessionTarget = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+      description = "Systemd session target to bind the waybar service to. If null, no service is created.";
+    };
+
     configSource = lib.mkOption {
       type = lib.types.str;
       default = "dotfiles";
@@ -49,6 +55,23 @@ in {
     home.file.".config/waybar" = lib.mkIf (waybarConfig != null) {
       source = waybarConfig;
       recursive = true;
+    };
+
+    systemd.user.services.waybar = lib.mkIf (cfg.sessionTarget != null) {
+      Unit = {
+        Description = "Highly customizable Wayland bar";
+        Documentation = "https://github.com/Alexays/Waybar/wiki";
+        PartOf = [ cfg.sessionTarget ];
+        After = [ cfg.sessionTarget ];
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
+        Restart = "on-failure";
+        RestartSec = 1;
+        TimeoutStopSec = 10;
+      };
+      Install = { WantedBy = [ cfg.sessionTarget ]; };
     };
   });
 }

@@ -46,9 +46,6 @@
     wdisplays
     popsicle
 
-    # Wallpaper and background management
-    awww
-
     # Screenshot and clipboard utilities
     grim
     slurp
