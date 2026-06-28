@@ -281,11 +281,20 @@
         outputs = lib.listToAttrs (map (m: {
           name = m.name;
           value = {
-            mode = { width = m.width; height = m.height; refresh = m.refresh; };
-            position = { x = m.x; y = m.y; };
+            mode = {
+              width = m.width;
+              height = m.height;
+              refresh = m.refresh;
+            };
+            position = {
+              x = m.x;
+              y = m.y;
+            };
             scale = m.scale;
             variable-refresh-rate = m.vrr;
-          } // lib.optionalAttrs (m.transform != 0) { transform.rotation = m.transform; };
+          } // lib.optionalAttrs (m.transform != 0) {
+            transform.rotation = m.transform;
+          };
         }) monitors);
 
         # Window rules

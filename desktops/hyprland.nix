@@ -39,44 +39,62 @@
       hexToRgb = hex: "rgb(${builtins.substring 1 6 hex})";
 
       primaryMonitors = builtins.filter (m: m.primary) monitors;
-      primaryMonitor = if primaryMonitors != [ ] then builtins.head primaryMonitors else null;
+      primaryMonitor =
+        if primaryMonitors != [ ] then builtins.head primaryMonitors else null;
       secondaryMonitors = builtins.filter (m: !m.primary) monitors;
       hasSecondary = secondaryMonitors != [ ];
-      secondaryMonitor =
-        if hasSecondary then builtins.head secondaryMonitors else primaryMonitor;
+      secondaryMonitor = if hasSecondary then
+        builtins.head secondaryMonitors
+      else
+        primaryMonitor;
 
-      toRef = m: if m.description != "" then "desc:${m.description}" else m.name;
+      toRef = m:
+        if m.description != "" then "desc:${m.description}" else m.name;
 
       toMonitorStr = m:
-        "${toRef m}"
-        + ",${toString m.width}x${toString m.height}@${toString (builtins.floor m.refresh)}"
-        + ",${toString m.x}x${toString m.y},${toString m.scale}"
+        "${toRef m}" + ",${toString m.width}x${toString m.height}@${
+          toString (builtins.floor m.refresh)
+        }" + ",${toString m.x}x${toString m.y},${toString m.scale}"
         + lib.optionalString m.vrr ",vrr,1"
-        + lib.optionalString (m.transform != 0) ",transform,${toString (m.transform / 90)}"
-        + lib.optionalString m.hdr ",cm,hdr,sdrbrightness,${toString m.sdrBrightness},sdrsaturation,${toString m.sdrSaturation}";
+        + lib.optionalString (m.transform != 0)
+        ",transform,${toString ((360 - m.transform) / 90)}"
+        + lib.optionalString m.hdr
+        ",cm,hdr,sdrbrightness,${toString m.sdrBrightness},sdrsaturation,${
+          toString m.sdrSaturation
+        }";
 
-      generatedMonitors = if monitors != [ ] then map toMonitorStr monitors
-                          else [ ",preferred,auto,1" ];
+      generatedMonitors = if monitors != [ ] then
+        map toMonitorStr monitors
+      else
+        [ ",preferred,auto,1" ];
 
-      generatedWorkspaces =
-        if monitors == [ ] || primaryMonitor == null then [ ]
+      generatedWorkspaces = if monitors == [ ] || primaryMonitor == null then
+        [ ]
+      else
+        let
+          primaryRef = toRef primaryMonitor;
+          secondaryRef =
+            if hasSecondary then toRef secondaryMonitor else primaryRef;
+          primaryWS = builtins.genList (i:
+            let ws = i + 1;
+            in "${toString ws}, monitor:${primaryRef}${
+              lib.optionalString (ws == 1) ", default:true"
+            }") 5;
+          secondaryWS = builtins.genList (i:
+            let ws = i + 6;
+            in "${
+              toString ws
+            }, monitor:${secondaryRef}, layoutopt:direction:down${
+              lib.optionalString (ws == 6) ", default:true"
+            }") 5;
+        in if hasSecondary then
+          primaryWS ++ secondaryWS
         else
-          let
-            primaryRef = toRef primaryMonitor;
-            secondaryRef = if hasSecondary then toRef secondaryMonitor else primaryRef;
-            primaryWS = builtins.genList (i:
-              let ws = i + 1;
-              in "${toString ws}, monitor:${primaryRef}${lib.optionalString (ws == 1) ", default:true"}"
-            ) 5;
-            secondaryWS = builtins.genList (i:
-              let ws = i + 6;
-              in "${toString ws}, monitor:${secondaryRef}, layoutopt:direction:down${lib.optionalString (ws == 6) ", default:true"}"
-            ) 5;
-          in if hasSecondary then primaryWS ++ secondaryWS
-             else builtins.genList (i:
-               let ws = i + 1;
-               in "${toString ws}, monitor:${primaryRef}${lib.optionalString (ws == 1) ", default:true"}"
-             ) 10;
+          builtins.genList (i:
+            let ws = i + 1;
+            in "${toString ws}, monitor:${primaryRef}${
+              lib.optionalString (ws == 1) ", default:true"
+            }") 10;
     in {
       imports = [ ./common/linux-desktop.nix ];
 
@@ -229,10 +247,7 @@
             "systemctl --user restart hyprland-session.target"
             "systemctl --user restart waybar"
           ];
-          exec-once = [
-            "nm-applet"
-            "blueman-applet"
-          ];
+          exec-once = [ "nm-applet" "blueman-applet" ];
 
           # Key bindings
           bind = [
@@ -251,7 +266,7 @@
             "$mod SHIFT, SPACE, togglefloating"
             ''$mod, P, exec, grim -g "$(slurp -d)" - | wl-copy''
 
-              # Focus movement (Vi keys)
+            # Focus movement (Vi keys)
             "$mod, H, movefocus, l"
             "$mod, L, movefocus, r"
             "$mod, K, movefocus, u"
@@ -378,9 +393,8 @@
             "fullscreen on, match:class ^(steam_app_.*)$"
             "workspace 1, match:class ^(steam_app_.*)$"
             "immediate on, match:class ^(steam_app_.*)$"
-          ] ++ lib.optionals (primaryMonitor != null) [
-            "monitor ${toRef primaryMonitor}, match:class ^(steam_app_.*)$"
-          ];
+          ] ++ lib.optionals (primaryMonitor != null)
+            [ "monitor ${toRef primaryMonitor}, match:class ^(steam_app_.*)$" ];
 
           # Misc settings
           misc = {

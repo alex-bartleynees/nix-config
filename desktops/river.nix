@@ -60,11 +60,7 @@
         wallpaper = background;
       };
 
-      home.packages = with pkgs; [
-        river-classic
-        river-bsp-layout
-        wlr-randr
-      ];
+      home.packages = with pkgs; [ river-classic river-bsp-layout wlr-randr ];
 
       waybar.sessionTarget = "river-session.target";
 
@@ -262,10 +258,16 @@
           riverctl spawn-tagmask $((((1 << 32) - 1) ^ (1 << 20)))
 
           # Output configuration
-          wlr-randr ${lib.concatMapStringsSep " " (m:
-            "--output ${m.name} --mode ${toString m.width}x${toString m.height}@${toString (builtins.floor m.refresh)} --scale ${toString m.scale} --pos ${toString m.x},${toString m.y}"
-            + lib.optionalString (m.transform != 0) " --transform ${toString m.transform}"
-          ) monitors} &
+          wlr-randr ${
+            lib.concatMapStringsSep " " (m:
+              "--output ${m.name} --mode ${toString m.width}x${
+                toString m.height
+              }@${toString (builtins.floor m.refresh)} --scale ${
+                toString m.scale
+              } --pos ${toString m.x},${toString m.y}"
+              + lib.optionalString (m.transform != 0)
+              " --transform ${toString m.transform}") monitors
+          } &
 
           # Server Side Decorations (SSD) rules for border visibility
           riverctl rule-add -app-id "brave-browser" ssd

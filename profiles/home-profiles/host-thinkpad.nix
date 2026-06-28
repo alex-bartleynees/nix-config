@@ -1,6 +1,5 @@
 { lib, monitors, ... }:
-let
-  primaryMonitor = builtins.head (builtins.filter (m: m.primary) monitors);
+let primaryMonitor = builtins.head (builtins.filter (m: m.primary) monitors);
 in {
   services.kanshi = {
     enable = true;
@@ -12,7 +11,9 @@ in {
         outputs = [
           {
             criteria = primaryMonitor.name;
-            mode = "${toString primaryMonitor.width}x${toString primaryMonitor.height}@${toString (builtins.floor primaryMonitor.refresh)}";
+            mode = "${toString primaryMonitor.width}x${
+                toString primaryMonitor.height
+              }@${toString (builtins.floor primaryMonitor.refresh)}";
             position = "0,1440";
             status = "enable";
           }

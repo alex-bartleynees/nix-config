@@ -12,7 +12,8 @@ in {
     sessionTarget = lib.mkOption {
       type = lib.types.str;
       default = "graphical-session.target";
-      description = "Systemd user target to bind the vicinae server service to.";
+      description =
+        "Systemd user target to bind the vicinae server service to.";
     };
   };
 

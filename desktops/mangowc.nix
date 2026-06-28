@@ -209,17 +209,19 @@
 
           # Monitor configuration
           ${lib.concatMapStringsSep "\n" (m:
-            "monitorrule=name:${m.name},width:${toString m.width},height:${toString m.height},refresh:${toString (builtins.floor m.refresh)},x:${toString m.x},y:${toString m.y},scale:${toString m.scale},vrr:0,rr:0"
-          ) monitors}
+            "monitorrule=name:${m.name},width:${toString m.width},height:${
+              toString m.height
+            },refresh:${toString (builtins.floor m.refresh)},x:${
+              toString m.x
+            },y:${toString m.y},scale:${toString m.scale},vrr:0,rr:0") monitors}
 
           # Tag layout rules for secondary monitors
           ${lib.concatMapStringsSep "\n" (m:
-            lib.optionalString (!m.primary) (
-              lib.concatMapStringsSep "\n" (id:
-                "tagrule=id:${toString id},monitor_name:${m.name},layout_name:vertical_tile"
-              ) (lib.range 0 9)
-            )
-          ) monitors}
+            lib.optionalString (!m.primary) (lib.concatMapStringsSep "\n" (id:
+              "tagrule=id:${
+                toString id
+              },monitor_name:${m.name},layout_name:vertical_tile")
+              (lib.range 0 9))) monitors}
 
           # Autostart
           exec-once=~/.config/mango/autostart.sh

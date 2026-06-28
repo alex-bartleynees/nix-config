@@ -18,7 +18,8 @@ in {
     sessionTarget = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
-      description = "Systemd session target to bind the waybar service to. If null, no service is created.";
+      description =
+        "Systemd session target to bind the waybar service to. If null, no service is created.";
     };
 
     configSource = lib.mkOption {
@@ -66,7 +67,8 @@ in {
       };
       Service = {
         Type = "simple";
-        ExecStart = "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
+        ExecStart =
+          "${pkgs.waybar}/bin/waybar -c %h/.config/waybar/config.json -s %h/.config/waybar/style.css";
         Restart = "on-failure";
         RestartSec = 1;
         TimeoutStopSec = 10;

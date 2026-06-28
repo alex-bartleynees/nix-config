@@ -89,7 +89,8 @@
 
     # Common special args
     commonSpecialArgs = {
-      inherit inputs users desktop hostName stateVersion systemProfiles monitors;
+      inherit inputs users desktop hostName stateVersion systemProfiles
+        monitors;
       self = inputs.self;
     };
 

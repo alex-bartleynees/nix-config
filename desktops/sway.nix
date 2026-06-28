@@ -60,8 +60,10 @@
       primaryMonitor = builtins.head (builtins.filter (m: m.primary) monitors);
       secondaryMonitors = builtins.filter (m: !m.primary) monitors;
       hasSecondary = secondaryMonitors != [ ];
-      secondaryMonitor =
-        if hasSecondary then builtins.head secondaryMonitors else primaryMonitor;
+      secondaryMonitor = if hasSecondary then
+        builtins.head secondaryMonitors
+      else
+        primaryMonitor;
     in {
       imports = [ ./common/linux-desktop.nix ];
       home.packages = with pkgs; [
@@ -215,8 +217,7 @@
 
               # Wake displays
               "Control+${modifier}+w" = "exec " + lib.concatMapStringsSep "; "
-                (m: "swaymsg \"output ${m.name} dpms on\"")
-                monitors;
+                (m: ''swaymsg "output ${m.name} dpms on"'') monitors;
             };
 
           # Modes
@@ -272,21 +273,31 @@
           output = lib.listToAttrs (map (m: {
             name = m.name;
             value = {
-              mode = "${toString m.width}x${toString m.height}@${toString (builtins.floor m.refresh)}Hz";
+              mode = "${toString m.width}x${toString m.height}@${
+                  toString (builtins.floor m.refresh)
+                }Hz";
               position = "${toString m.x},${toString m.y}";
               background = "${background} fill";
-            } // lib.optionalAttrs (m.scale != 1.0) { scale = toString m.scale; }
-              // lib.optionalAttrs m.vrr { adaptive_sync = "on"; }
-              // lib.optionalAttrs (m.transform != 0) { transform = toString m.transform; };
+            } // lib.optionalAttrs (m.scale != 1.0) {
+              scale = toString m.scale;
+            } // lib.optionalAttrs m.vrr { adaptive_sync = "on"; }
+              // lib.optionalAttrs (m.transform != 0) {
+                transform = toString m.transform;
+              };
           }) monitors);
 
-          workspaceOutputAssign =
-            let
-              mkAssign = ws: output: { workspace = toString ws; output = output; };
-              primaryWS = map (i: mkAssign i primaryMonitor.name) (lib.range 1 5);
-              secondaryWS = map (i: mkAssign i secondaryMonitor.name) (lib.range 6 10);
-            in if hasSecondary then primaryWS ++ secondaryWS
-               else map (i: mkAssign i primaryMonitor.name) (lib.range 1 10);
+          workspaceOutputAssign = let
+            mkAssign = ws: output: {
+              workspace = toString ws;
+              output = output;
+            };
+            primaryWS = map (i: mkAssign i primaryMonitor.name) (lib.range 1 5);
+            secondaryWS =
+              map (i: mkAssign i secondaryMonitor.name) (lib.range 6 10);
+          in if hasSecondary then
+            primaryWS ++ secondaryWS
+          else
+            map (i: mkAssign i primaryMonitor.name) (lib.range 1 10);
 
           # Startup applications
           startup = [
@@ -317,8 +328,7 @@
           (m: ''${pkgs.sway}/bin/swaymsg "output ${m.name} dpms off"'')
           monitors;
         displayOnCommand = lib.concatMapStringsSep "; "
-          (m: ''${pkgs.sway}/bin/swaymsg "output ${m.name} dpms on"'')
-          monitors;
+          (m: ''${pkgs.sway}/bin/swaymsg "output ${m.name} dpms on"'') monitors;
         preLockScript = ''
           export SWAYSOCK=/run/user/$(${pkgs.coreutils}/bin/id -u)/sway-ipc.$(${pkgs.coreutils}/bin/id -u).$(${pkgs.procps}/bin/pgrep -x sway).sock
           export WAYLAND_DISPLAY=wayland-1

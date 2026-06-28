@@ -66,22 +66,18 @@
 
         services.swayidle = {
           enable = true;
-          timeouts = [
-            {
-              timeout = cfg.lockTimeout;
-              command = lockScript;
-            }
-          ] ++ lib.optional (cfg.displayOffCommand != "") ({
+          timeouts = [{
+            timeout = cfg.lockTimeout;
+            command = lockScript;
+          }] ++ lib.optional (cfg.displayOffCommand != "") ({
             timeout = cfg.displayTimeout;
             command = cfg.displayOffCommand;
           } // lib.optionalAttrs (cfg.displayOnCommand != "") {
             resumeCommand = cfg.displayOnCommand;
-          }) ++ [
-            {
-              timeout = cfg.suspendTimeout;
-              command = "${pkgs.systemd}/bin/systemctl suspend";
-            }
-          ];
+          }) ++ [{
+            timeout = cfg.suspendTimeout;
+            command = "${pkgs.systemd}/bin/systemctl suspend";
+          }];
           events = {
             before-sleep = lockScript;
           } // lib.optionalAttrs (cfg.displayOnCommand != "") {
@@ -94,7 +90,8 @@
             #!${pkgs.bash}/bin/bash
             ${cfg.preLockScript}
             set -e
-            ${lib.optionalString (cfg.displayOnCommand != "") cfg.displayOnCommand}
+            ${lib.optionalString (cfg.displayOnCommand != "")
+            cfg.displayOnCommand}
             ${pkgs.swaylock}/bin/swaylock -f${
               lib.optionalString (cfg.wallpaper != "") " -i ${cfg.wallpaper}"
             }
