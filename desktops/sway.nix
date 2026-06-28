@@ -48,8 +48,6 @@
       xdgOpenUsePortal = true;
     };
 
-    security.pam.services.swaylock = { text = "auth include login"; };
-
     displayManager = { enable = true; };
 
     system.nixos.tags = [ "sway" ];
@@ -63,8 +61,6 @@
       imports = [ ./common/linux-desktop.nix ];
       home.packages = with pkgs; [
         swaybg
-        swayidle
-        swaylock
         sway-audio-idle-inhibit
         autotiling-rs
       ];
@@ -151,7 +147,7 @@
               "${modifier}+p" = ''exec grim -g "$(slurp -d)" - | wl-copy'';
 
               # Lock screen
-              "Control+${modifier}+l" = "exec ~/.config/sway/lock.sh";
+              "Control+${modifier}+l" = "exec ~/.local/bin/lock.sh";
 
               # Focus movement (Vi keys)
               "${modifier}+h" = "focus left";
@@ -402,56 +398,22 @@
         };
       };
 
-      # Swayidle configuration
-      services.swayidle = {
+      # Swayidle + swaylock via shared module
+      swayidle = {
         enable = true;
-        timeouts = [
-          {
-            timeout = 300;
-            command = "${config.home.homeDirectory}/.config/sway/lock.sh";
-          }
-          {
-            timeout = 600;
-            command = if hostName == "thinkpad" then
-              ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms off"''
-            else
-              ''
-                ${pkgs.sway}/bin/swaymsg "output DP-2 dpms off"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms off"'';
-            resumeCommand = if hostName == "thinkpad" then
-              ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms on"''
-            else
-              ''
-                ${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
-          }
-          {
-            timeout = 1800; # 30 minutes
-            command = "${pkgs.systemd}/bin/systemctl suspend";
-          }
-        ];
-        events = {
-          before-sleep = "${config.home.homeDirectory}/.config/sway/lock.sh";
-          after-resume = if hostName == "thinkpad" then
-            ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms on"''
-          else
-            ''
-              ${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
-        };
-      };
-
-      # Lock script
-      home.file.".config/sway/lock.sh" = {
-        text = ''
-          #!${pkgs.bash}/bin/bash
+        wallpaper = background;
+        displayOffCommand = if hostName == "thinkpad" then
+          ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms off"''
+        else
+          ''${pkgs.sway}/bin/swaymsg "output DP-2 dpms off"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms off"'';
+        displayOnCommand = if hostName == "thinkpad" then
+          ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms on"''
+        else
+          ''${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
+        preLockScript = ''
           export SWAYSOCK=/run/user/1000/sway-ipc.$(${pkgs.coreutils}/bin/id -u).$(${pkgs.procps}/bin/pgrep -x sway).sock
           export WAYLAND_DISPLAY=wayland-1
-          set -e
-
-          ${pkgs.sway}/bin/swaymsg "output * dpms on"
-
-          # Run swaylock in fork mode (-f) so it doesn't block suspend
-          ${pkgs.swaylock}/bin/swaylock -f -i ${background}
         '';
-        executable = true;
       };
 
       # Waybar systemd service

@@ -23,8 +23,6 @@
 
     environment.systemPackages = with pkgs; [ hyprutils ];
 
-    security.pam.services.hyprlock = { enableGnomeKeyring = true; };
-
     displayManager = {
       enable = true;
       autoLogin = { enable = true; };
@@ -43,10 +41,11 @@
     in {
       imports = [ ./common/linux-desktop.nix ];
 
-      # Enable hypridle with theme wallpaper
-      hypridle = {
+      swayidle = {
         enable = true;
         wallpaper = background;
+        displayOffCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
+        displayOnCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
       };
 
       home.packages = with pkgs; [ hyprpaper ];
@@ -69,7 +68,7 @@
           "$mod" = "ALT";
           "$terminal" = "ghostty";
           "$browser" = "brave";
-          "$lock" = "hyprlock";
+          "$lock" = "~/.local/bin/lock.sh";
 
           # General settings
           general = {
