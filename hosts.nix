@@ -5,12 +5,12 @@ let
   macUsers = systemUsers.macUsers;
 in {
   desktop = {
-    desktop = "hyprland";
+    desktop = "mangowc";
     themeName = "gruvbox";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
     desktopSpecialisations =
-      [ "sway" "gnome" "cosmic" "kde" "mangowc" "river" "niri" ];
+      [ "sway" "gnome" "cosmic" "kde" "hyprland" "river" "niri" ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
     users = users;

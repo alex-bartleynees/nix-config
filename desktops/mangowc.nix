@@ -42,8 +42,6 @@
       XDG_SESSION_DESKTOP = "mango";
     };
 
-    security.pam.services.hyprlock = { };
-
     displayManager = {
       enable = true;
       autoLogin = {

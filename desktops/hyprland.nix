@@ -98,11 +98,9 @@
     in {
       imports = [ ./common/linux-desktop.nix ];
 
-      swayidle = {
+      hypridle = {
         enable = true;
         wallpaper = background;
-        displayOffCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-        displayOnCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
       };
 
       waybar.sessionTarget = "hyprland-session.target";
@@ -139,7 +137,7 @@
           "$mod" = "ALT";
           "$terminal" = "ghostty";
           "$browser" = "brave";
-          "$lock" = "~/.local/bin/lock.sh";
+          "$lock" = "hyprlock";
 
           # General settings
           general = {

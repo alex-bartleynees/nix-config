@@ -34,8 +34,6 @@
       xdgOpenUsePortal = true;
     };
 
-    security.pam.services.hyprlock = { };
-
     displayManager = {
       enable = true;
       autoLogin = {
