@@ -4,23 +4,11 @@
     # Enable Wayland support for Chromium/Electron apps
     NIXOS_OZONE_WL = "1";
 
-    # Use Vulkan renderer for better performance
-    WLR_RENDERER = "vulkan";
-
     # Set session type to Wayland
     XDG_SESSION_TYPE = "wayland";
 
-    # Enable better Firefox/Mozilla input handling
-    MOZ_USE_XINPUT2 = "1";
-
-    # Use Adwaita dark theme for Qt applications
-    QT_STYLE_OVERRIDE = "adwaita-dark";
-
-    # Enable GTK portal integration
+    # Enable GTK portal integration (needed for GTK3 apps)
     GTK_USE_PORTAL = "1";
-
-    # Set GSettings schema directory
-    GSETTINGS_SCHEMA_DIR = "/run/current-system/sw/share/gsettings-schemas/";
   };
 
   # Common system packages for Wayland desktop environments (universal)

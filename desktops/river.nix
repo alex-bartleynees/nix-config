@@ -21,8 +21,6 @@
     environment.sessionVariables = {
       XDG_CURRENT_DESKTOP = "river";
       XDG_SESSION_DESKTOP = "river";
-      #GTK_THEME = "Adwaita:dark";
-      # Force dark mode for websites
     };
 
     xdg.portal = {
@@ -296,7 +294,6 @@
 
         extraSessionVariables = {
           XCURSOR_SIZE = "24";
-          WLR_NO_HARDWARE_CURSORS = "1";
           NIXOS_OZONE_WL = "1";
           XDG_SESSION_TYPE = "wayland";
           XDG_CURRENT_DESKTOP = "river";

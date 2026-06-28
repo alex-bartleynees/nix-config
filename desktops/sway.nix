@@ -34,11 +34,6 @@
 
     programs.xwayland.enable = true;
 
-    environment.sessionVariables = {
-      #GTK_THEME = "Adwaita:dark";
-      # Force dark mode for websites
-    };
-
     xdg.portal = {
       enable = true;
       wlr.enable = true;
