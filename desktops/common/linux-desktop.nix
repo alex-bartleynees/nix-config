@@ -57,7 +57,6 @@
 
     # Application launcher
     rofi
-    vicinae
   ];
 
   home.pointerCursor = {

@@ -397,23 +397,7 @@
         '';
       };
 
-      # Vicinae application launcher service
-      systemd.user.services.vicinae = {
-        Unit = {
-          Description = "Vicinae application launcher server";
-          Documentation = "https://github.com/tim-harding/vicinae";
-          PartOf = [ "graphical-session.target" ];
-          After = [ "graphical-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.vicinae}/bin/vicinae server";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "graphical-session.target" ]; };
-      };
+      vicinae.enable = true;
 
       # Waybar systemd service for mango
       systemd.user.services.waybar-mango = {

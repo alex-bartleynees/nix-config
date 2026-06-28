@@ -199,7 +199,7 @@
             "$mod SHIFT, SPACE, togglefloating"
             ''$mod, P, exec, grim -g "$(slurp -d)" - | wl-copy''
 
-            # Focus movement (Vi keys)
+              # Focus movement (Vi keys)
             "$mod, H, movefocus, l"
             "$mod, L, movefocus, r"
             "$mod, K, movefocus, u"
@@ -402,39 +402,9 @@
         Install = { WantedBy = [ "hyprland-session.target" ]; };
       };
 
-      # Re-enable displays after resume (fixes grey screen with multi-monitor PRIME setups)
-      systemd.user.services.hyprland-dpms-resume = {
-        Unit = {
-          Description = "Re-enable Hyprland displays after resume";
-          After = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
-        };
-        Service = {
-          Type = "oneshot";
-          ExecStartPre = "${pkgs.coreutils}/bin/sleep 1";
-          ExecStart = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
-        };
-        Install = {
-          WantedBy =
-            [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
-        };
-      };
-
-      # Vicinae systemd service for Hyprland
-      systemd.user.services.vicinae = {
-        Unit = {
-          Description = "Vicinae application launcher server";
-          Documentation = "https://github.com/tim-harding/vicinae";
-          PartOf = [ "hyprland-session.target" ];
-          After = [ "hyprland-session.target" ];
-        };
-        Service = {
-          Type = "simple";
-          ExecStart = "${pkgs.vicinae}/bin/vicinae server";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-        Install = { WantedBy = [ "hyprland-session.target" ]; };
+      vicinae = {
+        enable = true;
+        sessionTarget = "hyprland-session.target";
       };
     };
 }
