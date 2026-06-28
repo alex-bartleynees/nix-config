@@ -56,7 +56,7 @@
     system.nixos.tags = [ "mangowc" ];
   };
 
-  homeConfig = { pkgs, lib, config, hostName, theme, inputs, ... }:
+  homeConfig = { pkgs, lib, config, theme, inputs, monitors, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;
@@ -185,8 +185,6 @@
           left_handed=0
           middle_button_emulation=0
           swipe_min_threshold=20
-          accel_profile=2
-          accel_speed=0.0
 
           # Appearance
           gappih=10
@@ -210,20 +208,18 @@
           }FF
 
           # Monitor configuration
-          ${if hostName == "thinkpad" then ''
-            monitorrule=name:eDP-1,width:1920,height:1080,refresh:60,x:0,y:0,scale:1,vrr:0,rr:0
-          '' else ''
-            monitorrule=name:DP-2,width:3840,height:2160,refresh:160,x:0,y:0,scale:1.5,vrr:0,rr:0
-            monitorrule=name:HDMI-A-1,width:2560,height:1440,refresh:100,x:2560,y:0,scale:1,vrr:0,rr:3
-          ''}
+          ${lib.concatMapStringsSep "\n" (m:
+            "monitorrule=name:${m.name},width:${toString m.width},height:${toString m.height},refresh:${toString (builtins.floor m.refresh)},x:${toString m.x},y:${toString m.y},scale:${toString m.scale},vrr:0,rr:0"
+          ) monitors}
 
-          # Tag layout rules
-          ${lib.optionalString (hostName != "thinkpad")
-          (lib.concatMapStringsSep "\n" (id:
-            "tagrule=id:${
-              toString id
-            },monitor_name:HDMI-A-1,layout_name:vertical_tile")
-            (lib.range 0 9))}
+          # Tag layout rules for secondary monitors
+          ${lib.concatMapStringsSep "\n" (m:
+            lib.optionalString (!m.primary) (
+              lib.concatMapStringsSep "\n" (id:
+                "tagrule=id:${toString id},monitor_name:${m.name},layout_name:vertical_tile"
+              ) (lib.range 0 9)
+            )
+          ) monitors}
 
           # Autostart
           exec-once=~/.config/mango/autostart.sh

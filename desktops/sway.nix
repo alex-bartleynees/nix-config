@@ -53,10 +53,15 @@
     system.nixos.tags = [ "sway" ];
   };
 
-  homeConfig = { pkgs, config, lib, hostName, theme, ... }:
+  homeConfig = { pkgs, config, lib, theme, monitors, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;
+      primaryMonitor = builtins.head (builtins.filter (m: m.primary) monitors);
+      secondaryMonitors = builtins.filter (m: !m.primary) monitors;
+      hasSecondary = secondaryMonitors != [ ];
+      secondaryMonitor =
+        if hasSecondary then builtins.head secondaryMonitors else primaryMonitor;
     in {
       imports = [ ./common/linux-desktop.nix ];
       home.packages = with pkgs; [
@@ -208,11 +213,10 @@
               "XF86MonBrightnessUp" = "exec brightnessctl set +5%";
               "XF86MonBrightnessDown" = "exec brightnessctl set 5%-";
 
-              # Wake displays (host-specific) - using Ctrl+Shift+w to avoid conflict
-              "Control+${modifier}+w" = if hostName == "thinkpad" then
-                ''exec swaymsg "output eDP-1 dpms on"''
-              else
-                ''exec swaymsg "output DP-2 dpms on; output HDMI-A-1 dpms on"'';
+              # Wake displays
+              "Control+${modifier}+w" = "exec " + lib.concatMapStringsSep "; "
+                (m: "swaymsg \"output ${m.name} dpms on\"")
+                monitors;
             };
 
           # Modes
@@ -265,114 +269,24 @@
             "type:touchpad" = { natural_scroll = "enabled"; };
           };
 
-          # Output configuration per host
-          output = if hostName == "thinkpad" then {
-            "eDP-1" = {
-              mode = "1920x1080@60Hz";
-              position = "0,0";
+          output = lib.listToAttrs (map (m: {
+            name = m.name;
+            value = {
+              mode = "${toString m.width}x${toString m.height}@${toString (builtins.floor m.refresh)}Hz";
+              position = "${toString m.x},${toString m.y}";
               background = "${background} fill";
-            };
-          } else {
-            "DP-2" = {
-              mode = "3840x2160@160Hz";
-              position = "0,0";
-              scale = "1.5";
-              background = "${background} fill";
-              adaptive_sync = "on";
-            };
-            "HDMI-A-1" = {
-              mode = "2560x1440@100Hz";
-              position = "2560,0";
-              transform = "90";
-              background = "${background} fill";
-              adaptive_sync = "on";
-            };
-          };
+            } // lib.optionalAttrs (m.scale != 1.0) { scale = toString m.scale; }
+              // lib.optionalAttrs m.vrr { adaptive_sync = "on"; }
+              // lib.optionalAttrs (m.transform != 0) { transform = toString m.transform; };
+          }) monitors);
 
-          # Workspace assignments per host
-          workspaceOutputAssign = if hostName == "thinkpad" then [
-            {
-              workspace = "1";
-              output = "eDP-1";
-            }
-            {
-              workspace = "2";
-              output = "eDP-1";
-            }
-            {
-              workspace = "3";
-              output = "eDP-1";
-            }
-            {
-              workspace = "4";
-              output = "eDP-1";
-            }
-            {
-              workspace = "5";
-              output = "eDP-1";
-            }
-            {
-              workspace = "6";
-              output = "eDP-1";
-            }
-            {
-              workspace = "7";
-              output = "eDP-1";
-            }
-            {
-              workspace = "8";
-              output = "eDP-1";
-            }
-            {
-              workspace = "9";
-              output = "eDP-1";
-            }
-            {
-              workspace = "10";
-              output = "eDP-1";
-            }
-          ] else [
-            {
-              workspace = "1";
-              output = "DP-2";
-            }
-            {
-              workspace = "2";
-              output = "DP-2";
-            }
-            {
-              workspace = "3";
-              output = "DP-2";
-            }
-            {
-              workspace = "4";
-              output = "DP-2";
-            }
-            {
-              workspace = "5";
-              output = "DP-2";
-            }
-            {
-              workspace = "6";
-              output = "HDMI-A-1";
-            }
-            {
-              workspace = "7";
-              output = "HDMI-A-1";
-            }
-            {
-              workspace = "8";
-              output = "HDMI-A-1";
-            }
-            {
-              workspace = "9";
-              output = "HDMI-A-1";
-            }
-            {
-              workspace = "10";
-              output = "HDMI-A-1";
-            }
-          ];
+          workspaceOutputAssign =
+            let
+              mkAssign = ws: output: { workspace = toString ws; output = output; };
+              primaryWS = map (i: mkAssign i primaryMonitor.name) (lib.range 1 5);
+              secondaryWS = map (i: mkAssign i secondaryMonitor.name) (lib.range 6 10);
+            in if hasSecondary then primaryWS ++ secondaryWS
+               else map (i: mkAssign i primaryMonitor.name) (lib.range 1 10);
 
           # Startup applications
           startup = [
@@ -399,16 +313,14 @@
       swayidle = {
         enable = true;
         wallpaper = background;
-        displayOffCommand = if hostName == "thinkpad" then
-          ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms off"''
-        else
-          ''${pkgs.sway}/bin/swaymsg "output DP-2 dpms off"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms off"'';
-        displayOnCommand = if hostName == "thinkpad" then
-          ''${pkgs.sway}/bin/swaymsg "output eDP-1 dpms on"''
-        else
-          ''${pkgs.sway}/bin/swaymsg "output DP-2 dpms on"; ${pkgs.sway}/bin/swaymsg "output HDMI-A-1 dpms on"'';
+        displayOffCommand = lib.concatMapStringsSep "; "
+          (m: ''${pkgs.sway}/bin/swaymsg "output ${m.name} dpms off"'')
+          monitors;
+        displayOnCommand = lib.concatMapStringsSep "; "
+          (m: ''${pkgs.sway}/bin/swaymsg "output ${m.name} dpms on"'')
+          monitors;
         preLockScript = ''
-          export SWAYSOCK=/run/user/1000/sway-ipc.$(${pkgs.coreutils}/bin/id -u).$(${pkgs.procps}/bin/pgrep -x sway).sock
+          export SWAYSOCK=/run/user/$(${pkgs.coreutils}/bin/id -u)/sway-ipc.$(${pkgs.coreutils}/bin/id -u).$(${pkgs.procps}/bin/pgrep -x sway).sock
           export WAYLAND_DISPLAY=wayland-1
         '';
       };

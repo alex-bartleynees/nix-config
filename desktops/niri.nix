@@ -54,7 +54,7 @@
     system.nixos.tags = [ "niri" ];
   };
 
-  homeConfig = { pkgs, config, lib, hostName, theme, inputs, ... }:
+  homeConfig = { pkgs, config, lib, theme, inputs, monitors, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;
@@ -278,48 +278,15 @@
             "Mod+Shift+WheelScrollUp".action = focus-workspace-up;
           }];
 
-        # Monitor configuration per host
-        outputs = if hostName == "thinkpad" then {
-          "eDP-1" = {
-            mode = {
-              width = 1920;
-              height = 1080;
-              refresh = 60.0;
-            };
-            position = {
-              x = 0;
-              y = 0;
-            };
-            scale = 1.0;
-          };
-        } else {
-          "DP-2" = {
-            mode = {
-              width = 3840;
-              height = 2160;
-              refresh = 160.0;
-            };
-            position = {
-              x = 0;
-              y = 0;
-            };
-            scale = 1.5;
-            variable-refresh-rate = true;
-          };
-          "HDMI-A-1" = {
-            mode = {
-              width = 2560;
-              height = 1440;
-              refresh = 100.0;
-            };
-            transform.rotation = 270;
-            position = {
-              x = 2560;
-              y = 0;
-            };
-            variable-refresh-rate = false;
-          };
-        };
+        outputs = lib.listToAttrs (map (m: {
+          name = m.name;
+          value = {
+            mode = { width = m.width; height = m.height; refresh = m.refresh; };
+            position = { x = m.x; y = m.y; };
+            scale = m.scale;
+            variable-refresh-rate = m.vrr;
+          } // lib.optionalAttrs (m.transform != 0) { transform.rotation = m.transform; };
+        }) monitors);
 
         # Window rules
         window-rules = [

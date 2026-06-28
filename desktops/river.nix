@@ -47,7 +47,7 @@
     system.nixos.tags = [ "river" ];
   };
 
-  homeConfig = { pkgs, config, lib, hostName, theme, ... }:
+  homeConfig = { pkgs, config, lib, theme, monitors, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;
@@ -261,13 +261,11 @@
           # Set spawn tagmask to ensure new windows do not have the scratchpad tag unless explicitly set
           riverctl spawn-tagmask $((((1 << 32) - 1) ^ (1 << 20)))
 
-          # Host-specific output configuration
-          ${if hostName == "thinkpad" then ''
-            riverctl output eDP-1 mode 1920x1080@60
-            riverctl output eDP-1 position 0,0
-          '' else ''
-            wlr-randr --output DP-2 --mode 3840x2160@160 --scale 1.5 --pos 0,0 --output HDMI-A-1 --mode 2560x1440@100 --transform 270 --pos 2560,0 &
-          ''}
+          # Output configuration
+          wlr-randr ${lib.concatMapStringsSep " " (m:
+            "--output ${m.name} --mode ${toString m.width}x${toString m.height}@${toString (builtins.floor m.refresh)} --scale ${toString m.scale} --pos ${toString m.x},${toString m.y}"
+            + lib.optionalString (m.transform != 0) " --transform ${toString m.transform}"
+          ) monitors} &
 
           # Server Side Decorations (SSD) rules for border visibility
           riverctl rule-add -app-id "brave-browser" ssd

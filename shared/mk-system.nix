@@ -3,7 +3,7 @@
   , desktop ? "hyprland", users, themeName ? "tokyo-night", hostName
   , enableThemeSpecialisations ? false, enableDesktopSpecialisations ? false
   , desktopSpecialisations ? [ ], additionalModules ? [ ]
-  , additionalUserProfiles ? { }, }:
+  , additionalUserProfiles ? { }, monitors ? [ ], }:
   let
     inherit (inputs) nixpkgs;
 
@@ -35,7 +35,7 @@
     # Theme setup
     theme = import ../themes/${themeName}.nix { inherit inputs pkgs; };
     themes = import ../themes {
-      inherit inputs users additionalUserProfiles;
+      inherit inputs users additionalUserProfiles monitors;
       lib = nixpkgs.lib;
     };
 
@@ -59,7 +59,7 @@
       [
         (mkDesktopSpecialisations {
           baseImports = baseImports;
-          inherit theme users additionalUserProfiles;
+          inherit theme users additionalUserProfiles monitors;
           desktops = desktopSpecialisations;
         })
       ]
@@ -68,7 +68,7 @@
 
     # Shared configuration
     shared = import ../shared/nixos-default.nix {
-      inherit inputs theme desktop users additionalUserProfiles;
+      inherit inputs theme desktop users additionalUserProfiles monitors;
       lib = nixpkgs.lib;
     };
 
@@ -89,7 +89,7 @@
 
     # Common special args
     commonSpecialArgs = {
-      inherit inputs users desktop hostName stateVersion systemProfiles;
+      inherit inputs users desktop hostName stateVersion systemProfiles monitors;
       self = inputs.self;
     };
 

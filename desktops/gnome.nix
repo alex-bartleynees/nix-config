@@ -1,99 +1,93 @@
 {
-  nixosConfig = { pkgs, ... }: {
-    imports = [ ./common/wayland.nix ];
-    services.desktopManager = { gnome.enable = true; };
+  nixosConfig = { pkgs, lib, monitors, ... }:
+    let
+      toGnomeRotation = t:
+        if t == 90 then "left"
+        else if t == 180 then "upside-down"
+        else if t == 270 then "right"
+        else "normal";
 
-    services.displayManager = {
-      gdm.enable = true;
-      gdm.wayland = true;
-    };
+      renderMonitor = m: ''
+              <monitor>
+                <monitorspec>
+                  <connector>${m.name}</connector>
+                  ${lib.optionalString (m.vendor != "") "<vendor>${m.vendor}</vendor>"}
+                  ${lib.optionalString (m.product != "") "<product>${m.product}</product>"}
+                  ${lib.optionalString (m.serial != "") "<serial>${m.serial}</serial>"}
+                </monitorspec>
+                <mode>
+                  <width>${toString m.width}</width>
+                  <height>${toString m.height}</height>
+                  <rate>${toString (builtins.floor m.refresh)}.000</rate>
+                </mode>
+              </monitor>'';
 
-    services.gnome = {
-      core-apps.enable = true;
-      gnome-keyring.enable = true;
-    };
+      renderLogicalMonitor = m: ''
+            <logicalmonitor>
+              <x>${toString m.x}</x>
+              <y>${toString m.y}</y>
+              <scale>${toString m.scale}</scale>
+              ${lib.optionalString m.primary "<primary>yes</primary>"}
+              ${lib.optionalString (m.transform != 0) ''
+              <transform>
+                <rotation>${toGnomeRotation m.transform}</rotation>
+                <flipped>no</flipped>
+              </transform>''}
+              ${renderMonitor m}
+            </logicalmonitor>'';
 
-    programs.dconf.enable = true;
+      monitorsXml = ''
+          <monitors version="2">
+          <configuration>
+            <layoutmode>physical</layoutmode>
+          ${lib.concatMapStringsSep "\n" renderLogicalMonitor monitors}
+          </configuration>
+          </monitors>'';
+    in {
+      imports = [ ./common/wayland.nix ];
+      services.desktopManager = { gnome.enable = true; };
 
-    environment.systemPackages = with pkgs; [
-      gnome-tweaks
-      dconf-editor
-      gnome-shell-extensions
-    ];
+      services.displayManager = {
+        gdm.enable = true;
+      };
 
-    services.upower.enable = true;
-    services.accounts-daemon.enable = true;
+      services.gnome = {
+        core-apps.enable = true;
+        gnome-keyring.enable = true;
+      };
 
-    system.nixos.tags = [ "gnome" ];
+      programs.dconf.enable = true;
 
-    # GNOME manages Qt theming natively
-    stylix.targets.qt.enable = false;
+      environment.systemPackages = with pkgs; [
+        gnome-tweaks
+        dconf-editor
+        gnome-shell-extensions
+      ];
 
-    xdg.portal = {
-      enable = true;
-      wlr.enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-gtk
-        xdg-desktop-portal-gnome
+      services.upower.enable = true;
+      services.accounts-daemon.enable = true;
+
+      system.nixos.tags = [ "gnome" ];
+
+      stylix.targets.qt.enable = false;
+
+      xdg.portal = {
+        enable = true;
+        wlr.enable = true;
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+          xdg-desktop-portal-gnome
+        ];
+      };
+
+      systemd.tmpfiles.rules = [
+        "L+ /run/gdm/.config/monitors.xml - - - - ${
+          pkgs.writeText "gdm-monitors.xml" monitorsXml
+        }"
       ];
     };
 
-    systemd.tmpfiles.rules = [
-      "L+ /run/gdm/.config/monitors.xml - - - - ${
-        pkgs.writeText "gdm-monitors.xml" ''
-            <monitors version="2">
-            <configuration>
-              <layoutmode>physical</layoutmode>
-              <logicalmonitor>
-                <x>0</x>
-                <y>0</y>
-                <scale>1.5</scale>
-                <primary>yes</primary>
-                <monitor>
-                  <monitorspec>
-                    <connector>DP-2</connector>
-                    <vendor>AOC</vendor>
-                    <product>U27G4</product>
-                    <serial>10GR2HA001383</serial>
-                  </monitorspec>
-                  <mode>
-                    <width>3840</width>
-                    <height>2160</height>
-                    <rate>160.001</rate>
-                  </mode>
-                </monitor>
-              </logicalmonitor>
-              <logicalmonitor>
-                <x>2560</x>
-                <y>0</y>
-                <scale>1</scale>
-                <transform>
-                  <rotation>right</rotation>
-                  <flipped>no</flipped>
-                </transform>
-                <monitor>
-                  <monitorspec>
-                    <connector>HDMI-A-1</connector>
-                    <vendor>GSM</vendor>
-                    <product>27GL850</product>
-                    <serial>006NTDVG0786</serial>
-                  </monitorspec>
-                  <mode>
-                    <width>2560</width>
-                    <height>1440</height>
-                    <rate>144.000</rate>
-                  </mode>
-                </monitor>
-              </logicalmonitor>
-            </configuration>
-          </monitors>
-        ''
-      }"
-    ];
+  homeConfig = { ... }: {
+    # GNOME manages its own configuration, no Home Manager config needed
   };
-
-  homeConfig = { ... }:
-    {
-      # GNOME manages its own configuration, no Home Manager config needed
-    };
 }

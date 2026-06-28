@@ -31,13 +31,52 @@
     system.nixos.tags = [ "hyprland" ];
   };
 
-  homeConfig = { pkgs, config, lib, hostName, theme, ... }:
+  homeConfig = { pkgs, config, lib, theme, monitors, ... }:
     let
       colors = theme.themeColors;
       background = theme.wallpaper;
 
-      # Function to convert hex colors to rgb format for Hyprland
       hexToRgb = hex: "rgb(${builtins.substring 1 6 hex})";
+
+      primaryMonitors = builtins.filter (m: m.primary) monitors;
+      primaryMonitor = if primaryMonitors != [ ] then builtins.head primaryMonitors else null;
+      secondaryMonitors = builtins.filter (m: !m.primary) monitors;
+      hasSecondary = secondaryMonitors != [ ];
+      secondaryMonitor =
+        if hasSecondary then builtins.head secondaryMonitors else primaryMonitor;
+
+      toRef = m: if m.description != "" then "desc:${m.description}" else m.name;
+
+      toMonitorStr = m:
+        "${toRef m}"
+        + ",${toString m.width}x${toString m.height}@${toString (builtins.floor m.refresh)}"
+        + ",${toString m.x}x${toString m.y},${toString m.scale}"
+        + lib.optionalString m.vrr ",vrr,1"
+        + lib.optionalString (m.transform != 0) ",transform,${toString (m.transform / 90)}"
+        + lib.optionalString m.hdr ",cm,hdr,sdrbrightness,${toString m.sdrBrightness},sdrsaturation,${toString m.sdrSaturation}";
+
+      generatedMonitors = if monitors != [ ] then map toMonitorStr monitors
+                          else [ ",preferred,auto,1" ];
+
+      generatedWorkspaces =
+        if monitors == [ ] || primaryMonitor == null then [ ]
+        else
+          let
+            primaryRef = toRef primaryMonitor;
+            secondaryRef = if hasSecondary then toRef secondaryMonitor else primaryRef;
+            primaryWS = builtins.genList (i:
+              let ws = i + 1;
+              in "${toString ws}, monitor:${primaryRef}${lib.optionalString (ws == 1) ", default:true"}"
+            ) 5;
+            secondaryWS = builtins.genList (i:
+              let ws = i + 6;
+              in "${toString ws}, monitor:${secondaryRef}, layoutopt:direction:down${lib.optionalString (ws == 6) ", default:true"}"
+            ) 5;
+          in if hasSecondary then primaryWS ++ secondaryWS
+             else builtins.genList (i:
+               let ws = i + 1;
+               in "${toString ws}, monitor:${primaryRef}${lib.optionalString (ws == 1) ", default:true"}"
+             ) 10;
     in {
       imports = [ ./common/linux-desktop.nix ];
 
@@ -75,7 +114,8 @@
         systemd.variables = [ "--all" ];
 
         settings = {
-          monitor = [ ",preferred,auto,1" ];
+          monitor = generatedMonitors;
+          workspace = generatedWorkspaces;
 
           # Variables
           "$mod" = "ALT";
@@ -329,18 +369,17 @@
           bindm =
             [ "$mod, mouse:272, movewindow" "$mod, mouse:273, resizewindow" ];
 
-          # Window rules for Steam gaming
           windowrule = [
             "idle_inhibit focus, match:class ^(steam)$"
             "idle_inhibit focus, match:class ^(steamwebhelper)$"
             "idle_inhibit focus, match:class ^(steam_app_.*)$"
             "idle_inhibit focus, match:title ^(Steam Big Picture Mode)$"
             "idle_inhibit focus, match:class ^(gamescope)$"
-
-            # Steam games - force proper display settings
             "fullscreen on, match:class ^(steam_app_.*)$"
             "workspace 1, match:class ^(steam_app_.*)$"
             "immediate on, match:class ^(steam_app_.*)$"
+          ] ++ lib.optionals (primaryMonitor != null) [
+            "monitor ${toRef primaryMonitor}, match:class ^(steam_app_.*)$"
           ];
 
           # Misc settings

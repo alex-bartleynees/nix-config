@@ -1,5 +1,6 @@
 { inputs, username, homeDirectory, extraModules ? [ ]
-, additionalUserProfiles ? { }, theme ? null, desktop, sharedModules ? [ ], }:
+, additionalUserProfiles ? { }, theme ? null, desktop, sharedModules ? [ ]
+, monitors ? [ ], }:
 ({ lib, config, pkgs, ... }:
   let
     baseProfiles = if (config.myUsers ? ${username}
@@ -49,7 +50,7 @@
 
     home-manager = {
       extraSpecialArgs = {
-        inherit inputs username homeDirectory theme desktop;
+        inherit inputs username homeDirectory theme desktop monitors;
         inherit (config.networking) hostName;
         inherit (config) myUsers;
       };
