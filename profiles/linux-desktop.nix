@@ -14,7 +14,7 @@ in lib.mkIf config.profiles.linux-desktop {
   boot.loader.systemd-boot.consoleMode = "max";
 
   boot = {
-    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    kernelPackages = pkgs.linuxPackages_latest;
 
     # Increase inotify watch limit for IDEs (IntelliJ, VSCode, etc.)
     kernel.sysctl = { "fs.inotify.max_user_watches" = 1048576; };
