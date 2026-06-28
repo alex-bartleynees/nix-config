@@ -45,7 +45,7 @@ in {
       Unit = {
         Description = "Set initial wallpaper with awww";
         After = [ "awww-daemon.service" ];
-        PartOf = [ cfg.sessionTarget ];
+        PartOf = [ "awww-daemon.service" ];
       };
       Service = {
         Type = "oneshot";
@@ -53,7 +53,7 @@ in {
         ExecStart = "${pkgs.awww}/bin/awww img ${cfg.wallpaper}";
         RemainAfterExit = true;
       };
-      Install = { WantedBy = [ cfg.sessionTarget ]; };
+      Install = { WantedBy = [ "awww-daemon.service" ]; };
     };
   };
 }
