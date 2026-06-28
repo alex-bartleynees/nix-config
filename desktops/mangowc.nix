@@ -209,19 +209,29 @@
 
           # Monitor configuration
           ${lib.concatMapStringsSep "\n" (m:
-            "monitorrule=name:${m.name},width:${toString m.width},height:${
+            let
+              id = if m.vendor != "" then
+                "make:${m.vendor},model:${m.product},serial:${m.serial}"
+              else
+                "name:${m.name}";
+            in "monitorrule=${id},width:${toString m.width},height:${
               toString m.height
             },refresh:${toString (builtins.floor m.refresh)},x:${
               toString m.x
-            },y:${toString m.y},scale:${toString m.scale},vrr:0,rr:0") monitors}
+            },y:${toString m.y},scale:${toString m.scale},vrr:0,rr:${
+              toString (m.transform / 90)
+            }") monitors}
 
           # Tag layout rules for secondary monitors
           ${lib.concatMapStringsSep "\n" (m:
-            lib.optionalString (!m.primary) (lib.concatMapStringsSep "\n" (id:
-              "tagrule=id:${
-                toString id
-              },monitor_name:${m.name},layout_name:vertical_tile")
-              (lib.range 0 9))) monitors}
+            lib.optionalString (!m.primary) (let
+              tagId = if m.vendor != "" then
+                "monitor_make:${m.vendor},monitor_model:${m.product},monitor_serial:${m.serial}"
+              else
+                "monitor_name:${m.name}";
+            in lib.concatMapStringsSep "\n"
+            (id: "tagrule=id:${toString id},${tagId},layout_name:vertical_tile")
+            (lib.range 0 9))) monitors}
 
           # Autostart
           exec-once=~/.config/mango/autostart.sh

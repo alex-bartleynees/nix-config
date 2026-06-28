@@ -279,7 +279,7 @@
           }];
 
         outputs = lib.listToAttrs (map (m: {
-          name = m.name;
+          name = if m.description != "" then m.description else m.name;
           value = {
             mode = {
               width = m.width;

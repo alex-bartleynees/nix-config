@@ -16,7 +16,7 @@ in {
     users = users;
     monitors = [
       {
-        name = "DP-5";
+        name = "DP-2";
         description = "AOC U27G4 10GR2HA001383";
         vendor = "AOC";
         product = "U27G4";
@@ -35,7 +35,7 @@ in {
         primary = true;
       }
       {
-        name = "HDMI-A-2";
+        name = "HDMI-A-1";
         description = "LG Electronics 27GL850 006NTDVG0786";
         vendor = "GSM";
         product = "27GL850";

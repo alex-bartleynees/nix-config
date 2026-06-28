@@ -57,6 +57,7 @@
     let
       colors = theme.themeColors;
       background = theme.wallpaper;
+      toSwayRef = m: if m.description != "" then m.description else m.name;
       primaryMonitor = builtins.head (builtins.filter (m: m.primary) monitors);
       secondaryMonitors = builtins.filter (m: !m.primary) monitors;
       hasSecondary = secondaryMonitors != [ ];
@@ -217,7 +218,7 @@
 
               # Wake displays
               "Control+${modifier}+w" = "exec " + lib.concatMapStringsSep "; "
-                (m: ''swaymsg "output ${m.name} dpms on"'') monitors;
+                (m: ''swaymsg "output \"${toSwayRef m}\" dpms on"'') monitors;
             };
 
           # Modes
@@ -271,7 +272,7 @@
           };
 
           output = lib.listToAttrs (map (m: {
-            name = m.name;
+            name = toSwayRef m;
             value = {
               mode = "${toString m.width}x${toString m.height}@${
                   toString (builtins.floor m.refresh)
@@ -325,10 +326,11 @@
         enable = true;
         wallpaper = background;
         displayOffCommand = lib.concatMapStringsSep "; "
-          (m: ''${pkgs.sway}/bin/swaymsg "output ${m.name} dpms off"'')
+          (m: ''${pkgs.sway}/bin/swaymsg "output \"${toSwayRef m}\" dpms off"'')
           monitors;
         displayOnCommand = lib.concatMapStringsSep "; "
-          (m: ''${pkgs.sway}/bin/swaymsg "output ${m.name} dpms on"'') monitors;
+          (m: ''${pkgs.sway}/bin/swaymsg "output \"${toSwayRef m}\" dpms on"'')
+          monitors;
         preLockScript = ''
           export SWAYSOCK=/run/user/$(${pkgs.coreutils}/bin/id -u)/sway-ipc.$(${pkgs.coreutils}/bin/id -u).$(${pkgs.procps}/bin/pgrep -x sway).sock
           export WAYLAND_DISPLAY=wayland-1
