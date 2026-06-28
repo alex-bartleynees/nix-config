@@ -29,6 +29,7 @@ lib.mkIf config.profiles.gaming-workstation {
     enable = true;
     motherboard = "amd";
     profile = "default";
+    turnOffOnBoot = true;
   };
 
   # ZSA keyboard support

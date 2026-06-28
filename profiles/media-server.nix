@@ -23,6 +23,7 @@ in lib.mkIf config.profiles.media-server {
     enable = true;
     motherboard = "amd";
     profile = "default";
+    turnOffOnBoot = true;
   };
 
   impermanence.enable = lib.mkForce false;
