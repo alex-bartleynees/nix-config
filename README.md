@@ -7,14 +7,15 @@ Highly flexible multi-host and multi-user support.
 
 ```
 ├── flake.nix             # Main Nix flake configuration
+├── hosts.nix             # Host definitions (monitors, profiles, specialisations)
 ├── desktops/             # Desktop environment configurations (combined NixOS + Home Manager modules)
 │   └── common/           # Shared desktop modules (wayland, wlroots, linux-desktop)
-├── hardware/             # Disk configs, and hardware profiles
+├── hardware/             # Disk configs and hardware profiles
 ├── modules/              # Core system modules and Home Manager application modules
 ├── profiles/             # System and Home Manager profiles with common module combinations
 ├── secrets/              # SOPS encrypted secrets
 ├── shared/               # Shared configuration helpers and module extractors
-├── themes/               # System themes (catppuccin, tokyo-night, nord, everforest) switchable at runtime
+├── themes/               # System themes (catppuccin, tokyo-night, gruvbox, nord, everforest)
 └── users/                # User-specific configurations
 ```
 
@@ -28,17 +29,19 @@ Desktop environment files use a combined module structure that keeps both NixOS 
     # NixOS system configuration (services, packages, etc.)
   };
 
-  homeConfig = { pkgs, config, lib, theme, ... }: {
+  homeConfig = { pkgs, config, lib, theme, monitors, ... }: {
     # Home Manager configuration (user applications, dotfiles, etc.)
   };
 }
 ```
 
 The `shared/module-extractors.nix` automatically extracts the appropriate section depending on the context:
-- **System configurations** and **specializations** extract `nixosConfig`
+- **System configurations** and **specialisations** extract `nixosConfig`
 - **Home Manager** extracts `homeConfig`
 
-This architecture eliminates duplication and ensures desktop configurations stay synchronized between system and user levels.
+This architecture eliminates duplication and ensures desktop configurations stay synchronised between system and user levels.
+
+The same combined module pattern is available in `modules/` — any file with both `nixosConfig` and `homeConfig` attributes (and no `# homeModule: true` comment) is automatically split and imported by both the NixOS system and Home Manager.
 
 ### Module Type Markers
 
@@ -53,39 +56,62 @@ The configuration uses magic comments to identify module types:
 }
 ```
 
-Modules with the `# homeModule: true` comment in the first 5 lines are automatically:
-- Imported only into Home Manager configurations (not NixOS system)
-- Detected by `shared/import-nix-files.nix` via the `importHomeFiles` function
-
-**Combined Modules:**
-Desktop environment files in `desktops/` use the combined module structure (shown above) which is detected by checking for both `nixosConfig` and `homeConfig` attributes. The `shared/module-extractors.nix` handles the extraction logic.
-
-**System-only Modules:**
-Regular NixOS modules without special markers are imported only into system configurations via `importAllNixFiles`.
+Modules with the `# homeModule: true` comment in the first 5 lines are automatically imported only into Home Manager configurations. Regular NixOS modules without special markers are imported only into system configurations.
 
 ## 🖥️ Host Configuration
 
 ### hosts.nix
 
-The `hosts.nix` file centralizes all host definitions and their configurations. Each host is defined declaratively with:
+`hosts.nix` centralises all host definitions. Each host is defined declaratively with:
 
-- **desktop**: Default desktop environment for the host
-- **enableThemeSpecialisations**: Whether to enable theme switching specializations
-- **enableDesktopSpecialisations**: Whether to enable desktop environment specializations
-- **desktopSpecialisations**: List of additional desktop environments to include
-- **systemProfiles**: List of system profiles to enable for the host
-- **users**: User configurations for the host
-- **additionalModules**: Host-specific Nix modules (e.g., hardware modules, WSL)
+- **desktop**: Default desktop environment
+- **monitors**: Per-monitor hardware specs (see below)
+- **enableThemeSpecialisations**: Enable runtime theme switching
+- **enableDesktopSpecialisations**: Enable desktop environment switching
+- **desktopSpecialisations**: Additional desktop environments to build
+- **systemProfiles**: System profiles to enable
+- **users**: User configurations
+- **additionalModules**: Host-specific modules (hardware, WSL, etc.)
+
+### Monitor Schema
+
+Monitor configuration is declared once per host in `hosts.nix` and propagates automatically to every compositor (Hyprland, Sway, Niri, River, Mango, GNOME):
+
+```nix
+monitors = [
+  {
+    name        = "DP-2";                      # connector name
+    description = "AOC U27G4 10GR2HA001383";  # used by Hyprland for desc: matching
+    vendor      = "AOC";                       # used by GNOME monitors.xml
+    product     = "U27G4";
+    serial      = "10GR2HA001383";
+    width       = 3840;
+    height      = 2160;
+    refresh     = 160.0;
+    x           = 0;                           # logical position
+    y           = 0;
+    scale       = 1.5;
+    vrr         = true;
+    transform   = 0;                           # degrees CW: 0, 90, 180, 270
+    hdr         = false;
+    sdrBrightness = 1.0;                       # HDR SDR brightness multiplier
+    sdrSaturation = 1.0;                       # HDR SDR saturation multiplier
+    primary     = true;
+  }
+];
+```
+
+Adding or renaming a monitor only requires editing `hosts.nix` — all compositor configs, workspace assignments, idle/dpms commands, and GNOME monitor XML are derived from this single source.
 
 ### Available Hosts
 
-| Host       | Platform  | Desktop  | Description                                                          |
-| ---------- | --------- | -------- | -------------------------------------------------------------------- |
-| `desktop`  | NixOS     | Hyprland | Main desktop with theme and DE specializations (Sway, River, Cosmic) |
-| `macbook`  | macOS     | -        | MacBook configuration with nix-darwin                                |
-| `media`    | NixOS     | GNOME    | Media server with Samba and backup services                          |
-| `thinkpad` | NixOS     | River    | ThinkPad laptop with TLP power management and theme specializations  |
-| `wsl`      | NixOS-WSL | None     | Windows Subsystem for Linux setup                                    |
+| Host       | Platform  | Desktop   | Description                                                                      |
+| ---------- | --------- | --------- | -------------------------------------------------------------------------------- |
+| `desktop`  | NixOS     | Hyprland  | Main desktop with theme and DE specialisations (Sway, Niri, River, and more)    |
+| `macbook`  | macOS     | -         | MacBook configuration with nix-darwin                                            |
+| `media`    | NixOS     | Hyprland  | Media server with Samba, backup services, and HDR display                        |
+| `thinkpad` | NixOS     | Niri      | ThinkPad laptop with TLP power management and theme specialisations              |
+| `wsl`      | NixOS-WSL | None      | Windows Subsystem for Linux setup                                                |
 
 ## 🚀 Quick Start
 
@@ -104,20 +130,16 @@ sudo nixos-rebuild switch --flake .#wsl
 ### macOS Systems
 
 ```bash
-# Build and switch to macbook configuration
 darwin-rebuild switch --flake .#macbook
 ```
 
 ### Home Manager
 
 ```bash
-# Switch home manager configuration
 home-manager switch --flake .
 ```
 
 ## 🔧 Common Commands
-
-### System Management
 
 ```bash
 # Update all flake inputs
@@ -129,36 +151,22 @@ nix flake update nixpkgs
 # Check flake for errors
 nix flake check
 
-# Show flake outputs
-nix flake show
-
-# Enter development shell
-nix develop
-```
-
-### Build from Remote
-
-```bash
 # Build from GitHub repository
 sudo nixos-rebuild switch --flake github:alex-bartleynees/nix-config#desktop
 ```
 
-### Specializations (Desktop Only)
+### Specialisations
 
-The desktop host includes multiple desktop environment specializations:
+The desktop host includes multiple desktop environment and theme specialisations:
 
 ```bash
-# Boot into GNOME
-sudo nixos-rebuild switch --flake .#desktop --specialisation gnome
-
-# Boot into KDE
-sudo nixos-rebuild switch --flake .#desktop --specialisation kde
-
-# Boot into Cosmic
-sudo nixos-rebuild switch --flake .#desktop --specialisation cosmic
-
-# Boot into Sway
+# Switch desktop environment
 sudo nixos-rebuild switch --flake .#desktop --specialisation sway
+sudo nixos-rebuild switch --flake .#desktop --specialisation niri
+sudo nixos-rebuild switch --flake .#desktop --specialisation river
+sudo nixos-rebuild switch --flake .#desktop --specialisation gnome
+sudo nixos-rebuild switch --flake .#desktop --specialisation kde
+sudo nixos-rebuild switch --flake .#desktop --specialisation cosmic
 ```
 
 ## 🎨 Features
@@ -166,90 +174,91 @@ sudo nixos-rebuild switch --flake .#desktop --specialisation sway
 ### Core Modules
 
 - **Gaming**: Steam, Sunshine and Moonlight game streaming
-- **NVIDIA**: Proprietary drivers with CUDA support
+- **NVIDIA**: Proprietary drivers with CUDA support and PRIME offloading
 - **Docker**: Container runtime with user access
 - **Tailscale**: Mesh VPN networking
-- **OpenRGB**: RGB lighting control
+- **OpenRGB**: RGB lighting control with optional boot-time RGB disable (`turnOffOnBoot`)
 - **Stylix**: System-wide theming
-- **Impermanence**: Custom BTRFS-based filesystem reset with selective persistence
+- **Impermanence**: BTRFS-based filesystem reset with selective persistence
+
+### Modules (`modules/`)
+
+All files in `modules/` are auto-imported. The module type is detected automatically:
+
+- **NixOS modules** (no marker): `backup`, `docker`, `gaming`, `impermanence`, `nvidia`, `openrgb`, `tailscale`, `voyager`, etc.
+- **Home Manager modules** (`# homeModule: true`): `git`, `shell`, `waybar`, `udiskie`, `awww`, `vicinae`, `ghostty`, `neovim`, `vscode`, etc.
+- **Combined modules** (both `nixosConfig` and `homeConfig`): `swayidle` — handles PAM at the NixOS level and idle/lock at the home level in a single file.
+
+Notable desktop-related home modules that are compositor-agnostic and bind to a session target:
+
+- **swayidle**: Idle management and screen locking; the combined module also sets `security.pam.services.swaylock` system-wide
+- **waybar**: Status bar with an optional systemd user service bound to a compositor session target
+- **udiskie**: Automount daemon as a systemd user service
+- **awww**: Wallpaper daemon with optional wallpaper on start
+- **vicinae**: App launcher as a systemd user service
+
+Usage pattern in desktop files:
+
+```nix
+swayidle = {
+  enable = true;
+  wallpaper = background;
+  displayOffCommand = ''swaymsg "output * dpms off"'';
+  displayOnCommand  = ''swaymsg "output * dpms on"'';
+};
+
+waybar.sessionTarget = "sway-session.target";
+udiskie  = { enable = true; sessionTarget = "sway-session.target"; };
+awww     = { enable = true; sessionTarget = "sway-session.target"; wallpaper = background; };
+vicinae  = { enable = true; sessionTarget = "sway-session.target"; };
+```
 
 ### System Profiles
 
-The configuration includes pre-configured profiles that combine common module combinations for different use cases:
-
 - **base**: Core services for all machines (Tailscale, Docker)
 - **linux-desktop**: Desktop system with theming, impermanence, and common desktop services
-- **gaming-workstation**: High-performance desktop with gaming, NVIDIA GPU, and RGB lighting support
-- **media-server**: Media server configuration with hardware acceleration and network routing
+- **gaming-workstation**: High-performance desktop with gaming, NVIDIA GPU, and RGB lighting
+- **media-server**: Media server with hardware acceleration and network routing
+- **linux-laptop**: Laptop power management with TLP
 
-Profiles inherit from each other to build functionality layers:
-
+Profile inheritance:
 - `gaming-workstation` → `linux-desktop` → `base`
 - `media-server` → `linux-desktop` → `base`
+- `linux-laptop` → `linux-desktop` → `base`
 
 ### Desktop Environments
 
+- **Hyprland**: Dynamic tiling compositor (primary on desktop and media)
+- **Sway**: Tiling Wayland compositor
+- **Niri**: Scrollable-tiling Wayland compositor (primary on thinkpad)
+- **River**: Efficient tiling window manager
+- **Mango** (`mangowc`): Wayland compositor with scroller and master-stack layouts
 - **GNOME**: Full GNOME desktop with extensions
 - **KDE Plasma**: Complete KDE experience
-- **Cosmic**: System76's new desktop environment
-- **Sway**: Tiling Wayland compositor
-- **Hyprland**: Dynamic tiling compositor
-- **River**: Extremely efficient tiling window manager, great on laptops.
-- **Niri**: Scrollable-tiling Wayland compositor
-- **Mango**: Wayland compositor with UWSM
+- **Cosmic**: System76's Rust-based desktop environment
 
 ### Applications
 
 - Development: VSCode, JetBrains Rider, Neovim
-- Terminal: Alacritty, Ghostty, Tmux
+- Terminal: Ghostty, Tmux
 - Browser: Brave with declarative extensions and themes
 - Media: Various media players and codecs
 
 ### User Home Profiles
 
-The configuration includes a modular home profile system that allows users to compose their environment from reusable profile modules:
+Modular home profiles allow users to compose their environment:
 
-#### Available Profiles
-
-- **developer**: Comprehensive development environment with:
-  - Git configuration with delta pager and sensible defaults
-  - Zsh with Oh My Zsh, Powerlevel10k theme, and useful plugins
-  - Development tools: Neovim, VSCode, JetBrains Rider, tmux
-  - Terminal utilities: ripgrep, fd, fzf, lazygit, lazydocker
-  - Shell aliases for common nix-rebuild operations
-  - Direnv and zoxide for enhanced directory navigation
-  - Atuin for shell history sync
-
-- **work**: Minimal work-focused additions:
-  - Microsoft Teams for Linux
-  - Additional work-specific applications
-
-#### Configuration
-
-Users define their profiles in their user configuration file:
-
-```nix
-myUsers.username = {
-  profiles = [ "developer" "work" ];
-  # other user config...
-};
-```
-
-Profiles are automatically imported by Home Manager and can be mixed and matched to create customized environments for different use cases.
+- **developer**: Git, Zsh + Oh My Zsh + Powerlevel10k, Neovim, tmux, ripgrep, fzf, lazygit, direnv, zoxide, Atuin
+- **vscode-developer**: VSCode with extensions
+- **rider-developer**: JetBrains Rider
+- **backend-developer**: Backend development tools
+- **reader**: E-reader and document tools
+- **work**: Microsoft Teams and work-specific applications
+- **host-\***: Host-specific overrides (kanshi display profiles, etc.)
 
 ## 🔄 Impermanence
 
-This configuration includes a custom impermanence module that provides BTRFS-based filesystem reset capabilities with selective persistence. The module automatically resets specified subvolumes on boot while preserving critical data.
-
-### Features
-
-- **Automatic Reset**: Resets configured BTRFS subvolumes on every boot
-- **Selective Persistence**: Preserves specified paths (SSH keys, logs, system state)
-- **Flexible Configuration**: Choose which subvolumes to reset or reset all except protected ones
-- **Snapshot Management**: Uses BTRFS snapshots for efficient file operations
-- **Safety Protections**: Never resets critical subvolumes (@nix, @snapshots)
-
-### Configuration
+BTRFS-based filesystem reset with selective persistence:
 
 ```nix
 impermanence = {
@@ -260,74 +269,21 @@ impermanence = {
     "/var/log"
     "/var/lib/nixos"
   ];
-  resetSubvolumes = [ "@home" "@var" ]; # Empty list resets all non-protected
+  resetSubvolumes = [ "@home" "@var" ];
   subvolumes = {
     "@home" = { mountpoint = "/home"; };
-    "@var" = { mountpoint = "/var"; };
+    "@var"  = { mountpoint = "/var"; };
   };
 };
 ```
 
-## 💾 Disk Encryption with Disko
+## 💾 Disk Encryption
 
-This configuration uses [disko](https://github.com/nix-community/disko) for declarative disk partitioning with LUKS encryption support.
-
-### LUKS Encryption Setup
-
-Several hosts (desktop, thinkpad) use full disk encryption with LUKS:
-
-```nix
-# Example LUKS configuration
-content = {
-  type = "luks";
-  name = "crypted";
-  settings = { allowDiscards = true; };
-  content = {
-    type = "btrfs";
-    extraArgs = [ "-f" "-L" "nixos" ];
-    subvolumes = {
-      "@" = {
-        mountpoint = "/";
-        mountOptions = [ "compress=zstd" "noatime" ];
-      };
-      # Additional subvolumes...
-    };
-  };
-};
-```
-
-### Key Features
-
-- **Full disk encryption**: Root and swap partitions encrypted with LUKS
-- **TRIM support**: `allowDiscards = true` enables TRIM for SSDs
-- **Hibernate support**: Encrypted swap with `resumeDevice = true`
-- **Btrfs subvolumes**: Encrypted btrfs with compression and snapshots
-
-### Implementation Examples
-
-- **Desktop** (`machines/disk-config/desktop-disk-config.nix`): NVMe with encrypted root and swap
-- **ThinkPad** (`machines/disk-config/thinkpad-disk-config.nix`): Laptop-optimized
-- **Media Server** (`machines/disk-config/media-disk-config.nix`): Unencrypted for simplicity
-
-### Setting Up New Encrypted Host
-
-1. Copy an existing encrypted disk config (e.g., from desktop or thinkpad)
-2. Adjust device paths (`/dev/nvme0n1`, `/dev/sda`, etc.)
-3. Modify partition sizes as needed
-4. Ensure boot partition is unencrypted (type: "filesystem", format: "vfat")
-5. Set unique LUKS container names (`name = "crypted"`)
-
-### Boot Process
-
-With LUKS encryption, the boot process requires:
-
-1. UEFI loads the unencrypted boot partition
-2. systemd-boot prompts for disk encryption password
-3. System unlocks encrypted partitions and continues boot
+[disko](https://github.com/nix-community/disko) declarative disk partitioning with LUKS encryption. Desktop and ThinkPad use full disk encryption with BTRFS subvolumes, compressed with zstd. The media server uses unencrypted disks for simplicity.
 
 ## 🔐 Secrets Management
 
-This configuration uses [SOPS](https://github.com/Mic92/sops-nix) for secret management. Secrets are encrypted and stored in `secrets/secrets.yaml`.
+[SOPS](https://github.com/Mic92/sops-nix) for encrypted secrets stored in `secrets/secrets.yaml`.
 
 ## 📦 Key Dependencies
 
@@ -335,11 +291,8 @@ This configuration uses [SOPS](https://github.com/Mic92/sops-nix) for secret man
 - **home-manager**: User environment management
 - **nix-darwin**: macOS system management
 - **nixos-wsl**: WSL integration
-- **stylix**: System theming
+- **stylix**: System-wide theming
 - **sops-nix**: Secret management
-- **disko**: Disk partitioning
+- **disko**: Declarative disk partitioning
 - **nixos-hardware**: Hardware-specific configurations
-
-## 📝 Development
-
-This configuration uses Nix flakes for reproducible system management. Each host can enable relevant core modules as needed, making the configuration highly modular and maintainable.
+- **niri-flake**: Niri compositor and packages
