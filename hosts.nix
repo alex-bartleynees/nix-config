@@ -37,7 +37,7 @@ in {
       {
         name = "HDMI-A-1";
         description = "LG Electronics 27GL850 006NTDVG0786";
-        vendor = "GSM";
+        vendor = "LG Electronics";
         product = "27GL850";
         serial = "006NTDVG0786";
         width = 2560;

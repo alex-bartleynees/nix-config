@@ -1,7 +1,5 @@
 {
-  nixosConfig = { ... }: {
-    security.pam.services.hyprlock = { };
-  };
+  nixosConfig = { ... }: { security.pam.services.hyprlock = { }; };
 
   homeConfig = { config, pkgs, lib, ... }:
     let cfg = config.hypridle;

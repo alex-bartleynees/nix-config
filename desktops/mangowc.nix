@@ -216,8 +216,11 @@
               toString m.height
             },refresh:${toString (builtins.floor m.refresh)},x:${
               toString m.x
-            },y:${toString m.y},scale:${toString m.scale},vrr:0,rr:${
-              toString (m.transform / 90)
+            },y:${toString m.y},scale:${toString m.scale},vrr:${
+              if m.vrr then "1" else "0"
+            },rr:${
+              toString
+              (let q = m.transform / 90; in if q == 0 then 0 else 4 - q)
             }") monitors}
 
           # Tag layout rules for secondary monitors
