@@ -9,8 +9,7 @@ in {
     themeName = "gruvbox";
     enableThemeSpecialisations = true;
     enableDesktopSpecialisations = true;
-    desktopSpecialisations =
-      [ "sway" "gnome" "cosmic" "kde" "hyprland" "river" "niri" ];
+    desktopSpecialisations = [ "sway" "kde" "river" "niri" ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
     users = users;
