@@ -9,6 +9,8 @@
 
     # Enable GTK portal integration (needed for GTK3 apps)
     GTK_USE_PORTAL = "1";
+
+    WLR_DRM_NO_ATOMIC = "1";
   };
 
   # Common system packages for Wayland desktop environments (universal)
