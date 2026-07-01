@@ -258,9 +258,7 @@
           bind=CTRL+ALT,L,spawn,hyprlock
 
           # Screenshot
-          bind=ALT,P,spawn_shell,grim -g "\$(slurp)" - | wl-copy
-          bind=none,Print,spawn,grim
-          bind=ALT+SHIFT,S,spawn_shell,grim -g "\$(slurp)" - | wl-copy
+          bind=ALT,P,spawn_shell,grim -g "$(slurp -d)" - | wl-copy
 
           # Volume control
           bind=none,XF86AudioRaiseVolume,spawn,wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+
@@ -394,7 +392,6 @@
 
           # Clipboard manager
           wl-clip-persist --clipboard regular --reconnect-tries 0 &
-          wl-paste --type text --watch cliphist store &
 
           # Desktop portal (for obs and screen sharing)
           dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
