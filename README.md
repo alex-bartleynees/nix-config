@@ -14,49 +14,49 @@ Highly flexible multi-host and multi-user support.
 ├── modules/              # Core system modules and Home Manager application modules
 ├── profiles/             # System and Home Manager profiles with common module combinations
 ├── secrets/              # SOPS encrypted secrets
-├── shared/               # Shared configuration helpers and module extractors
+├── shared/               # Shared configuration helpers (module-utils, mk-system, home-manager, etc.)
 ├── themes/               # System themes (catppuccin, tokyo-night, gruvbox, nord, everforest)
 └── users/                # User-specific configurations
 ```
 
-### Combined Module Architecture
+### Module Architecture
 
-Desktop environment files use a combined module structure that keeps both NixOS system and Home Manager configuration in a single file:
+Every file in `modules/` and `desktops/` uses one of three shapes, which `shared/module-utils.nix` routes automatically:
 
+**NixOS-only** (plain module function — no wrapper):
+```nix
+{ config, lib, pkgs, ... }: {
+  # NixOS system configuration only
+}
+```
+
+**Home Manager-only** (`homeConfig` wrapper):
 ```nix
 {
-  nixosConfig = { pkgs, ... }: {
-    # NixOS system configuration (services, packages, etc.)
+  homeConfig = { config, lib, pkgs, ... }: {
+    # Home Manager configuration only
+  };
+}
+```
+
+**Combined** (both keys in one file):
+```nix
+{
+  nixosConfig = { config, lib, pkgs, ... }: {
+    # NixOS system configuration (services, PAM, etc.)
   };
 
-  homeConfig = { pkgs, config, lib, theme, monitors, ... }: {
+  homeConfig = { config, lib, pkgs, ... }: {
     # Home Manager configuration (user applications, dotfiles, etc.)
   };
 }
 ```
 
-The `shared/module-extractors.nix` automatically extracts the appropriate section depending on the context:
-- **System configurations** and **specialisations** extract `nixosConfig`
-- **Home Manager** extracts `homeConfig`
-
-This architecture eliminates duplication and ensures desktop configurations stay synchronised between system and user levels.
-
-The same combined module pattern is available in `modules/` — any file with both `nixosConfig` and `homeConfig` attributes (and no `# homeModule: true` comment) is automatically split and imported by both the NixOS system and Home Manager.
-
-### Module Type Markers
-
-The configuration uses magic comments to identify module types:
-
-**Home Manager-only Modules:**
-```nix
-# homeModule: true
-{ pkgs, lib, ... }:
-{
-  # Home Manager configuration only
-}
-```
-
-Modules with the `# homeModule: true` comment in the first 5 lines are automatically imported only into Home Manager configurations. Regular NixOS modules without special markers are imported only into system configurations.
+`shared/module-utils.nix` exports four functions used throughout:
+- `importAllNixFiles dir` — scans a directory and returns all NixOS modules (extracts `nixosConfig` from wrappers; skips `homeConfig`-only files)
+- `importHomeFiles dir` — scans a directory and returns all Home Manager modules (extracts `homeConfig`; skips everything else)
+- `extractSystemConfig desktop` — extracts `nixosConfig` from a named desktop file
+- `extractHomeConfig desktop` — extracts `homeConfig` from a named desktop file (returns an empty module if none exists)
 
 ## 🖥️ Host Configuration
 
@@ -183,11 +183,11 @@ sudo nixos-rebuild switch --flake .#desktop --specialisation cosmic
 
 ### Modules (`modules/`)
 
-All files in `modules/` are auto-imported. The module type is detected automatically:
+All files in `modules/` are auto-imported. The module type is detected by shape:
 
-- **NixOS modules** (no marker): `backup`, `docker`, `gaming`, `impermanence`, `nvidia`, `openrgb`, `tailscale`, `voyager`, etc.
-- **Home Manager modules** (`# homeModule: true`): `git`, `shell`, `waybar`, `udiskie`, `awww`, `vicinae`, `ghostty`, `neovim`, `vscode`, etc.
-- **Combined modules** (both `nixosConfig` and `homeConfig`): `swayidle` — handles PAM at the NixOS level and idle/lock at the home level in a single file.
+- **NixOS modules** (plain function): `backup`, `docker`, `gaming`, `impermanence`, `nvidia`, `openrgb`, `tailscale`, `voyager`, etc.
+- **Home Manager modules** (`{ homeConfig = ...; }`): `git`, `shell`, `waybar`, `udiskie`, `awww`, `vicinae`, `ghostty`, `neovim`, `vscode`, etc.
+- **Combined modules** (`{ nixosConfig = ...; homeConfig = ...; }`): `swayidle`, `hypridle` — handles PAM at the NixOS level and idle/lock at the home level in a single file.
 
 Notable desktop-related home modules that are compositor-agnostic and bind to a session target:
 
