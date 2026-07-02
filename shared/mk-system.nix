@@ -6,6 +6,8 @@
   , additionalUserProfiles ? { }, monitors ? [ ], }:
   let
     inherit (inputs) nixpkgs;
+    self = inputs.self;
+    paths = import "${self}/paths.nix" self;
 
     # Constants
     allowUnfreeConfig = { allowUnfree = true; };
@@ -17,25 +19,25 @@
     };
 
     # Hardware configuration
-    hardwareConfig = if builtins.pathExists
-    (../hardware + "/${hostName}-hardware-configuration.nix") then
-      [ ../hardware/${hostName}-hardware-configuration.nix ]
-    else
-      [ ];
+    hardwareConfig =
+      if builtins.pathExists "${paths.hardware}/${hostName}-hardware-configuration.nix" then
+        [ "${paths.hardware}/${hostName}-hardware-configuration.nix" ]
+      else
+        [ ];
 
     # Disk configuration
-    diskConfig = if builtins.pathExists
-    (../hardware/disk-config + "/${hostName}-disk-config.nix") then
-      [ ../hardware/disk-config/${hostName}-disk-config.nix ]
-    else
-      [ ];
+    diskConfig =
+      if builtins.pathExists "${paths.diskConfigs}/${hostName}-disk-config.nix" then
+        [ "${paths.diskConfigs}/${hostName}-disk-config.nix" ]
+      else
+        [ ];
 
     baseImports = hardwareConfig ++ diskConfig;
 
     # Theme setup
-    theme = import ../themes/${themeName}.nix { inherit inputs pkgs; };
-    themes = import ../themes {
-      inherit inputs users additionalUserProfiles monitors;
+    theme = import "${paths.themes}/${themeName}.nix" { inherit inputs pkgs; };
+    themes = import paths.themes {
+      inherit inputs self users additionalUserProfiles monitors;
       lib = nixpkgs.lib;
     };
 
@@ -51,7 +53,7 @@
 
     # Desktop specialisations
     mkDesktopSpecialisations = import ./mk-desktop-specialisations.nix {
-      inherit inputs;
+      inherit inputs self;
       lib = nixpkgs.lib;
     };
 
@@ -67,15 +69,15 @@
       [ ];
 
     # Shared configuration
-    shared = import ../shared/nixos-default.nix {
-      inherit inputs theme desktop users additionalUserProfiles monitors;
+    shared = import "${self}/shared/nixos-default.nix" {
+      inherit inputs self theme desktop users additionalUserProfiles monitors;
       lib = nixpkgs.lib;
     };
 
     # Desktop module - extract nixosConfig from combined module if it exists
-    moduleUtils = import ../shared/module-utils.nix { lib = nixpkgs.lib; };
+    moduleUtils = import "${self}/shared/module-utils.nix" { inherit self; lib = nixpkgs.lib; };
     desktopConfig =
-      if builtins.pathExists (../desktops + "/${desktop}.nix") then
+      if builtins.pathExists "${paths.desktops}/${desktop}.nix" then
         [ (moduleUtils.extractSystemConfig desktop) ]
       else
         [ ];
@@ -89,9 +91,8 @@
 
     # Common special args
     commonSpecialArgs = {
-      inherit inputs users desktop hostName stateVersion systemProfiles
+      inherit inputs self users desktop hostName stateVersion systemProfiles
         monitors;
-      self = inputs.self;
     };
 
   in nixpkgs.lib.nixosSystem {

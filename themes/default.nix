@@ -1,4 +1,4 @@
-{ inputs, lib, users, additionalUserProfiles ? [ ], monitors ? [ ], ... }:
+{ inputs, lib, self, users, additionalUserProfiles ? [ ], monitors ? [ ], ... }:
 let
   # Get all theme files in this directory
   themeFiles = builtins.attrNames (lib.filterAttrs (name: type:
@@ -12,14 +12,14 @@ let
       pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
     });
 
-  moduleUtils = import ../shared/module-utils.nix { inherit lib; };
+  moduleUtils = import "${self}/shared/module-utils.nix" { inherit lib self; };
 
   # Generate specializations for each theme
   generateThemeSpecialisations = baseImports: desktop:
     lib.genAttrs (builtins.attrNames themes) (themeName:
       let
-        shared = import ../shared/nixos-default.nix {
-          inherit inputs desktop users lib additionalUserProfiles monitors;
+        shared = import "${self}/shared/nixos-default.nix" {
+          inherit inputs self desktop users lib additionalUserProfiles monitors;
           theme = themes.${themeName};
         };
         baseConfig = shared.getImports {

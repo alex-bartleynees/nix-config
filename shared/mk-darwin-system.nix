@@ -4,6 +4,8 @@
   , isDarwin ? true, }:
   let
     inherit (inputs) nixpkgs nix-darwin;
+    self = inputs.self;
+    paths = import "${self}/paths.nix" self;
 
     # Constants
     allowUnfreeConfig = { allowUnfree = true; };
@@ -15,11 +17,11 @@
     };
 
     # Theme setup
-    theme = import ../themes/${themeName}.nix { inherit inputs pkgs; };
+    theme = import "${paths.themes}/${themeName}.nix" { inherit inputs pkgs; };
 
     # Shared configuration
-    shared = import ../shared/darwin-default.nix {
-      inherit inputs users theme desktop hostName additionalUserProfiles;
+    shared = import "${self}/shared/darwin-default.nix" {
+      inherit inputs self users theme desktop hostName additionalUserProfiles;
     };
 
     # Base modules for the system
@@ -27,8 +29,7 @@
 
     # Common special args
     commonSpecialArgs = {
-      inherit inputs users desktop hostName stateVersion systemProfiles;
-      self = inputs.self;
+      inherit inputs self users desktop hostName stateVersion systemProfiles;
     };
   in nix-darwin.lib.darwinSystem {
     inherit system pkgs;

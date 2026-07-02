@@ -1,13 +1,12 @@
-{ lib, inputs, users, theme, desktop, additionalUserProfiles ? { }
+{ lib, inputs, self, users, theme, desktop, additionalUserProfiles ? { }
 , monitors ? [ ], }:
 let
-  # Core modules
-  moduleUtils = import ../shared/module-utils.nix { inherit lib; };
-  coreModules = moduleUtils.importAllNixFiles ../modules;
-  profileModules = moduleUtils.importAllNixFiles ../profiles;
+  paths = import "${self}/paths.nix" self;
+  moduleUtils = import "${self}/shared/module-utils.nix" { inherit lib self; };
+  coreModules = moduleUtils.importAllNixFiles paths.modules;
+  profileModules = moduleUtils.importAllNixFiles paths.profiles;
 
-  # User modules
-  userModules = map (user: ../users/${user.username}.nix) users;
+  userModules = map (user: "${paths.users}/${user.username}.nix") users;
 
   baseImports = [
     ./custom-options.nix
@@ -22,10 +21,10 @@ let
 
   homeManagerImports = map (user:
     import ./home-manager.nix {
-      inherit inputs desktop additionalUserProfiles monitors;
+      inherit inputs self desktop additionalUserProfiles monitors;
       username = user.username;
       homeDirectory = user.homeDirectory;
-inherit theme;
+      inherit theme;
     }) users;
 
 in {

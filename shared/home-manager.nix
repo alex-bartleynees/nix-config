@@ -1,8 +1,10 @@
-{ inputs, username, homeDirectory, extraModules ? [ ]
+{ inputs, self, username, homeDirectory, extraModules ? [ ]
 , additionalUserProfiles ? { }, theme ? null, desktop, sharedModules ? [ ]
 , monitors ? [ ], }:
 ({ lib, config, pkgs, ... }:
   let
+    paths = import "${self}/paths.nix" self;
+
     baseProfiles = if (config.myUsers ? ${username}
       && config.myUsers.${username} ? profiles) then
       config.myUsers.${username}.profiles
@@ -14,14 +16,13 @@
     else
       [ ];
 
-    moduleUtils = import ../shared/module-utils.nix { inherit lib; };
-    baseModules = moduleUtils.importHomeFiles 
+    moduleUtils = import "${self}/shared/module-utils.nix" { inherit lib self; };
+    baseModules = moduleUtils.importHomeFiles paths.modules;
 
     userProfiles = baseProfiles ++ additionalProfiles;
 
-    # Validate profiles exist
     validateProfile = profile:
-      let profilePath = ../profiles/home-profiles/${profile}.nix;
+      let profilePath = "${paths.homeProfiles}/${profile}.nix";
       in {
         inherit profile profilePath;
         error = if !builtins.pathExists profilePath then
@@ -38,7 +39,7 @@
       lib.concatMapStringsSep "\n" (p: "  - ${p.error}") invalidProfiles;
 
     profilePaths =
-      map (profile: ../profiles/home-profiles/${profile}.nix) userProfiles;
+      map (profile: "${paths.homeProfiles}/${profile}.nix") userProfiles;
   in {
     assertions = [{
       assertion = invalidProfiles == [ ];
@@ -50,7 +51,7 @@
 
     home-manager = {
       extraSpecialArgs = {
-        inherit inputs username homeDirectory theme desktop monitors;
+        inherit inputs self username homeDirectory theme desktop monitors;
         inherit (config.networking) hostName;
         inherit (config) myUsers;
       };

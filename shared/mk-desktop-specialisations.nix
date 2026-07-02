@@ -1,13 +1,13 @@
-{ inputs, lib }:
+{ inputs, lib, self }:
 ({ baseImports, theme, users, desktops ? [ ], additionalUserProfiles ? [ ]
   , monitors ? [ ], }:
   let
-    moduleUtils = import ./module-utils.nix { inherit lib; };
+    moduleUtils = import ./module-utils.nix { inherit lib self; };
 
     mkDesktopSpecialisation = desktop:
       let
         shared = import ./nixos-default.nix {
-          inherit inputs theme users desktop lib additionalUserProfiles
+          inherit inputs self theme users desktop lib additionalUserProfiles
             monitors;
         };
         sharedImports = shared.getImports {

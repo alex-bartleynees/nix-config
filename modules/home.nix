@@ -1,15 +1,8 @@
 {
-  homeConfig = { pkgs, lib, username, homeDirectory, theme, desktop, ... }:
+  homeConfig = { pkgs, lib, self, username, homeDirectory, theme, desktop, ... }:
     let
-      # Module extractors
-      moduleUtils = import ../shared/module-utils.nix { inherit lib; };
-
-      # Extract homeConfig from combined desktop module if it exists
-      desktopImports = if desktop != null
-      && builtins.pathExists (../desktops + "/${desktop}.nix") then
-        [ (moduleUtils.extractHomeConfig desktop) ]
-      else
-        [ ];
+      moduleUtils = import "${self}/shared/module-utils.nix" { inherit lib self; };
+      desktopImports = if desktop != null then [ (moduleUtils.extractHomeConfig desktop) ] else [ ];
     in {
       imports = desktopImports;
       home.username = lib.mkDefault username;

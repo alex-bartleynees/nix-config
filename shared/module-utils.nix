@@ -1,5 +1,7 @@
-{ lib }:
+{ lib, self }:
 let
+  desktopsDir = "${self}/desktops";
+
   extractAttr = path:
     let module = import path;
     in if builtins.isAttrs module then module else null;
@@ -19,18 +21,24 @@ in {
   # Extract nixosConfig from a desktop module by name.
   # Falls back to the whole module for plain NixOS desktop modules.
   extractSystemConfig = desktop:
-    let module = import (../desktops + "/${desktop}.nix");
+    let
+      desktopPath = desktopsDir + "/${desktop}.nix";
+      module = import desktopPath;
     in if builtins.isAttrs module && module ? nixosConfig then
       module.nixosConfig
     else
       module;
 
   # Extract homeConfig from a desktop module by name.
-  # Returns an empty module when the desktop has no homeConfig.
+  # Returns an empty module when the desktop has no homeConfig or does not exist.
   extractHomeConfig = desktop:
-    let module = import (../desktops + "/${desktop}.nix");
-    in if builtins.isAttrs module && module ? homeConfig then
-      module.homeConfig
+    let desktopPath = desktopsDir + "/${desktop}.nix";
+    in if builtins.pathExists desktopPath then
+      let module = import desktopPath;
+      in if builtins.isAttrs module && module ? homeConfig then
+        module.homeConfig
+      else
+        { ... }: { }
     else
       { ... }: { };
 

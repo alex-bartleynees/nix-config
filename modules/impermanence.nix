@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, self, ... }:
 let
   # Find BTRFS filesystem by label
   device = "/dev/disk/by-label/nixos";
@@ -9,7 +9,7 @@ let
   snapshotsSubvolumeName = "@snapshots";
 
   # Import root persistence paths
-  rootPaths = import ../../shared/root-persistence.nix { };
+  rootPaths = import "${self}/shared/root-persistence.nix" { };
 
   pathsToKeep =
     ''"${lib.strings.concatStringsSep " " config.impermanence.persistPaths}"'';
