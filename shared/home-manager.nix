@@ -14,8 +14,8 @@
     else
       [ ];
 
-    importUtils = import ../shared/import-nix-files.nix { inherit lib; };
-    baseModules = importUtils.importHomeFiles ../modules;
+    moduleUtils = import ../shared/module-utils.nix { inherit lib; };
+    baseModules = moduleUtils.importHomeFiles 
 
     userProfiles = baseProfiles ++ additionalProfiles;
 

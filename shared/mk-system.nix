@@ -73,10 +73,10 @@
     };
 
     # Desktop module - extract nixosConfig from combined module if it exists
-    extractors = import ../shared/module-extractors.nix;
+    moduleUtils = import ../shared/module-utils.nix { lib = nixpkgs.lib; };
     desktopConfig =
       if builtins.pathExists (../desktops + "/${desktop}.nix") then
-        [ (extractors.extractSystemConfig desktop) ]
+        [ (moduleUtils.extractSystemConfig desktop) ]
       else
         [ ];
 

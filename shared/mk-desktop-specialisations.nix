@@ -2,7 +2,7 @@
 ({ baseImports, theme, users, desktops ? [ ], additionalUserProfiles ? [ ]
   , monitors ? [ ], }:
   let
-    extractors = import ./module-extractors.nix;
+    moduleUtils = import ./module-utils.nix { inherit lib; };
 
     mkDesktopSpecialisation = desktop:
       let
@@ -17,7 +17,7 @@
         inheritParentConfig = false;
         configuration = {
           imports = sharedImports
-            ++ [ (extractors.extractSystemConfig desktop) ];
+            ++ [ (moduleUtils.extractSystemConfig desktop) ];
         };
       };
 

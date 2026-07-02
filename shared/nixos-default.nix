@@ -2,9 +2,9 @@
 , monitors ? [ ], }:
 let
   # Core modules
-  importUtils = import ../shared/import-nix-files.nix { inherit lib; };
-  coreModules = importUtils.importAllNixFiles ../modules;
-  profileModules = importUtils.importAllNixFiles ../profiles;
+  moduleUtils = import ../shared/module-utils.nix { inherit lib; };
+  coreModules = moduleUtils.importAllNixFiles ../modules;
+  profileModules = moduleUtils.importAllNixFiles ../profiles;
 
   # User modules
   userModules = map (user: ../users/${user.username}.nix) users;
@@ -25,8 +25,7 @@ let
       inherit inputs desktop additionalUserProfiles monitors;
       username = user.username;
       homeDirectory = user.homeDirectory;
-      extraModules = [ ../modules/home.nix ];
-      inherit theme;
+inherit theme;
     }) users;
 
 in {
