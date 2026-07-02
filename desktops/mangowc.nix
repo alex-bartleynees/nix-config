@@ -374,8 +374,10 @@
           gesturebind=none,down,4,toggleoverview
 
           # Axis bindings (mouse wheel)
-          axisbind=ALT,UP,viewtoleft_have_client
-          axisbind=ALT,DOWN,viewtoright_have_client
+          axisbind=ALT,UP,focusdir,left
+          axisbind=ALT,DOWN,focusdir,right
+          axisbind=ALT+SHIFT,UP,viewtoleft_have_client
+          axisbind=ALT+SHIFT,DOWN,viewtoright_have_client
 
           # Window rules for steam games
           windowrule=isfullscreen:1,appid:^steam_app_.*$

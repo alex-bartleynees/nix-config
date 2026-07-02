@@ -78,6 +78,11 @@
         wallpaper = background;
       };
 
+      vicinae = {
+        enable = true;
+        sessionTarget = "wayland-session@niri.target";
+      };
+
       programs.niri.package = pkgs.niri-unstable;
 
       stylix.targets.niri.enable = false;
@@ -161,6 +166,7 @@
             "Mod+C".action = spawn "code";
             "Mod+D".action = sh
               "rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi";
+            "Mod+Space".action = sh "vicinae toggle";
             "Mod+Shift+P".action =
               sh "$HOME/.local/bin/powermenu powermenu-${theme.name}";
             "Mod+Shift+T".action =
@@ -291,7 +297,7 @@
             scale = m.scale;
             variable-refresh-rate = m.vrr;
           } // lib.optionalAttrs (m.transform != 0) {
-            transform.rotation = m.transform;
+            transform.rotation = 360 - m.transform;
           };
         }) monitors);
 
