@@ -254,16 +254,14 @@
           riverctl spawn-tagmask $((((1 << 32) - 1) ^ (1 << 20)))
 
           # Output configuration
-          wlr-randr ${
+          ${pkgs.wlr-randr}/bin/wlr-randr ${
             lib.concatMapStringsSep " " (m:
-              "--output ${m.name} --mode ${toString m.width}x${
-                toString m.height
-              }@${toString (builtins.floor m.refresh)} --scale ${
+              "--output ${m.name} --scale ${
                 toString m.scale
               } --pos ${toString m.x},${toString m.y}"
               + lib.optionalString (m.transform != 0)
-              " --transform ${toString m.transform}") monitors
-          } &
+              " --transform ${toString (360 - m.transform)}") monitors
+          }
 
           # Server Side Decorations (SSD) rules for border visibility
           riverctl rule-add -app-id "brave-browser" ssd
