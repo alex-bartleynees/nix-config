@@ -1,4 +1,4 @@
-{ users, lib, config, ... }:
+{ users, lib, config, self, ... }:
 let
   usersWithSecrets = lib.filter
     (user: config.myUsers.${user.username}.needsPasswordSecret or false) users;
@@ -13,7 +13,7 @@ let
   }) usersWithSecrets);
 in {
   sops = {
-    defaultSopsFile = ../secrets/secrets.yaml;
+    defaultSopsFile = "${self}/secrets/secrets.yaml";
     age.keyFile = "/etc/sops/age/keys.txt";
     secrets = {
       # User passwords
