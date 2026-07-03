@@ -43,7 +43,13 @@
       xdgOpenUsePortal = true;
     };
 
-    displayManager = { enable = true; };
+    displayManager = {
+      enable = true;
+      autoLogin = {
+        enable = true;
+        command = "${pkgs.uwsm}/bin/uwsm start /run/current-system/sw/bin/sway";
+      };
+    };
 
     system.nixos.tags = [ "sway" ];
   };
