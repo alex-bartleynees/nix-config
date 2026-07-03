@@ -14,7 +14,7 @@ Highly flexible multi-host and multi-user support.
 ├── modules/              # Core system modules and Home Manager application modules
 ├── profiles/             # System and Home Manager profiles with common module combinations
 ├── secrets/              # SOPS encrypted secrets
-├── lib/                  # Shared configuration helpers (module-utils, mk-system, home-manager, etc.)
+├── lib/                  # Shared configuration helpers (mk-system, system-base, home-manager, module-utils, etc.)
 ├── themes/               # System themes (catppuccin, tokyo-night, gruvbox, nord, everforest)
 └── users/                # User-specific configurations
 ```
@@ -61,6 +61,36 @@ Every file in `modules/` and `desktops/` uses one of three shapes, which `lib/mo
 - `importHomeFiles dir` — scans a directory and returns all Home Manager modules (extracts `homeConfig`; skips everything else)
 - `extractSystemConfig desktop` — extracts `nixosConfig` from a named desktop file
 - `extractHomeConfig desktop` — extracts `homeConfig` from a named desktop file (returns an empty module if none exists)
+
+### Profile-based Auto-enable
+
+Home Manager modules receive a `userProfiles` special arg containing the active user's profiles. Modules use this to auto-enable themselves via `lib.mkDefault`:
+
+```nix
+homeConfig = { config, lib, pkgs, userProfiles ? [], ... }:
+  let cfg = config.vscode; in {
+    options.vscode.enable = lib.mkEnableOption "VS Code";
+
+    config = lib.mkMerge [
+      (lib.mkIf (builtins.elem "vscode" userProfiles) {
+        vscode.enable = lib.mkDefault true;
+      })
+      (lib.mkIf cfg.enable { ... })
+    ];
+  };
+```
+
+User profiles are set in two places:
+
+```nix
+# users/alexbn.nix — always-on base profiles
+myUsers.alexbn.profiles = [ "developer" ];
+
+# hosts.nix — per-host additional profiles
+additionalUserProfiles = {
+  alexbn = [ "vscode" "rider" "reader" ];
+};
+```
 
 ## 🖥️ Host Configuration
 
@@ -251,15 +281,16 @@ Profile inheritance:
 
 ### User Home Profiles
 
-Modular home profiles allow users to compose their environment:
+Profiles activate modules automatically via the `userProfiles` arg. Each module self-describes which profile enables it:
 
-- **developer**: Git, Zsh + Oh My Zsh + Powerlevel10k, Neovim, tmux, ripgrep, fzf, lazygit, direnv, zoxide, Atuin
-- **vscode-developer**: VSCode with extensions
-- **rider-developer**: JetBrains Rider
-- **backend-developer**: Backend development tools
-- **reader**: E-reader and document tools
-- **work**: Microsoft Teams and work-specific applications
-- **host-\***: Host-specific overrides (kanshi display profiles, etc.)
+| Profile     | Activates                                                                                                               |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `developer` | Neovim, shell (zsh/fish/nushell), git, direnv, distrobox, claude-code, opencode, lazygit, yazi, and common dev packages |
+| `vscode`    | VSCode with extensions, keybindings, and settings                                                                       |
+| `rider`     | JetBrains Rider                                                                                                         |
+| `backend`   | Yaak API client                                                                                                         |
+| `reader`    | Calibre                                                                                                                 |
+| `work`      | Microsoft Teams, openfortivpn                                                                                           |
 
 ## 🔄 Impermanence
 
