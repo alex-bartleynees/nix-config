@@ -41,7 +41,7 @@ in {
         serial = "006NTDVG0786";
         width = 2560;
         height = 1440;
-        refresh = 100.0;
+        refresh = 99.946;
         x = 2560;
         y = 0;
         scale = 1.0;
@@ -54,20 +54,10 @@ in {
       }
     ];
     additionalUserProfiles = {
-      alexbn.profiles = [
-        "vscode-developer"
-        "rider-developer"
-        "backend-developer"
-        "host-desktop"
-        "reader"
-      ];
-      alexbn-work.profiles = [
-        "vscode-developer"
-        "rider-developer"
-        "backend-developer"
-        "work"
-        "host-desktop"
-      ];
+      alexbn.profiles =
+        [ "vscode-developer" "rider-developer" "backend-developer" "reader" ];
+      alexbn-work.profiles =
+        [ "vscode-developer" "rider-developer" "backend-developer" "work" ];
     };
   };
 
@@ -75,9 +65,7 @@ in {
     desktop = "none";
     hostName = "nixos-wsl";
     users = users;
-    additionalUserProfiles = {
-      alexbn.profiles = [ "rider-developer" "host-wsl" ];
-    };
+    additionalUserProfiles = { alexbn.profiles = [ "rider-developer" ]; };
     stateVersion = "24.05";
     systemProfiles = [ "wsl" ];
   };
@@ -106,7 +94,6 @@ in {
       sdrSaturation = 0.98;
       primary = true;
     }];
-    additionalUserProfiles = { alexbn.profiles = [ "host-media" ]; };
   };
 
   thinkpad = {
@@ -137,7 +124,7 @@ in {
     }];
     additionalUserProfiles = {
       alexbn.profiles =
-        [ "vscode-developer" "rider-developer" "host-thinkpad" "reader" ];
+        [ "vscode-developer" "rider-developer" "reader" ];
     };
     systemProfiles = [ "linux-laptop" ];
   };
@@ -149,6 +136,5 @@ in {
     isDarwin = true;
     system = "aarch64-darwin";
     systemProfiles = [ "macbook" ];
-    additionalUserProfiles = { alexbn.profiles = [ "host-macbook" ]; };
   };
 }

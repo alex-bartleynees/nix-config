@@ -18,6 +18,7 @@
 
     moduleUtils = import ./module-utils.nix { inherit lib self; };
     baseModules = moduleUtils.importHomeFiles paths.modules;
+    profileModules = moduleUtils.importHomeFiles paths.profiles;
 
     userProfiles = baseProfiles ++ additionalProfiles;
 
@@ -58,9 +59,9 @@
       useGlobalPkgs = true;
       useUserPackages = true;
       users.${username} = {
-        imports = extraModules ++ profilePaths ++ baseModules;
+        imports = extraModules ++ profilePaths ++ baseModules ++ profileModules;
       };
       backupFileExtension = "backup";
-      sharedModules = sharedModules;
+      sharedModules = [ "${paths.lib}/custom-options.nix" ] ++ sharedModules;
     };
   })

@@ -3,7 +3,13 @@
 let
   paths = import "${self}/paths.nix" self;
 
-  profileModules = [ "${paths.darwinProfiles}/${hostName}.nix" ];
+  darwinProfile = import "${paths.darwinProfiles}/${hostName}.nix";
+  darwinModule = if builtins.isAttrs darwinProfile && darwinProfile ? darwinConfig
+    then darwinProfile.darwinConfig
+    else darwinProfile;
+  darwinHomeModules = if builtins.isAttrs darwinProfile && darwinProfile ? homeConfig
+    then [ darwinProfile.homeConfig ]
+    else [ ];
 
   userModules = map (user: "${paths.users}/${user.username}.nix") users;
 
@@ -12,7 +18,8 @@ let
     inputs.mac-app-util.darwinModules.default
     inputs.home-manager.darwinModules.home-manager
     inputs.stylix.darwinModules.stylix
-  ] ++ profileModules ++ userModules;
+    darwinModule
+  ] ++ userModules;
 
   homeManagerImports = map (user:
     import ./home-manager.nix {
@@ -20,6 +27,7 @@ let
       username = user.username;
       homeDirectory = user.homeDirectory;
       sharedModules = [ inputs.mac-app-util.homeManagerModules.default ];
+      extraModules = darwinHomeModules;
       inherit theme;
     }) users;
 
