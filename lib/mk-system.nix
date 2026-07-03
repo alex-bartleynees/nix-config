@@ -69,7 +69,7 @@
       [ ];
 
     # Shared configuration
-    shared = import ./nixos-default.nix {
+    shared = import ./system-base.nix {
       inherit inputs self theme desktop users additionalUserProfiles monitors;
       lib = nixpkgs.lib;
     };

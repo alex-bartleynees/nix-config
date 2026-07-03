@@ -6,7 +6,7 @@
 
     mkDesktopSpecialisation = desktop:
       let
-        shared = import ./nixos-default.nix {
+      shared = import ./system-base.nix {
           inherit inputs self theme users desktop lib additionalUserProfiles
             monitors;
         };

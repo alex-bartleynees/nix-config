@@ -55,9 +55,9 @@ in {
     ];
     additionalUserProfiles = {
       alexbn.profiles =
-        [ "vscode-developer" "rider-developer" "backend-developer" "reader" ];
+        [ "vscode" "rider-developer" "backend-developer" "reader" ];
       alexbn-work.profiles =
-        [ "vscode-developer" "rider-developer" "backend-developer" "work" ];
+        [ "vscode" "rider-developer" "backend-developer" "work" ];
     };
   };
 
@@ -123,8 +123,7 @@ in {
       primary = true;
     }];
     additionalUserProfiles = {
-      alexbn.profiles =
-        [ "vscode-developer" "rider-developer" "reader" ];
+      alexbn.profiles = [ "vscode" "rider-developer" "reader" ];
     };
     systemProfiles = [ "linux-laptop" ];
   };

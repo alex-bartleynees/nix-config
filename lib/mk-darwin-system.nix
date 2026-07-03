@@ -20,7 +20,7 @@
     theme = import "${paths.themes}/${themeName}.nix" { inherit inputs pkgs; };
 
     # Shared configuration
-    shared = import ./darwin-default.nix {
+    shared = import ./darwin-base.nix {
       inherit inputs self users theme desktop hostName additionalUserProfiles;
     };
 

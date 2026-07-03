@@ -1,5 +1,5 @@
 {
-  homeConfig = { config, pkgs, lib, ... }:
+  homeConfig = { config, pkgs, lib, userProfiles ? [ ], ... }:
     let cfg = config.rider;
     in {
       options.rider = {
@@ -10,7 +10,13 @@
         };
       };
 
-      config =
-        lib.mkIf cfg.enable { home.packages = with pkgs; [ jetbrains.rider ]; };
+      config = lib.mkMerge [
+        (lib.mkIf (builtins.elem "rider-developer" userProfiles) {
+          rider.enable = true;
+        })
+        (lib.mkIf cfg.enable {
+          home.packages = with pkgs; [ jetbrains.rider ];
+        })
+      ];
     };
 }

@@ -21,45 +21,18 @@
     profileModules = moduleUtils.importHomeFiles paths.profiles;
 
     userProfiles = baseProfiles ++ additionalProfiles;
-
-    validateProfile = profile:
-      let profilePath = "${paths.homeProfiles}/${profile}.nix";
-      in {
-        inherit profile profilePath;
-        error = if !builtins.pathExists profilePath then
-          "Profile '${profile}' does not exist at ${toString profilePath}"
-        else
-          null;
-      };
-
-    validatedProfiles = map validateProfile userProfiles;
-
-    invalidProfiles = lib.filter (p: p.error != null) validatedProfiles;
-
-    validationErrors =
-      lib.concatMapStringsSep "\n" (p: "  - ${p.error}") invalidProfiles;
-
-    profilePaths =
-      map (profile: "${paths.homeProfiles}/${profile}.nix") userProfiles;
   in {
-    assertions = [{
-      assertion = invalidProfiles == [ ];
-      message = ''
-        Home Manager profile validation failed for user '${username}':
-        ${validationErrors}
-      '';
-    }];
-
     home-manager = {
       extraSpecialArgs = {
-        inherit inputs self username homeDirectory theme desktop monitors;
+        inherit inputs self username homeDirectory theme desktop monitors
+          userProfiles;
         inherit (config.networking) hostName;
         inherit (config) myUsers;
       };
       useGlobalPkgs = true;
       useUserPackages = true;
       users.${username} = {
-        imports = extraModules ++ profilePaths ++ baseModules ++ profileModules;
+        imports = extraModules ++ baseModules ++ profileModules;
       };
       backupFileExtension = "backup";
       sharedModules = [ "${paths.lib}/custom-options.nix" ] ++ sharedModules;

@@ -1,1 +1,0 @@
-{ ... }: { vscode.enable = true; }
