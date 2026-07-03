@@ -15,6 +15,7 @@ let
 
   baseImports = [
     ./custom-options.nix
+    "${paths.profiles}/options.nix"
     inputs.mac-app-util.darwinModules.default
     inputs.home-manager.darwinModules.home-manager
     inputs.stylix.darwinModules.stylix
