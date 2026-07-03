@@ -3,7 +3,7 @@
 let
   paths = import "${self}/paths.nix" self;
 
-  darwinProfile = import "${paths.darwinProfiles}/${hostName}.nix";
+  darwinProfile = import "${paths.profiles}/${hostName}.nix";
   darwinModule = if builtins.isAttrs darwinProfile && darwinProfile ? darwinConfig
     then darwinProfile.darwinConfig
     else darwinProfile;

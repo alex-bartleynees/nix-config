@@ -38,7 +38,7 @@
     networking.hostName = "macbook";
   };
 
-  homeConfig = { pkgs, ... }: {
+  homeConfig = { pkgs, lib, ... }: lib.mkIf pkgs.stdenv.isDarwin {
     home.packages = with pkgs; [ aerospace tailscale ];
 
     vscode.enable = true;
