@@ -16,7 +16,7 @@
     else
       [ ];
 
-    moduleUtils = import "${self}/shared/module-utils.nix" { inherit lib self; };
+    moduleUtils = import ./module-utils.nix { inherit lib self; };
     baseModules = moduleUtils.importHomeFiles paths.modules;
 
     userProfiles = baseProfiles ++ additionalProfiles;

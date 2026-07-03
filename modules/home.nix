@@ -1,7 +1,8 @@
 {
   homeConfig = { pkgs, lib, self, username, homeDirectory, theme, desktop, ... }:
     let
-      moduleUtils = import "${self}/shared/module-utils.nix" { inherit lib self; };
+      paths = import "${self}/paths.nix" self;
+      moduleUtils = import "${paths.shared}/module-utils.nix" { inherit lib self; };
       desktopImports = if desktop != null then [ (moduleUtils.extractHomeConfig desktop) ] else [ ];
     in {
       imports = desktopImports;

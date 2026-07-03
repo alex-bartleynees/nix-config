@@ -2,7 +2,7 @@
 , monitors ? [ ], }:
 let
   paths = import "${self}/paths.nix" self;
-  moduleUtils = import "${self}/shared/module-utils.nix" { inherit lib self; };
+  moduleUtils = import ./module-utils.nix { inherit lib self; };
   coreModules = moduleUtils.importAllNixFiles paths.modules;
   profileModules = moduleUtils.importAllNixFiles paths.profiles;
 

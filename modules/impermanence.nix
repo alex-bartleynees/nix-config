@@ -9,7 +9,8 @@ let
   snapshotsSubvolumeName = "@snapshots";
 
   # Import root persistence paths
-  rootPaths = import "${self}/shared/root-persistence.nix" { };
+  paths = import "${self}/paths.nix" self;
+  rootPaths = import "${paths.shared}/root-persistence.nix" { };
 
   pathsToKeep =
     ''"${lib.strings.concatStringsSep " " config.impermanence.persistPaths}"'';

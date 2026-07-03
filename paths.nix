@@ -1,4 +1,5 @@
 self: {
+  shared         = "${self}/shared";
   modules        = "${self}/modules";
   profiles       = "${self}/profiles";
   homeProfiles   = "${self}/profiles/home-profiles";

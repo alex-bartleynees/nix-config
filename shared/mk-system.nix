@@ -69,13 +69,13 @@
       [ ];
 
     # Shared configuration
-    shared = import "${self}/shared/nixos-default.nix" {
+    shared = import ./nixos-default.nix {
       inherit inputs self theme desktop users additionalUserProfiles monitors;
       lib = nixpkgs.lib;
     };
 
     # Desktop module - extract nixosConfig from combined module if it exists
-    moduleUtils = import "${self}/shared/module-utils.nix" { inherit self; lib = nixpkgs.lib; };
+    moduleUtils = import ./module-utils.nix { inherit self; lib = nixpkgs.lib; };
     desktopConfig =
       if builtins.pathExists "${paths.desktops}/${desktop}.nix" then
         [ (moduleUtils.extractSystemConfig desktop) ]
