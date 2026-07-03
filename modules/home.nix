@@ -1,9 +1,14 @@
 {
-  homeConfig = { pkgs, lib, self, username, homeDirectory, theme, desktop, ... }:
+  homeConfig =
+    { pkgs, lib, self, username, homeDirectory, theme, desktop, ... }:
     let
       paths = import "${self}/paths.nix" self;
-      moduleUtils = import "${paths.shared}/module-utils.nix" { inherit lib self; };
-      desktopImports = if desktop != null then [ (moduleUtils.extractHomeConfig desktop) ] else [ ];
+      moduleUtils =
+        import "${paths.lib}/module-utils.nix" { inherit lib self; };
+      desktopImports = if desktop != null then
+        [ (moduleUtils.extractHomeConfig desktop) ]
+      else
+        [ ];
     in {
       imports = desktopImports;
       home.username = lib.mkDefault username;

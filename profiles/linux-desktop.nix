@@ -4,7 +4,7 @@ let
     (lib.mapAttrsToList (username: userConfig: userConfig.persistPaths or [ ])
       config.myUsers);
   paths = import "${self}/paths.nix" self;
-  rootPaths = import "${paths.shared}/root-persistence.nix" { };
+  rootPaths = import "${paths.lib}/root-persistence.nix" { };
 in lib.mkIf config.profiles.linux-desktop {
   # Inherit base profile
   profiles.base = true;

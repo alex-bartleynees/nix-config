@@ -58,8 +58,8 @@
   outputs = inputs:
     let
       inherit (inputs) nixpkgs;
-      mkSystem = import ./shared/mk-system.nix { inherit inputs; };
-      mkDarwinSystem = import ./shared/mk-darwin-system.nix { inherit inputs; };
+      mkSystem = import ./lib/mk-system.nix { inherit inputs; };
+      mkDarwinSystem = import ./lib/mk-darwin-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };
 
       linuxHosts =

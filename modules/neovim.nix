@@ -3,7 +3,8 @@
     let cfg = config.neovim;
     in {
       options.neovim = {
-        enable = lib.mkEnableOption "neovim with nix-managed LSPs and formatters";
+        enable =
+          lib.mkEnableOption "neovim with nix-managed LSPs and formatters";
       };
 
       config = lib.mkIf cfg.enable {

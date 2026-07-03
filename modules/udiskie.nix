@@ -12,7 +12,8 @@
         sessionTarget = lib.mkOption {
           type = lib.types.str;
           default = "graphical-session.target";
-          description = "Systemd session target to bind the udiskie service to.";
+          description =
+            "Systemd session target to bind the udiskie service to.";
         };
       };
 

@@ -256,10 +256,9 @@
           # Output configuration
           ${pkgs.wlr-randr}/bin/wlr-randr ${
             lib.concatMapStringsSep " " (m:
-              "--output ${m.name} --scale ${
-                toString m.scale
-              } --pos ${toString m.x},${toString m.y}"
-              + lib.optionalString (m.transform != 0)
+              "--output ${m.name} --scale ${toString m.scale} --pos ${
+                toString m.x
+              },${toString m.y}" + lib.optionalString (m.transform != 0)
               " --transform ${toString (360 - m.transform)}") monitors
           }
 

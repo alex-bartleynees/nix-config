@@ -56,7 +56,8 @@
 
               core = {
                 editor = cfg.editor;
-                whitespace = "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
+                whitespace =
+                  "fix,-indent-with-non-tab,trailing-space,cr-at-eol";
               } // (lib.optionalAttrs cfg.enableDelta { pager = "delta"; });
 
               diff = { tool = cfg.diffTool; };

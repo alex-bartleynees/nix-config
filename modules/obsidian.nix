@@ -23,9 +23,10 @@
       };
 
       config = lib.mkIf cfg.enable {
-        home.activation.ensureObsidianDir = lib.hm.dag.entryBefore [ "obsidian" ] ''
-          mkdir -p "${homeDirectory}/.config/obsidian"
-        '';
+        home.activation.ensureObsidianDir =
+          lib.hm.dag.entryBefore [ "obsidian" ] ''
+            mkdir -p "${homeDirectory}/.config/obsidian"
+          '';
 
         programs.obsidian = {
           enable = true;

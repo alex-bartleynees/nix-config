@@ -14,16 +14,17 @@ Highly flexible multi-host and multi-user support.
 ├── modules/              # Core system modules and Home Manager application modules
 ├── profiles/             # System and Home Manager profiles with common module combinations
 ├── secrets/              # SOPS encrypted secrets
-├── shared/               # Shared configuration helpers (module-utils, mk-system, home-manager, etc.)
+├── lib/                  # Shared configuration helpers (module-utils, mk-system, home-manager, etc.)
 ├── themes/               # System themes (catppuccin, tokyo-night, gruvbox, nord, everforest)
 └── users/                # User-specific configurations
 ```
 
 ### Module Architecture
 
-Every file in `modules/` and `desktops/` uses one of three shapes, which `shared/module-utils.nix` routes automatically:
+Every file in `modules/` and `desktops/` uses one of three shapes, which `lib/module-utils.nix` routes automatically:
 
 **NixOS-only** (plain module function — no wrapper):
+
 ```nix
 { config, lib, pkgs, ... }: {
   # NixOS system configuration only
@@ -31,6 +32,7 @@ Every file in `modules/` and `desktops/` uses one of three shapes, which `shared
 ```
 
 **Home Manager-only** (`homeConfig` wrapper):
+
 ```nix
 {
   homeConfig = { config, lib, pkgs, ... }: {
@@ -40,6 +42,7 @@ Every file in `modules/` and `desktops/` uses one of three shapes, which `shared
 ```
 
 **Combined** (both keys in one file):
+
 ```nix
 {
   nixosConfig = { config, lib, pkgs, ... }: {
@@ -52,7 +55,8 @@ Every file in `modules/` and `desktops/` uses one of three shapes, which `shared
 }
 ```
 
-`shared/module-utils.nix` exports four functions used throughout:
+`lib/module-utils.nix` exports four functions used throughout:
+
 - `importAllNixFiles dir` — scans a directory and returns all NixOS modules (extracts `nixosConfig` from wrappers; skips `homeConfig`-only files)
 - `importHomeFiles dir` — scans a directory and returns all Home Manager modules (extracts `homeConfig`; skips everything else)
 - `extractSystemConfig desktop` — extracts `nixosConfig` from a named desktop file
@@ -105,13 +109,13 @@ Adding or renaming a monitor only requires editing `hosts.nix` — all composito
 
 ### Available Hosts
 
-| Host       | Platform  | Desktop   | Description                                                                      |
-| ---------- | --------- | --------- | -------------------------------------------------------------------------------- |
-| `desktop`  | NixOS     | Hyprland  | Main desktop with theme and DE specialisations (Sway, Niri, River, and more)    |
-| `macbook`  | macOS     | -         | MacBook configuration with nix-darwin                                            |
-| `media`    | NixOS     | Hyprland  | Media server with Samba, backup services, and HDR display                        |
-| `thinkpad` | NixOS     | Niri      | ThinkPad laptop with TLP power management and theme specialisations              |
-| `wsl`      | NixOS-WSL | None      | Windows Subsystem for Linux setup                                                |
+| Host       | Platform  | Desktop  | Description                                                                  |
+| ---------- | --------- | -------- | ---------------------------------------------------------------------------- |
+| `desktop`  | NixOS     | Hyprland | Main desktop with theme and DE specialisations (Sway, Niri, River, and more) |
+| `macbook`  | macOS     | -        | MacBook configuration with nix-darwin                                        |
+| `media`    | NixOS     | Hyprland | Media server with Samba, backup services, and HDR display                    |
+| `thinkpad` | NixOS     | Niri     | ThinkPad laptop with TLP power management and theme specialisations          |
+| `wsl`      | NixOS-WSL | None     | Windows Subsystem for Linux setup                                            |
 
 ## 🚀 Quick Start
 
@@ -222,6 +226,7 @@ vicinae  = { enable = true; sessionTarget = "sway-session.target"; };
 - **linux-laptop**: Laptop power management with TLP
 
 Profile inheritance:
+
 - `gaming-workstation` → `linux-desktop` → `base`
 - `media-server` → `linux-desktop` → `base`
 - `linux-laptop` → `linux-desktop` → `base`

@@ -13,13 +13,13 @@ let
     });
 
   paths = import "${self}/paths.nix" self;
-  moduleUtils = import "${paths.shared}/module-utils.nix" { inherit lib self; };
+  moduleUtils = import "${paths.lib}/module-utils.nix" { inherit lib self; };
 
   # Generate specializations for each theme
   generateThemeSpecialisations = baseImports: desktop:
     lib.genAttrs (builtins.attrNames themes) (themeName:
       let
-        shared = import "${paths.shared}/nixos-default.nix" {
+        shared = import "${paths.lib}/nixos-default.nix" {
           inherit inputs self desktop users lib additionalUserProfiles monitors;
           theme = themes.${themeName};
         };

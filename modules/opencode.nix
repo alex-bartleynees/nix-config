@@ -33,7 +33,8 @@
 
               # Create workspace directories if they don't exist
               ${lib.concatMapStringsSep "\n" (dir: ''mkdir -p "${dir}"'')
-              (builtins.filter (d: !(lib.hasPrefix "$HOME" d)) cfg.workspaceDirs)}
+              (builtins.filter (d: !(lib.hasPrefix "$HOME" d))
+                cfg.workspaceDirs)}
 
               # Run opencode with landrun sandbox
               exec ${pkgs.landrun}/bin/landrun \

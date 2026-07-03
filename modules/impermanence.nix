@@ -10,7 +10,7 @@ let
 
   # Import root persistence paths
   paths = import "${self}/paths.nix" self;
-  rootPaths = import "${paths.shared}/root-persistence.nix" { };
+  rootPaths = import "${paths.lib}/root-persistence.nix" { };
 
   pathsToKeep =
     ''"${lib.strings.concatStringsSep " " config.impermanence.persistPaths}"'';

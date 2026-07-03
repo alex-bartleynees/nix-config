@@ -93,7 +93,8 @@
           rebuild-media =
             "sudo nixos-rebuild switch --flake ~/.config/nix-config#media";
         } // (lib.optionalAttrs (myUsers.${username} ? git) {
-          git-work = "git config user.email '${myUsers.${username}.git.workEmail}'";
+          git-work =
+            "git config user.email '${myUsers.${username}.git.workEmail}'";
           git-personal =
             "git config user.email '${myUsers.${username}.git.userEmail}'";
         });
@@ -120,7 +121,8 @@
             {
               name = "zsh-syntax-highlighting";
               src = pkgs.zsh-syntax-highlighting;
-              file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
+              file =
+                "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
             }
             {
               name = "zsh-autosuggestions";
@@ -356,8 +358,18 @@
         };
 
         # Shell tools and utilities
-        home.packages = lib.mkIf cfg.enableShellTools
-          (with pkgs; [ ripgrep fd fzf btop bat bottom zoxide tmuxinator eza jq ]);
+        home.packages = lib.mkIf cfg.enableShellTools (with pkgs; [
+          ripgrep
+          fd
+          fzf
+          btop
+          bat
+          bottom
+          zoxide
+          tmuxinator
+          eza
+          jq
+        ]);
 
         # Zoxide configuration
         programs.zoxide = lib.mkIf cfg.enableZoxide {
@@ -380,7 +392,8 @@
         # Session variables
         home.sessionVariables = lib.mkMerge [
           (lib.mkIf cfg.enable {
-            NIX_BUILD_SHELL = "${pkgs.${cfg.defaultShell}}/bin/${cfg.defaultShell}";
+            NIX_BUILD_SHELL =
+              "${pkgs.${cfg.defaultShell}}/bin/${cfg.defaultShell}";
             SHELL = "${pkgs.${cfg.defaultShell}}/bin/${cfg.defaultShell}";
           })
         ];

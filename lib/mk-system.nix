@@ -19,18 +19,18 @@
     };
 
     # Hardware configuration
-    hardwareConfig =
-      if builtins.pathExists "${paths.hardware}/${hostName}-hardware-configuration.nix" then
-        [ "${paths.hardware}/${hostName}-hardware-configuration.nix" ]
-      else
-        [ ];
+    hardwareConfig = if builtins.pathExists
+    "${paths.hardware}/${hostName}-hardware-configuration.nix" then
+      [ "${paths.hardware}/${hostName}-hardware-configuration.nix" ]
+    else
+      [ ];
 
     # Disk configuration
-    diskConfig =
-      if builtins.pathExists "${paths.diskConfigs}/${hostName}-disk-config.nix" then
-        [ "${paths.diskConfigs}/${hostName}-disk-config.nix" ]
-      else
-        [ ];
+    diskConfig = if builtins.pathExists
+    "${paths.diskConfigs}/${hostName}-disk-config.nix" then
+      [ "${paths.diskConfigs}/${hostName}-disk-config.nix" ]
+    else
+      [ ];
 
     baseImports = hardwareConfig ++ diskConfig;
 
@@ -75,7 +75,10 @@
     };
 
     # Desktop module - extract nixosConfig from combined module if it exists
-    moduleUtils = import ./module-utils.nix { inherit self; lib = nixpkgs.lib; };
+    moduleUtils = import ./module-utils.nix {
+      inherit self;
+      lib = nixpkgs.lib;
+    };
     desktopConfig =
       if builtins.pathExists "${paths.desktops}/${desktop}.nix" then
         [ (moduleUtils.extractSystemConfig desktop) ]

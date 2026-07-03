@@ -7,9 +7,9 @@ in {
   desktop = {
     desktop = "mangowc";
     themeName = "gruvbox";
-    enableThemeSpecialisations = true;
-    enableDesktopSpecialisations = true;
-    desktopSpecialisations = [ "sway" "kde" "river" "niri" ];
+    enableThemeSpecialisations = false;
+    enableDesktopSpecialisations = false;
+    desktopSpecialisations = [ ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
     users = users;

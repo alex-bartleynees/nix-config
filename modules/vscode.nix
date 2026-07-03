@@ -145,8 +145,12 @@
               "editor.defaultFormatter" = "tamasfe.even-better-toml";
               "editor.formatOnSave" = true;
             };
-            "[svelte]" = { "editor.defaultFormatter" = "svelte.svelte-vscode"; };
-            "[astro]" = { "editor.defaultFormatter" = "astro-build.astro-vscode"; };
+            "[svelte]" = {
+              "editor.defaultFormatter" = "svelte.svelte-vscode";
+            };
+            "[astro]" = {
+              "editor.defaultFormatter" = "astro-build.astro-vscode";
+            };
             "editor.wordWrap" = "wordWrapColumn";
             "editor.wordWrapColumn" = 120;
             "search.exclude" = {
@@ -161,8 +165,8 @@
             "editor.defaultFormatter" = "esbenp.prettier-vscode";
             "terminal.integrated.fontFamily" = terminalFont;
             "window.autoDetectColorScheme" = false;
-            "workbench.colorTheme" =
-              lib.mkDefault (theme.codeTheme or "Monokai Pro (Filter Spectrum)");
+            "workbench.colorTheme" = lib.mkDefault
+              (theme.codeTheme or "Monokai Pro (Filter Spectrum)");
             "workbench.iconTheme" = iconTheme;
             "files.autoSave" = "onFocusChange";
             "editor.formatOnPaste" = true;

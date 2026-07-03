@@ -22,11 +22,12 @@
       config = lib.mkIf cfg.enable {
         home.packages = [
           # Unrestricted login helper for OAuth (not needed on macOS)
-          (pkgs.writeShellScriptBin "claude-login" (if pkgs.stdenv.isLinux then ''
-            exec ${pkgs.claude-code}/bin/claude /login
-          '' else ''
-            exec ${pkgs.claude-code}/bin/claude "$@"
-          ''))
+          (pkgs.writeShellScriptBin "claude-login"
+            (if pkgs.stdenv.isLinux then ''
+              exec ${pkgs.claude-code}/bin/claude /login
+            '' else ''
+              exec ${pkgs.claude-code}/bin/claude "$@"
+            ''))
 
           # Claude wrapper - sandboxed or direct based on config
           (pkgs.writeShellScriptBin "claude"
@@ -41,7 +42,8 @@
 
               # Create workspace directories if they don't exist
               ${lib.concatMapStringsSep "\n" (dir: ''mkdir -p "${dir}"'')
-              (builtins.filter (d: !(lib.hasPrefix "$HOME" d)) cfg.workspaceDirs)}
+              (builtins.filter (d: !(lib.hasPrefix "$HOME" d))
+                cfg.workspaceDirs)}
 
               # Run claude with landrun sandbox
               exec ${pkgs.landrun}/bin/landrun \

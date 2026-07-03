@@ -24,7 +24,8 @@
         defaultExtensions = lib.mkOption {
           type = lib.types.bool;
           default = true;
-          description = "Enable default extensions (Angular Dev Tools, Bitwarden).";
+          description =
+            "Enable default extensions (Angular Dev Tools, Bitwarden).";
         };
       };
 
