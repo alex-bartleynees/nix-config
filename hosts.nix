@@ -55,7 +55,7 @@ in {
     ];
     additionalUserProfiles = {
       alexbn.profiles =
-        [ "vscode" "rider-developer" "backend-developer" "reader" ];
+        [ "vscode" "rider-developer" "backend-developer" "reader" "db-tools" ];
       alexbn-work.profiles =
         [ "vscode" "rider-developer" "backend-developer" "work" ];
     };
