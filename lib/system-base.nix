@@ -1,5 +1,5 @@
-{ lib, inputs, self, users, theme, desktop, additionalUserProfiles ? { }
-, monitors ? [ ], }:
+{ lib, inputs, self, users, theme, desktop, hostName, stateVersion
+, additionalUserProfiles ? { }, monitors ? [ ], }:
 let
   paths = import "${self}/paths.nix" self;
   moduleUtils = import ./module-utils.nix { inherit lib self; };
@@ -17,7 +17,11 @@ let
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
     inputs.nixos-wsl.nixosModules.wsl
-    {myConfig.theme = theme; } 
+    {
+      myConfig = { inherit theme; };
+      networking.hostName = hostName;
+      system.stateVersion = stateVersion;
+    }
   ] ++ coreModules ++ profileModules ++ userModules;
 
   homeManagerImports = map (user:

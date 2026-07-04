@@ -25,7 +25,6 @@
       extraSpecialArgs = {
         inherit inputs self username homeDirectory desktop monitors
           userProfiles;
-        inherit (config.networking) hostName;
         inherit (config) myUsers;
       };
       useGlobalPkgs = true;

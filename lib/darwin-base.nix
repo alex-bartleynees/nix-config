@@ -1,5 +1,5 @@
-{ inputs, self, users, theme, desktop, hostName, additionalUserProfiles ? { }
-, isDarwin ? true, }:
+{ inputs, self, users, theme, desktop, hostName, stateVersion
+, additionalUserProfiles ? { }, isDarwin ? true, }:
 let
   paths = import "${self}/paths.nix" self;
 
@@ -24,7 +24,11 @@ let
     inputs.home-manager.darwinModules.home-manager
     inputs.stylix.darwinModules.stylix
     darwinModule
-    { myConfig.theme = theme; }
+    {
+      myConfig = { inherit theme; };
+      networking.hostName = hostName;
+      system.stateVersion = stateVersion;
+    }
   ] ++ userModules;
 
   homeManagerImports = map (user:

@@ -21,16 +21,15 @@
 
     # Shared configuration
     shared = import ./darwin-base.nix {
-      inherit inputs self users theme desktop hostName additionalUserProfiles;
+      inherit inputs self users theme desktop hostName stateVersion
+        additionalUserProfiles;
     };
 
     # Base modules for the system
     baseModules = shared.getImports { };
 
     # Common special args
-    commonSpecialArgs = {
-      inherit inputs self users desktop hostName stateVersion systemProfiles;
-    };
+    commonSpecialArgs = { inherit inputs self users desktop systemProfiles; };
   in nix-darwin.lib.darwinSystem {
     inherit system pkgs;
     specialArgs = commonSpecialArgs;

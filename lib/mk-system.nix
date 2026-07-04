@@ -70,7 +70,8 @@
 
     # Shared configuration
     shared = import ./system-base.nix {
-      inherit inputs self theme desktop users additionalUserProfiles monitors;
+      inherit inputs self theme desktop users hostName stateVersion
+        additionalUserProfiles monitors;
       lib = nixpkgs.lib;
     };
 
@@ -93,8 +94,7 @@
 
     # Common special args
     commonSpecialArgs = {
-      inherit inputs self users desktop hostName stateVersion systemProfiles
-        monitors;
+      inherit inputs self users desktop systemProfiles monitors;
     };
 
   in nixpkgs.lib.nixosSystem {

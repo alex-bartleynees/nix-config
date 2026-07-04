@@ -1,4 +1,4 @@
-{ lib, hostName, stateVersion, systemProfiles ? null, ... }: {
+{ lib, systemProfiles ? null, ... }: {
   options.system = {
     isWsl = lib.mkOption {
       type = lib.types.bool;
@@ -44,11 +44,6 @@
           options = "--delete-older-than 7d";
         };
       };
-
-      # Networking
-      networking.hostName = hostName;
-
-      system.stateVersion = stateVersion;
     }
   ];
 }

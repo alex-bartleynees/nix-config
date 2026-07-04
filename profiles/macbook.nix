@@ -21,8 +21,6 @@
 
     system.configurationRevision = self.rev or self.dirtyRev or null;
 
-    system.stateVersion = 5;
-
     users.users = builtins.listToAttrs (map (user: {
       name = user.username;
       value = {
@@ -34,8 +32,6 @@
     services.tailscale.enable = true;
 
     nixpkgs.hostPlatform = "aarch64-darwin";
-
-    networking.hostName = "macbook";
   };
 
   homeConfig = { pkgs, lib, ... }:

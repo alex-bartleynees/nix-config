@@ -135,5 +135,6 @@ in {
     isDarwin = true;
     system = "aarch64-darwin";
     systemProfiles = [ "macbook" ];
+    stateVersion = 5;
   };
 }
