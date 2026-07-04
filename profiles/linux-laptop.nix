@@ -44,8 +44,9 @@
       '';
     };
 
-  homeConfig = { osConfig, lib, pkgs, monitors, ... }:
+  homeConfig = { osConfig, lib, pkgs, ... }:
     let
+      monitors = osConfig.myConfig.monitors;
       primaryMonitor = builtins.head (builtins.filter (m: m.primary) monitors);
     in lib.mkIf osConfig.profiles.linux-laptop {
       services.kanshi = {

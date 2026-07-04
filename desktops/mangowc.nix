@@ -54,9 +54,10 @@
     system.nixos.tags = [ "mangowc" ];
   };
 
-  homeConfig = { pkgs, lib, config, theme, inputs, monitors, osConfig, ... }:
+  homeConfig = { pkgs, lib, config, inputs, osConfig, ... }:
     let
       theme = osConfig.myConfig.theme;
+      monitors = osConfig.myConfig.monitors;
       colors = theme.themeColors;
       background = theme.wallpaper;
     in {

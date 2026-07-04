@@ -31,9 +31,10 @@
     system.nixos.tags = [ "hyprland" ];
   };
 
-  homeConfig = { pkgs, config, lib, monitors, osConfig, ... }:
+  homeConfig = { pkgs, config, lib, osConfig, ... }:
     let
       theme = osConfig.myConfig.theme;
+      monitors = osConfig.myConfig.monitors;
       colors = theme.themeColors;
       background = theme.wallpaper;
 

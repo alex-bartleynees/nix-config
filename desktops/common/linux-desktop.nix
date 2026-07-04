@@ -1,5 +1,7 @@
-{ pkgs, lib, desktop, osConfig, ... }:
-let theme = osConfig.myConfig.theme;
+{ pkgs, lib, osConfig, ... }:
+let
+  theme = osConfig.myConfig.theme;
+  desktop = osConfig.myConfig.desktop;
 in {
   imports = [ ];
 

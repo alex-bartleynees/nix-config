@@ -1,4 +1,4 @@
-{ inputs, lib, self, users, additionalUserProfiles ? [ ], monitors ? [ ], ... }:
+{ inputs, lib, self, users, additionalUserProfiles ? { }, hostConfig }:
 let
   # Get all theme files in this directory
   themeFiles = builtins.attrNames (lib.filterAttrs (name: type:
@@ -16,18 +16,19 @@ let
   moduleUtils = import "${paths.lib}/module-utils.nix" { inherit lib self; };
 
   # Generate specializations for each theme
-  generateThemeSpecialisations = baseImports: desktop:
+  generateThemeSpecialisations = baseImports:
     lib.genAttrs (builtins.attrNames themes) (themeName:
       let
         shared = import "${paths.lib}/system-base.nix" {
-          inherit inputs self desktop users lib additionalUserProfiles monitors;
-          theme = themes.${themeName};
+          inherit inputs self users lib additionalUserProfiles;
+          hostConfig = hostConfig // { theme = themes.${themeName}; };
         };
         baseConfig = shared.getImports { additionalImports = baseImports; };
       in {
         inheritParentConfig = false;
         configuration = {
-          imports = baseConfig ++ [ (moduleUtils.extractSystemConfig desktop) ];
+          imports = baseConfig
+            ++ [ (moduleUtils.extractSystemConfig hostConfig.desktop) ];
         };
       });
 
@@ -35,8 +36,7 @@ in {
   inherit themes;
   inherit generateThemeSpecialisations;
 
-  # Helper function to create theme specializations for a host
-  mkThemeSpecialisations = { baseImports, desktop ? "hyprland", }: {
-    specialisation = generateThemeSpecialisations baseImports desktop;
+  mkThemeSpecialisations = { baseImports }: {
+    specialisation = generateThemeSpecialisations baseImports;
   };
 }

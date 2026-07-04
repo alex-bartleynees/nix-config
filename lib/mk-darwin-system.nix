@@ -29,7 +29,7 @@
     baseModules = shared.getImports { };
 
     # Common special args
-    commonSpecialArgs = { inherit inputs self users desktop systemProfiles; };
+    commonSpecialArgs = { inherit inputs self users; };
   in nix-darwin.lib.darwinSystem {
     inherit system pkgs;
     specialArgs = commonSpecialArgs;

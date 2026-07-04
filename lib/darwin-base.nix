@@ -25,7 +25,7 @@ let
     inputs.stylix.darwinModules.stylix
     darwinModule
     {
-      myConfig = { inherit theme; };
+      myConfig = { inherit theme desktop; };
       networking.hostName = hostName;
       system.stateVersion = stateVersion;
     }
@@ -33,7 +33,7 @@ let
 
   homeManagerImports = map (user:
     import ./home-manager.nix {
-      inherit inputs self desktop additionalUserProfiles;
+      inherit inputs self additionalUserProfiles;
       username = user.username;
       homeDirectory = user.homeDirectory;
       sharedModules = [ inputs.mac-app-util.homeManagerModules.default ];

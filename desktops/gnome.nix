@@ -1,6 +1,7 @@
 {
-  nixosConfig = { pkgs, lib, monitors, ... }:
+  nixosConfig = { pkgs, lib, config, ... }:
     let
+      monitors = config.myConfig.monitors;
       toGnomeRotation = t:
         if t == 90 then
           "right"

@@ -36,18 +36,17 @@
 
     # Theme setup
     theme = import "${paths.themes}/${themeName}.nix" { inherit inputs pkgs; };
+    hostConfig = {
+      inherit theme desktop monitors hostName stateVersion systemProfiles;
+    };
+
     themes = import paths.themes {
-      inherit inputs self users additionalUserProfiles monitors;
+      inherit inputs self users additionalUserProfiles hostConfig;
       lib = nixpkgs.lib;
     };
 
     themeSpecialisations = if enableThemeSpecialisations then
-      [
-        (themes.mkThemeSpecialisations {
-          baseImports = baseImports;
-          inherit desktop;
-        })
-      ]
+      [ (themes.mkThemeSpecialisations { baseImports = baseImports; }) ]
     else
       [ ];
 
@@ -61,7 +60,7 @@
       [
         (mkDesktopSpecialisations {
           baseImports = baseImports;
-          inherit theme users additionalUserProfiles monitors;
+          inherit users additionalUserProfiles hostConfig;
           desktops = desktopSpecialisations;
         })
       ]
@@ -70,8 +69,7 @@
 
     # Shared configuration
     shared = import ./system-base.nix {
-      inherit inputs self theme desktop users hostName stateVersion
-        additionalUserProfiles monitors;
+      inherit inputs self users additionalUserProfiles hostConfig;
       lib = nixpkgs.lib;
     };
 
@@ -93,9 +91,7 @@
     };
 
     # Common special args
-    commonSpecialArgs = {
-      inherit inputs self users desktop systemProfiles monitors;
-    };
+    commonSpecialArgs = { inherit inputs self users; };
 
   in nixpkgs.lib.nixosSystem {
     inherit system pkgs;

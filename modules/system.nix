@@ -1,4 +1,4 @@
-{ lib, systemProfiles ? null, ... }: {
+{ lib, config, ... }: {
   options.system = {
     isWsl = lib.mkOption {
       type = lib.types.bool;
@@ -9,8 +9,8 @@
 
   config = lib.mkMerge [
     # Dynamic profile configuration
-    (lib.mkIf (systemProfiles != null) {
-      profiles = lib.genAttrs systemProfiles (profile: true);
+    (lib.mkIf (config.myConfig.systemProfiles != [ ]) {
+      profiles = lib.genAttrs config.myConfig.systemProfiles (_: true);
     })
 
     # System wide settings 

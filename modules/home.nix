@@ -1,12 +1,12 @@
 {
-  homeConfig =
-    { pkgs, lib, self, username, homeDirectory, desktop, osConfig, ... }:
+  homeConfig = { pkgs, lib, self, username, homeDirectory, osConfig, ... }:
     let
       theme = osConfig.myConfig.theme;
+      desktop = osConfig.myConfig.desktop;
       paths = import "${self}/paths.nix" self;
       moduleUtils =
         import "${paths.lib}/module-utils.nix" { inherit lib self; };
-      desktopImports = if desktop != null then
+      desktopImports = if desktop != "none" then
         [ (moduleUtils.extractHomeConfig desktop) ]
       else
         [ ];

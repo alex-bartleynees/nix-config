@@ -1,5 +1,5 @@
 { inputs, self, username, homeDirectory, extraModules ? [ ]
-, additionalUserProfiles ? { }, desktop, sharedModules ? [ ], monitors ? [ ], }:
+, additionalUserProfiles ? { }, sharedModules ? [ ], }:
 ({ lib, config, pkgs, ... }:
   let
     paths = import "${self}/paths.nix" self;
@@ -23,8 +23,7 @@
   in {
     home-manager = {
       extraSpecialArgs = {
-        inherit inputs self username homeDirectory desktop monitors
-          userProfiles;
+        inherit inputs self username homeDirectory userProfiles;
         inherit (config) myUsers;
       };
       useGlobalPkgs = true;

@@ -66,8 +66,9 @@
       '';
     };
 
-  homeConfig = { osConfig, lib, pkgs, monitors, ... }:
-    let
+  homeConfig = { osConfig, lib, pkgs, ... }:
+    let monitors = osConfig.myConfig.monitors;
+    in let
       toKanshiOutput = m: {
         criteria = m.name;
         status = "enable";
