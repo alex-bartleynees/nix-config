@@ -17,6 +17,7 @@ let
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
     inputs.nixos-wsl.nixosModules.wsl
+    {myConfig.theme = theme; } 
   ] ++ coreModules ++ profileModules ++ userModules;
 
   homeManagerImports = map (user:
@@ -24,7 +25,6 @@ let
       inherit inputs self desktop additionalUserProfiles monitors;
       username = user.username;
       homeDirectory = user.homeDirectory;
-      inherit theme;
     }) users;
 
 in {

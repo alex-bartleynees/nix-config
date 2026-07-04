@@ -1,4 +1,6 @@
-{ pkgs, lib, desktop, theme, ... }: {
+{ pkgs, lib, desktop, osConfig, ... }:
+let theme = osConfig.myConfig.theme;
+in {
   imports = [ ];
 
   waybar = {

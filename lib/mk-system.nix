@@ -88,8 +88,7 @@
     # Base modules for the system
     baseModules = shared.getImports {
       additionalImports = baseImports ++ desktopConfig ++ additionalModules
-        ++ [{ _module.args.theme = theme; }] ++ themeSpecialisations
-        ++ desktopSpecialisationModules;
+        ++ themeSpecialisations ++ desktopSpecialisationModules;
     };
 
     # Common special args

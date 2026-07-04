@@ -24,6 +24,7 @@ let
     inputs.home-manager.darwinModules.home-manager
     inputs.stylix.darwinModules.stylix
     darwinModule
+    { myConfig.theme = theme; }
   ] ++ userModules;
 
   homeManagerImports = map (user:
@@ -33,7 +34,6 @@ let
       homeDirectory = user.homeDirectory;
       sharedModules = [ inputs.mac-app-util.homeManagerModules.default ];
       extraModules = darwinHomeModules;
-      inherit theme;
     }) users;
 
 in {

@@ -98,23 +98,25 @@
       ];
     };
 
-  homeConfig = { ... }: {
-    ghostty = {
-      enable = true;
-      theme = theme.ghosttyTheme or theme.name;
-      windowDecoration = true;
-    };
+  homeConfig = { osConfig, ... }:
+    let theme = osConfig.myConfig.theme;
+    in {
+      ghostty = {
+        enable = true;
+        theme = theme.ghosttyTheme or theme.name;
+        windowDecoration = true;
+      };
 
-    obsidian = {
-      enable = true;
-      theme = theme.obsidianTheme or "Default";
-    };
+      obsidian = {
+        enable = true;
+        theme = theme.obsidianTheme or "Default";
+      };
 
-    brave = {
-      enable = true;
-      themeExtensionId = theme.chromeThemeExtensionId;
-    };
+      brave = {
+        enable = true;
+        themeExtensionId = theme.chromeThemeExtensionId;
+      };
 
-    stylix.targets.vscode.enable = false;
-  };
+      stylix.targets.vscode.enable = false;
+    };
 }

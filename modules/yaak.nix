@@ -1,5 +1,5 @@
 {
-  homeConfig = { config, lib, pkgs, theme, userProfiles ? [ ], ... }:
+  homeConfig = { config, lib, pkgs, userProfiles ? [ ], ... }:
     let cfg = config.yaak;
     in {
       options.yaak = { enable = lib.mkEnableOption "Yaak configuration"; };

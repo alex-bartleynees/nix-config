@@ -52,8 +52,9 @@
     system.nixos.tags = [ "niri" ];
   };
 
-  homeConfig = { pkgs, config, lib, theme, inputs, monitors, ... }:
+  homeConfig = { pkgs, config, lib, inputs, monitors, osConfig, ... }:
     let
+      theme = osConfig.myConfig.theme;
       colors = theme.themeColors;
       background = theme.wallpaper;
     in {

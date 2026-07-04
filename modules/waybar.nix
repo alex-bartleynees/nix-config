@@ -1,6 +1,8 @@
 {
-  homeConfig = { config, pkgs, lib, inputs, theme, ... }:
-    let cfg = config.waybar;
+  homeConfig = { config, pkgs, lib, inputs, osConfig, ... }:
+    let
+      cfg = config.waybar;
+      theme = osConfig.myConfig.theme;
     in {
       options.waybar = {
         enable = lib.mkOption {

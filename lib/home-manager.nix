@@ -1,6 +1,5 @@
 { inputs, self, username, homeDirectory, extraModules ? [ ]
-, additionalUserProfiles ? { }, theme ? null, desktop, sharedModules ? [ ]
-, monitors ? [ ], }:
+, additionalUserProfiles ? { }, desktop, sharedModules ? [ ], monitors ? [ ], }:
 ({ lib, config, pkgs, ... }:
   let
     paths = import "${self}/paths.nix" self;
@@ -24,7 +23,7 @@
   in {
     home-manager = {
       extraSpecialArgs = {
-        inherit inputs self username homeDirectory theme desktop monitors
+        inherit inputs self username homeDirectory desktop monitors
           userProfiles;
         inherit (config.networking) hostName;
         inherit (config) myUsers;

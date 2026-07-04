@@ -1,6 +1,7 @@
 {
-  homeConfig = { config, lib, pkgs, theme, userProfiles ? [ ], ... }:
+  homeConfig = { config, lib, pkgs, osConfig, userProfiles ? [ ], ... }:
     let
+      theme = osConfig.myConfig.theme;
       cfg = config.vscode;
       terminalFont = "JetBrains Mono";
       iconTheme = "material-icon-theme";

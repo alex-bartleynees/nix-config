@@ -23,10 +23,7 @@ let
           inherit inputs self desktop users lib additionalUserProfiles monitors;
           theme = themes.${themeName};
         };
-        baseConfig = shared.getImports {
-          additionalImports = baseImports
-            ++ [{ _module.args.theme = themes.${themeName}; }];
-        };
+        baseConfig = shared.getImports { additionalImports = baseImports; };
       in {
         inheritParentConfig = false;
         configuration = {

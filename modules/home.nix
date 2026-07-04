@@ -1,7 +1,8 @@
 {
   homeConfig =
-    { pkgs, lib, self, username, homeDirectory, theme, desktop, ... }:
+    { pkgs, lib, self, username, homeDirectory, desktop, osConfig, ... }:
     let
+      theme = osConfig.myConfig.theme;
       paths = import "${self}/paths.nix" self;
       moduleUtils =
         import "${paths.lib}/module-utils.nix" { inherit lib self; };

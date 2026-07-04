@@ -6,13 +6,11 @@
 
     mkDesktopSpecialisation = desktop:
       let
-      shared = import ./system-base.nix {
+        shared = import ./system-base.nix {
           inherit inputs self theme users desktop lib additionalUserProfiles
             monitors;
         };
-        sharedImports = shared.getImports {
-          additionalImports = baseImports ++ [{ _module.args.theme = theme; }];
-        };
+        sharedImports = shared.getImports { additionalImports = baseImports; };
       in {
         inheritParentConfig = false;
         configuration = {

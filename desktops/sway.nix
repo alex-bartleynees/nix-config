@@ -54,8 +54,9 @@
     system.nixos.tags = [ "sway" ];
   };
 
-  homeConfig = { pkgs, config, lib, theme, monitors, ... }:
+  homeConfig = { pkgs, config, lib, monitors, osConfig, ... }:
     let
+      theme = osConfig.myConfig.theme;
       colors = theme.themeColors;
       background = theme.wallpaper;
       toSwayRef = m: if m.description != "" then m.description else m.name;

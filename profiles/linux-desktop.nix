@@ -1,10 +1,11 @@
-{ config, lib, theme, pkgs, self, ... }:
+{ config, lib, pkgs, self, ... }:
 let
   allUserPersistPaths = lib.flatten
     (lib.mapAttrsToList (username: userConfig: userConfig.persistPaths or [ ])
       config.myUsers);
   paths = import "${self}/paths.nix" self;
   rootPaths = import "${paths.lib}/root-persistence.nix" { };
+  theme = config.myConfig.theme;
 in lib.mkIf config.profiles.linux-desktop {
   # Inherit base profile
   profiles.base = true;

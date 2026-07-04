@@ -22,4 +22,11 @@
     });
     default = { };
   };
+
+  options.myConfig = {
+    theme = lib.mkOption {
+      type = lib.types.attrs;
+      description = "Active theme attrset";
+    };
+  };
 }

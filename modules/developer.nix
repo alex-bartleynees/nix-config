@@ -1,6 +1,8 @@
 {
-  homeConfig = { inputs, config, lib, pkgs, theme, userProfiles ? [ ], ... }:
-    let cfg = config.developer;
+  homeConfig = { inputs, config, lib, pkgs, osConfig, userProfiles ? [ ], ... }:
+    let
+      theme = osConfig.myConfig.theme;
+      cfg = config.developer;
     in {
       options.developer = {
         enable = lib.mkEnableOption "Developer configuration";

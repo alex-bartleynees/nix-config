@@ -43,8 +43,9 @@
     system.nixos.tags = [ "river" ];
   };
 
-  homeConfig = { pkgs, config, lib, theme, monitors, ... }:
+  homeConfig = { pkgs, config, lib, osConfig, monitors, ... }:
     let
+      theme = osConfig.myConfig.theme;
       colors = theme.themeColors;
       background = theme.wallpaper;
     in {
