@@ -36,12 +36,17 @@
               (builtins.filter (d: !(lib.hasPrefix "$HOME" d))
                 cfg.workspaceDirs)}
 
+              DEV_RW="/dev/null,/dev/tty"
+              [ -t 0 ] && DEV_RW="$DEV_RW,/dev/stdin"
+              [ -t 1 ] && DEV_RW="$DEV_RW,/dev/stdout"
+              [ -t 2 ] && DEV_RW="$DEV_RW,/dev/stderr"
+
               # Run opencode with landrun sandbox
               exec ${pkgs.landrun}/bin/landrun \
                 --best-effort \
                 --rox /nix/store,/usr,/run/current-system \
                 --ro /dev,/etc,/sys,/proc \
-                --rw /dev/null,/dev/stdin,/dev/stdout,/dev/stderr,/dev/tty \
+                --rw "$DEV_RW" \
                 --ro "$HOME/.gitconfig" \
                 --rw "$HOME/.config/opencode,$HOME/.cache/opencode,$HOME/.local/share/opencode,$HOME/.local/state/opencode" \
                 ${
@@ -49,7 +54,7 @@
                   cfg.workspaceDirs
                 } \
                 --rwx /tmp \
-                --connect-tcp 443 \
+                --unrestricted-network \
                 --env HOME \
                 --env PATH \
                 --env XDG_CONFIG_HOME \
