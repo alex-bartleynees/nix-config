@@ -369,6 +369,13 @@
           tmuxinator
           eza
           jq
+          fastfetch
+          tmux
+          git
+          gh
+          lazygit
+          lazydocker
+          wget
         ]);
 
         # Zoxide configuration

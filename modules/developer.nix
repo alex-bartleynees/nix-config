@@ -43,11 +43,6 @@
           };
 
           home.packages = with pkgs; [
-            fastfetch
-            tmux
-            lazygit
-            lazydocker
-            restic
             (vim-full.customize {
               name = "vim";
               vimrcConfig.customRC = ''
@@ -55,9 +50,6 @@
                 set clipboard=unnamedplus
               '';
             })
-            wget
-            git
-            gh
           ];
 
           programs.yazi = {

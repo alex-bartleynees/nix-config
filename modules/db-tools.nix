@@ -20,6 +20,7 @@
             '';
           })
           dbeaver-bin
+          restic
         ];
       })
     ];
