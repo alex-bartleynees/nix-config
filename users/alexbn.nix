@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 let
   username = "alexbn";
+  sshKey =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFKxSGAbg6Dw8DqxiPGikz9ZoXDBI6YvV80L5B1NsQ72 alexbartleynees@gmail.com";
   commonHomePaths =
     import ./persistence/common-home-persistence.nix { inherit username; };
   developerPaths =
@@ -11,6 +13,7 @@ in {
       isNormalUser = true;
       shell = pkgs.zsh;
       description = username;
+      openssh.authorizedKeys.keys = [ sshKey ];
       extraGroups =
         [ "networkmanager" "wheel" "docker" "i2c" "plugdev" "video" "render" ];
       packages = with pkgs; [ ];
@@ -33,8 +36,7 @@ in {
   };
 
   home-manager.users.${username}.home.file = {
-    ".ssh/id_ed25519.pub".text =
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFKxSGAbg6Dw8DqxiPGikz9ZoXDBI6YvV80L5B1NsQ72 alexbartleynees@gmail.com";
+    ".ssh/id_ed25519.pub".text = sshKey;
     ".ssh/id_work.pub".text =
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICiiLMs/3ZZ8CDseUprOV5OzFJovG9GcP96GBg3HlQj+ alexander.nees@valocityglobal.com";
   };

@@ -22,6 +22,7 @@
     "/home/${username}/.local/share/DBeaverData" # DBeaver workspace and configuration
 
     # Config files
+    "/home/${username}/.config/microvm"
     "/home/${username}/.config/nix-config"
     "/home/${username}/.config/nix-devenv"
     "/home/${username}/.config/nixos-secrets"

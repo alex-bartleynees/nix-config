@@ -30,6 +30,8 @@
 
           direnv = { enable = true; };
 
+          services.ssh-agent.enable = true;
+
           distrobox = { enable = pkgs.stdenv.isLinux; };
 
           claude-code = {
@@ -42,15 +44,16 @@
             enableSandbox = pkgs.stdenv.isLinux;
           };
 
-          home.packages = with pkgs; [
-            (vim-full.customize {
-              name = "vim";
-              vimrcConfig.customRC = ''
-                source $VIMRUNTIME/defaults.vim
-                set clipboard=unnamedplus
-              '';
-            })
-          ];
+          home.packages = with pkgs;
+            [
+              (vim-full.customize {
+                name = "vim";
+                vimrcConfig.customRC = ''
+                  source $VIMRUNTIME/defaults.vim
+                  set clipboard=unnamedplus
+                '';
+              })
+            ];
 
           programs.yazi = {
             enable = true;

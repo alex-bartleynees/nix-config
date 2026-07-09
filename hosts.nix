@@ -7,8 +7,8 @@ in {
   desktop = {
     desktop = "mangowc";
     themeName = "gruvbox";
-    enableThemeSpecialisations = true;
-    enableDesktopSpecialisations = true;
+    enableThemeSpecialisations = false;
+    enableDesktopSpecialisations = false;
     desktopSpecialisations = [ "hyprland" ];
     systemProfiles = [ "gaming-workstation" ];
     hostName = "desktop";
@@ -65,7 +65,9 @@ in {
     desktop = "none";
     hostName = "nixos-wsl";
     users = users;
-    additionalUserProfiles = { alexbn.profiles = [ "rider-developer" ]; };
+    additionalUserProfiles = {
+      alexbn.profiles = [ "rider-developer" "agent-tools" ];
+    };
     stateVersion = "24.05";
     systemProfiles = [ "wsl" ];
   };

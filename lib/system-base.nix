@@ -19,6 +19,7 @@ let
     inputs.disko.nixosModules.disko
     inputs.home-manager.nixosModules.home-manager
     inputs.nixos-wsl.nixosModules.wsl
+    inputs.microvm.nixosModules.host
     {
       myConfig = { inherit theme desktop monitors systemProfiles; };
       networking.hostName = hostName;

@@ -1,6 +1,12 @@
 {
-  nixosConfig = { config, lib, pkgs, ... }:
-    lib.mkIf config.profiles.gaming-workstation {
+  nixosConfig = { config, lib, pkgs, self, ... }:
+    let
+      paths = import "${self}/paths.nix" self;
+      vmNames = import "${paths.microvmsLib}/microvm-vms.nix";
+      vmNetworkLib =
+        import "${paths.microvmsLib}/microvm-network.nix" { inherit lib; }
+        vmNames;
+    in lib.mkIf config.profiles.gaming-workstation {
       # Inherit linux-desktop profile
       profiles.linux-desktop = true;
 
@@ -42,8 +48,18 @@
       # Virtualization support
       virtualisation.enable = true;
 
+      # MicroVM
+      microvmHost = {
+        enable = true;
+        vms = lib.mapAttrs (name: v: {
+          tapId = v.tapId;
+          gateway = v.gateway;
+          autostart = true;
+        }) vmNetworkLib;
+      };
+
       # Monitoring and telemetry
-      monitoring.enable = true;
+      monitoring.enable = false;
 
       # Enable Wake-on-WLAN for WiFi (wlp7s0 / phy0)
       systemd.services.wowlan = {

@@ -7,4 +7,6 @@ self: {
   hardware = "${self}/hardware";
   diskConfigs = "${self}/hardware/disk-config";
   users = "${self}/users";
+  microvms = "${self}/microvms";
+  microvmsLib = "${self}/microvms/lib";
 }

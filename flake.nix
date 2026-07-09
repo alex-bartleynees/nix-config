@@ -21,6 +21,11 @@
       flake = false;
     };
 
+    vscode-server = {
+      url = "github:nix-community/nixos-vscode-server";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -64,26 +69,37 @@
       url = "github:DreamMaoMao/mango";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
     let
       inherit (inputs) nixpkgs;
+      lib = nixpkgs.lib;
       mkSystem = import ./lib/mk-system.nix { inherit inputs; };
       mkDarwinSystem = import ./lib/mk-darwin-system.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };
 
       linuxHosts =
-        nixpkgs.lib.filterAttrs (name: config: !(config.isDarwin or false))
-        allHosts;
+        lib.filterAttrs (name: config: !(config.isDarwin or false)) allHosts;
       darwinHosts =
-        nixpkgs.lib.filterAttrs (name: config: config.isDarwin or false)
-        allHosts;
+        lib.filterAttrs (name: config: config.isDarwin or false) allHosts;
+
+      microvmConfigs = lib.mapAttrs' (file: _:
+        lib.nameValuePair (lib.removeSuffix ".nix" file)
+        (import ./microvms/${file} { inherit inputs; }))
+        (lib.filterAttrs (n: t: t == "regular" && lib.hasSuffix ".nix" n)
+          (builtins.readDir ./microvms));
     in {
       nixosConfigurations =
-        nixpkgs.lib.mapAttrs (name: config: mkSystem config) linuxHosts;
+        (lib.mapAttrs (name: config: mkSystem config) linuxHosts)
+        // microvmConfigs;
 
       darwinConfigurations =
-        nixpkgs.lib.mapAttrs (name: config: mkDarwinSystem config) darwinHosts;
+        lib.mapAttrs (name: config: mkDarwinSystem config) darwinHosts;
     };
 }

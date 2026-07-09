@@ -107,7 +107,7 @@
         programs.zsh = lib.mkIf cfg.enableZsh {
           enable = true;
           shellAliases = commonAliases;
-          initContent = "source ~/.p10k.zsh";
+          initContent = "[ -f ~/.p10k.zsh ] && source ~/.p10k.zsh";
           oh-my-zsh = {
             enable = true;
             plugins = [ "git" "tmux" ];
