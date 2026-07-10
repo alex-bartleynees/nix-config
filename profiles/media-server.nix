@@ -1,9 +1,10 @@
 { config, lib, pkgs, users, self, ... }:
 let
   paths = import "${self}/paths.nix" self;
-  vmNames = [ "agent-vm" ];
-  vmNetworkLib =
-    import "${paths.microvmsLib}/microvm-network.nix" { inherit lib; } vmNames;
+  vmNames = import "${paths.microvmsLib}/microvm-vms.nix";
+  vmNetworkLib = lib.filterAttrs (name: _: name == "agent-vm")
+    (import "${paths.microvmsLib}/microvm-network.nix" { inherit lib; }
+      vmNames);
   primaryUser = (builtins.head users).username;
 in lib.mkIf config.profiles.media-server {
   # Inherit linux-desktop profile
