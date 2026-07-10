@@ -13,9 +13,13 @@
     allowUnfreeConfig = { allowUnfree = true; };
 
     # Package sets
+    # mango's waybar modules (mango/workspaces, mango/window, ...) aren't in the
+    # nixpkgs waybar release yet, so mangowc hosts build waybar from git instead.
     pkgs = import nixpkgs {
       inherit system;
       config = allowUnfreeConfig;
+      overlays = nixpkgs.lib.optionals (desktop == "mangowc")
+        [ inputs.waybar.overlays.default ];
     };
 
     # Hardware configuration

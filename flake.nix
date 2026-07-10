@@ -21,10 +21,7 @@
       flake = false;
     };
 
-    vscode-server = {
-      url = "github:nix-community/nixos-vscode-server";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    vscode-server = { url = "github:nix-community/nixos-vscode-server"; };
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
@@ -70,8 +67,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    waybar = {
+      url = "github:Alexays/Waybar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     microvm = {
       url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    netclaw = {
+      url = "github:alex-bartleynees/netclaw-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
