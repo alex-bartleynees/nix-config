@@ -8,6 +8,7 @@ Each `.nix` file in this directory is automatically picked up as a `nixosConfigu
 | Name | Purpose | Networking |
 |------|---------|------------|
 | `dev-vm` | Dev environment with Docker, shell, dev tools | TAP + host NAT, static IP `10.0.0.2` |
+| `agent-vm` | Runs `netclawd` (self-hosted AI agent daemon) as a dedicated `netclaw` user | TAP + host NAT, static IP `10.0.1.2` |
 
 ---
 
@@ -114,6 +115,73 @@ docker compose up
 Containers can reach the internet via QEMU's NAT. To access a container port from your host,
 forward the container's port to a guest port, then forward that guest port to the host
 via `microvm.forwardPorts`.
+
+---
+
+## agent-vm
+
+Runs `netclawd` (from the [netclaw-nix](https://github.com/alex-bartleynees/netclaw-nix) flake input) as a
+dedicated, unprivileged `netclaw` user — isolated from the host and from `dev-vm`.
+
+### One-time host-side prerequisites
+
+`agent-vm` doesn't share `workspaces`/`Documents` from the host (that's `dev-vm`-only —
+see `extraShares` in `microvms/dev-vm.nix`). It does share a single dedicated folder for
+easy file drop-off, and needs SSH host keys generated under
+`~/.config/microvm/<hostName>/ssh-host-keys` — both required to exist on the **host**
+before first boot:
+
+```bash
+mkdir -p /home/alexbn/agent-vm-share
+mkdir -p ~/.config/microvm/agent-vm/ssh-host-keys
+ssh-keygen -t ed25519 -N "" \
+  -f ~/.config/microvm/agent-vm/ssh-host-keys/ssh_host_ed25519_key
+```
+
+`/home/alexbn/agent-vm-share` on the host is mounted at `/home/netclaw/share` inside the
+VM via virtiofs — edits on either side are immediately visible on the other, same
+mechanism as `dev-vm`'s `workspaces` share, just a single folder instead of the whole
+dev environment.
+
+### Enabling
+
+Already wired into `desktop`'s `microvmHost.vms` automatically (derived from
+`microvms/lib/microvm-vms.nix`). Just rebuild:
+
+```bash
+sudo nixos-rebuild switch --flake .#desktop
+```
+
+### sops age key bootstrap (required for the OpenAI API key secret)
+
+Unlike `dev-vm`, the `netclaw` account deliberately has **no `wheel`/sudo access** — it's
+the account `netclawd` itself runs as, and this is an AI agent daemon with its own tool/skill
+execution, so it should never have a path to root. Key generation instead runs as a
+declarative root oneshot (`systemd.services.netclaw-age-key-bootstrap` in `agent-vm.nix`)
+that fires automatically on first boot and leaves only the **public** key world-readable.
+
+```bash
+sudo nixos-rebuild switch --flake .#desktop
+microvm -u agent-vm
+ssh netclaw@10.0.1.2 cat /var/lib/sops-nix/age-key.pub   # no sudo needed
+```
+
+Then from the host: replace the `&agent-vm` placeholder in `.sops.yaml` with that printed
+key, add `*agent-vm` to `key_groups.age`, run `sops updatekeys secrets/secrets.yaml`, add
+the real key under `netclaw.openai-api-key` via `sops secrets/secrets.yaml`, commit, rebuild
+`desktop`, then `microvm -u agent-vm` once more so `netclawd` can decrypt it.
+
+### Verifying
+
+```bash
+ssh netclaw@10.0.1.2
+netclaw doctor
+journalctl -u netclawd -f
+netclaw chat -p "say hi"   # confirms the OpenAI provider is reachable end-to-end
+```
+
+Model selection (`NETCLAW_Models__Main__*`) isn't pre-set via secrets — run
+`netclaw init` or `netclaw model` inside the VM once the provider key is live.
 
 ---
 

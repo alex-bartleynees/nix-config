@@ -92,7 +92,7 @@
             "sudo nixos-rebuild switch --flake ~/.config/nix-config#wsl";
           rebuild-media =
             "sudo nixos-rebuild switch --flake ~/.config/nix-config#media";
-        } // (lib.optionalAttrs (myUsers.${username} ? git) {
+        } // (lib.optionalAttrs (myUsers.${username}.git ? userEmail) {
           git-work =
             "git config user.email '${myUsers.${username}.git.workEmail}'";
           git-personal =

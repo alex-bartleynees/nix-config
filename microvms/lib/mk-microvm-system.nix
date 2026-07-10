@@ -1,7 +1,8 @@
 { inputs }:
 { hostName, ipAddress, tapId, mac, gateway, extraVolumes ? [ ]
 , extraShares ? [ ], extraModules ? [ ], username ? "alexbn"
-, homeDirectory ? "/home/alexbn", additionalUserProfiles ? { }, }:
+, homeDirectory ? "/home/alexbn", additionalUserProfiles ? { }
+, homeVolumeSize ? 40960, }:
 let
   inherit (inputs) nixpkgs;
   self = inputs.self;
@@ -27,7 +28,7 @@ let
       {
         image = "home.img";
         mountPoint = "/home/${username}";
-        size = 40960;
+        size = homeVolumeSize;
         fsType = "ext4";
         autoCreate = true;
       }
@@ -39,20 +40,7 @@ let
         autoCreate = true;
       }
     ] ++ extraVolumes;
-    extraShares = [
-      {
-        proto = "virtiofs";
-        tag = "workspaces";
-        source = "/home/${username}/workspaces";
-        mountPoint = "/home/${username}/workspaces";
-      }
-      {
-        proto = "virtiofs";
-        tag = "documents";
-        source = "/home/${username}/Documents";
-        mountPoint = "/home/${username}/Documents";
-      }
-    ] ++ extraShares;
+    inherit extraShares;
   };
 in nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";

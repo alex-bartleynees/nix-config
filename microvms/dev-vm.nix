@@ -26,6 +26,20 @@ in mkMicrovmSystem {
   inherit (vmNetwork) ipAddress tapId mac gateway;
   inherit username;
   additionalUserProfiles = { alexbn.profiles = [ "agent-tools" ]; };
+  extraShares = [
+    {
+      proto = "virtiofs";
+      tag = "workspaces";
+      source = "/home/${username}/workspaces";
+      mountPoint = "/home/${username}/workspaces";
+    }
+    {
+      proto = "virtiofs";
+      tag = "documents";
+      source = "/home/${username}/Documents";
+      mountPoint = "/home/${username}/Documents";
+    }
+  ];
   extraModules = [
     ({ pkgs, ... }: {
       system.stateVersion = "25.05";

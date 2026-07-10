@@ -1,1 +1,1 @@
-[ "dev-vm" ]
+[ "dev-vm" "agent-vm" ]
