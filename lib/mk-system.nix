@@ -18,7 +18,8 @@
     pkgs = import nixpkgs {
       inherit system;
       config = allowUnfreeConfig;
-      overlays = nixpkgs.lib.optionals (desktop == "mangowc")
+      overlays = [ (import "${self}/overlays") ]
+        ++ nixpkgs.lib.optionals (desktop == "mangowc")
         [ inputs.waybar.overlays.default ];
     };
 
