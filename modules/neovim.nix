@@ -1,6 +1,8 @@
 {
-  homeConfig = { config, pkgs, lib, ... }:
-    let cfg = config.neovim;
+  homeConfig = { config, pkgs, lib, inputs, osConfig, ... }:
+    let 
+      cfg = config.neovim;
+      theme = osConfig.myConfig.theme;
     in {
       options.neovim = {
         enable =
@@ -59,6 +61,18 @@
             # Utilities
             nodejs
           ];
+        };
+
+        home.file = {
+          ".config/nvim" = {
+            source = "${inputs.dotfiles}/configs/nvim";
+            recursive = true;
+          };
+
+          ".config/nvim/plugin/colorscheme.lua" = {
+            source =
+              "${inputs.dotfiles}/themes/${theme.name}/nvim/colorscheme.lua";
+          };
         };
       };
     };

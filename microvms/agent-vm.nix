@@ -27,14 +27,12 @@ in mkMicrovmSystem {
   inherit username;
   homeDirectory = "/home/${username}";
   homeVolumeSize = 16384;
-  extraShares = [
-    {
-      proto = "virtiofs";
-      tag = "agent-vm-share";
-      source = "/home/alexbn/agent-vm-share";
-      mountPoint = "/home/${username}/share";
-    }
-  ];
+  extraShares = [{
+    proto = "virtiofs";
+    tag = "agent-vm-projects";
+    source = "/home/alexbn/projects";
+    mountPoint = "/home/${username}/projects";
+  }];
   extraModules = [
     ({ config, lib, pkgs, ... }: {
       system.stateVersion = "25.05";
@@ -53,11 +51,17 @@ in mkMicrovmSystem {
           enableAtuin = lib.mkForce false;
         };
 
+        neovim.enable = true;
+
         systemd.user.services.netclawd = {
-          Unit = { Description = "netclaw daemon"; After = [ "network.target" ]; };
+          Unit = {
+            Description = "netclaw daemon";
+            After = [ "network.target" ];
+          };
           Service = {
-            ExecStart =
-              "${inputs.netclaw.packages.${pkgs.stdenv.hostPlatform.system}.netclaw}/bin/netclawd";
+            ExecStart = "${
+                inputs.netclaw.packages.${pkgs.stdenv.hostPlatform.system}.netclaw
+              }/bin/netclawd";
             Restart = "on-failure";
             RestartSec = 5;
             EnvironmentFile = osConfig.sops.templates.netclaw-env.path;
@@ -114,6 +118,7 @@ in mkMicrovmSystem {
         age.keyFile = lib.mkForce "/var/lib/sops-nix/age-key.txt";
         secrets."netclaw/openai-api-key" = { };
         secrets."netclaw/tailscale-authkey" = { };
+        secrets."netclaw/discord-bot-token" = { };
         templates."netclaw-env" = {
           owner = username;
           content = ''
@@ -122,7 +127,11 @@ in mkMicrovmSystem {
               config.sops.placeholder."netclaw/openai-api-key"
             }
             NETCLAW_Models__Main__Provider=openai
-            NETCLAW_Models__Main__ModelId=gpt-5.4-nano
+            NETCLAW_Models__Main__ModelId=gpt-5.4
+            NETCLAW_Discord__BotToken=${
+              config.sops.placeholder."netclaw/discord-bot-token"
+            }
+            NETCLAW_Discord__Enabled=true
           '';
         };
       };

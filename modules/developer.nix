@@ -59,18 +59,6 @@
             enable = true;
             shellWrapperName = "y";
           };
-
-          home.file = {
-            ".config/nvim" = {
-              source = "${inputs.dotfiles}/configs/nvim";
-              recursive = true;
-            };
-
-            ".config/nvim/plugin/colorscheme.lua" = {
-              source =
-                "${inputs.dotfiles}/themes/${theme.name}/nvim/colorscheme.lua";
-            };
-          };
         })
       ];
     };
