@@ -1,5 +1,10 @@
-{ config, lib, pkgs, users, ... }:
-let primaryUser = (builtins.head users).username;
+{ config, lib, pkgs, users, self, ... }:
+let
+  paths = import "${self}/paths.nix" self;
+  vmNames = [ "agent-vm" ];
+  vmNetworkLib =
+    import "${paths.microvmsLib}/microvm-network.nix" { inherit lib; } vmNames;
+  primaryUser = (builtins.head users).username;
 in lib.mkIf config.profiles.media-server {
   # Inherit linux-desktop profile
   profiles.linux-desktop = true;
@@ -167,5 +172,15 @@ in lib.mkIf config.profiles.media-server {
     prometheus.enable = true;
     grafana.httpAddr = "100.89.61.64";
     grafana.openFirewall = true;
+  };
+
+  # MicroVM
+  microvmHost = {
+    enable = true;
+    vms = lib.mapAttrs (name: v: {
+      tapId = v.tapId;
+      gateway = v.gateway;
+      autostart = true;
+    }) vmNetworkLib;
   };
 }

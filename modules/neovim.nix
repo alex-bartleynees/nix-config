@@ -1,6 +1,6 @@
 {
   homeConfig = { config, pkgs, lib, inputs, osConfig, ... }:
-    let 
+    let
       cfg = config.neovim;
       theme = osConfig.myConfig.theme;
     in {
