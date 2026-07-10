@@ -42,6 +42,11 @@
           background-opacity=${toString cfg.backgroundOpacity}
           window-decoration=${if cfg.windowDecoration then "true" else "false"}
           theme=${cfg.theme}
+
+          # Allow OSC52 clipboard access (e.g. copy/paste over ssh + tmux)
+          copy-on-select = clipboard
+          clipboard-read = allow
+          clipboard-write = allow
           ${cfg.extraConfig}
         '';
       };

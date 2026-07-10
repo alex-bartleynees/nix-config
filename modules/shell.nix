@@ -191,6 +191,9 @@
             # Terminal overrides for 256 colors
             set -ga terminal-overrides ",xterm-256color:Tc"
 
+            # Allow OSC52 clipboard passthrough (e.g. copy/paste over ssh)
+            set -g allow-passthrough on
+
             # Pane splitting
             bind | split-window -h -c "#{pane_current_path}"
             bind - split-window -v -c "#{pane_current_path}"
