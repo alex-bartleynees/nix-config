@@ -36,8 +36,10 @@ in mkMicrovmSystem {
   extraModules = [
     ({ config, lib, pkgs, ... }: {
       system.stateVersion = "25.05";
-      environment.systemPackages =
-        [ inputs.netclaw.packages.${pkgs.stdenv.hostPlatform.system}.netclaw ];
+      environment.systemPackages = [
+        inputs.netclaw.packages.${pkgs.stdenv.hostPlatform.system}.netclaw
+        pkgs.gws
+      ];
       myConfig = {
         inherit theme;
         desktop = "none";
@@ -119,6 +121,7 @@ in mkMicrovmSystem {
         secrets."netclaw/openai-api-key" = { };
         secrets."netclaw/tailscale-authkey" = { };
         secrets."netclaw/discord-bot-token" = { };
+        secrets."netclaw/gws-service-account-key" = { owner = username; };
         templates."netclaw-env" = {
           owner = username;
           content = ''
@@ -132,6 +135,9 @@ in mkMicrovmSystem {
               config.sops.placeholder."netclaw/discord-bot-token"
             }
             NETCLAW_Discord__Enabled=true
+            GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE=${
+              config.sops.secrets."netclaw/gws-service-account-key".path
+            }
           '';
         };
       };
