@@ -46,7 +46,7 @@ in lib.mkIf config.profiles.media-server {
 
   # Static IP configuration for media server
   networking = {
-    interfaces.enp4s0.ipv4.addresses = [{
+    interfaces.eno1.ipv4.addresses = [{
       address = "192.168.0.169";
       prefixLength = 24;
     }];
@@ -177,6 +177,7 @@ in lib.mkIf config.profiles.media-server {
   # MicroVM
   microvmHost = {
     enable = true;
+    externalInterface = "eno1";
     vms = lib.mapAttrs (name: v: {
       tapId = v.tapId;
       gateway = v.gateway;
