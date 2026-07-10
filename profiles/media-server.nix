@@ -1,10 +1,8 @@
 { config, lib, pkgs, users, self, ... }:
 let
   paths = import "${self}/paths.nix" self;
-  vmNames = import "${paths.microvmsLib}/microvm-vms.nix";
-  vmNetworkLib = lib.filterAttrs (name: _: name == "agent-vm")
-    (import "${paths.microvmsLib}/microvm-network.nix" { inherit lib; }
-      vmNames);
+  mkHostVms =
+    import "${paths.microvmsLib}/microvm-host-vms.nix" { inherit lib; };
   primaryUser = (builtins.head users).username;
 in lib.mkIf config.profiles.media-server {
   # Inherit linux-desktop profile
@@ -61,6 +59,11 @@ in lib.mkIf config.profiles.media-server {
       extraCommands = ''
         # Allow established/related connections (needed for exit node)
         iptables -A DOCKER-USER -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+        # Allow agent-vm microvm subnet — DOCKER-USER is hit by ALL forwarded
+        # traffic (not just containers), so without this the VM's internet
+        # access silently drops here before NAT/masquerade ever sees it.
+        iptables -A DOCKER-USER -s 10.0.1.0/24 -j ACCEPT
 
         # Allow traffic from home assistant docker container to host
         iptables -A INPUT -s 172.32.0.0/16 -p tcp --dport 8123 -j ACCEPT
@@ -179,10 +182,6 @@ in lib.mkIf config.profiles.media-server {
   microvmHost = {
     enable = true;
     externalInterface = "eno1";
-    vms = lib.mapAttrs (name: v: {
-      tapId = v.tapId;
-      gateway = v.gateway;
-      autostart = true;
-    }) vmNetworkLib;
+    vms = mkHostVms [ "agent-vm" ];
   };
 }

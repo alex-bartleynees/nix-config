@@ -2,10 +2,8 @@
   nixosConfig = { config, lib, pkgs, self, ... }:
     let
       paths = import "${self}/paths.nix" self;
-      vmNames = import "${paths.microvmsLib}/microvm-vms.nix";
-      vmNetworkLib = lib.filterAttrs (name: _: name == "dev-vm")
-        (import "${paths.microvmsLib}/microvm-network.nix" { inherit lib; }
-          vmNames);
+      mkHostVms =
+        import "${paths.microvmsLib}/microvm-host-vms.nix" { inherit lib; };
     in lib.mkIf config.profiles.gaming-workstation {
       # Inherit linux-desktop profile
       profiles.linux-desktop = true;
@@ -51,11 +49,7 @@
       # MicroVM
       microvmHost = {
         enable = true;
-        vms = lib.mapAttrs (name: v: {
-          tapId = v.tapId;
-          gateway = v.gateway;
-          autostart = true;
-        }) vmNetworkLib;
+        vms = mkHostVms [ "dev-vm" ];
       };
 
       # Monitoring and telemetry

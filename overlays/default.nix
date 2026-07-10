@@ -7,7 +7,8 @@ final: prev: {
   # when lttng-ust headers aren't present, so drop the dependency instead of
   # waiting for nixpkgs to fix the version pairing.
   libmsquic = prev.libmsquic.overrideAttrs (old: {
-    buildInputs = builtins.filter
-      (p: (p.pname or p.name or "") != "lttng-tools") old.buildInputs;
+    buildInputs =
+      builtins.filter (p: (p.pname or p.name or "") != "lttng-tools")
+      old.buildInputs;
   });
 }
