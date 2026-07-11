@@ -7,6 +7,35 @@
       # WSL-specific configuration
       system.isWsl = true;
 
+      # opencode from nixos-unstable segfaults at startup under WSL2 — the crash
+      # is in glibc's ld.so while it loads the Bun-compiled binary
+      # (https://github.com/anomalyco/opencode/issues/26846, root cause in
+      # nixpkgs' bun: https://github.com/NixOS/nixpkgs/issues/520383). Re-running
+      # patchelf on the finished binary rewrites the ELF layout cleanly and fixes
+      # the load (verified on 1.17.12/13). Post-process the cache-fetched package
+      # rather than overrideAttrs: a source rebuild can't even succeed on WSL2
+      # (opencode's build script smoke-tests the fresh binary, which segfaults
+      # before any fixup runs) and would forfeit the binary cache. bin/opencode
+      # is a compiled C wrapper with the original out-path baked in; reusing the
+      # original derivation name makes both store paths the same length, so the
+      # self-reference can be retargeted with an in-place equal-length rewrite.
+      # Drop this overlay once upstream is fixed.
+      nixpkgs.overlays = [
+        (final: prev: {
+          opencode = final.runCommand prev.opencode.name {
+            nativeBuildInputs = [ final.patchelf ];
+            inherit (prev.opencode) meta;
+          } ''
+            cp -a ${prev.opencode} $out
+            chmod -R u+w $out
+            find $out -type f -exec sed -i "s|${prev.opencode}|$out|g" {} +
+            patchelf --set-interpreter \
+              "$(patchelf --print-interpreter "$out/bin/.opencode-wrapped")" \
+              "$out/bin/.opencode-wrapped"
+          '';
+        })
+      ];
+
       wsl = {
         enable = true;
         wslConf.automount.root = "/mnt";
