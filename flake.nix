@@ -81,6 +81,11 @@
       url = "github:alex-bartleynees/netclaw-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    comview = {
+      url = "github:alex-bartleynees/comview";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:

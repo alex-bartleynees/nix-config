@@ -1,5 +1,5 @@
 {
-  homeConfig = { config, pkgs, lib, myUsers, username, ... }:
+  homeConfig = { config, pkgs, lib, myUsers, username, inputs, ... }:
     let cfg = config.shell;
     in {
       options.shell = {
@@ -379,6 +379,7 @@
           lazygit
           lazydocker
           wget
+          inputs.comview.packages.${pkgs.stdenv.hostPlatform.system}.default
         ]);
 
         # Zoxide configuration

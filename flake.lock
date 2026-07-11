@@ -91,6 +91,26 @@
         "type": "github"
       }
     },
+    "comview": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780718967,
+        "narHash": "sha256-5TwmHGfwqB5JvqHLzVphmO2FfmALSdI7WtbuHOCBk6I=",
+        "owner": "alex-bartleynees",
+        "repo": "comview",
+        "rev": "1b8c3f7091da1e6d99f9807722ceeda3ab283855",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alex-bartleynees",
+        "repo": "comview",
+        "type": "github"
+      }
+    },
     "determinate": {
       "inputs": {
         "determinate-nixd-aarch64-darwin": "determinate-nixd-aarch64-darwin",
@@ -901,6 +921,7 @@
     },
     "root": {
       "inputs": {
+        "comview": "comview",
         "determinate": "determinate",
         "disko": "disko",
         "dotfiles": "dotfiles",
