@@ -132,6 +132,7 @@ in mkMicrovmSystem {
         secrets."netclaw/tailscale-authkey" = { };
         secrets."netclaw/discord-bot-token" = { };
         secrets."netclaw/gws-service-account-key" = { owner = username; };
+        secrets."netclaw/gws-user-oauth-creds" = { owner = username; };
         templates."netclaw-env" = {
           owner = username;
           content = ''
@@ -147,6 +148,9 @@ in mkMicrovmSystem {
             NETCLAW_Discord__Enabled=true
             GOOGLE_WORKSPACE_CLI_CREDENTIALS_FILE=${
               config.sops.secrets."netclaw/gws-service-account-key".path
+            }
+            GWS_DRIVE_USER_CREDS_FILE=${
+              config.sops.secrets."netclaw/gws-user-oauth-creds".path
             }
           '';
         };
