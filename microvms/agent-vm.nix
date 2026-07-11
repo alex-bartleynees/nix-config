@@ -106,7 +106,7 @@ in mkMicrovmSystem {
         script = ''
           set -euo pipefail
           mkdir -p /var/lib/sops-nix
-          if [ ! -f /var/lib/sops-nix/age-key.txt ]; then
+          if [ ! -s /var/lib/sops-nix/age-key.txt ]; then
             ${pkgs.age}/bin/age-keygen -o /var/lib/sops-nix/age-key.txt
           fi
           ${pkgs.age}/bin/age-keygen -y /var/lib/sops-nix/age-key.txt \
