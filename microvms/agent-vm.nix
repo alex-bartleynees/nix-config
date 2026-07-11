@@ -40,6 +40,16 @@ in mkMicrovmSystem {
         inputs.netclaw.packages.${pkgs.stdenv.hostPlatform.system}.netclaw
         pkgs.gws
       ];
+
+      # netclawd's shell_execute hardcodes /bin/bash, which doesn't exist on
+      # NixOS (non-FHS — NixOS only symlinks /bin/sh by default). Mirror that
+      # same mechanism for /bin/bash until netclaw resolves the shell via
+      # $PATH/$SHELL instead.
+      system.activationScripts.netclawBinBash = ''
+        mkdir -m 0755 -p /bin
+        ln -sf ${pkgs.bash}/bin/bash /bin/.bash.tmp
+        mv /bin/.bash.tmp /bin/bash
+      '';
       myConfig = {
         inherit theme;
         desktop = "none";
