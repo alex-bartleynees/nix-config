@@ -58,6 +58,8 @@ in mkMicrovmSystem {
         after = [ "network.target" "home-alexbn.mount" ];
         requires = [ "home-alexbn.mount" ];
         wantedBy = [ "multi-user.target" ];
+        path = with pkgs; [ git gh openssh ];
+        environment = { SHELL = "${pkgs.bash}/bin/bash"; };
         serviceConfig = {
           ExecStart = "${pkgs.t3code}/bin/t3 serve --host 0.0.0.0";
           User = username;
