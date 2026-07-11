@@ -31,7 +31,7 @@ in mkMicrovmSystem {
     proto = "virtiofs";
     tag = "agent-vm-projects";
     source = "/home/alexbn/projects";
-    mountPoint = "/home/${username}/projects";
+    mountPoint = "/home/${username}/.netclaw/workspaces";
   }];
   extraModules = [
     ({ config, lib, pkgs, ... }: {
