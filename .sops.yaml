@@ -1,7 +1,7 @@
 keys:
   - &alexbn age1xlf3s6yzu6a67ha3vqrcy75s89fg85rw9fcspfgh93sm8ptx294qlv722x
   - &dev-vm age1pxxe5nsezvwawrd4wdweanuxjfg8as8ct0cv6lsyzt7y454ks46s9asvv7
-  - &agent-vm age12whkdd089hpd763zcvf3wzgz2jsd7azsmrv79r5q5ylp4l6rsfyqjdzflc
+  - &agent-vm age164sxumnzs9f4p8c3qk7x2rgsug0ptemrpy73vx0nmny8l2tfevjqu53jea
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:

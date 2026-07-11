@@ -8,7 +8,7 @@ Each `.nix` file in this directory is automatically picked up as a `nixosConfigu
 | Name | Purpose | Networking |
 |------|---------|------------|
 | `dev-vm` | Dev environment with Docker, shell, dev tools | TAP + host NAT, static IP `10.0.0.2` |
-| `agent-vm` | Runs `netclawd` (self-hosted AI agent daemon) as a dedicated `netclaw` user | TAP + host NAT, static IP `10.0.1.2` |
+| `agent-vm` | Runs `netclawd` (self-hosted AI agent daemon) as a dedicated `netclaw` user, hosted on `media` | TAP + host NAT, static IP `10.0.1.2` |
 
 ---
 
