@@ -104,5 +104,7 @@
           }
         ];
       };
+
+      home.packages = with pkgs; [ discord ];
     };
 }
