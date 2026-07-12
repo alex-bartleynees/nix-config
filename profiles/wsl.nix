@@ -78,6 +78,14 @@
       programs.nix-ld = {
         enable = true;
         package = pkgs.nix-ld;
+        libraries = with pkgs; [
+          wayland
+          libxkbcommon
+          libGL
+          libglvnd
+          fontconfig
+          freetype
+        ];
       };
 
       # Qt theming for WSL
