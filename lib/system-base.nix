@@ -13,7 +13,6 @@ let
   baseImports = [
     ./custom-options.nix
     ./locale.nix
-    inputs.determinate.nixosModules.default
     inputs.stylix.nixosModules.stylix
     inputs.sops-nix.nixosModules.sops
     inputs.disko.nixosModules.disko

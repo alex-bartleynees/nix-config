@@ -56,7 +56,6 @@ in nixpkgs.lib.nixosSystem {
     inputs.stylix.nixosModules.stylix
     inputs.disko.nixosModules.disko
     inputs.nixos-wsl.nixosModules.wsl
-    inputs.determinate.nixosModules.default
     inputs.vscode-server.nixosModules.default
     "${paths.lib}/custom-options.nix"
     "${paths.lib}/locale.nix"
