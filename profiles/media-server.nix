@@ -32,6 +32,13 @@ in lib.mkIf config.profiles.media-server {
 
   impermanence.enable = lib.mkForce false;
 
+  snapshots.limits = {
+    hourly = "6";
+    daily = "7";
+    weekly = "2";
+    monthly = "1";
+  };
+
   # Prevent the system from ever sleeping or suspending
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
