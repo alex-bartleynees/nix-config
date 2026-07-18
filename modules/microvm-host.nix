@@ -26,27 +26,31 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    microvm.vms = lib.mapAttrs (name: vm: {
-      flake = self;
-      inherit (vm) autostart;
-    }) cfg.vms;
+  config = lib.mkMerge [
+    { microvm.host.enable = cfg.enable; }
 
-    networking.interfaces = lib.mapAttrs' (name: vm:
-      lib.nameValuePair vm.tapId {
-        ipv4.addresses = [{
-          address = vm.gateway;
-          prefixLength = 24;
-        }];
+    (lib.mkIf cfg.enable {
+      microvm.vms = lib.mapAttrs (name: vm: {
+        flake = self;
+        inherit (vm) autostart;
       }) cfg.vms;
 
-    networking.networkmanager.unmanaged =
-      lib.mapAttrsToList (name: vm: vm.tapId) cfg.vms;
+      networking.interfaces = lib.mapAttrs' (name: vm:
+        lib.nameValuePair vm.tapId {
+          ipv4.addresses = [{
+            address = vm.gateway;
+            prefixLength = 24;
+          }];
+        }) cfg.vms;
 
-    networking.nat = {
-      enable = true;
-      internalInterfaces = lib.mapAttrsToList (name: vm: vm.tapId) cfg.vms;
-      externalInterface = cfg.externalInterface;
-    };
-  };
+      networking.networkmanager.unmanaged =
+        lib.mapAttrsToList (name: vm: vm.tapId) cfg.vms;
+
+      networking.nat = {
+        enable = true;
+        internalInterfaces = lib.mapAttrsToList (name: vm: vm.tapId) cfg.vms;
+        externalInterface = cfg.externalInterface;
+      };
+    })
+  ];
 }
