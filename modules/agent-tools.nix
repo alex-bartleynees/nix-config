@@ -10,7 +10,7 @@
         agent-tools.enable = true;
       })
       (lib.mkIf config.agent-tools.enable {
-        home.packages = with pkgs; [ t3code ];
+        home.packages = with pkgs; [ t3code herdr ];
         home.sessionVariables = { T3CODE_TELEMETRY_ENABLED = false; };
       })
     ];
