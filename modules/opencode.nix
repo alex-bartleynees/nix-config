@@ -29,6 +29,7 @@
               mkdir -p "$HOME/.cache/opencode"
               mkdir -p "$HOME/.local/share/opencode/log"
               mkdir -p "$HOME/.local/state/opencode"
+              mkdir -p "$HOME/.t3"
               touch "$HOME/.gitconfig"
 
               # Create workspace directories if they don't exist
@@ -48,7 +49,7 @@
                 --ro /dev,/etc,/sys,/proc \
                 --rw "$DEV_RW" \
                 --ro "$HOME/.gitconfig" \
-                --rw "$HOME/.config/opencode,$HOME/.cache/opencode,$HOME/.local/share/opencode,$HOME/.local/state/opencode" \
+                --rw "$HOME/.config/opencode,$HOME/.cache/opencode,$HOME/.local/share/opencode,$HOME/.local/state/opencode,$HOME/.t3" \
                 ${
                   lib.concatMapStringsSep " " (dir: ''--rwx "${dir}"'')
                   cfg.workspaceDirs

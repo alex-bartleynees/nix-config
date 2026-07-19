@@ -37,6 +37,7 @@
               mkdir -p "$HOME/.cache/claude"
               mkdir -p "$HOME/.local/state/claude-code"
               mkdir -p "$HOME/.claude/plugins"
+              mkdir -p "$HOME/.t3"
               touch "$HOME/.claude.json"
               touch "$HOME/.gitconfig"
 
@@ -57,7 +58,7 @@
                 --ro /dev,/etc,/sys,/proc \
                 --rw "$DEV_RW" \
                 --ro "$HOME/.gitconfig" \
-                --rw "$HOME/.config/claude-code,$HOME/.cache/claude,$HOME/.local/state/claude-code,$HOME/.claude.json,$HOME/.claude" \
+                --rw "$HOME/.config/claude-code,$HOME/.cache/claude,$HOME/.local/state/claude-code,$HOME/.claude.json,$HOME/.claude,$HOME/.t3" \
                 ${
                   lib.concatMapStringsSep " " (dir: ''--rwx "${dir}"'')
                   cfg.workspaceDirs

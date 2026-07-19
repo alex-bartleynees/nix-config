@@ -71,6 +71,19 @@
         };
       };
 
+      systemd.services.t3 = {
+        description = "t3 server";
+        after = [ "network.target" ];
+        wantedBy = [ "multi-user.target" ];
+        path = with pkgs; [ git gh openssh ];
+        environment = { SHELL = "${pkgs.bash}/bin/bash"; };
+        serviceConfig = {
+          ExecStart = "${pkgs.t3code}/bin/t3 serve --host 0.0.0.0";
+          User = (builtins.head users).username;
+          Restart = "on-failure";
+        };
+      };
+
       # Enable openssh server
       services.openssh = { enable = true; };
 
