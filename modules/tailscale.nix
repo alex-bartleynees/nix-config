@@ -10,12 +10,23 @@ in {
     };
     configureUdpGro = lib.mkEnableOption
       "UDP GRO configuration for improved routing performance";
+    noLogsNoSupport = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = ''
+        Disable tailscaled client logging via --no-logs-no-support.
+        This opts the device out of Tailscale support that would require
+        that telemetry for debugging.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
     services.tailscale = {
       enable = true;
       useRoutingFeatures = cfg.routingFeatures;
+      extraDaemonFlags =
+        lib.optionals cfg.noLogsNoSupport [ "--no-logs-no-support" ];
     };
 
     environment.systemPackages = [ pkgs.tailscale ];
