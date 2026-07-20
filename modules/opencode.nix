@@ -43,7 +43,9 @@
               [ -t 2 ] && DEV_RW="$DEV_RW,/dev/stderr"
 
               # Run opencode with landrun sandbox
-              exec ${pkgs.landrun}/bin/landrun \
+              # HERDR_AGENT tells herdr which agent this is, since landrun
+              # hides the real opencode process from host /proc.
+              exec env HERDR_AGENT=opencode ${pkgs.landrun}/bin/landrun \
                 --best-effort \
                 --rox /nix/store,/usr,/run/current-system \
                 --ro /dev,/etc,/sys,/proc \

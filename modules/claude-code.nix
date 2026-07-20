@@ -52,7 +52,9 @@
               [ -t 2 ] && DEV_RW="$DEV_RW,/dev/stderr"
 
               # Run claude with landrun sandbox
-              exec ${pkgs.landrun}/bin/landrun \
+              # HERDR_AGENT tells herdr which agent this is, since landrun
+              # hides the real claude process from host /proc.
+              exec env HERDR_AGENT=claude ${pkgs.landrun}/bin/landrun \
                 --best-effort \
                 --rox /nix/store,/usr,/run/current-system \
                 --ro /dev,/etc,/sys,/proc \
