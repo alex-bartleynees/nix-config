@@ -11,6 +11,8 @@
     # Applications with important user data
     "/home/${username}/Documents" # User documents
     "/home/${username}/.config/obsidian"
+    "/home/${username}/.config/discord" # Discord login session and settings
+    "/home/${username}/.local/share/vicinae" # Clipboard manager history
 
     # Shell and terminal tools
     "/home/${username}/.zsh_history"

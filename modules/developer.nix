@@ -44,6 +44,11 @@
             enableSandbox = pkgs.stdenv.isLinux;
           };
 
+          codex = {
+            enable = true;
+            enableSandbox = pkgs.stdenv.isLinux;
+          };
+
           home.packages = with pkgs;
             [
               (vim-full.customize {

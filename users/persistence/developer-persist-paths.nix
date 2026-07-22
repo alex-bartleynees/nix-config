@@ -7,6 +7,8 @@
     "/home/${username}/.nuget" # NuGet package cache
     "/home/${username}/.claude"
     "/home/${username}/.claude.json"
+    "/home/${username}/.codex"
+    "/home/${username}/.t3"
 
     # Applications with important user data
     "/home/${username}/workspaces"

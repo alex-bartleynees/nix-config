@@ -104,6 +104,7 @@ in mkMicrovmSystem {
       home-manager.users.${username} = {
         claude-code.enableSandbox = lib.mkForce false;
         opencode.enableSandbox = lib.mkForce false;
+        codex.enableSandbox = lib.mkForce false;
         shell.enableAtuin = lib.mkForce false;
       };
     })
