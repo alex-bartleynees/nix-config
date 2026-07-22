@@ -140,8 +140,6 @@ in mkMicrovmSystem {
             NETCLAW_Providers__openai__ApiKey=${
               config.sops.placeholder."netclaw/openai-api-key"
             }
-            NETCLAW_Models__Main__Provider=openai
-            NETCLAW_Models__Main__ModelId=gpt-5.4
             NETCLAW_Discord__BotToken=${
               config.sops.placeholder."netclaw/discord-bot-token"
             }
