@@ -186,4 +186,38 @@ in lib.mkIf config.profiles.media-server {
     externalInterface = "eno1";
     vms = mkHostVms [ "agent-vm" ];
   };
+
+  # Syncthing - sync the Obsidian vault with desktop and wsl
+  sops.secrets = {
+    "syncthing/media/key" = {
+      owner = "alexbn";
+      group = "users";
+      mode = "0400";
+    };
+    "syncthing/media/cert" = {
+      owner = "alexbn";
+      group = "users";
+      mode = "0400";
+    };
+  };
+
+  syncthing = {
+    enable = true;
+    user = "alexbn";
+    group = "users";
+    identity.keyFile = config.sops.secrets."syncthing/media/key".path;
+    identity.certFile = config.sops.secrets."syncthing/media/cert".path;
+    settings = {
+      devices = {
+        desktop.id =
+          "H5XLOT2-MRE2ZF7-5SM7FHW-Y56VK6Y-3H7B5LF-3DDYVZC-MP5R2GK-ZI4ZEQB";
+        wsl.id =
+          "ZMVBMAF-ECJRLYM-KBFUCH5-UN767I7-RSCOMVH-KHKDX7O-WEQ7FZX-EHIY5QC";
+      };
+      folders."obsidian-vault" = {
+        path = "/home/alexbn/projects/obsidian-vault";
+        devices = [ "desktop" "wsl" ];
+      };
+    };
+  };
 }

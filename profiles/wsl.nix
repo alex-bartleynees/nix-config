@@ -166,6 +166,40 @@
         "L+ /etc/ssl/certs/mkcert-rootCA.pem - - - - /home/alexbn/.local/share/mkcert/rootCA.pem"
         "L+ /etc/ssl/certs/aspnet-fullchain.pem - - - - /mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem"
       ];
+
+      # Syncthing - sync the Obsidian vault with the desktop and media hosts
+      sops.secrets = {
+        "syncthing/wsl/key" = {
+          owner = "alexbn";
+          group = "users";
+          mode = "0400";
+        };
+        "syncthing/wsl/cert" = {
+          owner = "alexbn";
+          group = "users";
+          mode = "0400";
+        };
+      };
+
+      syncthing = {
+        enable = true;
+        user = "alexbn";
+        group = "users";
+        identity.keyFile = config.sops.secrets."syncthing/wsl/key".path;
+        identity.certFile = config.sops.secrets."syncthing/wsl/cert".path;
+        settings = {
+          devices = {
+            desktop.id =
+              "H5XLOT2-MRE2ZF7-5SM7FHW-Y56VK6Y-3H7B5LF-3DDYVZC-MP5R2GK-ZI4ZEQB";
+            media.id =
+              "RQVTHCZ-YKZ5AE7-6RYLBJU-IOY3RTK-DNBO4Y3-5ECHJ3H-UTPF4O5-XDTRRQ2";
+          };
+          folders."obsidian-vault" = {
+            path = "/home/alexbn/Documents/obsidian-vault";
+            devices = [ "desktop" "media" ];
+          };
+        };
+      };
     };
 
   homeConfig = { osConfig, lib, ... }:

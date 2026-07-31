@@ -74,6 +74,40 @@
         # Disable wake-up for Logitech USB Receiver (C548)
         SUBSYSTEM=="usb", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c548", ATTR{power/wakeup}="disabled"
       '';
+
+      # Syncthing - sync the Obsidian vault with the wsl and media hosts
+      sops.secrets = {
+        "syncthing/desktop/key" = {
+          owner = "alexbn";
+          group = "users";
+          mode = "0400";
+        };
+        "syncthing/desktop/cert" = {
+          owner = "alexbn";
+          group = "users";
+          mode = "0400";
+        };
+      };
+
+      syncthing = {
+        enable = true;
+        user = "alexbn";
+        group = "users";
+        identity.keyFile = config.sops.secrets."syncthing/desktop/key".path;
+        identity.certFile = config.sops.secrets."syncthing/desktop/cert".path;
+        settings = {
+          devices = {
+            wsl.id =
+              "ZMVBMAF-ECJRLYM-KBFUCH5-UN767I7-RSCOMVH-KHKDX7O-WEQ7FZX-EHIY5QC";
+            media.id =
+              "RQVTHCZ-YKZ5AE7-6RYLBJU-IOY3RTK-DNBO4Y3-5ECHJ3H-UTPF4O5-XDTRRQ2";
+          };
+          folders."obsidian-vault" = {
+            path = "/home/alexbn/Documents/obsidian-vault";
+            devices = [ "wsl" "media" ];
+          };
+        };
+      };
     };
 
   homeConfig = { osConfig, lib, pkgs, ... }:

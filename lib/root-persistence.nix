@@ -16,5 +16,6 @@
     "/etc/NetworkManager/system-connections" # Wifi passwords and network configs
     "/root/.config/OpenRGB" # OpenRGB daemon zone/device config (service runs as root)
     "/var/lib/microvms" # MicroVMs state
+    "/var/lib/syncthing" # Syncthing state (device identity, index database)
   ];
 }
