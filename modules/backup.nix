@@ -119,7 +119,7 @@ let
           --keep-daily ${toString cfg.retention.daily} \
           --keep-weekly ${toString cfg.retention.weekly} \
           --keep-monthly ${toString cfg.retention.monthly} \
-          --tag "$(cat /etc/hostname)" \
+          --host "$(cat /etc/hostname)" \
           --prune \
           --verbose; then
           log "Pruning completed successfully"
@@ -415,7 +415,7 @@ in {
 
         if [ $# -ne 2 ]; then
             echo "Usage: $0 <snapshot-id> <target-path>"
-            echo "List snapshots with: sudo -u ${cfg.user} restic snapshots"
+            echo "List snapshots with: sudo -u ${cfg.user} restic snapshots --host $(cat /etc/hostname)"
             exit 1
         fi
 

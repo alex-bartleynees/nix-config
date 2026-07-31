@@ -98,6 +98,23 @@ in mkMicrovmSystem {
         };
       };
 
+      # Backup .netclaw agent data (schedules, jobs, skills, identity) to
+      # Backblaze B2, excluding anything secret-shaped that lives alongside it.
+      backup = {
+        enable = true;
+        paths = [ "/home/${username}/.netclaw" ];
+        excludePatterns = [
+          "**/.netclaw/config/secrets.json"
+          "**/.netclaw/keys/**"
+          "**/.git"
+          "**/cache/**"
+          "**/tmp/**"
+          "**/.cache/**"
+          "**/node_modules/**"
+          "**/target/**"
+        ];
+      };
+
       systemd.tmpfiles.rules = [ "z /home/netclaw 0755 netclaw users - -" ];
       systemd.services.systemd-tmpfiles-setup = {
         after = [ "home-netclaw.mount" ];
