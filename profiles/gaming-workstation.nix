@@ -87,6 +87,11 @@
           group = "users";
           mode = "0400";
         };
+        "syncthing/gui-password" = {
+          owner = "alexbn";
+          group = "users";
+          mode = "0400";
+        };
       };
 
       syncthing = {
@@ -95,7 +100,9 @@
         group = "users";
         identity.keyFile = config.sops.secrets."syncthing/desktop/key".path;
         identity.certFile = config.sops.secrets."syncthing/desktop/cert".path;
+        gui.passwordFile = config.sops.secrets."syncthing/gui-password".path;
         settings = {
+          gui.user = "alexbn";
           devices = {
             wsl.id =
               "ZMVBMAF-ECJRLYM-KBFUCH5-UN767I7-RSCOMVH-KHKDX7O-WEQ7FZX-EHIY5QC";
