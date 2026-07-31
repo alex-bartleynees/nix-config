@@ -108,10 +108,12 @@
               "ZMVBMAF-ECJRLYM-KBFUCH5-UN767I7-RSCOMVH-KHKDX7O-WEQ7FZX-EHIY5QC";
             media.id =
               "RQVTHCZ-YKZ5AE7-6RYLBJU-IOY3RTK-DNBO4Y3-5ECHJ3H-UTPF4O5-XDTRRQ2";
+            android.id =
+              "7YL7JYC-SPRWDET-MUI4UFO-FPUYPWQ-RNFBO4V-YDSOCAH-XVDAELW-IQOKGQJ";
           };
           folders."obsidian-vault" = {
             path = "/home/alexbn/Documents/obsidian-vault";
-            devices = [ "wsl" "media" ];
+            devices = [ "wsl" "media" "android" ];
           };
         };
       };

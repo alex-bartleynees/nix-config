@@ -220,10 +220,12 @@ in lib.mkIf config.profiles.media-server {
           "H5XLOT2-MRE2ZF7-5SM7FHW-Y56VK6Y-3H7B5LF-3DDYVZC-MP5R2GK-ZI4ZEQB";
         wsl.id =
           "ZMVBMAF-ECJRLYM-KBFUCH5-UN767I7-RSCOMVH-KHKDX7O-WEQ7FZX-EHIY5QC";
+        android.id =
+          "7YL7JYC-SPRWDET-MUI4UFO-FPUYPWQ-RNFBO4V-YDSOCAH-XVDAELW-IQOKGQJ";
       };
       folders."obsidian-vault" = {
         path = "/home/alexbn/projects/obsidian-vault";
-        devices = [ "desktop" "wsl" ];
+        devices = [ "desktop" "wsl" "android" ];
       };
     };
   };
