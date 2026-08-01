@@ -459,11 +459,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1784446999,
-        "narHash": "sha256-g3mB9QFu19PUcz2eOnHR9P1kbM2IKXgecPZyfbag/is=",
+        "lastModified": 1785557625,
+        "narHash": "sha256-WH04+JjPT2HBFX6wFz3TLzjPp4i5xqk5ieIFFwgK97I=",
         "owner": "alex-bartleynees",
         "repo": "netclaw-nix",
-        "rev": "faebd35d7bce6dba354071a2012bb365760660e3",
+        "rev": "4de6e4efcc26bac1e39e7474defed40ba4b9b037",
         "type": "github"
       },
       "original": {
