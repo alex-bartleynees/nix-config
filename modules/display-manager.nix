@@ -30,7 +30,7 @@ in {
       security.pam.services.greetd.enable = true;
       security.pam.services.greetd.enableGnomeKeyring = true;
       services.accounts-daemon.enable = true;
-      programs.regreet = {
+      services.displayManager.regreet = {
         enable = true;
         cageArgs = [ "-s" "-d" "-m" "last" ];
       };
