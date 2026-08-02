@@ -138,7 +138,6 @@
         docker-credential-helpers
 
         adwaita-qt
-        gtk_engines
         gsettings-desktop-schemas
         adwaita-icon-theme
         openssl

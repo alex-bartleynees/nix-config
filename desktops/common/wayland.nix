@@ -31,8 +31,6 @@
 
     # Qt/GTK theming packages
     adwaita-qt
-    gtk-engine-murrine
-    gtk_engines
     gsettings-desktop-schemas
     adwaita-icon-theme
   ];
