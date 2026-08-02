@@ -32,6 +32,11 @@
               mkdir -p "$HOME/.t3"
               touch "$HOME/.gitconfig"
 
+              # Global skill locations OpenCode searches
+              mkdir -p "$HOME/.config/opencode/skills"
+              mkdir -p "$HOME/.claude/skills"
+              mkdir -p "$HOME/.agents/skills"
+
               # Create workspace directories if they don't exist
               ${lib.concatMapStringsSep "\n" (dir: ''mkdir -p "${dir}"'')
               (builtins.filter (d: !(lib.hasPrefix "$HOME" d))
@@ -52,6 +57,8 @@
                 --rw "$DEV_RW" \
                 --ro "$HOME/.gitconfig" \
                 --rw "$HOME/.config/opencode,$HOME/.cache/opencode,$HOME/.local/share/opencode,$HOME/.local/state/opencode,$HOME/.t3" \
+                --rwx "$HOME/.config/opencode/skills" \
+                --rox "$HOME/.claude/skills,$HOME/.agents/skills" \
                 ${
                   lib.concatMapStringsSep " " (dir: ''--rwx "${dir}"'')
                   cfg.workspaceDirs

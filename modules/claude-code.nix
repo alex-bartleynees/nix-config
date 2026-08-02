@@ -38,6 +38,10 @@
               mkdir -p "$HOME/.local/state/claude-code"
               mkdir -p "$HOME/.claude/plugins"
               mkdir -p "$HOME/.t3"
+
+              # Global skill locations
+              mkdir -p "$HOME/.claude/skills"
+              mkdir -p "$HOME/.agents/skills"
               touch "$HOME/.claude.json"
               touch "$HOME/.gitconfig"
 
@@ -61,6 +65,8 @@
                 --rw "$DEV_RW" \
                 --ro "$HOME/.gitconfig" \
                 --rw "$HOME/.config/claude-code,$HOME/.cache/claude,$HOME/.local/state/claude-code,$HOME/.claude.json,$HOME/.claude,$HOME/.t3" \
+                --rwx "$HOME/.claude/skills" \
+                --rox "$HOME/.agents/skills" \
                 ${
                   lib.concatMapStringsSep " " (dir: ''--rwx "${dir}"'')
                   cfg.workspaceDirs
