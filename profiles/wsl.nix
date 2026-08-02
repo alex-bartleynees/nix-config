@@ -138,7 +138,6 @@
         docker-credential-helpers
 
         adwaita-qt
-        gtk-engine-murrine
         gtk_engines
         gsettings-desktop-schemas
         adwaita-icon-theme
@@ -202,7 +201,7 @@
               "RQVTHCZ-YKZ5AE7-6RYLBJU-IOY3RTK-DNBO4Y3-5ECHJ3H-UTPF4O5-XDTRRQ2";
           };
           folders."obsidian-vault" = {
-            path = "/home/alexbn/Documents/obsidian-vault";
+            path = "/mnt/c/Users/AlexanderNees/Documents/obsidian-vault";
             devices = [ "desktop" "media" ];
           };
         };
