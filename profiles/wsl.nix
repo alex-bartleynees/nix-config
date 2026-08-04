@@ -1,4 +1,10 @@
-{
+let
+  # The Obsidian vault lives on the Windows side so the Obsidian app can open
+  # it as a normal local vault, and is bind-mounted into $HOME so agents get a
+  # native Linux path. Both paths are the same files - there is only one copy.
+  windowsVault = "/mnt/c/Users/AlexanderNees/Documents/obsidian-vault";
+  wslVault = "/home/alexbn/Documents/obsidian-vault";
+in {
   nixosConfig = { config, lib, pkgs, users, inputs, ... }:
     lib.mkIf config.profiles.wsl {
       # Use base profile for core services
@@ -165,6 +171,15 @@
         "L+ /etc/ssl/certs/aspnet-fullchain.pem - - - - /mnt/c/Users/AlexanderNees/.aspnet/https/fullchain.pem"
       ];
 
+      # Expose the Windows-side Obsidian vault at a native Linux path. nofail
+      # and requires-mounts-for keep boot clean if /mnt/c is not up yet - it is
+      # mounted by WSL's automount, not by systemd.
+      fileSystems.${wslVault} = {
+        device = windowsVault;
+        fsType = "none";
+        options = [ "bind" "nofail" "x-systemd.requires-mounts-for=/mnt/c" ];
+      };
+
       # Syncthing - sync the Obsidian vault with the desktop and media hosts
       sops.secrets = {
         "syncthing/wsl/key" = {
@@ -200,8 +215,12 @@
               "RQVTHCZ-YKZ5AE7-6RYLBJU-IOY3RTK-DNBO4Y3-5ECHJ3H-UTPF4O5-XDTRRQ2";
           };
           folders."obsidian-vault" = {
-            path = "/mnt/c/Users/AlexanderNees/Documents/obsidian-vault";
+            path = windowsVault;
             devices = [ "desktop" "media" ];
+            # drvfs has no working inotify, so syncthing's fs watcher is dead
+            # here and it falls back to periodic rescans. The 3600s default
+            # leaves a long blind window that shows up as sync conflicts.
+            rescanIntervalS = 60;
           };
         };
       };
@@ -209,6 +228,11 @@
 
   homeConfig = { osConfig, lib, ... }:
     lib.mkIf osConfig.profiles.wsl {
+      # Let the sandboxed agents work on the Obsidian vault, via either the
+      # Windows path or the bind mount set up by the nixos config above.
+      claude-code.workspaceDirs = [ windowsVault wslVault ];
+      opencode.workspaceDirs = [ windowsVault wslVault ];
+
       home.sessionVariables = {
         ASPNETCORE_Kestrel__Certificates__Default__Path =
           "/mnt/c/Users/AlexanderNees/.aspnet/https/gateway+6.p12";

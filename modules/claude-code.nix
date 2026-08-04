@@ -13,13 +13,18 @@
 
         workspaceDirs = lib.mkOption {
           type = lib.types.listOf lib.types.str;
-          default =
-            [ "$HOME/workspaces" "$HOME/.config/nix-config" "$HOME/Documents" ];
-          description = "Directories to grant read-write-execute access to.";
+          default = [ ];
+          description = ''
+            Extra directories to grant read-write-execute access to. Definitions
+            are merged with the base workspace directories set by this module.
+          '';
         };
       };
 
       config = lib.mkIf cfg.enable {
+        claude-code.workspaceDirs =
+          [ "$HOME/workspaces" "$HOME/.config/nix-config" "$HOME/Documents" ];
+
         home.packages = [
           # Unrestricted login helper for OAuth (not needed on macOS)
           (pkgs.writeShellScriptBin "claude-login"
