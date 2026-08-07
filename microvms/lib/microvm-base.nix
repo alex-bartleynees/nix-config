@@ -21,6 +21,7 @@
   # writableStoreOverlay is incompatible with store optimisation
   nix.optimise.automatic = lib.mkForce false;
   nix.settings.auto-optimise-store = lib.mkForce false;
+  nix.gc.automatic = lib.mkForce false;
 
   microvm = {
     hypervisor = "qemu";
@@ -57,13 +58,6 @@
       mountPoint = "/etc/ssh/host-keys";
     } ++ extraShares;
   };
-
-  systemd.mounts = [{
-    what = "store";
-    where = "/nix/store";
-    overrideStrategy = "asDropin";
-    unitConfig.DefaultDependencies = false;
-  }];
 
   networking.useNetworkd = true;
   systemd.network = {
