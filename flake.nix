@@ -135,6 +135,11 @@
             userEmail = "alexbartleynees@gmail.com";
             workEmail = "alexander.nees@valocityglobal.com";
           };
+          extraModules = [{
+            claude-code.enableSandbox = lib.mkForce false;
+            opencode.enableSandbox = lib.mkForce false;
+            codex.enableSandbox = lib.mkForce false;
+          }];
         };
       };
     };
