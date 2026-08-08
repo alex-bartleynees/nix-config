@@ -92,6 +92,7 @@
       lib = nixpkgs.lib;
       mkSystem = import ./lib/mk-system.nix { inherit inputs; };
       mkDarwinSystem = import ./lib/mk-darwin-system.nix { inherit inputs; };
+      mkHomeConfig = import ./lib/mk-home-config.nix { inherit inputs; };
       allHosts = import ./hosts.nix { inherit inputs; };
 
       linuxHosts =
@@ -111,5 +112,18 @@
 
       darwinConfigurations =
         lib.mapAttrs (name: config: mkDarwinSystem config) darwinHosts;
+
+      # Standalone Home Manager configurations (non-NixOS hosts, e.g. Ubuntu).
+      # Usage: home-manager switch --flake .#alexbn@linux
+      homeConfigurations = {
+        "alexbn@linux" = mkHomeConfig {
+          username = "alexbn";
+          gitConfig = {
+            userName = "Alex Bartley Nees";
+            userEmail = "alexbartleynees@gmail.com";
+            workEmail = "alexander.nees@valocityglobal.com";
+          };
+        };
+      };
     };
 }

@@ -167,11 +167,26 @@ sudo nixos-rebuild switch --flake .#wsl
 darwin-rebuild switch --flake .#macbook
 ```
 
-### Home Manager
+### Home Manager (standalone, non-NixOS)
+
+For non-NixOS hosts (e.g. Ubuntu) where you only want the Home Manager side
+of this config — dev tools, shell, dotfiles — without a full NixOS system.
+Defined via `lib/mk-home-config.nix` and the `homeConfigurations` flake output:
 
 ```bash
-home-manager switch --flake .
+# Install home-manager if you don't have it yet
+nix run home-manager/master -- switch --flake .#alexbn@linux
+
+# Subsequent runs, once `home-manager` is on PATH
+home-manager switch --flake .#alexbn@linux
 ```
+
+`alexbn@linux` enables the `developer` profile by default (neovim, shell,
+git, direnv, distrobox, claude-code, opencode, codex, and common CLI tools —
+same set as the `developer` profile documented below). Add more
+`homeConfigurations` entries in `flake.nix` via `mkHomeConfig` for other
+users/machines; see its arguments (`username`, `homeDirectory`, `system`,
+`userProfiles`, `gitConfig`, `extraModules`) in `lib/mk-home-config.nix`.
 
 ## 🔧 Common Commands
 
