@@ -163,7 +163,7 @@
           };
 
           defaultShellPath =
-            "/etc/profiles/per-user/${username}/bin/${cfg.defaultShell}";
+            "${config.home.profileDirectory}/bin/${cfg.defaultShell}";
         in {
           enable = true;
           prefix = "C-b";
