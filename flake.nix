@@ -124,6 +124,18 @@
             workEmail = "alexander.nees@valocityglobal.com";
           };
         };
+
+        # exe.dev VMs (see scripts/exe-dev-setup.sh) - the exeuntu base
+        # image's fixed login user is "exedev", not "alexbn".
+        "exedev@linux" = mkHomeConfig {
+          username = "exedev";
+          homeDirectory = "/home/exedev";
+          gitConfig = {
+            userName = "Alex Bartley Nees";
+            userEmail = "alexbartleynees@gmail.com";
+            workEmail = "alexander.nees@valocityglobal.com";
+          };
+        };
       };
     };
 }

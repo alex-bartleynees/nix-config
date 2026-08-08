@@ -407,6 +407,20 @@
               "${pkgs.${cfg.defaultShell}}/bin/${cfg.defaultShell}";
             SHELL = "${pkgs.${cfg.defaultShell}}/bin/${cfg.defaultShell}";
           })
+          # Nix-built ncurses only searches its own store path by default,
+          # so a Nix-managed shell can't resolve terminfo entries that only
+          # exist in the host OS's terminfo db (e.g. a custom xterm-ghostty
+          # entry baked into a base image via `tic`). Point it at the usual
+          # system locations too, so SSH clients with less common TERM
+          # values don't get broken cursor movement / garbled zle editing.
+          (lib.mkIf (cfg.enable && pkgs.stdenv.isLinux) {
+            TERMINFO_DIRS = lib.concatStringsSep ":" [
+              "/usr/share/terminfo"
+              "/etc/terminfo"
+              "/lib/terminfo"
+              "${pkgs.ncurses}/share/terminfo"
+            ];
+          })
         ];
       });
     };

@@ -188,6 +188,22 @@ same set as the `developer` profile documented below). Add more
 users/machines; see its arguments (`username`, `homeDirectory`, `system`,
 `userProfiles`, `gitConfig`, `extraModules`) in `lib/mk-home-config.nix`.
 
+#### exe.dev VMs
+
+`scripts/exe-dev-setup.sh` bootstraps a fresh exe.dev VM end-to-end: installs
+Nix, clones this repo, applies the `exedev@linux` Home Manager config (the
+exeuntu base image's fixed login user is `exedev`, not `alexbn`), and
+switches the login shell to zsh. It runs once automatically via exe.dev's
+`/exe.dev/setup` first-boot hook:
+
+```bash
+# One-off: apply only to the next VM you create
+cat scripts/exe-dev-setup.sh | ssh exe.dev new --setup-script /dev/stdin
+
+# Or set it as the default for every future VM
+cat scripts/exe-dev-setup.sh | ssh exe.dev defaults write dev.exe new.setup-script
+```
+
 ## 🔧 Common Commands
 
 ```bash
