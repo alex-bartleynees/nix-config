@@ -25,6 +25,8 @@ in mkMicrovmSystem {
   inherit hostName;
   inherit (vmNetwork) ipAddress tapId mac gateway;
   inherit username;
+  mem = 16384;
+  vcpu = 8;
   additionalUserProfiles = { alexbn.profiles = [ "agent-tools" ]; };
   extraShares = [
     {
@@ -44,6 +46,10 @@ in mkMicrovmSystem {
     ({ pkgs, ... }: {
       system.stateVersion = "25.05";
       nixpkgs.config.allowUnfree = true;
+
+      # Reclaim host RAM after memory-heavy runs (e.g. large vitest suites)
+      # instead of it staying pinned to the VM's RSS for its whole lifetime.
+      microvm.balloon = true;
       myConfig = {
         inherit theme;
         desktop = "none";

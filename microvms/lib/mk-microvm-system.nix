@@ -2,7 +2,7 @@
 { hostName, ipAddress, tapId, mac, gateway, extraVolumes ? [ ]
 , extraShares ? [ ], extraModules ? [ ], username ? "alexbn"
 , homeDirectory ? "/home/alexbn", additionalUserProfiles ? { }
-, homeVolumeSize ? 40960, }:
+, homeVolumeSize ? 40960, mem ? 4096, vcpu ? 4, }:
 let
   inherit (inputs) nixpkgs;
   self = inputs.self;
@@ -21,7 +21,7 @@ let
   theme = import "${paths.themes}/tokyo-night.nix" { inherit inputs pkgs; };
 
   base = import "${paths.microvmsLib}/microvm-base.nix" {
-    inherit hostName ipAddress tapId mac gateway;
+    inherit hostName ipAddress tapId mac gateway mem vcpu;
     sshHostKeysDir =
       "/home/${username}/.config/microvm/${hostName}/ssh-host-keys";
     extraVolumes = [
