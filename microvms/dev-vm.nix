@@ -106,6 +106,7 @@ in mkMicrovmSystem {
         opencode.enableSandbox = lib.mkForce false;
         codex.enableSandbox = lib.mkForce false;
         shell.enableAtuin = lib.mkForce false;
+        home.packages = [ pkgs.mkcert ];
       };
     })
   ];
