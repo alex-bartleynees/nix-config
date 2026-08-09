@@ -33,5 +33,7 @@ in home-manager.lib.homeManagerConfiguration {
       };
     };
   };
-  modules = homeModules ++ extraModules;
+  modules = homeModules ++ [{
+    fonts.fontconfig.enable = true;
+  }] ++ extraModules;
 }
