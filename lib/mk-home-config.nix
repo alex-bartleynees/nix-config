@@ -35,5 +35,12 @@ in home-manager.lib.homeManagerConfiguration {
   };
   modules = homeModules ++ [{
     fonts.fontconfig.enable = true;
+
+    home.packages = [ pkgs.glibcLocales ];
+    home.sessionVariables = {
+      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      LANG = lib.mkDefault "en_GB.UTF-8";
+      LC_ALL = lib.mkDefault "en_GB.UTF-8";
+    };
   }] ++ extraModules;
 }
