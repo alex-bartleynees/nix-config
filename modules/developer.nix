@@ -3,6 +3,20 @@
     let
       theme = osConfig.myConfig.theme;
       cfg = config.developer;
+      skillserverPull = pkgs.stdenv.mkDerivation {
+        pname = "skillserver-pull";
+        version = "1.0";
+        src = ../scripts/skillserver-pull.sh;
+        dontUnpack = true;
+        nativeBuildInputs = [ pkgs.makeWrapper ];
+        installPhase = "install -Dm755 $src $out/bin/skillserver-pull";
+        postFixup = ''
+          wrapProgram $out/bin/skillserver-pull \
+            --prefix PATH : ${
+              lib.makeBinPath [ pkgs.curl pkgs.jq pkgs.unzip ]
+            }
+        '';
+      };
     in {
       options.developer = {
         enable = lib.mkEnableOption "Developer configuration";
@@ -58,6 +72,7 @@
                   set clipboard=unnamedplus
                 '';
               })
+              skillserverPull
             ];
 
           programs.yazi = {

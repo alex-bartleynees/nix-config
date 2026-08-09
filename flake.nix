@@ -125,8 +125,6 @@
           };
         };
 
-        # exe.dev VMs (see scripts/exe-dev-setup.sh) - the exeuntu base
-        # image's fixed login user is "exedev", not "alexbn".
         "exedev@linux" = mkHomeConfig {
           username = "exedev";
           homeDirectory = "/home/exedev";
