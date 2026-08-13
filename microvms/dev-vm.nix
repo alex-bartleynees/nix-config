@@ -59,18 +59,10 @@ in mkMicrovmSystem {
 
       services.vscode-server.enable = true;
 
+      services.t3.enable = true;
       systemd.services.t3 = {
-        description = "t3 server";
-        after = [ "network.target" "home-alexbn.mount" ];
+        after = [ "home-alexbn.mount" ];
         requires = [ "home-alexbn.mount" ];
-        wantedBy = [ "multi-user.target" ];
-        path = with pkgs; [ git gh openssh ];
-        environment = { SHELL = "${pkgs.bash}/bin/bash"; };
-        serviceConfig = {
-          ExecStart = "${pkgs.t3code}/bin/t3 serve --host 0.0.0.0";
-          User = username;
-          Restart = "on-failure";
-        };
       };
       systemd.tmpfiles.rules = [ "z /home/alexbn 0755 alexbn users - -" ];
 

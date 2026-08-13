@@ -128,6 +128,7 @@
         "exedev@linux" = mkHomeConfig {
           username = "exedev";
           homeDirectory = "/home/exedev";
+          userProfiles = [ "developer" "agent-tools" ];
           gitConfig = {
             userName = "Alex Bartley Nees";
             userEmail = "alexbartleynees@gmail.com";
@@ -137,6 +138,11 @@
             claude-code.enableSandbox = lib.mkForce false;
             opencode.enableSandbox = lib.mkForce false;
             codex.enableSandbox = lib.mkForce false;
+
+            services.t3 = {
+              enable = true;
+              enableLinger = true;
+            };
           }];
         };
       };
