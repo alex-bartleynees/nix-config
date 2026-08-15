@@ -57,6 +57,7 @@ in lib.mkIf config.profiles.media-server {
     # Firewall configuration for Docker networking
     firewall = {
       enable = true;
+      checkReversePath = "loose";
 
       extraCommands = ''
         # Allow established/related connections (needed for exit node)
