@@ -43,7 +43,7 @@ in {
 
     home.sessionVariables = {
       ASPNETCORE_Kestrel__Certificates__Default__Path =
-        "${config.home.homeDirectory}/.local-certs/gateway+6.p12";
+        "${config.home.homeDirectory}/.local-certs/gateway+7.p12";
       ASPNETCORE_Kestrel__Certificates__Default__Password = "changeit";
     };
   };
