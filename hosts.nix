@@ -66,9 +66,7 @@ in {
     themeName = "gruvbox";
     hostName = "nixos-wsl";
     users = users;
-    additionalUserProfiles = {
-      alexbn.profiles = [ "agent-tools" ];
-    };
+    additionalUserProfiles = { alexbn.profiles = [ "agent-tools" ]; };
     stateVersion = "24.05";
     systemProfiles = [ "wsl" ];
   };

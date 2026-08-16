@@ -12,9 +12,7 @@
         installPhase = "install -Dm755 $src $out/bin/skillserver-pull";
         postFixup = ''
           wrapProgram $out/bin/skillserver-pull \
-            --prefix PATH : ${
-              lib.makeBinPath [ pkgs.curl pkgs.jq pkgs.unzip ]
-            }
+            --prefix PATH : ${lib.makeBinPath [ pkgs.curl pkgs.jq pkgs.unzip ]}
         '';
       };
     in {
@@ -63,17 +61,16 @@
             enableSandbox = pkgs.stdenv.isLinux;
           };
 
-          home.packages = with pkgs;
-            [
-              (vim-full.customize {
-                name = "vim";
-                vimrcConfig.customRC = ''
-                  source $VIMRUNTIME/defaults.vim
-                  set clipboard=unnamedplus
-                '';
-              })
-              skillserverPull
-            ];
+          home.packages = with pkgs; [
+            (vim-full.customize {
+              name = "vim";
+              vimrcConfig.customRC = ''
+                source $VIMRUNTIME/defaults.vim
+                set clipboard=unnamedplus
+              '';
+            })
+            skillserverPull
+          ];
 
           programs.yazi = {
             enable = true;
