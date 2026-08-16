@@ -57,7 +57,15 @@ in lib.mkIf config.profiles.media-server {
     # Firewall configuration for Docker networking
     firewall = {
       enable = true;
-      checkReversePath = "loose";
+
+      # Must be false, not "loose", for this host to work as a Tailscale exit
+      # node. NixOS hooks nixos-fw-rpfilter into mangle PREROUTING and it ends
+      # in an unconditional DROP, so it kills forwarded packets before FORWARD
+      # ever runs. The rule uses `-m rpfilter --validmark`, which folds the
+      # packet's fwmark into the reverse-path route lookup — and Tailscale's
+      # policy rules send that lookup to routing table 52, where a 100.64/10
+      # source arriving on tailscale0 doesn't resolve. --loose doesn't help.
+      checkReversePath = false;
 
       extraCommands = ''
         # Allow established/related connections (needed for exit node)
