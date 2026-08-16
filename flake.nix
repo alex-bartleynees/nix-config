@@ -129,6 +129,7 @@
           username = "exedev";
           homeDirectory = "/home/exedev";
           userProfiles = [ "developer" "agent-tools" ];
+          themeName = "gruvbox";
           gitConfig = {
             userName = "Alex Bartley Nees";
             userEmail = "alexbartleynees@gmail.com";
