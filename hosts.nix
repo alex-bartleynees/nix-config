@@ -67,7 +67,7 @@ in {
     hostName = "nixos-wsl";
     users = users;
     additionalUserProfiles = {
-      alexbn.profiles = [ "rider-developer" "agent-tools" ];
+      alexbn.profiles = [ "agent-tools" ];
     };
     stateVersion = "24.05";
     systemProfiles = [ "wsl" ];
