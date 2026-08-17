@@ -4,7 +4,7 @@ let
   sshKey =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFKxSGAbg6Dw8DqxiPGikz9ZoXDBI6YvV80L5B1NsQ72 alexbartleynees@gmail.com";
 in {
-  users = lib.mkIf pkgs.stdenv.isLinux {
+  users = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     users.${username} = {
       isNormalUser = true;
       uid = 1000;

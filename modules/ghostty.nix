@@ -36,7 +36,7 @@
 
       config = lib.mkIf cfg.enable {
         home.packages = with pkgs;
-          [ (if pkgs.stdenv.isDarwin then ghostty-bin else ghostty) ];
+          [ (if pkgs.stdenv.hostPlatform.isDarwin then ghostty-bin else ghostty) ];
 
         home.file.".config/ghostty/config".text = ''
           background-opacity=${toString cfg.backgroundOpacity}

@@ -7,7 +7,7 @@
 
         enableSandbox = lib.mkOption {
           type = lib.types.bool;
-          default = pkgs.stdenv.isLinux;
+          default = pkgs.stdenv.hostPlatform.isLinux;
           description = "Enable landrun sandbox for Codex (Linux only).";
         };
 
@@ -29,7 +29,7 @@
 
           # Codex wrapper - sandboxed or direct based on config
           (pkgs.writeShellScriptBin "codex"
-            (if cfg.enableSandbox && pkgs.stdenv.isLinux then ''
+            (if cfg.enableSandbox && pkgs.stdenv.hostPlatform.isLinux then ''
               # Create config directories if they don't exist
               mkdir -p "$HOME/.codex"
               mkdir -p "$HOME/.t3"

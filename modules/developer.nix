@@ -44,21 +44,21 @@
 
           services.ssh-agent.enable = true;
 
-          distrobox = { enable = pkgs.stdenv.isLinux; };
+          distrobox = { enable = pkgs.stdenv.hostPlatform.isLinux; };
 
           claude-code = {
             enable = true;
-            enableSandbox = pkgs.stdenv.isLinux;
+            enableSandbox = pkgs.stdenv.hostPlatform.isLinux;
           };
 
           opencode = {
             enable = true;
-            enableSandbox = pkgs.stdenv.isLinux;
+            enableSandbox = pkgs.stdenv.hostPlatform.isLinux;
           };
 
           codex = {
             enable = true;
-            enableSandbox = pkgs.stdenv.isLinux;
+            enableSandbox = pkgs.stdenv.hostPlatform.isLinux;
           };
 
           home.packages = with pkgs; [

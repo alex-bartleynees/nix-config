@@ -7,7 +7,7 @@
 
         enableSandbox = lib.mkOption {
           type = lib.types.bool;
-          default = pkgs.stdenv.isLinux;
+          default = pkgs.stdenv.hostPlatform.isLinux;
           description = "Enable landrun sandbox for OpenCode (Linux only).";
         };
 
@@ -28,7 +28,7 @@
         home.packages = [
           # OpenCode wrapper - sandboxed or direct based on config
           (pkgs.writeShellScriptBin "opencode"
-            (if cfg.enableSandbox && pkgs.stdenv.isLinux then ''
+            (if cfg.enableSandbox && pkgs.stdenv.hostPlatform.isLinux then ''
               # Create config directories if they don't exist
               mkdir -p "$HOME/.config/opencode"
               mkdir -p "$HOME/.cache/opencode"

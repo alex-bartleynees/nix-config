@@ -4,7 +4,7 @@ let
   commonHomePaths =
     import ./persistence/common-home-persistence.nix { inherit username; };
 in {
-  users = lib.mkIf pkgs.stdenv.isLinux {
+  users = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     users.${username} = {
       isNormalUser = true;
       shell = pkgs.zsh;

@@ -413,7 +413,7 @@
           # entry baked into a base image via `tic`). Point it at the usual
           # system locations too, so SSH clients with less common TERM
           # values don't get broken cursor movement / garbled zle editing.
-          (lib.mkIf (cfg.enable && pkgs.stdenv.isLinux) {
+          (lib.mkIf (cfg.enable && pkgs.stdenv.hostPlatform.isLinux) {
             TERMINFO_DIRS = lib.concatStringsSep ":" [
               "/usr/share/terminfo"
               "/etc/terminfo"

@@ -7,7 +7,7 @@
 
         enableSandbox = lib.mkOption {
           type = lib.types.bool;
-          default = pkgs.stdenv.isLinux;
+          default = pkgs.stdenv.hostPlatform.isLinux;
           description = "Enable landrun sandbox for Claude Code (Linux only).";
         };
 
@@ -28,7 +28,7 @@
         home.packages = [
           # Unrestricted login helper for OAuth (not needed on macOS)
           (pkgs.writeShellScriptBin "claude-login"
-            (if pkgs.stdenv.isLinux then ''
+            (if pkgs.stdenv.hostPlatform.isLinux then ''
               exec ${pkgs.claude-code}/bin/claude /login
             '' else ''
               exec ${pkgs.claude-code}/bin/claude "$@"
@@ -36,7 +36,7 @@
 
           # Claude wrapper - sandboxed or direct based on config
           (pkgs.writeShellScriptBin "claude"
-            (if cfg.enableSandbox && pkgs.stdenv.isLinux then ''
+            (if cfg.enableSandbox && pkgs.stdenv.hostPlatform.isLinux then ''
               # Create config directories if they don't exist
               mkdir -p "$HOME/.config/claude-code"
               mkdir -p "$HOME/.cache/claude"
