@@ -66,8 +66,16 @@ in lib.mkIf config.profiles.media-server {
       # policy rules send that lookup to routing table 52, where a 100.64/10
       # source arriving on tailscale0 doesn't resolve. --loose doesn't help.
       checkReversePath = false;
+      trustedInterfaces = [ "tailscale0" ];
 
       extraCommands = ''
+        # Flush DOCKER-USER first — extraCommands re-runs on every firewall
+        # restart and -A appends, so without this, rules silently duplicate
+        # across restarts and stale entries can shadow updated ones.
+        iptables -F DOCKER-USER || true
+
+        iptables -A DOCKER-USER -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
         # Allow established/related connections (needed for exit node)
         iptables -A DOCKER-USER -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
@@ -91,7 +99,7 @@ in lib.mkIf config.profiles.media-server {
         iptables -A DOCKER-USER -i lo -j ACCEPT
 
         # Allow Tailscale network (VPS connects via this!)
-        iptables -A DOCKER-USER -s 100.64.0.0/10 -j ACCEPT
+        iptables -A DOCKER-USER -s 100.64.0.0/10 -j RETURN
 
         # CRITICAL: Return to Docker for further processing
         iptables -A DOCKER-USER -j RETURN
