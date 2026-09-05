@@ -43,6 +43,11 @@ in {
           user = cfg.autoLogin.user;
         };
       };
+
+      systemd.services.greetd.serviceConfig = {
+        Restart = lib.mkForce "always";
+        RestartSec = "2s";
+      };
     })
   ];
 
