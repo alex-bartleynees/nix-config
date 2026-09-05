@@ -124,6 +124,12 @@ in lib.mkIf config.profiles.media-server {
     };
   };
 
+  # Docker re-inserts DOCKER-USER above ts-forward on every restart, which
+  # breaks exit-node masquerading until tailscaled reclaims the top slot.
+  systemd.services.docker.postStart = ''
+    systemctl try-restart tailscaled.service
+  '';
+
   # Enhanced Tailscale for routing
   tailscale = {
     routingFeatures = "server";
