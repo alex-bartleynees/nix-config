@@ -31,10 +31,10 @@
             enable = true;
             defaultShell = "zsh";
             enableZsh = true;
-            enableFish = true;
-            enableNushell = true;
+            enableFish = false;
+            enableNushell = false;
             enableTmux = true;
-            enableZellij = true;
+            enableZellij = false;
             zellijTheme = theme.zellijTheme or "tokyo-night-dark";
           };
 
@@ -70,6 +70,8 @@
               '';
             })
             skillserverPull
+            autossh
+            mosh
           ];
 
           programs.yazi = {
