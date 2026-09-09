@@ -10,6 +10,20 @@ in {
     };
     configureUdpGro = lib.mkEnableOption
       "UDP GRO configuration for improved routing performance";
+    peerRelayPort = lib.mkOption {
+      type = lib.types.nullOr lib.types.port;
+      default = null;
+      example = 40000;
+      description = ''
+        UDP port to run a Tailscale peer relay server on, or null to not be a
+        relay. Unlike ordinary Tailscale traffic this is an inbound listener
+        that peers dial into, so the port is opened in the firewall. Off-LAN
+        peers additionally need the port forwarded to this host on the
+        router, and the tailnet policy needs a matching ACL grant before any
+        client will actually use the relay.
+        See: https://tailscale.com/docs/features/peer-relay
+      '';
+    };
     noLogsNoSupport = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -27,7 +41,18 @@ in {
       useRoutingFeatures = cfg.routingFeatures;
       extraDaemonFlags =
         lib.optionals cfg.noLogsNoSupport [ "--no-logs-no-support" ];
+      extraSetFlags = lib.optionals (cfg.peerRelayPort != null)
+        [ "--relay-server-port=${toString cfg.peerRelayPort}" ];
     };
+
+    # A peer relay is dialed *into* by tailnet peers, so unlike ordinary
+    # Tailscale traffic it can't rely on hole punching from an outbound
+    # connection — the listening port has to accept inbound UDP. Peers are
+    # still authenticated as tailnet nodes before the relay will carry
+    # anything, and it forwards without decrypting, so this doesn't expose
+    # the host to arbitrary internet traffic.
+    networking.firewall.allowedUDPPorts =
+      lib.optional (cfg.peerRelayPort != null) cfg.peerRelayPort;
 
     environment.systemPackages = [ pkgs.tailscale ];
 

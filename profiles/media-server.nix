@@ -134,6 +134,11 @@ in lib.mkIf config.profiles.media-server {
   tailscale = {
     routingFeatures = "server";
     configureUdpGro = true;
+
+    # Act as a peer relay for the tailnet. Needs UDP 40000 forwarded from the
+    # router to this host for off-LAN peers, plus an ACL grant in the tailnet
+    # policy naming this node as the relay.
+    peerRelayPort = 40000;
   };
 
   sambaClient.enable = lib.mkForce false;
