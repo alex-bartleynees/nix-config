@@ -61,6 +61,7 @@
               [ -t 2 ] && DEV_RW="$DEV_RW,/dev/stderr"
 
               # Run claude with landrun sandbox
+              # Allow port 0 binds for the OAuth callback's ephemeral TCP port.
               # HERDR_AGENT tells herdr which agent this is, since landrun
               # hides the real claude process from host /proc.
               exec env HERDR_AGENT=claude ${pkgs.landrun}/bin/landrun \
@@ -78,6 +79,7 @@
                 } \
                 --rwx /tmp \
                 --connect-tcp 443 \
+                --bind-tcp 0 \
                 --env HOME \
                 --env PATH \
                 --env XDG_CONFIG_HOME \
