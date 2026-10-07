@@ -97,7 +97,7 @@
             x = 0;
             y = 0;
           };
-          shadowscolor = "0x000000aa";
+          shadows_color = "0x000000aa";
 
           border_radius = 5;
           no_radius_when_single = 0;
@@ -120,8 +120,8 @@
           tag_animation_direction = 1;
           zoom_initial_ratio = 0.3;
           zoom_end_ratio = 0.7;
-          fadein_begin_opacity = 0.6;
-          fadeout_begin_opacity = 0.8;
+          fade_in_begin_opacity = 0.6;
+          fade_out_begin_opacity = 0.8;
           animation_duration = {
             move = 200;
             open = 150;
@@ -146,26 +146,26 @@
 
           # Master-Stack Layout Setting
           new_is_master = 1;
-          smartgaps = 0;
-          default_mfact = 0.55;
-          default_nmaster = 1;
+          smart_gaps = 0;
+          default_master_factor = 0.55;
+          default_master_count = 1;
           center_master_overspread = 0;
           center_when_single_stack = 1;
 
           # Overview Setting
           hotarea_size = 10;
           enable_hotarea = 1;
-          overviewgappi = 5;
-          overviewgappo = 30;
+          overview_gap_inner = 5;
+          overview_gap_outer = 30;
 
           # Misc
           xwayland_persistence = 0;
-          syncobj_enable = 1;
+          sync_obj_enable = 1;
           no_border_when_single = 0;
           axis_bind_apply_timeout = 100;
           focus_on_activate = 1;
-          sloppyfocus = 1;
-          warpcursor = 1;
+          sloppy_focus = 1;
+          warp_cursor = 1;
           focus_cross_monitor = 1;
           exchange_cross_monitor = 1;
           scratchpad_cross_monitor = 1;
@@ -181,7 +181,7 @@
           # keyboard
           repeat_rate = 25;
           repeat_delay = 600;
-          numlockon = 1;
+          numlock_on = 1;
           xkb_rules_layout = "us";
 
           # Trackpad
@@ -197,30 +197,30 @@
           swipe_min_threshold = 20;
 
           # Appearance
-          gappih = 10;
-          gappiv = 10;
-          gappoh = 10;
-          gappov = 10;
+          gap_inner_horizontal = 10;
+          gap_inner_vertical = 10;
+          gap_outer_horizontal = 10;
+          gap_outer_vertical = 10;
           scratchpad_width_ratio = 0.8;
           scratchpad_height_ratio = 0.9;
-          borderpx = 3;
-          rootcolor = "0x${builtins.substring 1 6 colors.groupbar_inactive}FF";
-          bordercolor = "0x${builtins.substring 1 6 colors.inactive_border}FF";
-          focuscolor = "0x${builtins.substring 1 6 colors.active_border}FF";
-          maximizescreencolor =
+          border_px = 3;
+          root_color = "0x${builtins.substring 1 6 colors.groupbar_inactive}FF";
+          border_color = "0x${builtins.substring 1 6 colors.inactive_border}FF";
+          focus_color = "0x${builtins.substring 1 6 colors.active_border}FF";
+          maximized_screen_color =
             "0x${builtins.substring 1 6 colors.locked_active}FF";
-          urgentcolor = "0x${builtins.substring 1 6 colors.locked_inactive}FF";
-          scratchpadcolor =
+          urgent_color = "0x${builtins.substring 1 6 colors.locked_inactive}FF";
+          scratchpad_color =
             "0x${builtins.substring 1 6 colors.groupbar_active}FF";
-          globalcolor = "0x${
+          global_color = "0x${
               builtins.substring 1 6 colors.groupbar_locked_active
             }FF";
-          overlaycolor = "0x${
+          overlay_color = "0x${
               builtins.substring 1 6 colors.groupbar_locked_inactive
             }FF";
 
           # Monitor configuration
-          monitorrule = map (m:
+          monitor_rule = map (m:
             let
               id = if m.vendor != "" then
                 "make:${m.vendor},model:${m.product},serial:${m.serial}"
@@ -238,7 +238,7 @@
             }") monitors;
 
           # Tag layout rules for secondary monitors
-          tagrule = lib.concatMap (m:
+          tag_rule = lib.concatMap (m:
             if m.primary then
               [ ]
             else
@@ -403,7 +403,7 @@
           ];
 
           # Window rules for steam games
-          windowrule = [ "isfullscreen:1,appid:^steam_app_.*$" ];
+          window_rule = [ "is_fullscreen:1,app_id:^steam_app_.*$" ];
         };
         autostart_sh = ''
           # UWSM finalize for proper session management - export all critical Wayland variables
