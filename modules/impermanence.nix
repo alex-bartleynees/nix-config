@@ -97,7 +97,6 @@ in {
     boot.initrd = {
       supportedFilesystems = [ "btrfs" ];
       systemd = {
-        enable = true;
         extraBin = {
           btrfs = "${pkgs.btrfs-progs}/bin/btrfs";
           find = "${pkgs.findutils}/bin/find";
