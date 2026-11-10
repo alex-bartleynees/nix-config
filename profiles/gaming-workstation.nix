@@ -37,6 +37,7 @@
         enable = true;
         motherboard = "amd";
         profile = "default";
+        ramSupport = true;
         turnOffOnBoot = true;
       };
 

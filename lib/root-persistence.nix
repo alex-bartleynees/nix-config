@@ -14,7 +14,7 @@
     "/var/lib/colord" # Color management profiles
     "/var/lib/docker" # Docker images, containers, volumes, networks
     "/etc/NetworkManager/system-connections" # Wifi passwords and network configs
-    "/root/.config/OpenRGB" # OpenRGB daemon zone/device config (service runs as root)
+    "/var/lib/OpenRGB" # OpenRGB daemon config and profiles (service StateDirectory)
     "/var/lib/microvms" # MicroVMs state
     "/var/lib/syncthing" # Syncthing state (device identity, index database)
   ];

@@ -25,6 +25,12 @@ in {
       description = "OpenRGB profile to use on startup";
     };
 
+    ramSupport = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Relax ACPI resource checks so i2c-piix4 can claim the SMBus used by RGB RAM.";
+    };
+
     turnOffOnBoot = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -37,6 +43,9 @@ in {
       enable = true;
       motherboard = cfg.motherboard;
     };
+
+    # BIOS claims the SMBus range in ACPI, which blocks i2c-piix4 without this
+    boot.kernelParams = lib.mkIf cfg.ramSupport [ "acpi_enforce_resources=lax" ];
 
     environment.systemPackages = [ pkgs.openrgb-with-all-plugins ];
 
