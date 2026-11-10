@@ -327,6 +327,24 @@
         "type": "github"
       }
     },
+    "flake-utils_3": {
+      "inputs": {
+        "systems": "systems_5"
+      },
+      "locked": {
+        "lastModified": 1791914995,
+        "narHash": "sha256-Zf/xfQEAasnwnmEfHqW/4hjDE/s44yn2hD4RuVIZRjA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b7a79d3fea1e214f6d668d521cecec0c01e26544",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "fromYaml": {
       "flake": false,
       "locked": {
@@ -770,6 +788,7 @@
         "stylix": "stylix",
         "vscode-server": "vscode-server",
         "waybar": "waybar",
+        "wiki-agents": "wiki-agents",
         "wsl-vpnkit": "wsl-vpnkit"
       }
     },
@@ -926,6 +945,21 @@
         "type": "github"
       }
     },
+    "systems_5": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
     "tinted-kitty": {
       "flake": false,
       "locked": {
@@ -1062,6 +1096,30 @@
       "original": {
         "owner": "Alexays",
         "repo": "Waybar",
+        "type": "github"
+      }
+    },
+    "wiki-agents": {
+      "inputs": {
+        "flake-utils": "flake-utils_3",
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794339041,
+        "narHash": "sha256-bXVJ7tmFxp3X9IgA66IowULsNVrHKN8bYuuLpBvx7p0=",
+        "owner": "alex-bartleynees",
+        "repo": "wiki-llm-agents",
+        "rev": "daa1b20c946f806e3eaa4bc68719b998aa87ec64",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alex-bartleynees",
+        "repo": "wiki-llm-agents",
         "type": "github"
       }
     },

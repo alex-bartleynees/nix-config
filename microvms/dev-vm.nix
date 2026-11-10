@@ -105,6 +105,15 @@ in mkMicrovmSystem {
         codex.enableSandbox = lib.mkForce false;
         shell.enableAtuin = lib.mkForce false;
         home.packages = [ pkgs.mkcert ];
+
+        imports = [ inputs.wiki-agents.homeManagerModules.default ];
+        services.wiki-agents = {
+          enable = true;
+          enableLinger = true;
+          vaults = [ "/home/${username}/Documents/obsidian-vault" ];
+          port = 4320; # 4317 is taken by `nix run .#dev`
+          watchPollMs = 2000; # virtiofs doesn't report file changes
+        };
       };
     })
   ];

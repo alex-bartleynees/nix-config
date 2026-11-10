@@ -33,7 +33,7 @@ in home-manager.lib.homeManagerConfiguration {
       };
     };
   };
-  modules = homeModules ++ [{
+  modules = homeModules ++ [ inputs.wiki-agents.homeManagerModules.default ] ++ [{
     fonts.fontconfig.enable = true;
 
     home.packages = [ pkgs.glibcLocales ];

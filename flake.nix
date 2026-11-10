@@ -82,6 +82,12 @@
       url = "github:alex-bartleynees/comview";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wiki-agents = {
+      url = "github:alex-bartleynees/wiki-llm-agents";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs = inputs:
@@ -141,6 +147,14 @@
             services.t3 = {
               enable = true;
               enableLinger = true;
+            };
+
+            services.wiki-agents = {
+              enable = true;
+              enableLinger = true;
+              vaults = [ "/home/exedev/Documents/obsidian-vault" ];
+              port = 4320;
+              watchPollMs = 2000; # SSHFS doesn't report file changes
             };
           }];
         };
