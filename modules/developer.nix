@@ -53,7 +53,7 @@
 
           opencode = {
             enable = true;
-            enableSandbox = pkgs.stdenv.hostPlatform.isLinux;
+            enableSandbox = false; 
           };
 
           codex = {
