@@ -27,6 +27,8 @@ in mkMicrovmSystem {
   inherit username;
   mem = 16384;
   vcpu = 8;
+  # Writable store layer for things built inside the VM (sparse image).
+  rwStoreSize = 81920;
   additionalUserProfiles = { alexbn.profiles = [ "agent-tools" ]; };
   extraShares = [
     {
@@ -85,6 +87,8 @@ in mkMicrovmSystem {
         6006
         35729
         3773
+        # wiki-agents
+        4320
       ];
 
       users.users.${username}.uid = 1000;
@@ -109,8 +113,9 @@ in mkMicrovmSystem {
         imports = [ inputs.wiki-agents.homeManagerModules.default ];
         services.wiki-agents = {
           enable = true;
-          enableLinger = true;
           vaults = [ "/home/${username}/Documents/obsidian-vault" ];
+          # Listen on the host-only network so the host's browser can reach it
+          host = vmNetwork.ipAddress;
           port = 4320; # 4317 is taken by `nix run .#dev`
           watchPollMs = 2000; # virtiofs doesn't report file changes
         };

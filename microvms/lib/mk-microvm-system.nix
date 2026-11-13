@@ -2,7 +2,7 @@
 { hostName, ipAddress, tapId, mac, gateway, extraVolumes ? [ ]
 , extraShares ? [ ], extraModules ? [ ], username ? "alexbn"
 , homeDirectory ? "/home/alexbn", additionalUserProfiles ? { }
-, homeVolumeSize ? 40960, mem ? 4096, vcpu ? 4, }:
+, homeVolumeSize ? 40960, rwStoreSize ? 20480, mem ? 4096, vcpu ? 4, }:
 let
   inherit (inputs) nixpkgs;
   self = inputs.self;
@@ -35,7 +35,7 @@ let
       {
         image = "nix-rw-store.img";
         mountPoint = "/nix/.rw-store";
-        size = 20480;
+        size = rwStoreSize;
         fsType = "ext4";
         autoCreate = true;
       }
