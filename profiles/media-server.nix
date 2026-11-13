@@ -10,6 +10,11 @@ in lib.mkIf config.profiles.media-server {
 
   environment.systemPackages = [ pkgs.wakeonlan ];
 
+  services.roon-server = {
+    enable = true;
+    openFirewall = true;
+  };
+
   # Gaming configuration for streaming clients
   gaming = {
     enable = false;
