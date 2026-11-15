@@ -110,7 +110,6 @@ in mkMicrovmSystem {
         shell.enableAtuin = lib.mkForce false;
         home.packages = [ pkgs.mkcert ];
 
-        imports = [ inputs.wiki-agents.homeManagerModules.default ];
         services.wiki-agents = {
           enable = true;
           vaults = [ "/home/${username}/Documents/obsidian-vault" ];
