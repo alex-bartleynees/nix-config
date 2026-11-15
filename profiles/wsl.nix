@@ -222,6 +222,17 @@ in {
       claude-code.workspaceDirs = [ windowsVault wslVault ];
       opencode.workspaceDirs = [ windowsVault wslVault ];
 
+      claude-code.enableSandbox = lib.mkForce false;
+      opencode.enableSandbox = lib.mkForce false;
+      codex.enableSandbox = lib.mkForce false;
+
+      services.wiki-agents = {
+        enable = true;
+        vaults = [ wslVault ];
+        port = 4325;
+        watchPollMs = 2000; # drvfs doesn't report file changes
+      };
+
       home.sessionVariables = {
         ASPNETCORE_Kestrel__Certificates__Default__Path =
           "/mnt/c/Users/AlexanderNees/.aspnet/https/gateway+7.p12";
