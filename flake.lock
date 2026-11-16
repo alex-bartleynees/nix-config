@@ -418,11 +418,11 @@
         "scenefx": "scenefx"
       },
       "locked": {
-        "lastModified": 1794702276,
-        "narHash": "sha256-f/f8/+Mf+ZgJLiwAUrLGn4sFzxIZNS+mtQZdC+wvAng=",
+        "lastModified": 1794816924,
+        "narHash": "sha256-u4r8YBk0u7YkZfmCyJnjhR42iLpJobj0oYf2VurXnpU=",
         "owner": "DreamMaoMao",
         "repo": "mango",
-        "rev": "12ffe9f37fab6a5f8b7951ad37530213c98a9865",
+        "rev": "14f7ce9459899001f12539b04a32ffb557cee23b",
         "type": "github"
       },
       "original": {
@@ -1072,11 +1072,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794768059,
-        "narHash": "sha256-MKEsS2kPLeohalj9T8QVl3pIj+ZVdJG53HHwspxxjdk=",
+        "lastModified": 1794811389,
+        "narHash": "sha256-Fskg8oqiy39v1uZfESgX8yd21+vp3qCeh52lYKGxlio=",
         "owner": "alex-bartleynees",
         "repo": "wiki-llm-agents",
-        "rev": "32bf0edd27fb7fb056d861ef08917f8098668634",
+        "rev": "5e223aad40181a53c574150f4de9691a94e87cf8",
         "type": "github"
       },
       "original": {
