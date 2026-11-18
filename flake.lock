@@ -1072,11 +1072,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794986156,
-        "narHash": "sha256-EUmrDoLGALDzkD0272+jorQ6pwVbcN+oynt0tWfYE7g=",
+        "lastModified": 1795028975,
+        "narHash": "sha256-zT9pNZREqWaXuyihEp1hYUkBfuFPUkQ4P8f0yCz0pVk=",
         "owner": "alex-bartleynees",
         "repo": "wiki-llm-agents",
-        "rev": "288429cbe4ebdb59198d8b4519b60ff895bca8e0",
+        "rev": "dc6e26c3b1e0d6e55eaf1d9bf81d1bfadb6cc2f4",
         "type": "github"
       },
       "original": {
