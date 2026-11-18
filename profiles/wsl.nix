@@ -228,6 +228,7 @@ in {
 
       services.wiki-agents = {
         enable = true;
+        browser.enable = true;
         vaults = [ wslVault ];
         port = 4325;
         watchPollMs = 2000; # drvfs doesn't report file changes

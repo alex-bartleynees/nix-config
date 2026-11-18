@@ -146,6 +146,7 @@
 
             services.wiki-agents = {
               enable = true;
+              browser.enable = true;
               enableLinger = true;
               vaults = [ "/home/exedev/Documents/obsidian-vault" ];
               port = 4320;

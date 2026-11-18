@@ -112,9 +112,10 @@ in mkMicrovmSystem {
 
         services.wiki-agents = {
           enable = true;
+          browser.enable = true; 
           vaults = [ "/home/${username}/Documents/obsidian-vault" ];
           # Listen on the host-only network so the host's browser can reach it
-          host = vmNetwork.ipAddress;
+          host =  "127.0.0.1"; # exposed via Tailscale Serve
           port = 4320; # 4317 is taken by `nix run .#dev`
           watchPollMs = 2000; # virtiofs doesn't report file changes
         };
