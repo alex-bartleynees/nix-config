@@ -84,6 +84,17 @@ in {
         user = "alexbn";
       };
 
+      services.ollama = {
+        package = pkgs.ollama-vulkan;
+        environmentVariables = {
+          OLLAMA_VULKAN = "1";
+          OLLAMA_IGPU_ENABLE = "1";
+          LD_LIBRARY_PATH = "/usr/lib/wsl/lib";
+          MESA_D3D12_DEFAULT_ADAPTER_NAME = "Intel";
+          VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/dzn_icd.x86_64.json";
+        };
+      };
+
       # Enable openssh server
       services.openssh = { enable = true; };
 
