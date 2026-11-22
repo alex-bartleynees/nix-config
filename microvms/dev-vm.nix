@@ -103,12 +103,23 @@ in mkMicrovmSystem {
         };
       };
 
+      services.rag-ai.backing = {
+        enable = true;
+        user = username;
+      };
+
       home-manager.users.${username} = {
         claude-code.enableSandbox = lib.mkForce false;
         opencode.enableSandbox = lib.mkForce false;
         codex.enableSandbox = lib.mkForce false;
         shell.enableAtuin = lib.mkForce false;
         home.packages = [ pkgs.mkcert ];
+
+        services.rag-ai = {
+          enable = true;
+          docsDir = "/home/${username}/Documents/obsidian-vault";
+          port = 8010; # 8000 is left for dev servers
+        };
 
         services.wiki-agents = {
           enable = true;

@@ -9,6 +9,39 @@ Each `.nix` file in this directory is automatically picked up as a `nixosConfigu
 |------|---------|------------|
 | `dev-vm` | Dev environment with Docker, shell, dev tools | TAP + host NAT, static IP `10.0.0.2` |
 | `agent-vm` | Runs `netclawd` (self-hosted AI agent daemon) as a dedicated `netclaw` user, hosted on `media` | TAP + host NAT, static IP `10.0.1.2` |
+| `wiki-vm` | Runs `wiki-agents` over the Obsidian vault, hosted on `media` | TAP + host NAT, static IP `10.0.2.2` |
+
+---
+
+## wiki-vm
+
+Runs the [wiki-agents](https://github.com/alex-bartleynees/wiki-llm-agents) home-manager
+service as `alexbn`, with linger so it starts at boot. The media host's Syncthing copy of
+the vault (`/home/alexbn/projects/obsidian-vault`) is shared in via virtiofs at
+`/home/alexbn/Documents/obsidian-vault`. wiki-agents listens on `127.0.0.1:4320` only
+(it has no login) and is published to the tailnet with Tailscale Serve as the
+`svc:wiki-agents` service on `tcp:443`, so tailnet ACLs gate access. Define the
+`svc:wiki-agents` service in the Tailscale admin console and approve the VM as its host.
+The VM's auth key lives in sops at `wiki-vm.tailscale-authkey`.
+
+One-time host-side setup on `media`, before first boot:
+
+```bash
+mkdir -p ~/.config/microvm/wiki-vm/ssh-host-keys
+ssh-keygen -t ed25519 -N "" \
+  -f ~/.config/microvm/wiki-vm/ssh-host-keys/ssh_host_ed25519_key
+sudo nixos-rebuild switch --flake .#media
+```
+
+sops: the VM generates its age key on first boot (`wiki-vm-age-key-bootstrap`). Read
+`/var/lib/sops-nix/age-key.pub` over SSH, add it to `.sops.yaml` as `&wiki-vm`, run
+`sops updatekeys secrets/secrets.yaml`, add the auth key with
+`sops set secrets/secrets.yaml '["wiki-vm"]["tailscale-authkey"]' '"tskey-..."'`, rebuild
+`media`, then `microvm -u wiki-vm`. Until then the user password falls back to
+`initialHashedPassword` and Tailscale stays logged out.
+
+Log in to the agent CLIs (`claude`, `codex`, `opencode`) once inside the VM — the
+providers use those logins, which persist on `home.img`.
 
 ---
 

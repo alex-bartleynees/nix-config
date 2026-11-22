@@ -79,6 +79,11 @@ in {
 
       services.t3.enable = true;
 
+      services.rag-ai.backing = {
+        enable = true;
+        user = "alexbn";
+      };
+
       # Enable openssh server
       services.openssh = { enable = true; };
 
@@ -232,6 +237,12 @@ in {
         vaults = [ wslVault ];
         port = 4325;
         watchPollMs = 2000; # drvfs doesn't report file changes
+      };
+
+      services.rag-ai = {
+        enable = true;
+        docsDir = wslVault;
+        port = 8010; # 8000 is left for dev servers
       };
 
       home.sessionVariables = {

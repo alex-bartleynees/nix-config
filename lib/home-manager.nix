@@ -32,6 +32,6 @@
         imports = extraModules ++ baseModules ++ profileModules;
       };
       backupFileExtension = "backup";
-      sharedModules = [ "${paths.lib}/custom-options.nix" inputs.wiki-agents.homeManagerModules.default ] ++ sharedModules;
+      sharedModules = [ "${paths.lib}/custom-options.nix" inputs.wiki-agents.homeManagerModules.default inputs.rag-ai.homeManagerModules.default ] ++ sharedModules;
     };
   })

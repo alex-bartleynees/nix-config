@@ -57,6 +57,7 @@ in nixpkgs.lib.nixosSystem {
     inputs.disko.nixosModules.disko
     inputs.nixos-wsl.nixosModules.wsl
     inputs.vscode-server.nixosModules.default
+    inputs.rag-ai.nixosModules.default
     "${paths.lib}/custom-options.nix"
     "${paths.lib}/locale.nix"
     "${paths.users}/${username}.nix"

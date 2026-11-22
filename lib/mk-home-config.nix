@@ -33,7 +33,10 @@ in home-manager.lib.homeManagerConfiguration {
       };
     };
   };
-  modules = homeModules ++ [ inputs.wiki-agents.homeManagerModules.default ] ++ [{
+  modules = homeModules ++ [
+    inputs.wiki-agents.homeManagerModules.default
+    inputs.rag-ai.homeManagerModules.default
+  ] ++ [{
     fonts.fontconfig.enable = true;
 
     home.packages = [ pkgs.glibcLocales ];

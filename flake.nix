@@ -83,6 +83,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    rag-ai = {
+      url = "github:alex-bartleynees/rag-ai";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs:
@@ -151,6 +156,12 @@
               vaults = [ "/home/exedev/Documents/obsidian-vault" ];
               port = 4320;
               watchPollMs = 2000; # SSHFS doesn't report file changes
+            };
+
+            services.rag-ai = {
+              enable = true;
+              docsDir = "/home/exedev/Documents/obsidian-vault";
+              userBacking.enable = true;
             };
           }];
         };

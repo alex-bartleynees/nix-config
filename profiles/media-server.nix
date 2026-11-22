@@ -87,6 +87,8 @@ in lib.mkIf config.profiles.media-server {
         # traffic (not just containers), so without this the VM's internet
         # access silently drops here before NAT/masquerade ever sees it.
         iptables -A DOCKER-USER -s 10.0.1.0/24 -j ACCEPT
+        # Same for wiki-vm
+        iptables -A DOCKER-USER -s 10.0.2.0/24 -j ACCEPT
 
         # Allow traffic from home assistant docker container to host
         iptables -A INPUT -s 172.32.0.0/16 -p tcp --dport 8123 -j ACCEPT
@@ -234,7 +236,7 @@ in lib.mkIf config.profiles.media-server {
   microvmHost = {
     enable = true;
     externalInterface = "eno1";
-    vms = mkHostVms [ "agent-vm" ];
+    vms = mkHostVms [ "agent-vm" "wiki-vm" ];
   };
 
   # Syncthing - sync the Obsidian vault with desktop and wsl
