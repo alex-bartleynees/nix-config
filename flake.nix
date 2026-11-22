@@ -157,12 +157,6 @@
               port = 4320;
               watchPollMs = 2000; # SSHFS doesn't report file changes
             };
-
-            services.rag-ai = {
-              enable = true;
-              docsDir = "/home/exedev/Documents/obsidian-vault";
-              userBacking.enable = true;
-            };
           }];
         };
       };

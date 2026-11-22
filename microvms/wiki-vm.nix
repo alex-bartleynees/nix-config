@@ -63,11 +63,6 @@ in mkMicrovmSystem {
         };
       };
 
-      services.rag-ai.backing = {
-        enable = true;
-        user = username;
-      };
-
       # Same uid as the host user so the virtiofs vault share is writable.
       users.users.${username}.uid = 1000;
 
@@ -118,12 +113,6 @@ in mkMicrovmSystem {
         shell.enableAtuin = lib.mkForce false;
 
         imports = [ inputs.wiki-agents.homeManagerModules.default ];
-
-        services.rag-ai = {
-          enable = true;
-          docsDir = vault;
-        };
-
         services.wiki-agents = {
           enable = true;
           # Start at boot without anyone logging in.
