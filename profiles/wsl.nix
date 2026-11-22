@@ -80,7 +80,7 @@ in {
       services.t3.enable = true;
 
       services.rag-ai.backing = {
-        enable = true;
+        enable = false;
         user = "alexbn";
       };
 
@@ -251,7 +251,7 @@ in {
       };
 
       services.rag-ai = {
-        enable = true;
+        enable = false;
         docsDir = wslVault;
         port = 8010; # 8000 is left for dev servers
       };
