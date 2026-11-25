@@ -71,7 +71,9 @@
             })
             skillserverPull
             autossh
-            mosh
+            antigravity-cli
+            python3
+            nodejs_26
           ];
 
           programs.yazi = {
