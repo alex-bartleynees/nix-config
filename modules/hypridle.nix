@@ -34,6 +34,18 @@
           default = "";
           description = "Path to wallpaper for lock screen background.";
         };
+
+        displayOffCommand = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "Command to turn off displays when idle.";
+        };
+
+        displayOnCommand = lib.mkOption {
+          type = lib.types.str;
+          default = "";
+          description = "Command to turn displays back on when resuming.";
+        };
       };
 
       config = lib.mkIf cfg.enable {
@@ -46,24 +58,22 @@
             general = {
               lock_cmd = "pidof hyprlock || hyprlock";
               before_sleep_cmd = "loginctl lock-session";
-              after_sleep_cmd = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
+            } // lib.optionalAttrs (cfg.displayOnCommand != "") {
+              after_sleep_cmd = cfg.displayOnCommand;
             };
 
-            listener = [
-              {
-                timeout = cfg.lockTimeout;
-                on-timeout = "loginctl lock-session";
-              }
-              {
-                timeout = cfg.displayTimeout;
-                on-timeout = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
-                on-resume = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
-              }
-              {
-                timeout = cfg.suspendTimeout;
-                on-timeout = "systemctl suspend";
-              }
-            ];
+            listener = [{
+              timeout = cfg.lockTimeout;
+              on-timeout = "loginctl lock-session";
+            }] ++ lib.optional (cfg.displayOffCommand != "") ({
+              timeout = cfg.displayTimeout;
+              on-timeout = cfg.displayOffCommand;
+            } // lib.optionalAttrs (cfg.displayOnCommand != "") {
+              on-resume = cfg.displayOnCommand;
+            }) ++ [{
+              timeout = cfg.suspendTimeout;
+              on-timeout = "systemctl suspend";
+            }];
           };
         };
 

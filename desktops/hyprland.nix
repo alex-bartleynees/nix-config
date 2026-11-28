@@ -103,6 +103,8 @@
       hypridle = {
         enable = true;
         wallpaper = background;
+        displayOffCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms off";
+        displayOnCommand = "${pkgs.hyprland}/bin/hyprctl dispatch dpms on";
       };
 
       waybar.sessionTarget = "hyprland-session.target";

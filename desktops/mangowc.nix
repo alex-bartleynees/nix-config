@@ -67,6 +67,8 @@
       hypridle = {
         enable = true;
         wallpaper = background;
+        displayOffCommand = "${pkgs.wlopm}/bin/wlopm --off '*'";
+        displayOnCommand = "${pkgs.wlopm}/bin/wlopm --on '*'";
       };
 
       xdg.configFile."uwsm/env".source =

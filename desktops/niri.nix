@@ -24,13 +24,13 @@
     xdg.portal = {
       enable = true;
       extraPortals =
-        [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland ];
+        [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-gnome ];
       config = {
         niri = {
-          default = lib.mkForce [ "hyprland" "gtk" ];
+          default = lib.mkForce [ "gnome" "gtk" ];
           "org.freedesktop.impl.portal.FileChooser" = lib.mkForce [ "gtk" ];
-          "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
-          "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
+          "org.freedesktop.impl.portal.ScreenCast" = [ "gnome" ];
+          "org.freedesktop.impl.portal.Screenshot" = [ "gnome" ];
         };
       };
       xdgOpenUsePortal = true;
@@ -67,6 +67,10 @@
       hypridle = {
         enable = true;
         wallpaper = background;
+        displayOffCommand =
+          "${pkgs.niri}/bin/niri msg action power-off-monitors";
+        displayOnCommand =
+          "${pkgs.niri}/bin/niri msg action power-on-monitors";
       };
 
       waybar.sessionTarget = "wayland-session@niri.target";

@@ -182,8 +182,7 @@
               "csharpextensions.useFileScopedNamespace" = true;
               "terminal.integrated.env.linux" = { };
               "editor.linkedEditing" = true;
-              "nixpkgs-fmt.path" =
-                "/nix/store/gad8bd4kdl5ib13091yfjyb8s9nbpxzf-nixfmt-0.6.0-bin/bin/nixfmt";
+              "nixpkgs-fmt.path" = "${pkgs.nixfmt}/bin/nixfmt";
               "svelte.enable-ts-plugin" = true;
               "terminal.integrated.env.osx" = { };
               "password-store" = "gnome-libsecret";

@@ -14,7 +14,7 @@ in {
     services.technitium-dns-server = {
       enable = true;
       openFirewall = cfg.openFirewall;
-      firewallTCPPorts = [ 5380 ];
+      firewallTCPPorts = [ 53 5380 ];
     };
   };
 }

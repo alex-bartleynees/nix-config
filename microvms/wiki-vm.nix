@@ -112,7 +112,6 @@ in mkMicrovmSystem {
         codex.enableSandbox = lib.mkForce false;
         shell.enableAtuin = lib.mkForce false;
 
-        imports = [ inputs.wiki-agents.homeManagerModules.default ];
         services.wiki-agents = {
           enable = true;
           # Start at boot without anyone logging in.

@@ -78,13 +78,15 @@ in {
       hardware.nvidia-container-toolkit.enable = true;
 
       environment.sessionVariables = {
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         EGL_PLATFORM = "wayland";
+      } // lib.optionalAttrs (!cfg.prime.enable || cfg.prime.mode == "sync") {
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };
 
       systemd.services.greetd.environment = {
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
         EGL_PLATFORM = "wayland";
+      } // lib.optionalAttrs (!cfg.prime.enable || cfg.prime.mode == "sync") {
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
       };
     })
 

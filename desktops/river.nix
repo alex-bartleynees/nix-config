@@ -56,6 +56,8 @@
       hypridle = {
         enable = true;
         wallpaper = background;
+        displayOffCommand = "${pkgs.wlopm}/bin/wlopm --off '*'";
+        displayOnCommand = "${pkgs.wlopm}/bin/wlopm --on '*'";
       };
 
       home.packages = with pkgs; [ river-classic river-bsp-layout wlr-randr ];

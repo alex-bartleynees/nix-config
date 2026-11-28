@@ -106,6 +106,7 @@ in mkMicrovmSystem {
         excludePatterns = [
           "**/.netclaw/config/secrets.json"
           "**/.netclaw/keys/**"
+          "**/.netclaw/workspaces/**"
           "**/.git"
           "**/cache/**"
           "**/tmp/**"
