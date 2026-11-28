@@ -1,13 +1,14 @@
 {
-  nixosConfig = { pkgs, inputs, ... }: {
-    imports = [ ./common/wayland.nix inputs.niri.nixosModules.niri ];
+  nixosConfig = { pkgs, lib, ... }: {
+    imports = [ ./common/wayland.nix ];
 
-    programs.niri.enable = true;
-    programs.niri.package = pkgs.niri-unstable;
-    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
+    programs.niri = {
+      enable = true;
+      useNautilus = false;
+    };
 
     environment.systemPackages = with pkgs; [
-      xwayland-satellite-unstable
+      xwayland-satellite
       uwsm
     ];
 
@@ -26,8 +27,8 @@
         [ pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland ];
       config = {
         niri = {
-          default = [ "hyprland" "gtk" ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "gtk" ];
+          default = lib.mkForce [ "hyprland" "gtk" ];
+          "org.freedesktop.impl.portal.FileChooser" = lib.mkForce [ "gtk" ];
           "org.freedesktop.impl.portal.ScreenCast" = [ "hyprland" ];
           "org.freedesktop.impl.portal.Screenshot" = [ "hyprland" ];
         };
@@ -45,19 +46,20 @@
       enable = true;
       autoLogin = {
         enable = true;
-        command = "${pkgs.uwsm}/bin/uwsm start ${pkgs.niri-unstable}/bin/niri";
+        command = "${pkgs.uwsm}/bin/uwsm start ${pkgs.niri}/bin/niri";
       };
     };
 
     system.nixos.tags = [ "niri" ];
   };
 
-  homeConfig = { pkgs, config, lib, inputs, osConfig, ... }:
+  homeConfig = { pkgs, config, lib, osConfig, ... }:
     let
       theme = osConfig.myConfig.theme;
       monitors = osConfig.myConfig.monitors;
       colors = theme.themeColors;
       background = theme.wallpaper;
+      sh = cmd: [ "sh" "-c" cmd ];
     in {
       imports = [ ./common/linux-desktop.nix ];
 
@@ -85,280 +87,275 @@
         sessionTarget = "wayland-session@niri.target";
       };
 
-      programs.niri.package = pkgs.niri-unstable;
+      wayland.windowManager.niri = {
+        enable = true;
+        package = pkgs.niri;
+        systemd.enable = false;
+        xwaylandSatellitePackage = null;
+        portalPackage = null;
 
-      stylix.targets.niri.enable = false;
-
-      programs.niri.settings = {
-        # Input configuration
-        input.keyboard.xkb.layout = "us";
-        input.mouse.accel-speed = 1.0;
-        input.touchpad = {
-          tap = true;
-          dwt = true;
-          natural-scroll = true;
-          click-method = "clickfinger";
-        };
-
-        prefer-no-csd = true;
-
-        # Use Alt as modifier key (matching hyprland/river configs)
-        input.keyboard.xkb.options = "altwin:swap_alt_win";
-
-        # Focus follows mouse
-        input.focus-follows-mouse.enable = true;
-
-        # Layout configuration
-        layout = {
-          gaps = 10;
-          border.enable = true;
-          border.width = 3;
-          border.active.color =
-            lib.mkForce "#${builtins.substring 1 6 colors.active_border}";
-          border.inactive.color =
-            lib.mkForce "#${builtins.substring 1 6 colors.inactive_border}";
-
-          always-center-single-column = true;
-
-          focus-ring = { enable = false; };
-
-          preset-column-widths = [
-            { proportion = 1.0 / 3.0; }
-            { proportion = 1.0 / 2.0; }
-            { proportion = 2.0 / 3.0; }
-            { proportion = 1.0; }
-          ];
-
-          default-column-width = { proportion = 1.0; };
-
-          # Transparent background so wallpaper stays stationary in backdrop
-          background-color = "transparent";
-
-          # Tab indicator configuration
-          tab-indicator = {
-            enable = true;
-            place-within-column = false;
+        settings = {
+          # Input configuration
+          input = {
+            keyboard.xkb = {
+              layout = "us";
+              # Use Alt as modifier key (matching hyprland/river configs)
+              options = "altwin:swap_alt_win";
+            };
+            mouse.accel-speed = 1.0;
+            touchpad = {
+              tap = { };
+              dwt = { };
+              natural-scroll = { };
+              click-method = "clickfinger";
+            };
+            # Focus follows mouse
+            focus-follows-mouse = { };
           };
-        };
 
-        # Layer rules for wallpaper backdrop
-        layer-rules = [{
-          matches = [{ namespace = "^awww-daemon$"; }];
-          place-within-backdrop = true;
-        }];
+          prefer-no-csd = { };
 
-        hotkey-overlay.skip-at-startup = true;
+          # Layout configuration
+          layout = {
+            gaps = 10;
+            border = {
+              width = 3;
+              active-color = "#${builtins.substring 1 6 colors.active_border}";
+              inactive-color =
+                "#${builtins.substring 1 6 colors.inactive_border}";
+            };
 
-        screenshot-path = "~/Pictures/Screenshots/%Y-%m-%dT%H:%M:%S.png";
+            always-center-single-column = { };
 
-        # Environment variables
-        environment = {
-          XCURSOR_SIZE = "24";
-          NIXOS_OZONE_WL = "1";
-          NIRI_DISABLE_SYSTEM_MANAGER_NOTIFY = "1";
-        };
+            focus-ring.off = { };
 
-        # Key bindings
-        binds = with config.lib.niri.actions;
-          let sh = spawn "sh" "-c";
-          in lib.attrsets.mergeAttrsList [{
+            preset-column-widths._children = [
+              { proportion = 1.0 / 3.0; }
+              { proportion = 1.0 / 2.0; }
+              { proportion = 2.0 / 3.0; }
+              { proportion = 1.0; }
+            ];
+
+            default-column-width.proportion = 1.0;
+
+            # Transparent background so wallpaper stays stationary in backdrop
+            background-color = "transparent";
+
+            # Tab indicator configuration
+            tab-indicator = { };
+          };
+
+          hotkey-overlay.skip-at-startup = { };
+
+          screenshot-path = "~/Pictures/Screenshots/%Y-%m-%dT%H:%M:%S.png";
+
+          # Environment variables
+          environment = {
+            XCURSOR_SIZE = "24";
+            NIXOS_OZONE_WL = "1";
+            NIRI_DISABLE_SYSTEM_MANAGER_NOTIFY = "1";
+          };
+
+          # Key bindings
+          binds = {
             # Application shortcuts
-            "Mod+T".action = spawn "ghostty";
-            "Mod+B".action = spawn "brave";
-            "Mod+C".action = spawn "code";
-            "Mod+D".action = sh
+            "Mod+T".spawn = [ "ghostty" ];
+            "Mod+B".spawn = [ "brave" ];
+            "Mod+C".spawn = [ "code" ];
+            "Mod+D".spawn = sh
               "rofi -show drun -theme $HOME/.config/rofi/themes/colors/${theme.name}.rasi";
-            "Mod+Space".action = sh "vicinae toggle";
-            "Mod+Shift+P".action =
+            "Mod+Space".spawn = sh "vicinae toggle";
+            "Mod+Shift+P".spawn =
               sh "$HOME/.local/bin/powermenu powermenu-${theme.name}";
-            "Mod+Shift+T".action =
+            "Mod+Shift+T".spawn =
               sh "$HOME/.local/bin/themeselector powermenu-${theme.name}";
-            "Mod+Shift+W".action =
+            "Mod+Shift+W".spawn =
               sh "$HOME/.local/bin/wallpaper ${theme.name}";
-            "Mod+I".action = sh "$HOME/.local/bin/keybindings ${theme.name}";
+            "Mod+I".spawn = sh "$HOME/.local/bin/keybindings ${theme.name}";
 
             # Lock screen
-            "Mod+Ctrl+L".action = spawn "hyprlock";
+            "Mod+Ctrl+L".spawn = [ "hyprlock" ];
 
             # Screenshot
-            "Mod+P".action = sh ''grim -g "$(slurp -d)" - | wl-copy'';
-            "Print".action.screenshot-screen = [ ];
-            #"Mod+Shift+S".action = screenshot;
-            "Mod+Print".action.screenshot-window = [ ];
+            "Mod+P".spawn = sh ''grim -g "$(slurp -d)" - | wl-copy'';
+            "Print".screenshot-screen = { };
+            "Mod+Print".screenshot-window = { };
 
             # Volume control
-            "XF86AudioRaiseVolume".action =
+            "XF86AudioRaiseVolume".spawn =
               sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+";
-            "XF86AudioLowerVolume".action =
+            "XF86AudioLowerVolume".spawn =
               sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-";
-            "XF86AudioMute".action =
+            "XF86AudioMute".spawn =
               sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-            "XF86AudioMicMute".action =
+            "XF86AudioMicMute".spawn =
               sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
 
             # Brightness control
-            "XF86MonBrightnessUp".action = sh "brightnessctl set +5%";
-            "XF86MonBrightnessDown".action = sh "brightnessctl set 5%-";
+            "XF86MonBrightnessUp".spawn = sh "brightnessctl set +5%";
+            "XF86MonBrightnessDown".spawn = sh "brightnessctl set 5%-";
 
             # Window management
-            "Mod+Q".action = close-window;
-            "Mod+F".action = fullscreen-window;
-            "Mod+Shift+Space".action = toggle-window-floating;
-            "Mod+W".action = toggle-column-tabbed-display;
+            "Mod+Q".close-window = { };
+            "Mod+F".fullscreen-window = { };
+            "Mod+Shift+Space".toggle-window-floating = { };
+            "Mod+W".toggle-column-tabbed-display = { };
 
             # Focus movement (Vi keys)
-            "Mod+H".action = focus-column-left;
-            "Mod+J".action = focus-window-down;
-            "Mod+K".action = focus-window-up;
-            "Mod+L".action = focus-column-right;
+            "Mod+H".focus-column-left = { };
+            "Mod+J".focus-window-down = { };
+            "Mod+K".focus-window-up = { };
+            "Mod+L".focus-column-right = { };
 
             # Focus movement (Arrow keys)
-            "Mod+Left".action = focus-column-left;
-            "Mod+Down".action = focus-window-down;
-            "Mod+Up".action = focus-window-up;
-            "Mod+Right".action = focus-column-right;
+            "Mod+Left".focus-column-left = { };
+            "Mod+Down".focus-window-down = { };
+            "Mod+Up".focus-window-up = { };
+            "Mod+Right".focus-column-right = { };
 
             # Move windows (Vi keys)
-            "Mod+Shift+H".action = move-column-left;
-            "Mod+Shift+J".action = move-window-down;
-            "Mod+Shift+K".action = move-window-up;
-            "Mod+Shift+L".action = move-column-right;
+            "Mod+Shift+H".move-column-left = { };
+            "Mod+Shift+J".move-window-down = { };
+            "Mod+Shift+K".move-window-up = { };
+            "Mod+Shift+L".move-column-right = { };
 
             # Move windows (Arrow keys)
-            "Mod+Shift+Left".action = move-column-left;
-            "Mod+Shift+Down".action = move-window-down;
-            "Mod+Shift+Up".action = move-window-up;
-            "Mod+Shift+Right".action = move-column-right;
+            "Mod+Shift+Left".move-column-left = { };
+            "Mod+Shift+Down".move-window-down = { };
+            "Mod+Shift+Up".move-window-up = { };
+            "Mod+Shift+Right".move-column-right = { };
 
             # Workspace switching
-            "Mod+1".action.focus-workspace = 1;
-            "Mod+2".action.focus-workspace = 2;
-            "Mod+3".action.focus-workspace = 3;
-            "Mod+4".action.focus-workspace = 4;
-            "Mod+5".action.focus-workspace = 5;
-            "Mod+6".action.focus-workspace = 6;
-            "Mod+7".action.focus-workspace = 7;
-            "Mod+8".action.focus-workspace = 8;
-            "Mod+9".action.focus-workspace = 9;
-            "Mod+0".action.focus-workspace = 10;
+            "Mod+1".focus-workspace = 1;
+            "Mod+2".focus-workspace = 2;
+            "Mod+3".focus-workspace = 3;
+            "Mod+4".focus-workspace = 4;
+            "Mod+5".focus-workspace = 5;
+            "Mod+6".focus-workspace = 6;
+            "Mod+7".focus-workspace = 7;
+            "Mod+8".focus-workspace = 8;
+            "Mod+9".focus-workspace = 9;
+            "Mod+0".focus-workspace = 10;
 
             # Move to workspace
-            "Mod+Shift+1".action.move-window-to-workspace = 1;
-            "Mod+Shift+2".action.move-window-to-workspace = 2;
-            "Mod+Shift+3".action.move-window-to-workspace = 3;
-            "Mod+Shift+4".action.move-window-to-workspace = 4;
-            "Mod+Shift+5".action.move-window-to-workspace = 5;
-            "Mod+Shift+6".action.move-window-to-workspace = 6;
-            "Mod+Shift+7".action.move-window-to-workspace = 7;
-            "Mod+Shift+8".action.move-window-to-workspace = 8;
-            "Mod+Shift+9".action.move-window-to-workspace = 9;
-            "Mod+Shift+0".action.move-window-to-workspace = 10;
+            "Mod+Shift+1".move-window-to-workspace = 1;
+            "Mod+Shift+2".move-window-to-workspace = 2;
+            "Mod+Shift+3".move-window-to-workspace = 3;
+            "Mod+Shift+4".move-window-to-workspace = 4;
+            "Mod+Shift+5".move-window-to-workspace = 5;
+            "Mod+Shift+6".move-window-to-workspace = 6;
+            "Mod+Shift+7".move-window-to-workspace = 7;
+            "Mod+Shift+8".move-window-to-workspace = 8;
+            "Mod+Shift+9".move-window-to-workspace = 9;
+            "Mod+Shift+0".move-window-to-workspace = 10;
 
             # Column management
-            "Mod+Comma".action = consume-window-into-column;
-            "Mod+Period".action = expel-window-from-column;
+            "Mod+Comma".consume-window-into-column = { };
+            "Mod+Period".expel-window-from-column = { };
 
             # Column width
-            "Mod+R".action = switch-preset-column-width;
-            "Mod+Shift+F".action = maximize-column;
-            "Mod+Minus".action = set-column-width "-10%";
-            "Mod+Plus".action = set-column-width "+10%";
-            "Mod+Shift+Minus".action = set-window-height "-10%";
-            "Mod+Shift+Plus".action = set-window-height "+10%";
+            "Mod+R".switch-preset-column-width = { };
+            "Mod+Shift+F".maximize-column = { };
+            "Mod+Minus".set-column-width = "-10%";
+            "Mod+Plus".set-column-width = "+10%";
+            "Mod+Shift+Minus".set-window-height = "-10%";
+            "Mod+Shift+Plus".set-window-height = "+10%";
 
             # Tab/group navigation
-            "Mod+Tab".action = focus-window-down-or-column-right;
-            "Mod+Shift+Tab".action = focus-window-up-or-column-left;
+            "Mod+Tab".focus-window-down-or-column-right = { };
+            "Mod+Shift+Tab".focus-window-up-or-column-left = { };
 
             # Overview
-            "Mod+O".action = toggle-overview;
+            "Mod+O".toggle-overview = { };
 
             # System
-            "Mod+Shift+E".action.quit = { skip-confirmation = true; };
-            "Mod+Shift+C".action = sh "niri msg action load-config-file";
+            "Mod+Shift+E".quit._props.skip-confirmation = true;
+            "Mod+Shift+C".spawn = sh "niri msg action load-config-file";
 
             # Mouse wheel scrolling for switching windows/workspaces
-            "Mod+WheelScrollDown".action = focus-column-right;
-            "Mod+WheelScrollUp".action = focus-column-left;
-            "Mod+Shift+WheelScrollDown".action = focus-workspace-down;
-            "Mod+Shift+WheelScrollUp".action = focus-workspace-up;
-          }];
-
-        outputs = lib.listToAttrs (map (m: {
-          name = if m.description != "" then m.description else m.name;
-          value = {
-            mode = {
-              width = m.width;
-              height = m.height;
-              refresh = m.refresh;
-            };
-            position = {
-              x = m.x;
-              y = m.y;
-            };
-            scale = m.scale;
-            variable-refresh-rate = m.vrr;
-          } // lib.optionalAttrs (m.transform != 0) {
-            transform.rotation = 360 - m.transform;
+            "Mod+WheelScrollDown".focus-column-right = { };
+            "Mod+WheelScrollUp".focus-column-left = { };
+            "Mod+Shift+WheelScrollDown".focus-workspace-down = { };
+            "Mod+Shift+WheelScrollUp".focus-workspace-up = { };
           };
-        }) monitors);
 
-        # Window rules
-        window-rules = [
-          {
-            draw-border-with-background = false;
-            geometry-corner-radius = let r = 5.0;
-            in {
-              top-left = r;
-              top-right = r;
-              bottom-left = r;
-              bottom-right = r;
+          # Repeated top-level KDL nodes (outputs, layer-rule, window-rule, spawn-at-startup)
+          _children = (map (m: {
+            output = {
+              _args = [ (if m.description != "" then m.description else m.name) ];
+              mode =
+                "${toString m.width}x${toString m.height}@${toString m.refresh}";
+              position._props = {
+                x = m.x;
+                y = m.y;
+              };
+              scale = m.scale;
+            } // lib.optionalAttrs m.vrr {
+              variable-refresh-rate = { };
+            } // lib.optionalAttrs (m.transform != 0) {
+              transform = toString (360 - m.transform);
             };
-            clip-to-geometry = true;
-          }
-          {
-            matches = [{ app-id = "^steam_app_.*$"; }];
-            open-fullscreen = true;
-          }
-        ];
+          }) monitors) ++ [
+            # Layer rules for wallpaper backdrop
+            {
+              layer-rule = {
+                match._props.namespace = "^awww-daemon$";
+                place-within-backdrop = true;
+              };
+            }
 
-        spawn-at-startup = [
-          {
-            command = [
-              "dbus-update-activation-environment"
-              "--systemd"
-              "WAYLAND_DISPLAY"
-              "XDG_CURRENT_DESKTOP"
-            ];
-          }
-          {
-            command = [
-              "systemctl"
-              "--user"
-              "import-environment"
-              "WAYLAND_DISPLAY"
-              "XDG_CURRENT_DESKTOP"
-            ];
-          }
-          { command = [ "nm-applet" ]; }
-          { command = [ "blueman-applet" ]; }
-          {
-            command = [
-              "uwsm"
-              "finalize"
-              "SWAYSOCK"
-              "I3SOCK"
-              "XCURSOR_SIZE"
-              "XCURSOR_THEME"
-              "NIRI_SOCKET"
-            ];
-          }
-        ];
+            # Window rules
+            {
+              window-rule = {
+                draw-border-with-background = false;
+                geometry-corner-radius = 5.0;
+                clip-to-geometry = true;
+              };
+            }
+            {
+              window-rule = {
+                match._props.app-id = "^steam_app_.*$";
+                open-fullscreen = true;
+              };
+            }
+
+            # Startup commands
+            {
+              spawn-at-startup = [
+                "dbus-update-activation-environment"
+                "--systemd"
+                "WAYLAND_DISPLAY"
+                "XDG_CURRENT_DESKTOP"
+              ];
+            }
+            {
+              spawn-at-startup = [
+                "systemctl"
+                "--user"
+                "import-environment"
+                "WAYLAND_DISPLAY"
+                "XDG_CURRENT_DESKTOP"
+              ];
+            }
+            { spawn-at-startup = [ "nm-applet" ]; }
+            { spawn-at-startup = [ "blueman-applet" ]; }
+            {
+              spawn-at-startup = [
+                "uwsm"
+                "finalize"
+                "SWAYSOCK"
+                "I3SOCK"
+                "XCURSOR_SIZE"
+                "XCURSOR_THEME"
+                "NIRI_SOCKET"
+              ];
+            }
+          ];
+        };
       };
 
       # XDG configuration for Niri/UWSM compatibility
       xdg.configFile."uwsm/env".source =
         "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
-
     };
 }

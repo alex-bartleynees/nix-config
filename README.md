@@ -362,4 +362,3 @@ impermanence = {
 - **sops-nix**: Secret management
 - **disko**: Declarative disk partitioning
 - **nixos-hardware**: Hardware-specific configurations
-- **niri-flake**: Niri compositor and packages
